@@ -1,0 +1,20 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+DB_Inflation_RegionChange("CoS_Main",117);
+DB_Inflation_RegionChange("CoS_Main_Ending",117);
+DB_Inflation_RegionChange("ARX_Main",130);
+DB_Inflation_RegionChange("ARX_EndGame",130);
+KBSECTION
+// This goal must only be used for new games and not for savegames
+// That is why it is under a goal that only completes on CampaignStarted
+IF
+RegionStarted(_Level)
+AND
+DB_Inflation_RegionChange(_Level,_Percentage)
+THEN
+SetGlobalPriceModifier(_Percentage);
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "DOS2Patch6NewGameWrapper"

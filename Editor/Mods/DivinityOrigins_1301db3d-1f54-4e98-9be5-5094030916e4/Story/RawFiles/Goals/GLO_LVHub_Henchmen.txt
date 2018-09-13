@@ -1,0 +1,281 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+// Hireling captain
+DB_GLO_LVHub_Henchmen_Captain((CHARACTERGUID)CHARACTERGUID_S_GLO_LV_HenchmenRecruiter_ed64ea06-9060-4b29-88dd-623ab008fae6);
+
+// Henchman
+//   - Preset name
+//   - Character
+// Implicit parameters:
+//   - in-party alignment: Hero Henchmen <Preset name>
+DB_GLO_LVHub_Henchmen_Recruitee("Fighter",(CHARACTERGUID)S_GLO_Henchman_Fighter_3f44ca37-37db-4415-9c07-8a6a5043f4d9);
+DB_GLO_LVHub_Henchmen_Recruitee("Battlemage",CHARACTERGUID_S_GLO_Henchman_Battlemage_771422fe-7f0a-4997-a600-66de69c75d80);
+DB_GLO_LVHub_Henchmen_Recruitee("Knight",CHARACTERGUID_S_GLO_Henchman_Knight_3b4ec079-75be-4f79-8f4b-449c650d438d);
+DB_GLO_LVHub_Henchmen_Recruitee("Inquisitor",CHARACTERGUID_S_GLO_Henchman_Inquisitor_0d13b184-24a7-42e1-acf4-5728e92a25f9);
+DB_GLO_LVHub_Henchmen_Recruitee("Ranger",CHARACTERGUID_S_GL_Henchman_Ranger_9bb343ab-65fe-4a8b-b1b6-0d084f5444ee);
+DB_GLO_LVHub_Henchmen_Recruitee("Rogue",CHARACTERGUID_S_GLO_Henchman_Rogue_0ea50c31-7f09-484e-aec1-2f8d5492e8cb);
+DB_GLO_LVHub_Henchmen_Recruitee("Shadowblade",CHARACTERGUID_S_GLO_Henchman_Shadowblade_83fcfdd1-3150-4080-9f69-5461ce57fee2);
+DB_GLO_LVHub_Henchmen_Recruitee("Wayfarer",CHARACTERGUID_S_GLO_Henchman_Wayfarer_32bccd3b-17ea-4daf-989a-141842293970);
+DB_GLO_LVHub_Henchmen_Recruitee("Metamorph",CHARACTERGUID_S_GLO_Henchman_Metamorph_0ab5b88b-368c-4303-b95f-0a34a9838d33);
+DB_GLO_LVHub_Henchmen_Recruitee("Conjurer",CHARACTERGUID_S_GLO_Henchman_Conjurer_12837117-e53e-4997-9b02-a1d2aa89419a);
+DB_GLO_LVHub_Henchmen_Recruitee("Wizard",CHARACTERGUID_S_GLO_Henchman_Wizard_0539b874-7adc-4dfc-8258-bdbae55309ad);
+DB_GLO_LVHub_Henchmen_Recruitee("Witch",CHARACTERGUID_S_GLO_Henchman_Witch_4c565d89-c00b-47ab-8335-9edfa9757971);
+DB_GLO_LVHub_Henchmen_Recruitee("Enchanter",CHARACTERGUID_S_GLO_Henchman_Enchanter_827b9f8c-6bd9-4f52-a2ab-7fe6c425bbe5);
+DB_GLO_LVHub_Henchmen_Recruitee("Cleric",CHARACTERGUID_S_GLO_Henchman_Cleric_240a8377-e26c-4cfa-ac84-2a2e6369e9da);
+
+// Price group flag - Money var index - Preset name
+DB_GLO_LVHub_Henchmen_PriceGroup("LVHub_Henchmen_PricesGroup1",1,"Fighter");
+DB_GLO_LVHub_Henchmen_PriceGroup("LVHub_Henchmen_PricesGroup1",2,"Battlemage");
+DB_GLO_LVHub_Henchmen_PriceGroup("LVHub_Henchmen_PricesGroup1",3,"Knight");
+DB_GLO_LVHub_Henchmen_PriceGroup("LVHub_Henchmen_PricesGroup1",4,"Inquisitor");
+
+DB_GLO_LVHub_Henchmen_PriceGroup("LVHub_Henchmen_PricesGroup2",1,"Ranger");
+DB_GLO_LVHub_Henchmen_PriceGroup("LVHub_Henchmen_PricesGroup2",2,"Rogue");
+DB_GLO_LVHub_Henchmen_PriceGroup("LVHub_Henchmen_PricesGroup2",3,"Shadowblade");
+DB_GLO_LVHub_Henchmen_PriceGroup("LVHub_Henchmen_PricesGroup2",4,"Wayfarer");
+DB_GLO_LVHub_Henchmen_PriceGroup("LVHub_Henchmen_PricesGroup2",5,"Metamorph");
+
+DB_GLO_LVHub_Henchmen_PriceGroup("LVHub_Henchmen_PricesGroup3",1,"Conjurer");
+DB_GLO_LVHub_Henchmen_PriceGroup("LVHub_Henchmen_PricesGroup3",2,"Wizard");
+DB_GLO_LVHub_Henchmen_PriceGroup("LVHub_Henchmen_PricesGroup3",3,"Witch");
+DB_GLO_LVHub_Henchmen_PriceGroup("LVHub_Henchmen_PricesGroup3",4,"Enchanter");
+DB_GLO_LVHub_Henchmen_PriceGroup("LVHub_Henchmen_PricesGroup3",5,"Cleric");
+
+PROC_GLO_LVHub_Henchmen_Init();
+KBSECTION
+//REGION Init
+PROC
+PROC_GLO_LVHub_Henchmen_Init()
+AND
+DB_GLO_LVHub_Henchmen_Captain(_Captain)
+THEN
+DB_Dialogs(_Captain,"LV_Hub_HenchmenRecruiter");
+
+PROC
+PROC_GLO_LVHub_Henchmen_Init()
+AND
+DB_GLO_LVHub_Henchmen_Captain(_Captain)
+THEN
+CharacterSetCanTrade(_Captain,0);
+CharacterDisableCrime(_Captain,"ActiveUndead");
+
+IF
+DB_GLO_LVHub_Henchmen_Captain(_Captain)
+AND
+DB_Dialogs(_Captain,_Dialog)
+AND
+DB_GLO_LVHub_Henchmen_PriceGroup(_,_GoldVarIndex,_)
+THEN
+// Make sure the check speaker will be set correctly, as this DB is only
+// used when the dialog is started (so we have to define it beforehand).
+// We will update the gold values while the dialog is running.
+DB_DialogMoneyTransfer(_GoldVarIndex,_Dialog,0);
+
+PROC
+PROC_GLO_LVHub_Henchmen_Init()
+AND
+DB_GLO_LVHub_Henchmen_Recruitee(_Preset,_Char)
+AND
+StringConcatenate("GLO_LVHub_ToBeHired_",_Preset,_ToBeHiredFlag)
+AND
+StringConcatenate("GLO_LVHub_Hired_",_Preset,_HiredFlag)
+THEN
+DB_GLO_LVHub_Henchmen_HiredFlags(_Preset,_ToBeHiredFlag,_HiredFlag);
+ObjectSetFlag(_Char,"FTJ_RemoveSourceCollar"); //Making sure they are trearted as they don't have a source collar
+SetOnStage(_Char,0);
+
+// All regular player characters are made players in CC, and then NPCs afterwards
+// -> DB_GLO_PartyMembers_DefaultFaction is set for them. This is not the case
+// for the henchmen, so define it in advance.
+PROC
+PROC_GLO_LVHub_Henchmen_Init()
+AND
+DB_GLO_LVHub_Henchmen_Recruitee(_Preset,_Char)
+AND
+StringConcatenate("Hero Henchman ",_Preset,_DefaultFaction)
+THEN
+DB_GLO_PartyMembers_DefaultFaction(_Char,_DefaultFaction);
+//END_REGION
+
+//REGION Support routines for GLO_PartyMembers
+QRY
+QRY_GLO_PartyMembers_GetInPartyDialog((CHARACTERGUID)_Henchman)
+AND
+DB_GLO_LVHub_Henchmen_Recruitee(_,_Henchman)
+THEN
+DB_GLO_PartyMembers_InPartyDialog(_Henchman,"GLO_Henchman");
+//END_REGION
+
+//REGION Recruitment dialog
+IF
+ObjectFlagSet(_PricesFlag,(CHARACTERGUID)_Captain,_ID)
+AND
+DB_GLO_LVHub_Henchmen_Captain(_Captain)
+AND
+DB_Dialogs(_Captain,_Dialog)
+AND
+DB_DialogPlayers(_ID,_Player,_)
+AND
+CharacterGetLevel((CHARACTERGUID)_Player,_Level)
+AND
+DB_GLO_LVHub_Henchmen_PriceGroup(_PricesFlag,_GoldVarIndex,_Preset)
+AND
+CharacterGetHenchmanPresetPrice(_Player,_Preset,_Price)
+AND
+DB_FirstGoal_MoneyDialogVar(_GoldVarIndex,_VarName)
+THEN
+ObjectClearFlag(_Captain,_PricesFlag);
+DialogSetVariableInt(_Dialog,_VarName,_Price);
+
+IF
+ObjectFlagSet(_ToBeHiredFlag,(CHARACTERGUID)_Captain,_ID)
+AND
+DB_GLO_LVHub_Henchmen_Captain(_Captain)
+AND
+DB_GLO_LVHub_Henchmen_HiredFlags(_Preset,_ToBeHiredFlag,_HiredFlag)
+AND
+DB_DialogPlayers(_ID,_Player,_)
+AND
+DB_DialogName(_Dialog,_ID)
+AND
+CharacterGetHenchmanPresetPrice((CHARACTERGUID)_Player,_Preset,_Price)
+AND
+DB_FirstGoal_MoneyDialogVar(1,_VarName)
+THEN
+DB_GLO_LVHub_Henchmen_HireAfterDialog(_Preset,_ID);
+// This gold value only updates the when the dialog starts, so we also have to manually
+// update the dialog var as well
+DB_DialogMoneyTransfer(1,_Dialog,_Price);
+DialogSetVariableInt(_Dialog,_VarName,_Price);
+
+IF
+ObjectFlagCleared(_ToBeHiredFlag,(CHARACTERGUID)_Captain,_ID)
+AND
+DB_GLO_LVHub_Henchmen_Captain(_Captain)
+AND
+DB_GLO_LVHub_Henchmen_HiredFlags(_Preset,_ToBeHiredFlag,_HiredFlag)
+THEN
+NOT DB_GLO_LVHub_Henchmen_HireAfterDialog(_Preset,_ID);
+//END_REGION
+
+//REGION Recruiting Henchmen
+IF
+DialogEnded(_,_ID)
+AND
+DB_GLO_LVHub_Henchmen_Captain(_Captain)
+AND
+DB_GLO_LVHub_Henchmen_HireAfterDialog(_Preset,_ID)
+AND
+DB_DialogPlayers(_ID,_Player,_)
+AND
+DB_GLO_LVHub_Henchmen_HiredFlags(_Preset,_ToBeHiredFlag,_HiredFlag)
+AND
+DB_GLO_LVHub_Henchmen_Recruitee(_Preset,_Henchman)
+THEN
+ObjectClearFlag(_Captain,_ToBeHiredFlag);
+ObjectSetFlag(_Captain,_HiredFlag);
+DB_GLO_PartyMembers_OriginalAlignment(_Henchman,"Neutral");
+DB_GLO_LVHub_Henchmen_Recruited((CHARACTERGUID)_Player,_Preset,_Henchman);
+SetOnStage(_Henchman,1);
+PROC_GLO_LVHub_Henchmen_AddToParty(_Henchman,_Preset,(CHARACTERGUID)_Player);
+
+PROC
+PROC_GLO_LVHub_Henchmen_AddToParty((CHARACTERGUID)_Henchman,(STRING)_Preset,(CHARACTERGUID)_Player)
+AND
+GetUUID(_Henchman,_UUID)
+AND
+StringConcatenate("GLO_LVHub_Henchmen_MadePlayer_",_UUID,_HenchmanMadePlayerOnlyOnce)
+AND
+QueryOnlyOnce(_HenchmanMadePlayerOnlyOnce)
+THEN
+CharacterMakePlayer(_Henchman,_Player);
+
+PROC
+PROC_GLO_LVHub_Henchmen_AddToParty((CHARACTERGUID)_Henchman,(STRING)_Preset,(CHARACTERGUID)_Player)
+THEN
+PROC_GLO_PartyMembers_Add(_Henchman,(CHARACTERGUID)_Player);
+CharacterApplyHenchmanPreset(_Henchman,_Preset);
+// CharacterApplyHenchmanPreset will remove the spirit vision/source vampirism skills again if
+// they were added as part of PROC_GLO_PartyMembers_Add -> unset the flags that the henchman
+// has these skills and add them again if appropriate
+ObjectClearFlag(_Henchman,"GLO_HasSpiritVision");
+ObjectClearFlag(_Henchman,"GLO_HasSourceVampirism");
+Proc_UnlockSourcePointsAndPowers(_Henchman,_Player);
+TeleportTo(_Henchman,_Player);
+Foop(_Henchman);
+//END_REGION
+
+//REGION Dismissing Henchmen
+PROC
+PROC_GLO_PartyMembers_MakeNPCHook((CHARACTERGUID)_Henchman)
+AND
+NOT DB_GLO_PartyMembers_BlockReturnToRecruitmentPosition(_Henchman)
+AND
+DB_GLO_LVHub_Henchmen_Recruited(_Player,_Preset,_Henchman)
+THEN
+CharacterDisappearOutOfSight(_Henchman,0,0,"GLO_LVHub_Henchmen_Dismissed",0);
+
+IF
+StoryEvent((CHARACTERGUID)_Henchman,"GLO_LVHub_Henchmen_Dismissed")
+AND
+DB_GLO_LVHub_Henchmen_Captain(_Captain)
+AND
+DB_GLO_LVHub_Henchmen_Recruited(_Player,_Preset,_Henchman)
+AND
+DB_GLO_LVHub_Henchmen_HiredFlags(_Preset,_ToBeHiredFlag,_HiredFlag)
+AND
+// Prevent making the henchman available for hire again if it's only a temporary dismissal
+NOT DB_GLO_PartyMembers_TempRemoved(_,_Henchman)
+THEN
+NOT DB_GLO_LVHub_Henchmen_Recruited(_Player,_Preset,_Henchman);
+PROC_GLO_PartyMembers_TransferInventoryToPlayer(_Henchman,_Player);
+ObjectClearFlag(_Captain,_HiredFlag);
+//END_REGION
+
+//REGION Disable/enable henchmen recruiting
+// LV_HoE_Main
+IF
+GlobalFlagSet("FTJ_LV_StartHoELevel")
+AND
+DB_GLO_LVHub_Henchmen_Captain(_Recruiter)
+THEN
+ObjectSetFlag(_Recruiter,"GLO_LVHub_Blocked");
+
+PROC
+ProcRegionEnded("LV_HoE_Main")
+AND
+DB_GLO_LVHub_Henchmen_Captain(_Recruiter)
+THEN
+ObjectClearFlag(_Recruiter,"GLO_LVHub_Blocked");
+
+// Dark Night of the Soul
+IF
+RegionStarted("CoS_Main_Ending")
+AND
+DB_GLO_LVHub_Henchmen_Captain(_Recruiter)
+THEN
+ObjectSetFlag(_Recruiter,"GLO_LVHub_Blocked");
+
+PROC
+ProcRegionEnded("CoS_Main_Ending")
+AND
+DB_GLO_LVHub_Henchmen_Captain(_Recruiter)
+THEN
+ObjectClearFlag(_Recruiter,"GLO_LVHub_Blocked");
+//END_REGION
+
+//REGION RC_Main or later -> recruiter on top deck
+IF
+RegionStarted("RC_Main")
+AND
+DB_GLO_LVHub_Henchmen_Captain(_Captain)
+THEN
+TeleportTo(_Captain,TRIGGERGUID_S_GLO_LV_HenchmenRecruiterTopDeck_f1799a1a-a4e7-4887-aa8a-5c26090685d0);
+SetVarObject(_Captain,"LVDefaultPoint",TRIGGERGUID_S_GLO_LV_HenchmenRecruiterTopDeck_f1799a1a-a4e7-4887-aa8a-5c26090685d0);
+SetVarFixedString(_Captain,"currentState","State_LV");
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "GLO_LadyVengeanceHub"

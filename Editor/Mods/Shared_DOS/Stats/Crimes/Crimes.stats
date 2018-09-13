@@ -1,0 +1,182 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<stats stat_object_definition_id="d3edab64-6a76-4232-b009-2b2fe183e5bd">
+  <stat_objects>
+    <stat_object index="0" is_substat="false">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="ActiveUndead" />
+        <field name="TensionWeight" type="IntegerStatObjectFieldDefinition" value="50" />
+        <field name="Lifetime" type="IntegerStatObjectFieldDefinition" value="10000" />
+        <field name="DetectionRange" type="IntegerStatObjectFieldDefinition" value="10" />
+        <field name="Audible" type="EnumerationStatObjectFieldDefinition" value="0" enumeration_type_name="YesNo" />
+        <field name="Continuous" type="EnumerationStatObjectFieldDefinition" value="1" enumeration_type_name="YesNo" />
+        <field name="ContinuousDelayTimer" type="IntegerStatObjectFieldDefinition" value="1" />
+        <field name="CreatesCrimescene" type="EnumerationStatObjectFieldDefinition" value="0" enumeration_type_name="YesNo" />
+        <field name="MaxInvestigators" type="IntegerStatObjectFieldDefinition" value="10" />
+        <field name="SoundEvent" type="StringStatObjectFieldDefinition" value="UI_CrimeSystem_ActiveSummon" />
+        <field name="ReactionCategory_Tag" type="StringStatObjectFieldDefinition" value="GUARD" />
+        <field name="Tension" type="StringStatObjectFieldDefinition" value="any" />
+        <field name="Priority" type="StringStatObjectFieldDefinition" value="2" />
+        <field name="StopsAndInterruptsCrimes" type="StringStatObjectFieldDefinition" value="1" />
+        <field name="Dialog" type="StringStatObjectFieldDefinition" value="GEB_Attack_Undead" />
+        <field name="PrimarySensibleAction" type="StringStatObjectFieldDefinition" value="CRIME_OsirisReaction" />
+        <field name="SecondarySensibleAction" type="StringStatObjectFieldDefinition" value="CRIME_Draw" />
+      </fields>
+    </stat_object>
+    <stat_object index="1" is_substat="true">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="ActiveUndead_substat_0" />
+        <field name="Using" type="BaseClassStatObjectFieldDefinition" value="ActiveUndead" />
+        <field name="ReactionCategory_Tag" type="StringStatObjectFieldDefinition" value="CIVILIAN" />
+        <field name="Tension" type="StringStatObjectFieldDefinition" value="any" />
+        <field name="Priority" type="StringStatObjectFieldDefinition" value="4" />
+        <field name="Dialog" type="StringStatObjectFieldDefinition" value="GEB_AD_Noticed_Undead" />
+        <field name="PrimarySensibleAction" type="StringStatObjectFieldDefinition" value="CRIME_FleeFromUndead" />
+        <field name="SecondarySensibleAction" type="StringStatObjectFieldDefinition" value="CRIME_Flee" />
+      </fields>
+    </stat_object>
+    <stat_object index="2" is_substat="true">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="ActiveUndead_substat_1" />
+        <field name="Using" type="BaseClassStatObjectFieldDefinition" value="ActiveUndead" />
+        <field name="ReactionCategory_Tag" type="StringStatObjectFieldDefinition" value="BADASSCIVILIAN" />
+        <field name="Tension" type="StringStatObjectFieldDefinition" value="any" />
+        <field name="Priority" type="StringStatObjectFieldDefinition" value="3" />
+        <field name="StopsAndInterruptsCrimes" type="StringStatObjectFieldDefinition" value="1" />
+        <field name="Dialog" type="StringStatObjectFieldDefinition" value="GEB_Attack_Undead" />
+        <field name="PrimarySensibleAction" type="StringStatObjectFieldDefinition" value="CRIME_OsirisReaction" />
+        <field name="SecondarySensibleAction" type="StringStatObjectFieldDefinition" value="CRIME_Draw" />
+      </fields>
+    </stat_object>
+    <stat_object index="3" is_substat="true">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="ActiveUndead_substat_2" />
+        <field name="Using" type="BaseClassStatObjectFieldDefinition" value="ActiveUndead" />
+        <field name="ReactionCategory_Tag" type="StringStatObjectFieldDefinition" value="NOT_MESSING_AROUND" />
+        <field name="Tension" type="StringStatObjectFieldDefinition" value="any" />
+        <field name="Priority" type="StringStatObjectFieldDefinition" value="3" />
+        <field name="StopsAndInterruptsCrimes" type="StringStatObjectFieldDefinition" value="1" />
+        <field name="Dialog" type="StringStatObjectFieldDefinition" value="GEB_Attack_Undead" />
+        <field name="PrimarySensibleAction" type="StringStatObjectFieldDefinition" value="CRIME_OsirisReaction" />
+        <field name="SecondarySensibleAction" type="StringStatObjectFieldDefinition" value="CRIME_Draw" />
+      </fields>
+    </stat_object>
+    <stat_object index="4" is_substat="true">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="ActiveUndead_substat_3" />
+        <field name="Using" type="BaseClassStatObjectFieldDefinition" value="ActiveUndead" />
+        <field name="ReactionCategory_Tag" type="StringStatObjectFieldDefinition" value="PALADIN" />
+        <field name="Tension" type="StringStatObjectFieldDefinition" value="any" />
+        <field name="Priority" type="StringStatObjectFieldDefinition" value="2" />
+        <field name="StopsAndInterruptsCrimes" type="StringStatObjectFieldDefinition" value="1" />
+        <field name="Dialog" type="StringStatObjectFieldDefinition" value="GEB_Attack_Undead" />
+        <field name="PrimarySensibleAction" type="StringStatObjectFieldDefinition" value="CRIME_OsirisReaction" />
+        <field name="SecondarySensibleAction" type="StringStatObjectFieldDefinition" value="CRIME_Draw" />
+      </fields>
+    </stat_object>
+    <stat_object index="5" is_substat="true">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="ActiveUndead_substat_4" />
+        <field name="Using" type="BaseClassStatObjectFieldDefinition" value="ActiveUndead" />
+        <field name="ReactionCategory_Tag" type="StringStatObjectFieldDefinition" value="SEEKER" />
+        <field name="Tension" type="StringStatObjectFieldDefinition" value="any" />
+        <field name="Priority" type="StringStatObjectFieldDefinition" value="2" />
+        <field name="StopsAndInterruptsCrimes" type="StringStatObjectFieldDefinition" value="1" />
+        <field name="Dialog" type="StringStatObjectFieldDefinition" value="GEB_Attack_Undead" />
+        <field name="PrimarySensibleAction" type="StringStatObjectFieldDefinition" value="CRIME_OsirisReaction" />
+        <field name="SecondarySensibleAction" type="StringStatObjectFieldDefinition" value="CRIME_Draw" />
+      </fields>
+    </stat_object>
+    <stat_object index="6" is_substat="true">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="ActiveUndead_substat_5" />
+        <field name="Using" type="BaseClassStatObjectFieldDefinition" value="ActiveUndead" />
+        <field name="ReactionCategory_Tag" type="StringStatObjectFieldDefinition" value="LONEWOLF" />
+        <field name="Tension" type="StringStatObjectFieldDefinition" value="any" />
+        <field name="Priority" type="StringStatObjectFieldDefinition" value="2" />
+        <field name="StopsAndInterruptsCrimes" type="StringStatObjectFieldDefinition" value="1" />
+        <field name="Dialog" type="StringStatObjectFieldDefinition" value="GEB_Attack_Undead" />
+        <field name="PrimarySensibleAction" type="StringStatObjectFieldDefinition" value="CRIME_OsirisReaction" />
+        <field name="SecondarySensibleAction" type="StringStatObjectFieldDefinition" value="CRIME_Draw" />
+      </fields>
+    </stat_object>
+    <stat_object index="7" is_substat="true">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="ActiveUndead_substat_6" />
+        <field name="Using" type="BaseClassStatObjectFieldDefinition" value="ActiveUndead" />
+        <field name="ReactionCategory_Tag" type="StringStatObjectFieldDefinition" value="MAGISTER" />
+        <field name="Tension" type="StringStatObjectFieldDefinition" value="any" />
+        <field name="Priority" type="StringStatObjectFieldDefinition" value="2" />
+        <field name="StopsAndInterruptsCrimes" type="StringStatObjectFieldDefinition" value="1" />
+        <field name="Dialog" type="StringStatObjectFieldDefinition" value="GEB_Attack_Undead" />
+        <field name="PrimarySensibleAction" type="StringStatObjectFieldDefinition" value="CRIME_OsirisReaction" />
+        <field name="SecondarySensibleAction" type="StringStatObjectFieldDefinition" value="CRIME_Draw" />
+      </fields>
+    </stat_object>
+    <stat_object index="8" is_substat="true">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="ActiveUndead_substat_7" />
+        <field name="Using" type="BaseClassStatObjectFieldDefinition" value="ActiveUndead" />
+        <field name="ReactionCategory_Tag" type="StringStatObjectFieldDefinition" value="BLACK_RING" />
+        <field name="Tension" type="StringStatObjectFieldDefinition" value="any" />
+        <field name="Priority" type="StringStatObjectFieldDefinition" value="1" />
+      </fields>
+    </stat_object>
+    <stat_object index="9" is_substat="true">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="ActiveUndead_substat_8" />
+        <field name="Using" type="BaseClassStatObjectFieldDefinition" value="ActiveUndead" />
+        <field name="ReactionCategory_Tag" type="StringStatObjectFieldDefinition" value="SILENTMONK" />
+        <field name="Tension" type="StringStatObjectFieldDefinition" value="any" />
+        <field name="Priority" type="StringStatObjectFieldDefinition" value="1" />
+      </fields>
+    </stat_object>
+    <stat_object index="10" is_substat="true">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="ActiveUndead_substat_9" />
+        <field name="Using" type="BaseClassStatObjectFieldDefinition" value="ActiveUndead" />
+        <field name="ReactionCategory_Tag" type="StringStatObjectFieldDefinition" value="AUTOMATON" />
+        <field name="Tension" type="StringStatObjectFieldDefinition" value="any" />
+        <field name="Priority" type="StringStatObjectFieldDefinition" value="1" />
+      </fields>
+    </stat_object>
+    <stat_object index="11" is_substat="true">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="ActiveUndead_substat_10" />
+        <field name="Using" type="BaseClassStatObjectFieldDefinition" value="ActiveUndead" />
+        <field name="ReactionCategory_Tag" type="StringStatObjectFieldDefinition" value="IGNORE_UNDEAD_CRIME" />
+        <field name="Tension" type="StringStatObjectFieldDefinition" value="any" />
+        <field name="Priority" type="StringStatObjectFieldDefinition" value="1" />
+      </fields>
+    </stat_object>
+    <stat_object index="12" is_substat="true">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="ActiveUndead_substat_11" />
+        <field name="Using" type="BaseClassStatObjectFieldDefinition" value="ActiveUndead" />
+        <field name="ReactionCategory_Tag" type="StringStatObjectFieldDefinition" value="VOIDWOKEN" />
+        <field name="Tension" type="StringStatObjectFieldDefinition" value="any" />
+        <field name="Priority" type="StringStatObjectFieldDefinition" value="1" />
+      </fields>
+    </stat_object>
+    <stat_object index="13" is_substat="true">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="ActiveUndead_substat_12" />
+        <field name="Using" type="BaseClassStatObjectFieldDefinition" value="ActiveUndead" />
+        <field name="ReactionCategory_Tag" type="StringStatObjectFieldDefinition" value="UNDEAD" />
+        <field name="Tension" type="StringStatObjectFieldDefinition" value="any" />
+        <field name="Priority" type="StringStatObjectFieldDefinition" value="1" />
+      </fields>
+    </stat_object>
+    <stat_object index="14" is_substat="true">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="ActiveUndead_substat_13" />
+        <field name="Using" type="BaseClassStatObjectFieldDefinition" value="ActiveUndead" />
+        <field name="ReactionCategory_Tag" type="StringStatObjectFieldDefinition" value="KID" />
+        <field name="Tension" type="StringStatObjectFieldDefinition" value="any" />
+        <field name="Priority" type="StringStatObjectFieldDefinition" value="4" />
+        <field name="Dialog" type="StringStatObjectFieldDefinition" value="GEB_AD_Noticed_Undead" />
+        <field name="PrimarySensibleAction" type="StringStatObjectFieldDefinition" value="CRIME_FleeFromUndead" />
+        <field name="SecondarySensibleAction" type="StringStatObjectFieldDefinition" value="CRIME_Flee" />
+      </fields>
+    </stat_object>
+  </stat_objects>
+</stats>

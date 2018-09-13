@@ -1,0 +1,216 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+/*RC_WolfHunt updates were removed. 
+DB_QuestDef_State("RC_WolfHunt","FoundContract", 1);
+DB_QuestDef_State("RC_WolfHunt","LearnedBaran", 1);
+DB_QuestDef_State("RC_WolfHunt","LearnedRoost", 1);
+DB_QuestDef_State("RC_WolfHunt","LearnedRoost2");
+DB_QuestDef_State("RC_WolfHunt","CloseLeftRC",-1);*/
+
+DB_WolfHunt_IfanUpdates("FoundContract", "QuestUpdate_FTJ_COM_Ifan_FoundContract", "QuestUpdate_FTJ_Ifan_DarkFaction_FoundContract");
+//DB_WolfHunt_IfanUpdates("RC_MIL_LearnedRoost", "QuestUpdate_FTJ_COM_Ifan_LearnedRoost", "QuestUpdate_FTJ_Ifan_DarkFaction_LearnedRoost");
+KBSECTION
+//REGION WolfHunt version
+IF
+GameBookInterfaceClosed(_Item, _Player)
+AND
+NOT QRY_IfanHasWolfHunt((CHARACTERGUID)_Player)
+AND
+GetTemplate(_Item, "GLO_GodwokenAssassinationContract_0b88012c-9b14-409e-b50d-328d6b154781")
+AND
+PartyGetFlag((CHARACTERGUID)_Player, "QuestUpdate_RC_WolfHunt_LearnedRoost", 0)
+AND
+PartyGetFlag((CHARACTERGUID)_Player, "QuestUpdate_RC_WolfHunt_LearnedBaran", 0)
+AND
+NOT QRY_RC_WolfHunt_IfanUpdate(_Player, "FoundContract")
+THEN
+PartySetFlag(_Player, "QuestUpdate_RC_WolfHunt_FoundContract", 0);
+
+IF
+ObjectFlagSet("RC_LearnedBaran", _Player, _)
+AND
+NOT QRY_IfanHasWolfHunt((CHARACTERGUID)_Player)
+AND
+PartyGetFlag((CHARACTERGUID)_Player, "QuestUpdate_RC_WolfHunt_LearnedRoost", 0)
+AND
+PartyGetFlag((CHARACTERGUID)_Player, "QuestUpdate_RC_WolfHunt_FoundContract", 0)
+AND
+NOT QRY_RC_WolfHunt_IfanUpdate(_Player, "RC_LearnedBaran")
+THEN
+PartySetFlag(_Player, "QuestUpdate_RC_WolfHunt_LearnedBaran");
+
+/*IF
+ObjectFlagSet("RC_MIL_LearnedRoost", _Player, _)
+AND
+NOT QRY_IfanHasWolfHunt((CHARACTERGUID)_Player)
+AND
+PartyGetFlag((CHARACTERGUID)_Player, "QuestUpdate_RC_WolfHunt_LearnedBaran", 0)
+AND
+PartyGetFlag((CHARACTERGUID)_Player, "QuestUpdate_RC_WolfHunt_FoundContract", 0)
+AND
+NOT QRY_RC_WolfHunt_IfanUpdate(_Player, "RC_MIL_LearnedRoost")
+THEN
+PartySetFlag(_Player, "QuestUpdate_RC_WolfHunt_LearnedRoost");*/
+
+IF
+GameBookInterfaceClosed(ITEMGUID_S_RC_MIL_DOContract_e0571cdc-625b-4f41-880b-7990d034721e, _Player)
+AND
+NOT QRY_IfanHasWolfHunt((CHARACTERGUID)_Player)
+AND
+PartyGetFlag((CHARACTERGUID)_Player, "QuestUpdate_RC_WolfHunt_LearnedRoost", 0)
+AND
+PartyGetFlag((CHARACTERGUID)_Player, "QuestUpdate_RC_WolfHunt_LearnedBaran", 0)
+AND
+NOT QRY_RC_WolfHunt_IfanUpdate(_Player, "FoundContract")
+THEN
+PartySetFlag(_Player, "QuestUpdate_RC_WolfHunt_FoundContract");
+
+IF
+GameBookInterfaceClosed(ITEMGUID_S_RC_DW_RichMerchant_Orders_63caa9e2-e334-430f-ac0d-c73b657b16b6, _Player)
+AND
+NOT QRY_IfanHasWolfHunt((CHARACTERGUID)_Player)
+AND
+PartyGetFlag((CHARACTERGUID)_Player, "QuestUpdate_RC_WolfHunt_LearnedRoost", 0)
+AND
+PartyGetFlag((CHARACTERGUID)_Player, "QuestUpdate_RC_WolfHunt_LearnedBaran", 0)
+AND
+NOT QRY_RC_WolfHunt_IfanUpdate(_Player, "FoundContract")
+THEN
+PartySetFlag(_Player, "QuestUpdate_RC_WolfHunt_FoundContract");
+
+QRY
+QRY_RC_WolfHunt_IfanUpdate((CHARACTERGUID)_Player, (STRING)_Trigger)
+AND
+GetDistanceTo(_Player, CHARACTERGUID_S_Player_Ifan_ad9a3327-4456-42a7-9bf4-7ad60cc9e54f, _Dist)
+AND
+_Dist <= 10.0
+AND
+CharacterIsInPartyWith(_Player, CHARACTERGUID_S_Player_Ifan_ad9a3327-4456-42a7-9bf4-7ad60cc9e54f, 1)
+AND
+IsTagged(CHARACTERGUID_S_Player_Ifan_ad9a3327-4456-42a7-9bf4-7ad60cc9e54f, "AVATAR", 1)
+AND
+DB_WolfHunt_IfanUpdates(_Trigger, _, _Update)
+THEN
+ObjectSetFlag(CHARACTERGUID_S_Player_Ifan_ad9a3327-4456-42a7-9bf4-7ad60cc9e54f, _Update, 0);
+
+QRY
+QRY_RC_WolfHunt_IfanUpdate(_Player, _Trigger)
+AND
+GetDistanceTo(_Player, CHARACTERGUID_S_Player_Ifan_ad9a3327-4456-42a7-9bf4-7ad60cc9e54f, _Dist)
+AND
+_Dist <= 10.0
+AND
+CharacterIsInPartyWith(_Player, CHARACTERGUID_S_Player_Ifan_ad9a3327-4456-42a7-9bf4-7ad60cc9e54f, 1)
+AND
+IsTagged(CHARACTERGUID_S_Player_Ifan_ad9a3327-4456-42a7-9bf4-7ad60cc9e54f, "AVATAR", 0)
+AND
+DB_WolfHunt_IfanUpdates(_Trigger, _Update, _)
+THEN
+PartySetFlag(CHARACTERGUID_S_Player_Ifan_ad9a3327-4456-42a7-9bf4-7ad60cc9e54f, _Update, 0);
+
+QRY
+QRY_IfanHasWolfHunt((CHARACTERGUID)_Player)
+AND
+CharacterIsInPartyWith(_Player, CHARACTERGUID_S_Player_Ifan_ad9a3327-4456-42a7-9bf4-7ad60cc9e54f, 1)
+AND
+DB_WolfHunt_IfanUpdates(_, _Update, _)
+AND
+ObjectGetFlag(CHARACTERGUID_S_Player_Ifan_ad9a3327-4456-42a7-9bf4-7ad60cc9e54f, _Update, 1)
+THEN
+DB_NOOP(0);
+
+QRY
+QRY_IfanHasWolfHunt((CHARACTERGUID)_Player)
+AND
+CharacterIsInPartyWith(_Player, CHARACTERGUID_S_Player_Ifan_ad9a3327-4456-42a7-9bf4-7ad60cc9e54f, 1)
+AND
+DB_WolfHunt_IfanUpdates(_, _, _Update)
+AND
+ObjectGetFlag(CHARACTERGUID_S_Player_Ifan_ad9a3327-4456-42a7-9bf4-7ad60cc9e54f, _Update, 1)
+THEN
+DB_NOOP(0);
+
+IF
+GameBookInterfaceClosed(ITEMGUID_S_RC_MIL_DOContract_e0571cdc-625b-4f41-880b-7990d034721e, _Player)
+AND
+QueryOnlyOnce("RC_WolfHunt_DOContract")
+THEN
+StartVoiceBark("RC_VB_WolfHunt_DOContract", _Player);
+
+//END_REGION
+
+//REGION  FTJ_Hunted updates
+
+IF
+GameBookInterfaceClosed(_Item, _Player)
+AND
+GetTemplate(_Item, "GLO_GodwokenAssassinationContract_0b88012c-9b14-409e-b50d-328d6b154781")
+AND
+UserGetFlag((CHARACTERGUID)_Player, "QuestUpdate_FTJ_Hunted_LearnedRoost", 0)
+AND
+UserGetFlag((CHARACTERGUID)_Player, "QuestUpdate_FTJ_Hunted_LearnedBaran", 0)
+THEN
+UserSetFlag(_Player, "QuestUpdate_FTJ_Hunted_FoundContract");
+
+IF
+ObjectFlagSet("RC_LearnedBaran", _Player, _)
+AND
+UserGetFlag((CHARACTERGUID)_Player, "QuestUpdate_FTJ_Hunted_LearnedRoost", 0)
+AND
+UserGetFlag((CHARACTERGUID)_Player, "QuestUpdate_FTJ_Hunted_FoundContract", 0)
+THEN
+UserSetFlag(_Player, "QuestUpdate_FTJ_Hunted_LearnedBaran");
+
+IF
+ObjectFlagSet("RC_MIL_LearnedRoost", _Player, _)
+AND
+UserGetFlag((CHARACTERGUID)_Player, "QuestUpdate_FTJ_Hunted_LearnedBaran", 0)
+AND
+UserGetFlag((CHARACTERGUID)_Player, "QuestUpdate_FTJ_Hunted_FoundContract", 0)
+THEN
+UserSetFlag(_Player, "QuestUpdate_FTJ_Hunted_LearnedRoost");
+
+IF
+GameBookInterfaceClosed(ITEMGUID_S_RC_MIL_DOContract_e0571cdc-625b-4f41-880b-7990d034721e, _Player)
+AND
+UserGetFlag((CHARACTERGUID)_Player, "QuestUpdate_FTJ_Hunted_LearnedRoost", 0)
+AND
+UserGetFlag((CHARACTERGUID)_Player, "QuestUpdate_FTJ_Hunted_LearnedBaran", 0)
+THEN
+UserSetFlag(_Player, "QuestUpdate_FTJ_Hunted_FoundContract");
+
+
+// Baran Levere's order:
+IF
+GameBookInterfaceClosed(ITEMGUID_S_RC_DW_RichMerchant_Orders_63caa9e2-e334-430f-ac0d-c73b657b16b6, _Player)
+AND
+UserGetFlag((CHARACTERGUID)_Player, "QuestUpdate_FTJ_Hunted_LearnedRoost", 0)
+THEN
+UserSetFlag(_Player, "QuestUpdate_FTJ_Hunted_FoundContractSawmill");
+
+
+// Sebille
+IF
+ObjectFlagSet("RC_LearnedBaran", CHARACTERGUID_S_Player_Sebille_c8d55eaf-e4eb-466a-8f0d-6a9447b5b24c, _)
+AND
+IsTagged(CHARACTERGUID_S_Player_Sebille_c8d55eaf-e4eb-466a-8f0d-6a9447b5b24c,"AVATAR",1)
+AND
+ObjectGetFlag(CHARACTERGUID_S_Player_Sebille_c8d55eaf-e4eb-466a-8f0d-6a9447b5b24c,"QuestUpdate_FTJ_OriginSebille_Part2_Find_Roost",0)
+THEN
+ObjectSetFlag(CHARACTERGUID_S_Player_Sebille_c8d55eaf-e4eb-466a-8f0d-6a9447b5b24c,"QuestUpdate_FTJ_OriginSebille_ConfrontedBaran");
+
+IF
+ObjectFlagSet("RC_LearnedBaran", CHARACTERGUID_S_Player_Sebille_c8d55eaf-e4eb-466a-8f0d-6a9447b5b24c, _)
+AND
+IsTagged(CHARACTERGUID_S_Player_Sebille_c8d55eaf-e4eb-466a-8f0d-6a9447b5b24c,"AVATAR",1)
+AND
+ObjectGetFlag(CHARACTERGUID_S_Player_Sebille_c8d55eaf-e4eb-466a-8f0d-6a9447b5b24c,"QuestUpdate_FTJ_OriginSebille_Part2_Find_Roost",1)
+THEN
+ObjectSetFlag(CHARACTERGUID_S_Player_Sebille_c8d55eaf-e4eb-466a-8f0d-6a9447b5b24c,"QuestUpdate_FTJ_OriginSebille_ConfrontedBaranKnow");
+
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "ReapersCoast"

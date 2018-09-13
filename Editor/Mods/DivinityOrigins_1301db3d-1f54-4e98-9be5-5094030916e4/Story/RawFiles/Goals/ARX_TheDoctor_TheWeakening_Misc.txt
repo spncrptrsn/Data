@@ -1,0 +1,31 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+/*IF
+DB_ARX_TheWeakening_Runes(_Item,_Fx,_String)
+THEN
+PROC_LoopEffect(_Fx,ITEMGUID_S_ARX_TheWeakening_Runes_Chest_e34f7aab-140f-4971-8bf9-96924d9f0245,_String,"ARX_Main","");
+
+IF
+ItemMoved(_Item)
+AND
+DB_ARX_TheWeakening_Runes(_Item,_Fx,_String)
+THEN
+PROC_StopLoopEffect(ITEMGUID_S_ARX_TheWeakening_Runes_Chest_e34f7aab-140f-4971-8bf9-96924d9f0245,_String);
+NOT DB_ARX_TheWeakening_Runes(_Item,_Fx,_String);
+Proc_ARX_TheWeakening_Runes_Check();
+
+PROC
+Proc_ARX_TheWeakening_Runes_Check()
+AND
+NOT DB_ARX_TheWeakening_Runes(_,_,_)
+THEN
+ItemUnLock(ITEMGUID_S_ARX_TheWeakening_Runes_Chest_e34f7aab-140f-4971-8bf9-96924d9f0245);
+*/
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "ARX"

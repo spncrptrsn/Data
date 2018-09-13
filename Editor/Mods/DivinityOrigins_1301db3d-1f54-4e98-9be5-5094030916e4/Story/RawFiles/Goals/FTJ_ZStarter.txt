@@ -1,0 +1,13 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+ProcRegionStarted("FJ_FortJoy_Main");
+KBSECTION
+PROC
+ProcRegionStarted("FJ_FortJoy_Main")
+THEN
+GoalCompleted;
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "FortJoy"

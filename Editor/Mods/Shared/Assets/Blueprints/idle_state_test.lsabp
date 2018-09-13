@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<blueprint id="17b49e78-dd34-4004-8b07-fd761e49209e" entry="b23f930f-9687-4437-a385-74c53bea9d77" model_id="00000000-0000-0000-0000-000000000000">
+  <variables>
+    <variable name="playIdle" id="1875a865-f760-457a-82b9-a97e4843e22b" type="System.Boolean" full_type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" tooltip="" editable="True" external="False" default="False" />
+  </variables>
+  <cached_poses />
+  <animation_sequences>
+    <animation_sequence name="still_01" category="-1" name_id="f44a001b-1714-46f8-b61b-bfeb426eacb0" id="81e65bd0-6ed7-453e-ac46-8ebc741b71a2" default="67736a82-7a63-4f4f-b39b-06add34b29a1" />
+    <animation_sequence name="idle_01" category="-1" name_id="b48d8345-abcf-479e-8dd1-b85218dd2d6c" id="24e9252b-c3d6-4fc6-807e-c63853ede270" default="c253202d-0ef2-4dc3-810c-ca03cccaecb2" />
+  </animation_sequences>
+  <events>
+    <event id="552351a4-01bf-4b68-89da-67323c2e371a" name="still" type="GameplayEvent" full_type="Genome.DataModel.Events.GameplayEvent, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+    <event id="790b069a-0ec6-46a9-9e9f-0696f778e2aa" name="idle1" type="GameplayEvent" full_type="Genome.DataModel.Events.GameplayEvent, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+    <event id="9e234d58-6895-4dd2-84e6-39f27e4e60c3" name="BlendOut" type="SendEvent" full_type="Genome.DataModel.Events.SendEvent, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+  </events>
+  <graphs>
+    <graph id="b23f930f-9687-4437-a385-74c53bea9d77" type="AnimationGraph">
+      <nodes>
+        <node id="e570d911-96c9-461d-9604-cedd02870744" name="Final Animation Pose" x="0" y="0" ZIndex="0" width="210" height="176" type="FinalAnimationPoseNode" full_type="Genome.DataModel.AnimGraph.Nodes.FinalAnimationPoseNode, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <inputs>
+            <socket role="Result" full_role="FinalAnimationPoseNodeResultSocket" id="7d1846ad-bd72-417d-9136-85f989cdf8d6" type="AnimationPoseInputSocket" full_type="Genome.DataModel.AnimGraph.Sockets.AnimationPoseInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+          </inputs>
+          <outputs />
+        </node>
+        <node id="6a7871bf-a3f8-4363-8c6f-47742ce47fa1" name="Main_STATE" x="-340" y="20" ZIndex="1" width="120.19" height="90" type="StateMachineNode" full_type="Genome.DataModel.AnimGraph.Nodes.StateMachineNode, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" max_transitions_per_frame="1" graph_id="564b4fb1-ac0f-404e-96c8-6b9b1f70b29b">
+          <inputs />
+          <outputs>
+            <socket role="Pose" full_role="StateMachineNodePoseSocket" id="9fa46145-5b29-4e64-b92c-260c36a3de44" type="AnimationPoseOutputSocket" full_type="Genome.DataModel.AnimGraph.Sockets.AnimationPoseOutputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+          </outputs>
+          <graphs>
+            <graph id="564b4fb1-ac0f-404e-96c8-6b9b1f70b29b" type="StateMachine">
+              <nodes>
+                <node id="0f21c4d2-373e-4f6c-bbdb-f8aaa157bf09" name="Entry" x="-580" y="-20" ZIndex="0" width="140" height="41.63" type="EntryState" full_type="Genome.DataModel.StateMachine.States.EntryState, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+                  <inputs />
+                  <outputs />
+                  <socket role="Transition" full_role="TransitionSocket" id="9e2f6667-87e4-4a10-8868-a33ec7726f4a" type="EntrySocket" full_type="Genome.DataModel.StateMachine.Sockets.EntrySocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+                </node>
+                <node id="9ab859bb-d2a6-4771-8337-4d31be9dc705" name="Still" x="60" y="0" ZIndex="1" width="140" height="41.63" type="State" full_type="Genome.DataModel.StateMachine.States.State, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" graph_id="60418357-2a15-45e4-a6b7-27919ffae1fb">
+                  <inputs />
+                  <outputs />
+                  <socket role="Transition" full_role="TransitionSocket" id="47a8b49b-68ac-41be-a7de-4f60c66333ba" type="StateSocket" full_type="Genome.DataModel.StateMachine.Sockets.StateSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+                  <graphs>
+                    <graph id="60418357-2a15-45e4-a6b7-27919ffae1fb" type="State">
+                      <nodes>
+                        <node id="06c56067-7df2-4294-8942-dca04ac9a2f4" name="Final Animation Pose" x="0" y="0" ZIndex="1" width="210" height="176" type="FinalAnimationPoseNode" full_type="Genome.DataModel.AnimGraph.Nodes.FinalAnimationPoseNode, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+                          <inputs>
+                            <socket role="Result" full_role="FinalAnimationPoseNodeResultSocket" id="5f564e7e-56a6-4a4d-9073-6c6d8511ad1a" type="AnimationPoseInputSocket" full_type="Genome.DataModel.AnimGraph.Sockets.AnimationPoseInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+                          </inputs>
+                          <outputs />
+                        </node>
+                        <node id="3ddb6763-6512-496a-9dca-3a64d332485f" name="Play still_01" x="-620" y="-60" ZIndex="1" width="212" height="132.28" type="PlayAnimationNode" full_type="Genome.DataModel.AnimGraph.Nodes.PlayAnimationNode, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+                          <inputs>
+                            <socket role="Sequence" full_role="PlayAnimationNodeSequenceSocket" id="957e8f89-6719-4187-9b8e-b7e7b1588298" type="AnimationSequenceInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.AnimationSequenceInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="81e65bd0-6ed7-453e-ac46-8ebc741b71a2" />
+                            <socket role="LoopAnimation" full_role="PlayAnimationNodeLoopAnimationSocket" id="24dc8f98-ce9c-45fd-b2e5-26a9bd65e8bb" type="BooleanInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.BooleanInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="True" />
+                            <socket role="PlayRate" full_role="PlayAnimationNodePlayRateSocket" id="807428b6-fe41-4685-aa5e-016d5b091030" type="FloatInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.FloatInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="1" />
+                            <socket role="StartOffset" full_role="PlayAnimationNodeStartOffsetSocket" id="0e731685-4e66-4ae9-b6ef-c86b787f2e2d" type="FloatInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.FloatInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="0" />
+                          </inputs>
+                          <outputs>
+                            <socket role="Pose" full_role="PlayAnimationNodePoseSocket" id="f032eb13-7c3e-455c-8635-0321b9f5e207" type="AnimationPoseOutputSocket" full_type="Genome.DataModel.AnimGraph.Sockets.AnimationPoseOutputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+                          </outputs>
+                        </node>
+                      </nodes>
+                      <links>
+                        <link id="57fbd325-390f-43bd-975f-7765113e56a9" type="AnimationPoseLink" full_type="Genome.DataModel.AnimGraph.Links.AnimationPoseLink, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" from_id="f032eb13-7c3e-455c-8635-0321b9f5e207" to_id="5f564e7e-56a6-4a4d-9073-6c6d8511ad1a" />
+                      </links>
+                    </graph>
+                  </graphs>
+                </node>
+                <node id="834a8995-5e55-4224-89a7-8ee0f52705d9" name="Idle" x="100" y="-300" ZIndex="4" width="140" height="41.63" type="State" full_type="Genome.DataModel.StateMachine.States.State, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" graph_id="646477a3-0747-4560-85f1-592bfe574a52">
+                  <inputs />
+                  <outputs />
+                  <socket role="Transition" full_role="TransitionSocket" id="7ab15171-eb7e-4c5d-8be5-5930158ebcb8" type="StateSocket" full_type="Genome.DataModel.StateMachine.Sockets.StateSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+                  <graphs>
+                    <graph id="646477a3-0747-4560-85f1-592bfe574a52" type="State">
+                      <nodes>
+                        <node id="b5f1236b-487b-41e0-818f-13f7b6123187" name="Final Animation Pose" x="0" y="0" ZIndex="1" width="210" height="176" type="FinalAnimationPoseNode" full_type="Genome.DataModel.AnimGraph.Nodes.FinalAnimationPoseNode, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+                          <inputs>
+                            <socket role="Result" full_role="FinalAnimationPoseNodeResultSocket" id="31d42117-a000-472e-94cf-e07d63720fd7" type="AnimationPoseInputSocket" full_type="Genome.DataModel.AnimGraph.Sockets.AnimationPoseInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+                          </inputs>
+                          <outputs />
+                        </node>
+                        <node id="c1efa06e-3e12-4642-bcf9-e29aa73333f6" name="Play idle_01" x="-480" y="60" ZIndex="1" width="212" height="132.28" type="PlayAnimationNode" full_type="Genome.DataModel.AnimGraph.Nodes.PlayAnimationNode, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+                          <inputs>
+                            <socket role="Sequence" full_role="PlayAnimationNodeSequenceSocket" id="26aa361e-76e5-4690-9d40-9fd8a2c97a5d" type="AnimationSequenceInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.AnimationSequenceInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="24e9252b-c3d6-4fc6-807e-c63853ede270" />
+                            <socket role="LoopAnimation" full_role="PlayAnimationNodeLoopAnimationSocket" id="e4a5588e-3d8c-4740-8a10-1cec439ba1c8" type="BooleanInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.BooleanInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="False" />
+                            <socket role="PlayRate" full_role="PlayAnimationNodePlayRateSocket" id="443c7bcd-95a9-4d5e-b55e-59f4ee769402" type="FloatInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.FloatInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="1" />
+                            <socket role="StartOffset" full_role="PlayAnimationNodeStartOffsetSocket" id="7a188a59-88a0-429e-ba0b-476346056580" type="FloatInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.FloatInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="0" />
+                          </inputs>
+                          <outputs>
+                            <socket role="Pose" full_role="PlayAnimationNodePoseSocket" id="02163472-eb66-459b-9585-9b9d17988dd0" type="AnimationPoseOutputSocket" full_type="Genome.DataModel.AnimGraph.Sockets.AnimationPoseOutputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+                          </outputs>
+                        </node>
+                      </nodes>
+                      <links>
+                        <link id="6d1c2225-7d20-406f-aedd-d06b1e3b4300" type="AnimationPoseLink" full_type="Genome.DataModel.AnimGraph.Links.AnimationPoseLink, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" from_id="02163472-eb66-459b-9585-9b9d17988dd0" to_id="31d42117-a000-472e-94cf-e07d63720fd7" />
+                      </links>
+                    </graph>
+                  </graphs>
+                </node>
+              </nodes>
+              <links>
+                <link id="098a1ac8-8b4f-449f-aed2-2792db707c80" type="UnconditionalTransition" full_type="Genome.DataModel.StateMachine.Transitions.UnconditionalTransition, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" from_id="9e2f6667-87e4-4a10-8868-a33ec7726f4a" to_id="47a8b49b-68ac-41be-a7de-4f60c66333ba" />
+                <link id="0de40356-6f3d-4f2f-acb4-478f88556d01" type="ConditionalTransition" full_type="Genome.DataModel.StateMachine.Transitions.ConditionalTransition, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" from_id="47a8b49b-68ac-41be-a7de-4f60c66333ba" to_id="7ab15171-eb7e-4c5d-8be5-5930158ebcb8" rule_id="cc810b38-3653-4b2a-b1bf-5eae8330ba00">
+                  <node id="cc810b38-3653-4b2a-b1bf-5eae8330ba00" name="Still to Idle" x="171.5" y="-145.6851" ZIndex="2" width="42" height="42" type="RuleState" full_type="Genome.DataModel.StateMachine.States.RuleState, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" graph_id="01c716c0-d3b0-4b8e-8f66-ebf304e116d9" blend_type="Linear" blend_duration="0.2">
+                    <inputs />
+                    <outputs />
+                    <graphs>
+                      <graph id="01c716c0-d3b0-4b8e-8f66-ebf304e116d9" type="ConditionRule">
+                        <nodes>
+                          <node id="0552490d-b915-40d3-8ade-ca8bb8cdc35b" name="BooleanResultNode" x="0" y="0" ZIndex="1" width="160" height="60" type="BooleanResultNode" full_type="Genome.DataModel.CommonGraph.Nodes.BooleanResultNode, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+                            <inputs>
+                              <socket role="Result" full_role="BooleanResultNodeResultSocket" id="517156a8-a573-4143-816a-e28256279038" type="BooleanInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.BooleanInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="False" />
+                            </inputs>
+                            <outputs />
+                          </node>
+                          <node id="67a11b8f-607e-466f-a162-d721dc90f309" name="play Idle" x="-400" y="0" ZIndex="1" width="130" height="33" type="GetBooleanVariableNode" full_type="Genome.DataModel.CommonGraph.Nodes.Variables.GetBooleanVariableNode, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" variable_id="1875a865-f760-457a-82b9-a97e4843e22b">
+                            <inputs />
+                            <outputs>
+                              <socket role="Result" full_role="GetBooleanVariableNodeResultSocket" id="a44653a9-9f86-408f-9c5c-5da197e99a59" type="BooleanOutputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.BooleanOutputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+                            </outputs>
+                          </node>
+                        </nodes>
+                        <links>
+                          <link id="31ead848-c42f-4d5e-aa9b-521833a492dd" type="BooleanLink" full_type="Genome.DataModel.CommonGraph.Links.BooleanLink, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" from_id="a44653a9-9f86-408f-9c5c-5da197e99a59" to_id="517156a8-a573-4143-816a-e28256279038" />
+                        </links>
+                      </graph>
+                    </graphs>
+                  </node>
+                </link>
+                <link id="b5d9adda-3377-410f-bb84-94ac674fbca5" type="ConditionalTransition" full_type="Genome.DataModel.StateMachine.Transitions.ConditionalTransition, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" from_id="7ab15171-eb7e-4c5d-8be5-5930158ebcb8" to_id="47a8b49b-68ac-41be-a7de-4f60c66333ba" rule_id="b86c69d4-821d-4214-8474-1ef9b8eb5489">
+                  <node id="b86c69d4-821d-4214-8474-1ef9b8eb5489" name="Idle to Still" x="95.5" y="-145.6851" ZIndex="3" width="42" height="42" type="RuleState" full_type="Genome.DataModel.StateMachine.States.RuleState, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" graph_id="b4b3554e-e4b5-45a0-8525-14b2203b0834" blend_type="Linear" blend_duration="0.2">
+                    <inputs />
+                    <outputs />
+                    <graphs>
+                      <graph id="b4b3554e-e4b5-45a0-8525-14b2203b0834" type="ConditionRule">
+                        <nodes>
+                          <node id="96549881-f2e6-49c1-8f05-40da4ba14d25" name="BooleanResultNode" x="0" y="0" ZIndex="0" width="160" height="60" type="BooleanResultNode" full_type="Genome.DataModel.CommonGraph.Nodes.BooleanResultNode, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+                            <inputs>
+                              <socket role="Result" full_role="BooleanResultNodeResultSocket" id="e32d9577-4e38-45c7-889e-11d2c539fb05" type="BooleanInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.BooleanInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="False" />
+                            </inputs>
+                            <outputs />
+                          </node>
+                          <node id="05095f89-67fa-4193-804b-33efa044dbcf" name="play Idle" x="-580" y="0" ZIndex="2" width="130" height="33" type="GetBooleanVariableNode" full_type="Genome.DataModel.CommonGraph.Nodes.Variables.GetBooleanVariableNode, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" variable_id="1875a865-f760-457a-82b9-a97e4843e22b">
+                            <inputs />
+                            <outputs>
+                              <socket role="Result" full_role="GetBooleanVariableNodeResultSocket" id="3fcfa6a5-d517-4f38-ba52-300d3809c889" type="BooleanOutputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.BooleanOutputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+                            </outputs>
+                          </node>
+                          <node id="57c7f58e-9a74-46ab-b231-c9ab4847e49f" name="NOT Boolean" x="-360" y="0" ZIndex="1" width="115" height="72.39" type="BooleanNotNode" full_type="Genome.DataModel.CommonGraph.Nodes.Math.Boolean.BooleanNotNode, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+                            <inputs>
+                              <socket role="Parameter" full_role="BooleanNotNodeParameterSocket" id="b3b14e95-4774-4316-ba93-88e3c5ed095a" type="BooleanInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.BooleanInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="False" />
+                            </inputs>
+                            <outputs>
+                              <socket role="Result" full_role="BooleanNotNodeResultSocket" id="f6ad4321-8acd-4386-a59f-4af49b4abb98" type="BooleanOutputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.BooleanOutputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+                            </outputs>
+                          </node>
+                        </nodes>
+                        <links>
+                          <link id="784851ef-2297-44c9-a1b4-e8b815a04838" type="BooleanLink" full_type="Genome.DataModel.CommonGraph.Links.BooleanLink, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" from_id="3fcfa6a5-d517-4f38-ba52-300d3809c889" to_id="b3b14e95-4774-4316-ba93-88e3c5ed095a" />
+                          <link id="f7ee8b03-e5bd-4b02-97fb-36ecb1487831" type="BooleanLink" full_type="Genome.DataModel.CommonGraph.Links.BooleanLink, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" from_id="f6ad4321-8acd-4386-a59f-4af49b4abb98" to_id="e32d9577-4e38-45c7-889e-11d2c539fb05" />
+                        </links>
+                      </graph>
+                    </graphs>
+                  </node>
+                </link>
+              </links>
+            </graph>
+          </graphs>
+        </node>
+      </nodes>
+      <links>
+        <link id="a542f453-6536-419f-b7b9-0ec6dec4e7ff" type="AnimationPoseLink" full_type="Genome.DataModel.AnimGraph.Links.AnimationPoseLink, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" from_id="9fa46145-5b29-4e64-b92c-260c36a3de44" to_id="7d1846ad-bd72-417d-9136-85f989cdf8d6" />
+      </links>
+    </graph>
+    <graph id="57da4297-fb94-4b1d-93b9-3b897c45f0aa" type="EventGraph">
+      <nodes>
+        <node id="3b66ceeb-9aad-4613-a8ab-3cfebd4c8258" name="Gameplay Event" x="-620" y="-140" ZIndex="17" width="188" height="55" type="GameplayEventNode" full_type="Genome.DataModel.EventGraph.Nodes.Events.GameplayEventNode, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" event_id="552351a4-01bf-4b68-89da-67323c2e371a">
+          <inputs />
+          <outputs>
+            <socket role="ExecOutput" full_role="ExecOutputSocket" id="5b172e99-716a-4719-b106-8c700458e971" type="ExecOutputSocket" full_type="Genome.DataModel.EventGraph.Sockets.ExecOutputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+          </outputs>
+        </node>
+        <node id="9afa8035-be8f-4052-8dec-d0125bec1f3b" name="Print String" x="40" y="-140" ZIndex="9" width="191.9167" height="139" type="PrintStringNode" full_type="Genome.DataModel.EventGraph.Nodes.PrintStringNode, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <inputs>
+            <socket role="ExecInput" full_role="ExecInputSocket" id="91d51a59-23d1-4502-9ad9-d789be438ac8" type="ExecInputSocket" full_type="Genome.DataModel.EventGraph.Sockets.ExecInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+            <socket role="StringToPrint" full_role="PrintStringNodeStringToPrintSocket" id="bad08da5-12f4-4fd3-9a0d-3e06228c3038" type="StringInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.StringInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="Still event !!!" />
+            <socket role="PrintToLog" full_role="PrintStringNodePrintToLogSocket" id="309b2d19-3331-436c-b7e8-ddbf7886b0f0" type="BooleanInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.BooleanInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="False" />
+            <socket role="Duration" full_role="PrintStringNodeDurationSocket" id="5ac5dd3a-f7b6-491b-ba91-c133550868ef" type="FloatInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.FloatInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="0" />
+          </inputs>
+          <outputs>
+            <socket role="ExecOutput" full_role="ExecOutputSocket" id="950663e4-cdca-4dd5-9590-07200642ca6b" type="ExecOutputSocket" full_type="Genome.DataModel.EventGraph.Sockets.ExecOutputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+          </outputs>
+        </node>
+        <node id="4f0c1a24-32e4-495c-b764-45f3d657fc1a" name="Gameplay Event" x="-620" y="60" ZIndex="16" width="188" height="55" type="GameplayEventNode" full_type="Genome.DataModel.EventGraph.Nodes.Events.GameplayEventNode, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" event_id="790b069a-0ec6-46a9-9e9f-0696f778e2aa">
+          <inputs />
+          <outputs>
+            <socket role="ExecOutput" full_role="ExecOutputSocket" id="4a2229ba-8cdf-421d-a335-47f1d04e12a4" type="ExecOutputSocket" full_type="Genome.DataModel.EventGraph.Sockets.ExecOutputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+          </outputs>
+        </node>
+        <node id="fec42989-42cc-4152-86fe-8a01708d3c2a" name="SET" x="-280" y="60" ZIndex="15" width="141.845" height="83" type="SetBooleanVariableNode" full_type="Genome.DataModel.EventGraph.Nodes.Variables.SetBooleanVariableNode, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" variable_id="1875a865-f760-457a-82b9-a97e4843e22b">
+          <inputs>
+            <socket role="ExecInput" full_role="ExecInputSocket" id="770889fa-cc3a-4d54-8352-f7b3fb9ab6a0" type="ExecInputSocket" full_type="Genome.DataModel.EventGraph.Sockets.ExecInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+            <socket role="Parameter" full_role="SetBooleanVariableNodeParameterSocket" id="e5a09bb8-af55-4ad5-b9e0-6247ee956ee4" type="BooleanInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.BooleanInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="True" />
+          </inputs>
+          <outputs>
+            <socket role="ExecOutput" full_role="ExecOutputSocket" id="53e38183-a241-4f2e-a47c-64b9cea62b05" type="ExecOutputSocket" full_type="Genome.DataModel.EventGraph.Sockets.ExecOutputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+            <socket role="Result" full_role="SetBooleanVariableNodeResultSocket" id="6bee53a1-86cb-4fe4-bec2-bf7f32b2b3b8" type="BooleanOutputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.BooleanOutputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+          </outputs>
+        </node>
+        <node id="40487352-358f-4e2c-aa92-ce5c6752f1fc" name="Print String" x="40" y="60" ZIndex="14" width="192.53" height="139" type="PrintStringNode" full_type="Genome.DataModel.EventGraph.Nodes.PrintStringNode, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <inputs>
+            <socket role="ExecInput" full_role="ExecInputSocket" id="c26dfa12-cfa5-4a1f-a8cf-5a93b30103c9" type="ExecInputSocket" full_type="Genome.DataModel.EventGraph.Sockets.ExecInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+            <socket role="StringToPrint" full_role="PrintStringNodeStringToPrintSocket" id="0f869b26-965c-468d-aaaa-df550076634e" type="StringInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.StringInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="Idle event !!!" />
+            <socket role="PrintToLog" full_role="PrintStringNodePrintToLogSocket" id="466868e3-3d06-4222-92d6-b3c67a57fd02" type="BooleanInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.BooleanInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="False" />
+            <socket role="Duration" full_role="PrintStringNodeDurationSocket" id="fc404a18-10e1-4e84-a5a4-e51692b19521" type="FloatInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.FloatInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="0" />
+          </inputs>
+          <outputs>
+            <socket role="ExecOutput" full_role="ExecOutputSocket" id="465af868-b79b-4d53-8eb5-102acde67258" type="ExecOutputSocket" full_type="Genome.DataModel.EventGraph.Sockets.ExecOutputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+          </outputs>
+        </node>
+        <node id="2badec1f-087e-4817-94b2-a16eaaa0ff77" name="Text Event" x="-620" y="240" ZIndex="0" width="130" height="55" type="TextEventNode" full_type="Genome.DataModel.EventGraph.Nodes.TextEventNode, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" TextEvent="blendout">
+          <inputs />
+          <outputs>
+            <socket role="ExecOutput" full_role="ExecOutputSocket" id="a2d538b1-f92c-4e41-888d-b4811f6d717d" type="ExecOutputSocket" full_type="Genome.DataModel.EventGraph.Sockets.ExecOutputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+          </outputs>
+        </node>
+        <node id="95374775-2d89-4b65-ab45-ece4229976f2" name="Branch" x="-280" y="240" ZIndex="2" width="143.3633" height="83" type="BranchNode" full_type="Genome.DataModel.EventGraph.Nodes.BranchNode, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <inputs>
+            <socket role="ExecInput" full_role="ExecInputSocket" id="5534fc00-bb94-4458-af88-4ffc3ec7cc06" type="ExecInputSocket" full_type="Genome.DataModel.EventGraph.Sockets.ExecInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+            <socket role="Condition" full_role="BranchNodeConditionSocket" id="697e9582-13eb-42f2-8bb0-331aa6218995" type="BooleanInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.BooleanInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="False" />
+          </inputs>
+          <outputs>
+            <socket role="ExecOutputTrue" full_role="ExecOutputTrueSocket" id="ad6c09fd-ab96-4cad-b6c3-644bbd959b5f" type="ExecOutputSocket" full_type="Genome.DataModel.EventGraph.Sockets.ExecOutputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+            <socket role="ExecOutputFalse" full_role="ExecOutputFalseSocket" id="d537433d-c291-4aca-92ae-cd5539cf8657" type="ExecOutputSocket" full_type="Genome.DataModel.EventGraph.Sockets.ExecOutputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+          </outputs>
+        </node>
+        <node id="912bc304-b354-4843-a8e5-996eb712aeb8" name="play Idle" x="-460" y="340" ZIndex="3" width="130" height="33" type="GetBooleanVariableNode" full_type="Genome.DataModel.CommonGraph.Nodes.Variables.GetBooleanVariableNode, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" variable_id="1875a865-f760-457a-82b9-a97e4843e22b">
+          <inputs />
+          <outputs>
+            <socket role="Result" full_role="GetBooleanVariableNodeResultSocket" id="63b4cef7-ba13-4320-b72f-8e6ca2fd8da6" type="BooleanOutputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.BooleanOutputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+          </outputs>
+        </node>
+        <node id="0c1c8b3e-3d1a-4db3-9228-54c1faa54b22" name="SET" x="0" y="240" ZIndex="4" width="141.845" height="83" type="SetBooleanVariableNode" full_type="Genome.DataModel.EventGraph.Nodes.Variables.SetBooleanVariableNode, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" variable_id="1875a865-f760-457a-82b9-a97e4843e22b">
+          <inputs>
+            <socket role="ExecInput" full_role="ExecInputSocket" id="f514c31f-c414-4b48-8238-edc2506f0d25" type="ExecInputSocket" full_type="Genome.DataModel.EventGraph.Sockets.ExecInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+            <socket role="Parameter" full_role="SetBooleanVariableNodeParameterSocket" id="7c31a827-a188-41ce-9020-8b08cc9e8bf4" type="BooleanInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.BooleanInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="False" />
+          </inputs>
+          <outputs>
+            <socket role="ExecOutput" full_role="ExecOutputSocket" id="0244916d-93da-4579-b8ec-c3f4846a5d8f" type="ExecOutputSocket" full_type="Genome.DataModel.EventGraph.Sockets.ExecOutputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+            <socket role="Result" full_role="SetBooleanVariableNodeResultSocket" id="1c5cd86f-b972-4994-8599-e3838d204d89" type="BooleanOutputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.BooleanOutputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+          </outputs>
+        </node>
+        <node id="c294e62b-6a2b-42d9-8c8b-1d4b53ac621e" name="Send Event" x="180" y="240" ZIndex="5" width="220" height="55" type="SendEventNode" full_type="Genome.DataModel.EventGraph.Nodes.Events.SendEventNode, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" event_id="9e234d58-6895-4dd2-84e6-39f27e4e60c3">
+          <inputs>
+            <socket role="ExecInput" full_role="ExecInputSocket" id="47d8b501-2bf6-4bbb-ab0e-c418b1cb6525" type="ExecInputSocket" full_type="Genome.DataModel.EventGraph.Sockets.ExecInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+          </inputs>
+          <outputs>
+            <socket role="ExecOutput" full_role="ExecOutputSocket" id="2dd179fb-b4e5-4a4b-bcbd-57d11e560f75" type="ExecOutputSocket" full_type="Genome.DataModel.EventGraph.Sockets.ExecOutputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+          </outputs>
+        </node>
+        <node id="8cabbd6e-edd7-4ce2-a970-43c41c3f87c7" name="Text Event" x="-620" y="500" ZIndex="6" width="130" height="55" type="TextEventNode" full_type="Genome.DataModel.EventGraph.Nodes.TextEventNode, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" TextEvent="idlestarted">
+          <inputs />
+          <outputs>
+            <socket role="ExecOutput" full_role="ExecOutputSocket" id="b8750b36-7c2c-426a-87d8-953ce70eb405" type="ExecOutputSocket" full_type="Genome.DataModel.EventGraph.Sockets.ExecOutputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+          </outputs>
+        </node>
+        <node id="250c1c22-d041-41bc-8213-d0b62d4b360a" name="Print String" x="460" y="500" ZIndex="8" width="373.86" height="139" type="PrintStringNode" full_type="Genome.DataModel.EventGraph.Nodes.PrintStringNode, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <inputs>
+            <socket role="ExecInput" full_role="ExecInputSocket" id="c4ae1d50-ec38-4251-bc88-b746c52dbcc0" type="ExecInputSocket" full_type="Genome.DataModel.EventGraph.Sockets.ExecInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+            <socket role="StringToPrint" full_role="PrintStringNodeStringToPrintSocket" id="c65926b0-cee7-4c90-b90e-5d7e3f09b95c" type="StringInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.StringInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="START TEXTKEY OF IDLE ANIMATION RECEIVED !!!" />
+            <socket role="PrintToLog" full_role="PrintStringNodePrintToLogSocket" id="1c2e5388-1393-49c8-a372-6fb1e02763ee" type="BooleanInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.BooleanInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="False" />
+            <socket role="Duration" full_role="PrintStringNodeDurationSocket" id="0d3f162e-73fe-4dca-9251-d392b5036ce4" type="FloatInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.FloatInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="0" />
+          </inputs>
+          <outputs>
+            <socket role="ExecOutput" full_role="ExecOutputSocket" id="34c5ab73-d5fb-4c34-975d-22ef11cfc0f3" type="ExecOutputSocket" full_type="Genome.DataModel.EventGraph.Sockets.ExecOutputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+          </outputs>
+        </node>
+        <node id="69c82892-f2fd-4a85-a799-2d9af05156c9" name="Print String" x="460" y="240" ZIndex="7" width="285.32" height="139" type="PrintStringNode" full_type="Genome.DataModel.EventGraph.Nodes.PrintStringNode, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <inputs>
+            <socket role="ExecInput" full_role="ExecInputSocket" id="89eaaf6e-b864-486e-a270-33f1de718598" type="ExecInputSocket" full_type="Genome.DataModel.EventGraph.Sockets.ExecInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+            <socket role="StringToPrint" full_role="PrintStringNodeStringToPrintSocket" id="f087e6d6-6876-4362-932e-9e28de6e8bab" type="StringInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.StringInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="send blendout event to game!!!" />
+            <socket role="PrintToLog" full_role="PrintStringNodePrintToLogSocket" id="bc7a36ec-9448-45c5-89f2-089b7baed182" type="BooleanInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.BooleanInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="False" />
+            <socket role="Duration" full_role="PrintStringNodeDurationSocket" id="afaabb60-d862-49ae-b44e-f7839ffdfca4" type="FloatInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.FloatInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="0" />
+          </inputs>
+          <outputs>
+            <socket role="ExecOutput" full_role="ExecOutputSocket" id="68a2373a-7e30-4536-bdf6-7a869292cd24" type="ExecOutputSocket" full_type="Genome.DataModel.EventGraph.Sockets.ExecOutputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+          </outputs>
+        </node>
+        <node id="a88a8556-c426-4211-a05d-c785eb23a62a" name="Update Event" x="-620" y="660" ZIndex="10" width="130" height="83" type="UpdateAnimationEventNode" full_type="Genome.DataModel.EventGraph.Nodes.UpdateAnimationEventNode, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <inputs />
+          <outputs>
+            <socket role="ExecOutput" full_role="ExecOutputSocket" id="6d6acb0c-226c-461d-a727-44b850321921" type="ExecOutputSocket" full_type="Genome.DataModel.EventGraph.Sockets.ExecOutputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+            <socket role="Duration" full_role="UpdateAnimationEventNodeDurationSocket" id="fbff1e74-2082-4afb-99ab-4c01a8685eaa" type="FloatOutputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.FloatOutputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+          </outputs>
+        </node>
+        <node id="6b53a145-cdc0-406b-9293-bf134337d35d" name="Print String" x="-60" y="660" ZIndex="11" width="315.42" height="195" type="PrintStringNode" full_type="Genome.DataModel.EventGraph.Nodes.PrintStringNode, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <inputs>
+            <socket role="ExecInput" full_role="ExecInputSocket" id="3fa9f841-0a2a-46bc-b117-6b54fb97dd01" type="ExecInputSocket" full_type="Genome.DataModel.EventGraph.Sockets.ExecInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+            <socket role="StringToPrint" full_role="PrintStringNodeStringToPrintSocket" id="1cd91589-1a71-4e55-84e2-9827b3bf9195" type="StringInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.StringInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="{0} {1}" />
+            <socket role="PrintToLog" full_role="PrintStringNodePrintToLogSocket" id="39ef2359-eb37-4c75-8fe3-e096e5ef5324" type="BooleanInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.BooleanInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="False" />
+            <socket role="Duration" full_role="PrintStringNodeDurationSocket" id="ae8108fb-93b4-4550-b53c-cf905270cdfb" type="FloatInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.FloatInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="0" />
+            <socket role="Param 0" full_role="PrintStringNodeParamSocket 0" id="fa589c06-3a1e-493f-8972-87a58d3a59f1" type="StringInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.StringInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="Current State of the idle variable : " />
+            <socket role="Param 1" full_role="PrintStringNodeParamSocket 1" id="a939b107-f8d3-46fb-a4d7-cabf9ce32d83" type="StringInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.StringInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="" />
+          </inputs>
+          <outputs>
+            <socket role="ExecOutput" full_role="ExecOutputSocket" id="536cc87a-42e8-4f77-a0fa-58bcc0c77be5" type="ExecOutputSocket" full_type="Genome.DataModel.EventGraph.Sockets.ExecOutputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+          </outputs>
+        </node>
+        <node id="5c5b4593-463f-4a8f-a9fe-3155faf5aeb2" name="play Idle" x="-420" y="860" ZIndex="12" width="130" height="33" type="GetBooleanVariableNode" full_type="Genome.DataModel.CommonGraph.Nodes.Variables.GetBooleanVariableNode, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" variable_id="1875a865-f760-457a-82b9-a97e4843e22b">
+          <inputs />
+          <outputs>
+            <socket role="Result" full_role="GetBooleanVariableNodeResultSocket" id="42655dd4-1105-44d8-b135-460fb58a9fc7" type="BooleanOutputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.BooleanOutputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+          </outputs>
+        </node>
+        <node id="89e6e4c4-9fab-4026-a55e-c7097b604913" name="ToString (Boolean)" x="-240" y="840" ZIndex="13" width="115" height="72.39" type="BooleanToStringNode" full_type="Genome.DataModel.CommonGraph.Nodes.Utilities.String.BooleanToStringNode, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <inputs>
+            <socket role="Parameter" full_role="BooleanToStringNodeParameterSocket" id="4321492c-4ccf-4acd-80f6-917c28752f1d" type="BooleanInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.BooleanInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="False" />
+          </inputs>
+          <outputs>
+            <socket role="Result" full_role="BooleanToStringNodeResultSocket" id="5221325a-a8a8-4874-bfdb-65e8553ae76e" type="StringOutputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.StringOutputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+          </outputs>
+        </node>
+      </nodes>
+      <links>
+        <link id="c487c9db-e887-4884-ba22-3a106838c3c2" type="ExecLink" full_type="Genome.DataModel.EventGraph.Links.ExecLink, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" from_id="5b172e99-716a-4719-b106-8c700458e971" to_id="91d51a59-23d1-4502-9ad9-d789be438ac8" />
+        <link id="a10af226-58f4-41d8-8827-6cb28c0b16e8" type="ExecLink" full_type="Genome.DataModel.EventGraph.Links.ExecLink, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" from_id="4a2229ba-8cdf-421d-a335-47f1d04e12a4" to_id="770889fa-cc3a-4d54-8352-f7b3fb9ab6a0" />
+        <link id="f8c3945e-aa15-4064-9535-36d3258a1cc9" type="ExecLink" full_type="Genome.DataModel.EventGraph.Links.ExecLink, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" from_id="53e38183-a241-4f2e-a47c-64b9cea62b05" to_id="c26dfa12-cfa5-4a1f-a8cf-5a93b30103c9" />
+        <link id="a395350f-37ab-4a05-8fbd-067966a2e0cb" type="ExecLink" full_type="Genome.DataModel.EventGraph.Links.ExecLink, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" from_id="a2d538b1-f92c-4e41-888d-b4811f6d717d" to_id="5534fc00-bb94-4458-af88-4ffc3ec7cc06" />
+        <link id="1834eb96-059b-4a01-8edc-4dc497f81df4" type="BooleanLink" full_type="Genome.DataModel.CommonGraph.Links.BooleanLink, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" from_id="63b4cef7-ba13-4320-b72f-8e6ca2fd8da6" to_id="697e9582-13eb-42f2-8bb0-331aa6218995" />
+        <link id="d1dae1e7-67fd-494c-a416-f9dd3bf7bbbf" type="ExecLink" full_type="Genome.DataModel.EventGraph.Links.ExecLink, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" from_id="ad6c09fd-ab96-4cad-b6c3-644bbd959b5f" to_id="f514c31f-c414-4b48-8238-edc2506f0d25" />
+        <link id="2280de85-8f69-4e16-b9a6-64e4db262981" type="ExecLink" full_type="Genome.DataModel.EventGraph.Links.ExecLink, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" from_id="0244916d-93da-4579-b8ec-c3f4846a5d8f" to_id="47d8b501-2bf6-4bbb-ab0e-c418b1cb6525" />
+        <link id="fc172568-e278-40aa-8dfa-92c0b14867f9" type="ExecLink" full_type="Genome.DataModel.EventGraph.Links.ExecLink, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" from_id="b8750b36-7c2c-426a-87d8-953ce70eb405" to_id="c4ae1d50-ec38-4251-bc88-b746c52dbcc0" />
+        <link id="ac7053fd-a7e6-4d3e-a945-0fec27bdf4f3" type="ExecLink" full_type="Genome.DataModel.EventGraph.Links.ExecLink, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" from_id="2dd179fb-b4e5-4a4b-bcbd-57d11e560f75" to_id="89eaaf6e-b864-486e-a270-33f1de718598" />
+        <link id="a84953c7-3008-4c56-b2d1-b6fefbaf391e" type="ExecLink" full_type="Genome.DataModel.EventGraph.Links.ExecLink, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" from_id="6d6acb0c-226c-461d-a727-44b850321921" to_id="3fa9f841-0a2a-46bc-b117-6b54fb97dd01" />
+        <link id="e18d2bad-09bc-4251-97c4-24ba84cd82cd" type="BooleanLink" full_type="Genome.DataModel.CommonGraph.Links.BooleanLink, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" from_id="42655dd4-1105-44d8-b135-460fb58a9fc7" to_id="4321492c-4ccf-4acd-80f6-917c28752f1d" />
+        <link id="a18b1fc7-687c-4ac9-96f2-c531ebea96f8" type="StringLink" full_type="Genome.DataModel.CommonGraph.Links.StringLink, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" from_id="5221325a-a8a8-4874-bfdb-65e8553ae76e" to_id="a939b107-f8d3-46fb-a4d7-cabf9ce32d83" />
+      </links>
+    </graph>
+  </graphs>
+</blueprint>

@@ -1,0 +1,821 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+// Time(_Day,_Hour,_TotalHours)
+// Current time (updated last time event NewHour was generated)
+//		_TotalHours = (_Day - 1)*24 + _Hour
+//		_TotalHours is suitable for calculating time differences
+//SetTime(ENGINE_GAME,10);  TODO
+DB_Time(1,10,10);
+// CurrentHalfHour and total HalfHours
+DB_HalfHour(20,20);
+
+//TODO: for now we use these timers to simulate time passing. This should come from the game engine if we're going to support different time of day settings
+DB_GameHour(300000);
+StartTimeOfDayTimerLoop();
+
+// Money dialog variables
+DB_FirstGoal_MoneyDialogVar(1,"GEN_CheckMagicPocketGold_6057ad05-9492-4630-9f0a-be548b134c54");
+DB_FirstGoal_MoneyDialogVar(2,"GEN_CheckMagicPocketGold_2_463b0f43-5410-412d-aba3-875cf81c38ca");
+DB_FirstGoal_MoneyDialogVar(3,"GEN_CheckMagicPocketGold_3_01f129ea-b4dc-44b6-8154-9a948f876a82");
+DB_FirstGoal_MoneyDialogVar(4,"GEN_CheckMagicPocketGold_4_5dac5eea-faeb-459c-b675-46c51519b784");
+DB_FirstGoal_MoneyDialogVar(5,"GEN_CheckMagicPocketGold_5_8860ed48-ba5f-4b7b-82bf-f1220f967d41");
+DB_FirstGoal_MoneyDialogVar(6,"GEN_CheckMagicPocketGold_6_ebf7de6b-4598-4feb-9c50-8083fc0fc59d");
+
+DB_FirstGoal_CheckPocketGoldSpeakerVar(1,"GEN_CheckPocketGold_SpeakerIndex_8504b4e0-886e-4912-9525-fbe559c5f8ff");
+DB_FirstGoal_CheckPocketGoldSpeakerVar(2,"GEN_CheckPocketGold_2_SpeakerIndex_a9c4d456-3ef5-491d-a1eb-49f09b91e8b4");
+DB_FirstGoal_CheckPocketGoldSpeakerVar(3,"GEN_CheckPocketGold_3_SpeakerIndex_d7fa1537-77d4-4d7d-a955-7ffda90e6207");
+DB_FirstGoal_CheckPocketGoldSpeakerVar(4,"GEN_CheckPocketGold_4_SpeakerIndex_5c499066-448b-4d0c-8dc9-d1553d04c6d4");
+DB_FirstGoal_CheckPocketGoldSpeakerVar(5,"GEN_CheckPocketGold_5_SpeakerIndex_65757687-b815-43fe-be9c-1cefe82efb60");
+
+//Has item template dialog variables
+DB_FirstGoal_HasItemTemplate_TemplateVar(1,"GEN_CheckHasItemTemplate_Template_ae6d2014-ca40-414b-a222-84b87efb1f05");
+DB_FirstGoal_HasItemTemplate_TemplateVar(2,"GEN_CheckHasItemTemplate_Template_2_1c16723d-50a0-4917-a198-0970edb93555");
+DB_FirstGoal_HasItemTemplate_TemplateVar(3,"GEN_CheckHasItemTemplate_Template_3_3965b187-cbef-40cd-9d7c-37bcb37ea2cd");
+DB_FirstGoal_HasItemTemplate_TemplateVar(4,"GEN_CheckHasItemTemplate_Template_4_4343086d-0af4-4509-8af7-efb6ae4ca057");
+DB_FirstGoal_HasItemTemplate_TemplateVar(5,"GEN_CheckHasItemTemplate_Template_5_069bdd27-9c44-4f21-b062-fcf75a541407");
+
+DB_FirstGoal_HasItemTemplate_SpeakerVar(1,"GEN_CheckHasItemTemplate_Speaker_a41274ae-7edf-4f3d-a137-dd45978c6224");
+DB_FirstGoal_HasItemTemplate_SpeakerVar(2,"GEN_CheckHasItemTemplate_Speaker_2_2674a9aa-1c71-42c3-977e-ffee67be69c6");
+DB_FirstGoal_HasItemTemplate_SpeakerVar(3,"GEN_CheckHasItemTemplate_Speaker_3_7f89238b-be41-4d7a-a9a8-6dc74a2ef8be");
+DB_FirstGoal_HasItemTemplate_SpeakerVar(4,"GEN_CheckHasItemTemplate_Speaker_4_33065191-7bc1-40dc-bd8c-3b897abb591e");
+DB_FirstGoal_HasItemTemplate_SpeakerVar(5,"GEN_CheckHasItemTemplate_Speaker_5_4fa046a9-a305-4b89-8383-ff6173a8b774");
+
+DB_FirstGoal_HasItemTemplate_AmountVar(1,"GEN_CheckHasItemTemplate_Amount_573b8076-ac9f-4c43-9161-f6eb76a90781");
+DB_FirstGoal_HasItemTemplate_AmountVar(2,"GEN_CheckHasItemTemplate_Amount_2_0663d6aa-c918-4b65-85a7-bd8e10247734");
+DB_FirstGoal_HasItemTemplate_AmountVar(3,"GEN_CheckHasItemTemplate_Amount_3_3837a5d2-c5d1-4200-bb5c-d7b8ad45f53a");
+DB_FirstGoal_HasItemTemplate_AmountVar(4,"GEN_CheckHasItemTemplate_Amount_4_32f62ba7-e482-4651-8927-636de5701edc");
+DB_FirstGoal_HasItemTemplate_AmountVar(5,"GEN_CheckHasItemTemplate_Amount_5_51db6483-c37d-4e38-b423-ebeb975571ac");
+
+// Keeping track of seen dead NPCs. Sets party flag
+// DB_SeenDeadNPCPartyFlag((CHARACTERGUID)_NPC,(STRING)_PartyFlag);
+KBSECTION
+//REGION Game Mode handling
+PROC
+Proc_GameModeStarted((STRING)_Mode,(INTEGER)_)
+THEN
+ProcSetCurrentGameMode(_Mode);
+
+PROC
+ProcSetCurrentGameMode((STRING)_Mode)
+AND
+DB_CurrentGameMode(_Old)
+THEN
+NOT DB_CurrentGameMode(_Old);
+
+PROC
+ProcSetCurrentGameMode((STRING)_Mode)
+THEN
+DB_CurrentGameMode(_Mode);
+
+//END_REGION
+
+//REGION Dialog book keeping 
+IF
+DialogRequestFailed(_Dialog,_Inst)
+THEN
+DB_MarkedForDelete(_Inst);
+ProcGetInvolvedPlayers(_Inst);
+ProcGetInvolvedNPCs(_Inst);
+ProcSaveNumActors(_Inst);
+ProcClearDialogFlagsForPlayers(_Inst);
+ProcClearDialogFlagsForNPCs(_Inst);
+DB_DialogRequestFailed(_Dialog,_Inst);
+
+IF
+AutomatedDialogRequestFailed(_Dialog,_Inst)
+THEN
+ProcGetInvolvedPlayers(_Inst);
+ProcGetInvolvedNPCs(_Inst);
+ProcSaveNumActors(_Inst);
+DB_AutomatedDialog(_Inst);
+DB_DialogRequestFailed(_Dialog,_Inst);
+
+IF
+DialogStarted(_Dialog,_Inst)
+THEN
+ProcGetInvolvedPlayers(_Inst);
+ProcGetInvolvedNPCs(_Inst);
+ProcSaveNumActors(_Inst);
+ProcSetDialogGoldCheckAmount(_Dialog);
+ProcSetDialogItemTemplateCheckAmount(_Dialog);
+DB_DialogName(_Dialog,_Inst);
+
+IF
+DialogActorJoined(_Dialog,_Inst,_Actor)
+THEN
+ProcAddActorToDialogList(_Inst,_Actor);
+ProcSetStoryNPC(_Inst,_Actor);
+ProcSetNumberOfInvolvedActors(_Inst);
+
+IF
+VoiceBarkStarted(_,_Inst)
+THEN
+DB_AutomatedDialogIsVB(_Inst);
+
+IF
+AutomatedDialogStarted(_Dialog,_Inst)
+THEN
+ProcGetInvolvedPlayers(_Inst);
+ProcGetInvolvedNPCs(_Inst);
+ProcSaveNumActors(_Inst);
+DB_AutomatedDialog(_Inst);
+DB_DialogName(_Dialog,_Inst);
+
+PROC
+ProcSetStoryNPC((INTEGER)_Inst,(GUIDSTRING)_Actor)
+AND
+NOT DB_AutomatedDialog(_Inst)
+AND
+ObjectIsCharacter((CHARACTERGUID)_Actor,1)
+AND
+NOT DB_CombatCharacters(_Actor,_)
+THEN
+CharacterMakeStoryNpc(_Actor,1);
+
+PROC
+ProcSetStoryNPC((INTEGER)_Inst,(GUIDSTRING)_Actor)
+AND
+NOT DB_AutomatedDialog(_Inst)
+THEN
+ProcItemSetInvulnerableForDialog(_Actor);
+
+//add these in the back so we don't disrupt the original flow
+PROC
+ProcAddActorToDialogList((INTEGER)_Inst,(GUIDSTRING)_Actor)
+AND
+DB_IsPlayer((CHARACTERGUID)_Actor)
+AND
+DB_DialogNumPlayers(_Inst,_NumPlayers)
+AND
+IntegerSum(_NumPlayers,1,_NewSlot)
+THEN
+DB_DialogPlayers(_Inst,(GUIDSTRING)_Actor,_NewSlot);
+
+PROC
+ProcAddActorToDialogList((INTEGER)_Inst,(GUIDSTRING)_Actor)
+AND
+NOT DB_IsPlayer((CHARACTERGUID)_Actor)
+AND
+DB_DialogNumNPCs(_Inst,_NumNPCs)
+AND
+IntegerSum(_NumNPCs,1,_NewSlot)
+THEN
+DB_DialogNPCs(_Inst,(GUIDSTRING)_Actor,_NewSlot);
+
+
+PROC
+ProcSetNumberOfInvolvedActors((INTEGER)_Inst)
+AND
+DB_DialogNumPlayers(_Inst,_NumPlayers)
+AND
+DB_DialogNumNPCs(_Inst,_NumNPCs)
+THEN
+NOT DB_DialogNumPlayers(_Inst,_NumPlayers);
+NOT DB_DialogNumNPCs(_Inst,_NumNPCs);
+ProcSaveNumActors(_Inst);
+
+PROC
+ProcSaveNumActors((INTEGER)_Inst)
+AND
+DialogGetNumberOfInvolvedNPCs(_Inst,_NumNPCs)
+AND
+DialogGetNumberOfInvolvedPlayers(_Inst,_NumPlayers)
+THEN
+DB_DialogNumPlayers(_Inst,_NumPlayers);
+DB_DialogNumNPCs(_Inst,_NumNPCs);
+
+PROC
+ProcGetInvolvedNPCs((INTEGER)_Inst)
+THEN
+ProcGetInvolveNPC(_Inst,1);
+
+PROC
+ProcGetInvolveNPC((INTEGER)_Inst,(INTEGER)_Index)
+AND
+DialogGetInvolvedNPC(_Inst,_Index,_NPC)
+AND
+IntegerSum(_Index,1,_New)
+THEN
+DB_DialogNPCs(_Inst,_NPC,_Index);
+ProcGetInvolveNPC(_Inst,_New);
+
+PROC
+ProcGetInvolvedPlayers((INTEGER)_Inst)
+THEN
+ProcGetInvolvePlayer(_Inst,1);
+
+PROC
+ProcGetInvolvePlayer((INTEGER)_Inst,(INTEGER)_Index)
+AND
+DialogGetInvolvedPlayer(_Inst,_Index,_Player)
+AND
+IntegerSum(_Index,1,_New)
+THEN
+DB_DialogPlayers(_Inst,_Player,_Index);
+ProcGetInvolvePlayer(_Inst,_New);
+
+PROC
+ProcSetDialogGoldCheckAmount((STRING)_Dialog)
+AND
+DB_DialogMoneyTransfer((INTEGER)_Index,(STRING)_Dialog,(INTEGER)_Amount,(INTEGER)_CheckSpeakerIndex,(INTEGER)_)
+AND
+DB_FirstGoal_MoneyDialogVar(_Index,_MoneyVarName)
+AND
+DB_FirstGoal_CheckPocketGoldSpeakerVar(_Index,_SpeakerVarName)
+THEN
+DialogSetVariableInt(_Dialog,_MoneyVarName,_Amount);
+DialogSetVariableInt(_Dialog,_SpeakerVarName,_CheckSpeakerIndex);
+
+PROC
+ProcSetDialogItemTemplateCheckAmount((STRING)_Dialog)
+AND
+DB_HasItemTemplateScriptFlag((INTEGER)_TemplateVarIndex, (STRING)_Dialog, (STRING)_ItemTemplate, (INTEGER)_SpeakerIndex, (INTEGER)_Amount)
+AND
+DB_FirstGoal_HasItemTemplate_TemplateVar(_TemplateVarIndex, _TemplateVarName)
+AND
+DB_FirstGoal_HasItemTemplate_SpeakerVar(_TemplateVarIndex, _SpeakerVarName)
+AND
+DB_FirstGoal_HasItemTemplate_AmountVar(_TemplateVarIndex, _AmountVarName)
+THEN
+DialogSetVariableString(_Dialog, _TemplateVarName, _ItemTemplate);
+DialogSetVariableInt(_Dialog, _SpeakerVarName, _SpeakerIndex);
+DialogSetVariableInt(_Dialog, _AmountVarName, _Amount);
+//END_REGION
+
+//REGION Player NPC seeing
+
+PROC
+ProcCheckIfOtherPlayersCanSeeNPC((CHARACTERGUID)_,(CHARACTERGUID)_)
+AND
+DB_OtherPlayersSee(_Npc)
+THEN
+NOT DB_OtherPlayersSee(_Npc);
+
+PROC
+ProcCheckIfOtherPlayersCanSeeNPC((CHARACTERGUID)_Player,(CHARACTERGUID)_Npc)
+AND
+_Other.DB_IsPlayer()
+AND
+_Other!=_Player 
+AND
+DB_Sees(_OtherPlayer,_Npc)
+THEN
+DB_OtherPlayersSee(_Npc);
+
+
+//END_REGION
+
+//REGION Player trigger checking
+
+QRY
+QryCheckOtherPlayersInTrigger((CHARACTERGUID)_Player,(TRIGGERGUID)_CheckTrigger)
+AND
+_Other.DB_IsPlayer()
+AND
+_Other!=_Player 
+AND
+DB_InRegion(_Other, _CheckTrigger)
+THEN
+DB_NOOP(1);
+
+//END_REGION
+
+//REGION Player triggers
+PROC
+ProcTriggerRegisterForPlayers((TRIGGERGUID)_Trig)
+AND
+GetRegion(_Trig,_Level)
+THEN
+DB_PlayerTriggers(_Level,_Trig);
+ProcDoTriggerRegisterForPlayers(_Level,_Trig);
+
+PROC
+ProcDoTriggerRegisterForPlayers((STRING)_Level,(TRIGGERGUID)_Trig)
+AND
+ObjectExists(_Trig,0)
+THEN
+DB_PlayerTriggerToRegister(_Level,_Trig);
+
+PROC
+ProcDoTriggerRegisterForPlayers((STRING)_Level,(TRIGGERGUID)_Trig)
+AND
+NOT DB_PlayerTriggerToRegister(_Level,_Trig)
+THEN
+TriggerRegisterForPlayers(_Trig);
+
+PROC
+ProcTriggerUnregisterForPlayers((TRIGGERGUID)_Trig)
+AND
+DB_PlayerTriggers(_Level,_Trig)
+AND
+ObjectExists(_Trig,0)
+THEN
+DB_PlayerTriggerToUnregister(_Level,_Trig);
+
+PROC
+ProcTriggerUnregisterForPlayers((TRIGGERGUID)_Trig)
+AND
+DB_PlayerTriggers(_Level,_Trig)
+AND
+NOT DB_PlayerTriggerToUnregister(_Level,_Trig)
+THEN
+TriggerUnregisterForPlayers(_Trig);
+
+PROC
+ProcTriggerUnregisterForPlayers((TRIGGERGUID)_Trig)
+AND
+DB_PlayerTriggers(_Level,_Trig)
+THEN
+NOT DB_PlayerTriggers(_Level,_Trig);
+
+PROC
+ProcRegisterPlayerTriggers((CHARACTERGUID)_Char)
+AND
+DB_PlayerTriggers(_Level,_Trig)
+AND
+ObjectExists(_Trig,0)
+THEN
+DB_PlayerTriggerToRegisterForCharacter(_Char,_Level,_Trig);
+
+PROC
+ProcRegisterPlayerTriggers((CHARACTERGUID)_Char)
+AND
+DB_PlayerTriggers(_Level,_Trig)
+AND
+NOT DB_PlayerTriggerToRegisterForCharacter(_Char,_Level,_Trig)
+THEN
+TriggerRegisterForCharacter(_Trig,_Char);
+
+PROC
+ProcUnRegisterPlayerTriggers((CHARACTERGUID)_Char)
+AND
+DB_PlayerTriggers(_Level,_Trig)
+AND
+ObjectExists(_Trig,0)
+THEN
+DB_PlayerTriggerToUnregisterForCharacter(_Char,_Level,_Trig);
+
+PROC
+ProcUnRegisterPlayerTriggers((CHARACTERGUID)_Char)
+AND
+DB_PlayerTriggers(_Level,_Trig)
+AND
+NOT DB_PlayerTriggerToUnregisterForCharacter(_Char,_Level,_Trig)
+THEN
+TriggerUnregisterForCharacter(_Trig,_Char);
+
+IF
+DB_PlayerTriggerToUnregisterForCharacter(_Char,_Level,_Trig)
+THEN
+NOT DB_PlayerTriggerToRegisterForCharacter(_Char,_Level,_Trig);
+
+IF
+DB_PlayerTriggerToRegisterForCharacter(_Char,_Level,_Trig)
+THEN
+NOT DB_PlayerTriggerToUnregisterForCharacter(_Char,_Level,_Trig);
+
+IF
+DB_PlayerTriggerToUnregister(_Level,_Trig)
+THEN
+NOT DB_PlayerTriggerToRegister(_Level,_Trig);
+
+IF
+DB_PlayerTriggerToRegister(_Level,_Trig)
+THEN
+NOT DB_PlayerTriggerToUnregister(_Level,_Trig);
+
+IF
+RegionStarted(_Level)
+THEN
+ProcRegisterTriggersForRegion(_Level);
+ProcUnregisterTriggersForRegion(_Level);
+ProcRegisterTriggersForCharacters(_Level);
+ProcUnregisterTriggersForCharacters(_Level);
+
+PROC
+ProcRegisterTriggersForRegion((STRING)_Level)
+AND
+DB_PlayerTriggerToRegister(_Level,_Trig)
+THEN
+TriggerRegisterForPlayers(_Trig);
+NOT DB_PlayerTriggerToRegister(_Level,_Trig);
+
+PROC
+ProcUnregisterTriggersForRegion((STRING)_Level)
+AND
+DB_PlayerTriggerToUnregister(_Level,_Trig)
+THEN
+TriggerUnregisterForPlayers(_Trig);
+NOT DB_PlayerTriggerToUnregister(_Level,_Trig);
+
+PROC
+ProcRegisterTriggersForCharacters((STRING)_Level)
+AND
+DB_PlayerTriggerToRegisterForCharacter(_Char,_Level,_Trig)
+THEN
+TriggerRegisterForCharacter(_Trig,_Char);
+NOT DB_PlayerTriggerToRegisterForCharacter(_Char,_Level,_Trig);
+
+PROC
+ProcUnregisterTriggersForCharacters((STRING)_Level)
+AND
+DB_PlayerTriggerToUnregisterForCharacter(_Char,_Level,_Trig)
+THEN
+TriggerUnregisterForCharacter(_Trig,_Char);
+NOT DB_PlayerTriggerToUnregisterForCharacter(_Char,_Level,_Trig);
+
+PROC
+ProcSetupGenericTimers((CHARACTERGUID)_Char)
+AND
+GetUUID(_Char,_UUID)
+AND
+StringConcatenate(_UUID,"_genTim",_Timer)
+THEN
+DB_GenericDialogTimers(_Char,_Timer);
+
+PROC
+ProcRemoveGenericTimer((CHARACTERGUID)_Char)
+AND
+DB_GenericDialogTimers(_Char,_Timer)
+THEN
+NOT DB_GenericDialogTimers(_Char,_Timer);
+//END_REGION
+
+// Since storyeditor orders goals alphabetically, this is the only way to make sure this goal comes first in story.div
+// This is important because Osiris uses rule order to execute alternatives.
+
+///////////////////////////////////////////////////////////////////////
+// buffer time
+
+PROC
+StartTimeOfDayTimerLoop()
+AND
+DB_GameHour(_Msec)
+THEN
+TimerLaunch("TimeOfDay",_Msec);
+
+IF
+TimerFinished("TimeOfDay")
+AND
+DB_GameHour(_Msec)
+AND
+DB_Time(_,_Hour,_)
+AND
+IntegerSum(_Hour,1,_NewHour)
+AND
+IntegerModulo(_NewHour,24,_Mod)
+THEN
+TimerLaunch("TimeOfDay",_Msec);
+NewHour(_Mod);
+
+PROC
+NewHour(0) 
+AND		// Day shifts to tomorrow
+DB_Time((INTEGER)_Day,(INTEGER)_,(INTEGER)_) 
+AND
+IntegerSum(_Day,1,_DayP1)
+THEN
+UpdateTime(_DayP1,0);
+
+PROC
+NewHour((INTEGER)_Hour) 
+AND
+_Hour != 0
+AND							// Day stays today
+DB_Time(_Day,_,_)
+THEN
+UpdateTime(_Day,_Hour);
+
+// Asserts Time(_Day,_Hour,...) with ... = the corresponding total hours = 24*(_Day - 1) + _Hour
+PROC
+UpdateTime((INTEGER)_Day,(INTEGER)_Hour) 
+AND
+DB_Time(_D,_H,_TH) 
+AND
+// calc new total hours:
+IntegerSubtract(_Day,1,_DM1) 
+AND
+IntegerProduct(_DM1,24,_T1) 
+AND
+IntegerSum(_T1,_Hour,_NewTH)
+THEN
+NOT DB_Time(_D,_H,_TH);
+DB_Time(_Day,_Hour,_NewTH);
+
+//TODO: commented stuff
+/*
+//
+IF		NewHalfHour(ENGINE_GAME,0)
+THEN	SetNewHalfHour(24);
+IF		NewHalfHour(ENGINE_GAME,_HH) AND _HH != 0
+THEN	SetNewHalfHour(_HH);
+
+PROC	SetNewHalfHour((INTEGER)_HH) AND
+	HalfHour((INTEGER)_CurrentHH,(INTEGER)_TotalHH) AND
+	IntegerSubtract(FUNCTION_Math,_HH,_CurrentHH,_Delta) AND
+	// Normally, Delta == 1
+	IntegerSum(FUNCTION_Math,_CurrentHH,_Delta,_CurrentHHPDelta) AND
+	IntegerSum(FUNCTION_Math,_TotalHH,_Delta,_TotalHHPDelta)
+THEN	NOT HalfHour(_CurrentHH,_TotalHH);
+	HalfHour(_CurrentHHPDelta,_TotalHHPDelta);
+
+
+///////////////////////////////////////////////////////////////////////
+// Buffer player invisibility
+IF		PlayerTurnsInvisible(NPC_Hero,1)
+THEN	PlayerIsInvisible(1);
+
+IF		PlayerTurnsInvisible(NPC_Hero,0)
+THEN	NOT PlayerIsInvisible(1);
+*/ 
+///////////////////////////////////////////////////////////////////////
+// Buffer seeing events
+// Note: "Sees" is asserted as soon as the "NpcSees" is generated. So you can use
+// "Sees" as event as well. Major difference: NpcSees ignores player invisibility.
+
+// Buffer effects of player movement:
+// (NpcSees actually means: "player starts seeing", NpcDoesNotSee means "players ends seeing")
+IF		
+CharacterSawCharacter(_Player,_Npc)
+AND
+_Player.DB_IsPlayer()
+THEN
+DB_Sees(_Player, _Npc);
+
+IF
+DB_Sees(_Player,_Npc)
+AND
+DB_SeenAliveNPCPartyFlag((CHARACTERGUID)_NPC,(STRING)_PartyFlag)
+AND
+DB_IsPlayer(_Player)
+AND
+NOT DB_Dead(_NPC)
+THEN
+PartySetFlag(_Player,_PartyFlag);
+
+//DB_Dead NPCs are blind
+IF
+CharacterDying(_Npc)
+AND
+DB_Sees(_Npc,_Player)
+THEN
+NOT DB_Sees(_Npc,_Player);
+
+IF		
+CharacterLostSightOfCharacter(_Player,_Npc)
+AND
+_Player.DB_IsPlayer()
+THEN	
+NOT DB_Sees(_Player, _Npc);
+NOT DB_Sees(_Npc, _Player);
+
+// Bring player invisibility into account (neglect for story npcs):
+IF		
+DB_Sees(_Npc, _Player) 
+AND
+_Player.DB_IsPlayer()
+AND 
+DB_PlayerIsInvisible(_Player,1) 
+AND 
+NOT DB_IsStoryNpc(_Npc)
+THEN
+NOT DB_Sees(_Npc, _Player);
+
+IF		
+DB_Sees(_Player, _Npc)
+AND
+_Player.DB_IsPlayer()
+AND 
+NOT DB_PlayerIsInvisible(_Player,1)
+THEN	
+DB_Sees(_Npc, _Player);
+
+IF		
+DB_Sees(_Player, _Npc)
+AND
+_Player.DB_IsPlayer()
+AND 
+DB_IsStoryNpc(_Npc)
+THEN
+DB_Sees(_Npc, _Player);
+
+/*
+///////////////////////////////////////////////////////////////////////
+// Buffer dialog distance (analogous to seeing events)
+
+// Buffer effects of player movement:
+IF		NpcEntersDialogDistance(NPC_Hero, _Npc)
+THEN	InDialogDistance(NPC_Hero, _Npc);
+
+IF		NpcLeavesDialogDistance(NPC_Hero, _Npc)
+THEN	NOT InDialogDistance(NPC_Hero, _Npc);
+	NOT InDialogDistance(_Npc, NPC_Hero);
+
+// Bring player invisibility into account (neglect for story npcs):
+IF		InDialogDistance(_Npc, NPC_Hero) AND PlayerIsInvisible(1) AND NOT DB_IsStoryNpc(_Npc)
+THEN	NOT InDialogDistance(_Npc, NPC_Hero);
+
+IF		InDialogDistance(NPC_Hero, _Npc) AND NOT PlayerIsInvisible(1)
+THEN	InDialogDistance(_Npc, NPC_Hero);
+
+IF		InDialogDistance(NPC_Hero, _Npc) AND DB_IsStoryNpc(_Npc)
+THEN	InDialogDistance(_Npc, NPC_Hero);
+*/
+
+///////////////////////////////////////////////////////////////////////
+// Buffer region events
+IF	
+CharacterEnteredTrigger(_Npc,_Region)
+THEN
+DB_InRegion(_Npc, _Region);
+
+IF
+CharacterLeftTrigger(_Npc,_Region)
+THEN
+NOT DB_InRegion(_Npc, _Region);
+DB_WasInRegion(_Npc,_Region);
+
+///////////////////////////////////////////////////////////////////////
+// Buffer killed
+IF
+CharacterDying(_Npc)
+THEN
+DB_Dead(_Npc);
+
+IF
+CharacterDied(_Npc)
+AND
+NOT DB_Dead(_Npc)
+THEN
+DB_Dead(_Npc);
+
+IF
+CharacterResurrected(_Npc)
+THEN
+NOT DB_Dead(_Npc);
+
+//TODO: comments
+/*
+// Engine does not generate NpcDoesNotSee for dead npcs anymore, so we have to clean up ourself:
+IF		NpcKilled(_Npc) AND Sees(_Npc,_OtherNpc)
+THEN	NOT Sees(_Npc,_OtherNpc);
+IF		NpcKilled(_Npc) AND Sees(_OtherNpc,_Npc)
+THEN	NOT Sees(_OtherNpc,_Npc);
+// Cleanup InDialogDistance
+IF		NpcKilled(_Npc) AND InDialogDistance(_Npc,_OtherNpc)
+THEN	NOT InDialogDistance(_Npc,_OtherNpc);
+IF		NpcKilled(_Npc) AND InDialogDistance(_OtherNpc,_Npc)
+THEN	NOT InDialogDistance(_OtherNpc,_Npc);
+*/
+
+/*			///This Breaks a lot of things especially Arrest in Generics
+IF
+CharacterDied(_Npc)
+AND
+DB_InRegion(_Npc,_Region)
+THEN
+NOT DB_InRegion(_Npc,_Region);
+*/
+
+//TODO: comments
+/*
+IF		NpcResurrected((NPC)_Npc)
+THEN	NOT DB_Dead(_Npc);
+
+IF		NpcKilledBy(_Npc,NPC_Hero)
+THEN	HeroKilled(_Npc);
+*/
+///////////////////////////////////////////////////////////////////////
+// Cleanup DB_InRegion of npc (not the hero) if they are killed
+// test for _Npc != NPC_Hero explicitely added because debug cheat key "F1" does not
+// resurrect NPC_Hero, hence he remains "dead" although he can play on, enter regions, etc...
+IF
+DB_Dead(_Npc) 
+AND
+NOT _Npc.DB_IsPlayer()
+AND 
+DB_InRegion(_Npc,_Region)
+THEN
+NOT DB_InRegion(_Npc,_Region);
+
+IF
+DB_Dead(_Npc) 
+AND
+DB_DeadEvent(_Npc,(STRING)_Event)
+AND
+GlobalGetFlag(_Event,0)
+THEN
+GlobalSetFlag(_Event);
+
+IF
+RegionStarted((STRING)_NewRegion) 
+THEN
+DB_CurrentLevel(_NewRegion);
+
+IF
+RegionEnded((STRING)_Region)
+THEN
+NOT DB_CurrentLevel(_Region);
+
+QRY
+QRY_AnyRegionActive()
+AND
+DB_CurrentLevel(_)
+THEN
+DB_NOOP(1);
+
+//REGION Keeping track of seen dead NPCs
+IF
+DB_Dead(_NPC)
+AND
+DB_Sees(_Player,_NPC)
+AND
+DB_SeenDeadNPCPartyFlag((CHARACTERGUID)_NPC,(STRING)_PartyFlag)
+AND
+DB_IsPlayer(_Player)
+THEN
+PartySetFlag(_Player,_PartyFlag);
+
+IF
+CharacterDying(_NPC)
+AND
+DB_SeenDeadNPCPartyFlag(_NPC,_PartyFlag)
+AND
+DB_CombatCharacters(_NPC, _ID)
+AND
+DB_IsPlayer(_Player)
+AND
+DB_CombatCharacters(_Player, _ID)
+THEN
+PartySetFlag(_Player,_PartyFlag);
+
+//END_REGION
+
+
+//REGION OneshotTriggers
+IF
+DB_OneShotPlayerTrigger(_Trigger)
+THEN
+ProcTriggerRegisterForPlayers(_Trigger);
+
+IF
+DB_OneShotPlayerOnlyTrigger(_Trigger)
+THEN
+TriggerRegisterForPlayers(_Trigger);
+
+IF
+CharacterEnteredTrigger(_Player,_Trigger)
+AND
+DB_OneShotPlayerOnlyTrigger(_Trigger)
+THEN
+TriggerUnregisterForPlayers(_Trigger);
+NOT DB_OneShotPlayerOnlyTrigger(_Trigger);
+ProcOneShotTriggerEntered(_Player,_Trigger);
+
+PROC
+RemoveOneShotTrigger((TRIGGERGUID)_Trigger)
+AND
+DB_OneShotPlayerTrigger(_Trigger)
+THEN
+ProcTriggerUnregisterForPlayers(_Trigger);
+NOT DB_OneShotPlayerTrigger(_Trigger);
+
+IF
+CharacterEnteredTrigger(_Player,_Trigger)
+AND
+DB_OneShotPlayerTrigger(_Trigger)
+AND
+_Player.DB_IsPlayer()
+THEN
+RemoveOneShotTrigger(_Trigger);
+ProcOneShotTriggerEntered(_Player,_Trigger);
+
+PROC
+ProcOneShotTriggerEntered((CHARACTERGUID)_Player,(TRIGGERGUID)_Trigger)
+THEN
+DB_NOOP(1);
+//END_REGION
+
+//REGION _Global_CharacterAnimations
+// Flush player character animations that may be ongoing at the end of a dialog
+IF
+DialogEnded(_,_Dialog)
+AND
+DB_GLO_CharacterAnimationForDialog(_Character,_Dialog)
+AND
+DB_IsPlayer(_Character)
+THEN
+CharacterFlushQueue(_Character);
+
+IF
+DialogEnded(_,_Dialog)
+AND
+DB_GLO_CharacterAnimationForDialog(_Character,_Dialog)
+THEN
+// The animation may be purged by other code and hence never finish -> this DB would never be unset
+NOT DB_GLO_CharacterAnimationForDialog(_Character,_Dialog);
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION

@@ -1,0 +1,772 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+DB_EG_CompanionPrisonersDilemmaDialogs((CHARACTERGUID)CHARACTERGUID_S_Player_RedPrince_a26a1efb-cdc8-4cf3-a7b2-b2f9544add6f, "EG_CompDilemma_RedPrince");
+DB_EG_CompanionPrisonersDilemmaDialogs(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb, "EG_CompDilemma_Fane");
+DB_EG_CompanionPrisonersDilemmaDialogs(CHARACTERGUID_S_Player_Sebille_c8d55eaf-e4eb-466a-8f0d-6a9447b5b24c, "EG_CompDilemma_Sebille");
+DB_EG_CompanionPrisonersDilemmaDialogs(CHARACTERGUID_S_Player_Beast_f25ca124-a4d2-427b-af62-df66df41a978, "EG_CompDilemma_Beast");
+DB_EG_CompanionPrisonersDilemmaDialogs(CHARACTERGUID_S_Player_Lohse_bb932b13-8ebf-4ab4-aac0-83e6924e4295, "EG_CompDilemma_Lohse");
+DB_EG_CompanionPrisonersDilemmaDialogs(CHARACTERGUID_S_Player_Ifan_ad9a3327-4456-42a7-9bf4-7ad60cc9e54f, "EG_CompDilemma_Ifan");
+KBSECTION
+//REGION First start dialog with all uncontrolled companions with their avatars
+IF
+DB_EG_CompanionPrisonersDilemmaDialogs(_, _Dialog)
+THEN
+DB_EG_GlobalDialogs(_Dialog);
+
+QRY
+QRY_EG_CompanionsAvailableForDilemma()
+AND
+DB_CompanionAvatarBond(_Companion, _Avatar)
+AND
+NOT DB_EG_CompanionMadeDecision(_Companion)
+AND
+NOT DB_Dead(_Avatar)
+AND
+NOT DB_Dead(_Companion)
+AND
+CharacterGetReservedUserID(_Companion, _ID)
+AND
+CharacterGetReservedUserID(_Avatar, _ID)
+AND
+DB_EG_CompanionPrisonersDilemmaDialogs(_Companion, _Dialog)
+AND
+QueryOnlyOnce("EG_CompanionPrisonersDilemma")
+THEN
+MakePlayerActive(_Avatar);
+Proc_StartDialog(0, _Dialog, _Companion, _Avatar);
+
+QRY
+QRY_EG_HasOtherControlledAvatar((CHARACTERGUID)_Avatar)
+AND
+DB_Avatars(_Avatar2)
+AND
+_Avatar != _Avatar2
+AND
+NOT DB_Dead(_Avatar2)
+AND
+CharacterGetReservedUserID(_Avatar, _ID)
+AND
+CharacterGetReservedUserID(_Avatar2, _ID)
+AND
+CharacterIsControlled(_Avatar, 1)
+THEN
+DB_NOOP(0);
+
+PROC
+PROC_EG_FindControllablePC((CHARACTERGUID)_Player)
+AND
+DB_IsPlayer(_Player2)
+AND
+_Player != _Player
+AND
+NOT DB_Dead(_Player2)
+AND
+CharacterGetReservedUserID(_Player, _ID)
+AND
+CharacterGetReservedUserID(_Player2, _ID)
+AND
+QueryOnlyOnce("EG_FindControllablePC")
+THEN
+MakePlayerActive(_Player2);
+
+IF
+DialogEnded(_Dialog, _)
+AND
+DB_EG_CompanionPrisonersDilemmaDialogs(_Companion, _Dialog)
+AND
+ObjectGetFlag(_Companion, "EG_FightingForDivinity", 1)
+THEN
+PROC_EG_AddDivinityCompetitor(_Companion);
+PROC_Origins_CompanionLeavePermanently(_Companion);
+RemoveHarmfulStatuses(_Companion);
+CharacterDetachFromGroup(_Companion);
+ProcSetInvulnerable(_Companion, 1);
+ProcCharacterStopFollow(_Companion);
+
+IF
+DialogEnded(_Dialog, _)
+AND
+DB_EG_CompanionPrisonersDilemmaDialogs(_Companion, _Dialog)
+THEN
+DB_EG_CompanionMadeDecision(_Companion);
+PROC_EG_StartCompanionPrisonersDilemma();
+//END_REGION
+
+//REGION After companions, all avatars get a prisoners dilemma game at the same time.
+PROC
+PROC_EG_ResurrectCharactersForDilemma()
+AND
+QRY_EG_CharactersForDilemmaLeftToResurrect()
+THEN
+DB_EG_ResurrectingCharactersForDillemma(1);
+PROC_EG_DoResurrectCharactersForDilemma();
+
+PROC
+PROC_EG_ResurrectCharactersForDilemma()
+AND
+NOT QRY_EG_CharactersForDilemmaLeftToResurrect()
+THEN
+PROC_EG_StartCompanionPrisonersDilemma();
+
+PROC
+PROC_EG_DoResurrectCharactersForDilemma()
+AND
+DB_IsPlayer(_Player)
+AND
+DB_Dead(_Player)
+AND
+IsTagged(_Player, "BLOCK_RESURRECTION", 0)
+THEN
+CharacterResurrect(_Player);
+
+PROC
+PROC_EG_DoResurrectCharactersForDilemma()
+AND
+DB_IsPlayer(_Player)
+AND
+CharacterIsPolymorphInteractionDisabled(_Player, 1)
+AND
+IsTagged(_Player, "BLOCK_RESURRECTION", 0)
+THEN
+RemoveStatus(_Player, "COW");
+RemoveStatus(_Player, "CHICKEN");
+
+QRY
+QRY_EG_CharactersForDilemmaLeftToResurrect()
+AND
+DB_IsPlayer(_Player)
+AND
+DB_Dead(_Player)
+AND
+IsTagged(_Player, "BLOCK_RESURRECTION", 0)
+THEN
+DB_NOOP(0);
+
+QRY
+QRY_EG_CharactersForDilemmaLeftToResurrect()
+AND
+DB_IsPlayer(_Player)
+AND
+CharacterIsPolymorphInteractionDisabled(_Player, 1)
+AND
+IsTagged(_Player, "BLOCK_RESURRECTION", 0)
+THEN
+DB_NOOP(0);
+
+IF
+CharacterStatusRemoved(_Character, "COW", _)
+AND
+DB_EG_ResurrectingCharactersForDillemma(1)
+AND
+NOT QRY_EG_CharactersForDilemmaLeftToResurrect()
+THEN
+PROC_EG_StartCompanionPrisonersDilemma();
+
+IF
+CharacterStatusRemoved(_Character, "CHICKEN", _)
+AND
+DB_EG_ResurrectingCharactersForDillemma(1)
+AND
+NOT QRY_EG_CharactersForDilemmaLeftToResurrect()
+THEN
+PROC_EG_StartCompanionPrisonersDilemma();
+
+IF
+CharacterResurrected(_Player)
+AND
+DB_EG_ResurrectingCharactersForDillemma(1)
+AND
+NOT QRY_EG_CharactersForDilemmaLeftToResurrect()
+THEN
+PROC_EG_StartCompanionPrisonersDilemma();
+
+PROC
+PROC_EG_StartCompanionPrisonersDilemma()
+THEN
+NOT DB_EG_ResurrectingCharactersForDillemma(1);
+
+PROC
+PROC_EG_StartCompanionPrisonersDilemma()
+AND
+NOT QRY_EG_CompanionsAvailableForDilemma()
+THEN
+PROC_EG_StartAvatarPrisonerDilemma();
+
+PROC
+PROC_EG_StartCompanionPrisonersDilemma()
+THEN
+NOT DB_OnlyOnce("EG_CompanionPrisonersDilemma");
+
+//First, make all non-dead Avatars active.
+PROC
+PROC_EG_StartAvatarPrisonerDilemma()
+AND
+DB_Avatars(_Avatar)
+AND
+NOT DB_Dead(_Avatar)
+AND
+CharacterIsControlled(_Avatar, 0)
+AND
+NOT QRY_EG_HasOtherControlledAvatar(_Avatar)
+THEN
+MakePlayerActive(_Avatar);
+
+//Second, if anyone is controlling a dead character, find them someone else to control.
+PROC
+PROC_EG_StartAvatarPrisonerDilemma()
+AND
+DB_IsPlayer(_Player)
+AND
+DB_Dead(_Player)
+AND
+CharacterIsControlled(_Player, 1)
+THEN
+NOT DB_OnlyOnce("EG_FindControllablePC");
+PROC_EG_FindControllablePC(_Player);
+
+
+//Now, everyone who has a non-dead avatar is controlling that avatar and everyone who has a non-dead character is controlling that character.
+//All non-dead, controlled characters get to vie for divinity.
+PROC
+PROC_EG_StartAvatarPrisonerDilemma()
+AND
+NOT QRY_EG_AutomaticallyResolvedCrimeDilemma()
+AND
+DB_IsPlayer(_Player)
+AND
+CharacterIsControlled(_Player, 1)
+AND
+NOT DB_Dead(_Player)
+THEN
+Proc_StartDialog(0, "EG_PrisonersDilemma", _Player);
+DB_EG_DecidingDivinity(_Player);
+
+QRY
+QRY_EG_AutomaticallyResolvedCrimeDilemma()
+AND
+NOT DB_EG_DivinityCompetitor(_)
+AND
+NOT DB_GlobalFlag("GLO_MultiPlayer")
+AND
+NOT QRY_EG_MultipleLivingAvatars()
+AND
+QRY_EG_AnyLivingAvatars()
+THEN
+DB_NOOP(0);
+
+QRY
+QRY_EG_MultipleLivingAvatars()
+AND
+DB_Avatars(_Player)
+AND
+NOT DB_Dead(_Player)
+AND
+DB_Avatars(_Player2)
+AND
+_Player != _Player2
+AND
+NOT DB_Dead(_Player2)
+THEN
+DB_NOOP(0);
+
+QRY
+QRY_EG_AnyLivingAvatars()
+AND
+DB_Avatars(_Player)
+AND
+NOT DB_Dead(_Player)
+THEN
+DB_NOOP(0);
+
+PROC
+PROC_EG_StartAvatarPrisonerDilemma()
+AND
+QRY_EG_AutomaticallyResolvedCrimeDilemma()
+AND
+DB_IsPlayer(_Player)
+AND
+CharacterIsControlled(_Player, 1)
+AND
+NOT DB_Dead(_Player)
+THEN
+UserSetFlag(_Player, "CORE_Chapter7_QuestUpdate_CRYPT_End_TakeElected", 0);
+PROC_EG_AddDivinityCompetitor(_Player);
+DB_EG_DecidedDivinity(_Player);
+PROC_EG_CheckAvatarDilemmaOver();
+
+//All non-dead avatars get added to the list as well.
+PROC
+PROC_EG_StartAvatarPrisonerDilemma()
+AND
+QRY_EG_PlayersInPrisonerDilemma()
+AND
+DB_Avatars(_Avatar)
+AND
+NOT DB_Dead(_Avatar)
+AND
+CharacterIsControlled(_Avatar, 0)
+THEN
+DB_EG_DecidingDivinity(_Avatar);
+
+//All uncontrolled and/or dead characters get frozen.
+PROC
+PROC_EG_StartAvatarPrisonerDilemma()
+AND
+QRY_EG_PlayersInPrisonerDilemma()
+AND
+DB_IsPlayer(_Player)
+AND
+NOT DB_Dead(_Player)
+AND
+CharacterIsControlled(_Player, 0)
+THEN
+CharacterFreeze(_Player);
+
+PROC
+PROC_EG_StartAvatarPrisonerDilemma()
+AND
+QRY_EG_PlayersInPrisonerDilemma()
+AND
+DB_IsPlayer(_Player)
+AND
+DB_Dead(_Player)
+THEN
+CharacterFreeze(_Player);
+
+PROC
+PROC_EG_RemoveOtherAvatarsFromCompetition((CHARACTERGUID)_Avatar)
+AND
+DB_Avatars(_Avatar)
+AND
+DB_Avatars(_Avatar2)
+AND
+_Avatar != _Avatar2
+AND
+CharacterGetReservedUserID(_Avatar, _ID)
+AND
+CharacterGetReservedUserID(_Avatar2, _ID)
+THEN
+DB_EG_DecidedDivinity(_Avatar2);
+
+PROC
+PROC_EG_RemoveOtherAvatarsFromCompetition((CHARACTERGUID)_Character)
+AND
+DB_EG_DivinityCompetitor(_OtherCharacter)
+AND
+CharacterGetReservedUserID(_Character, _ID)
+AND
+CharacterGetReservedUserID(_OtherCharacter, _ID)
+THEN
+NOT DB_EG_DivinityCompetitor(_OtherCharacter);
+DB_EG_SuppressedDivinityCompetitor(_Character);
+
+IF
+ObjectFlagSet("EG_PlayerChoseDivinity", (CHARACTERGUID)_Player, _)
+THEN
+PROC_EG_AddDivinityCompetitor(_Player);
+DB_EG_DecidedDivinity(_Player);
+PROC_EG_CheckAvatarDilemmaOver();
+
+IF
+ObjectFlagSet("EG_PlayerChoseNoDivinity", (CHARACTERGUID)_Player, _)
+THEN
+NOT DB_OnlyOnce("EG_OtherPlayerAvatarCanCompete");
+NOT DB_OnlyOnce("EG_OtherPlayerNonAvatarCanCompete");
+
+IF
+ObjectFlagSet("EG_PlayerChoseNoDivinity", (CHARACTERGUID)_Player, _)
+AND
+NOT QRY_EG_OtherPlayerAvatarCanCompete(_Player)
+AND
+NOT QRY_EG_OtherPlayerNonAvatarCanCompete(_Player)
+THEN
+DB_EG_DecidedDivinity(_Player);
+PROC_EG_CheckAvatarDilemmaOver();
+
+PROC
+PROC_EG_CheckAvatarDilemmaOver()
+AND
+NOT QRY_EG_PlayersInPrisonerDilemma()
+THEN
+PROC_EG_ResolvePrisonersDilemma();
+
+PROC
+PROC_EG_AddDivinityCompetitor((CHARACTERGUID)_Character)
+THEN
+PROC_EG_RemoveOtherAvatarsFromCompetition((CHARACTERGUID)_Character);
+DB_EG_DivinityCompetitor((CHARACTERGUID)_Character);
+
+QRY
+QRY_EG_PlayersInPrisonerDilemma()
+AND
+DB_EG_DecidingDivinity(_Player)
+AND
+NOT DB_EG_DecidedDivinity(_Player)
+THEN
+DB_NOOP(0);
+
+QRY
+QRY_EG_OtherPlayerAvatarCanCompete((CHARACTERGUID)_Player)
+AND
+DB_Avatars(_Player2)
+AND
+_Player != _Player2
+AND
+NOT DB_Dead(_Player2)
+AND
+NOT DB_EG_DecidedDivinity(_Player2)
+AND
+CharacterGetReservedUserID(_Player, _ID)
+AND
+CharacterGetReservedUserID(_Player2, _ID)
+AND
+QueryOnlyOnce("EG_OtherPlayerAvatarCanCompete")
+THEN
+DB_EG_DecidedDivinity(_Player);
+DB_EG_DecidingDivinity(_Player2);
+ProcForceStopDialog(_Player);
+CharacterFreeze(_Player);
+CharacterUnfreeze(_Player2);
+Proc_StartDialog(0, "EG_PrisonersDilemma", _Player2);
+
+QRY
+QRY_EG_OtherPlayerNonAvatarCanCompete((CHARACTERGUID)_Player)
+AND
+NOT DB_Avatars(_Player)
+AND
+DB_IsPlayer(_Player2)
+AND
+_Player != _Player2
+AND
+NOT DB_Avatars(_Player2)
+AND
+NOT DB_Dead(_Player2)
+AND
+NOT DB_EG_DecidedDivinity(_Player2)
+AND
+CharacterGetReservedUserID(_Player, _ID)
+AND
+CharacterGetReservedUserID(_Player2, _ID)
+AND
+QueryOnlyOnce("EG_OtherPlayerNonAvatarCanCompete")
+THEN
+DB_EG_DecidedDivinity(_Player);
+DB_EG_DecidingDivinity(_Player2);
+ProcForceStopDialog(_Player);
+CharacterFreeze(_Player);
+CharacterUnfreeze(_Player2);
+Proc_StartDialog(0, "EG_PrisonersDilemma", _Player2);
+
+IF
+TextEventSet("EG_TestCompanionDilemma")
+THEN
+PROC_EG_ResurrectCharactersForDilemma();
+//END_REGION
+
+//REGION Character gets reassigned mid-dilemma:
+//Adjustments for the reassigned character.
+IF
+CharacterReservedUserIDChanged(_Character, _OldID, _NewID)
+AND
+QRY_EG_PlayersInPrisonerDilemma()
+AND
+NOT DB_EG_DecidingDivinity(_Character)
+AND
+NOT QRY_EG_ReassignedCharacterDecidedDivinity(_Character)
+THEN
+PROC_EG_TryStartDilemmaOnReassign(_Character, _NewID);
+
+IF
+CharacterReservedUserIDChanged(_Character, _OldID, _NewID)
+AND
+QRY_EG_PlayersInPrisonerDilemma()
+AND
+DB_EG_DecidingDivinity(_Character)
+AND
+NOT DB_EG_DecidedDivinity(_Character)
+AND
+QRY_EG_PlayerHasOtherCharacterInDilemma(_Character, _NewID)
+THEN
+NOT DB_EG_DecidingDivinity(_Character);
+ProcForceStopDialog(_Character);
+CharacterFreeze(_Character);
+
+IF
+CharacterReservedUserIDChanged(_Character, _OldID, _NewID)
+AND
+QRY_EG_PlayersInPrisonerDilemma()
+AND
+NOT QRY_EG_ReassignedCharacterDecidedDivinity(_Character)
+AND
+NOT QRY_EG_UserHasOtherDivinityCompetitor(_Character, _NewID)
+THEN
+NOT DB_EG_DecidedDivinity(_Character);
+
+IF
+CharacterReservedUserIDChanged(_Character, _OldID, _NewID)
+AND
+QRY_EG_PlayersInPrisonerDilemma()
+AND
+NOT QRY_EG_ReassignedCharacterDecidedDivinity(_Character)
+AND
+QRY_EG_UserHasOtherDivinityCompetitor(_Character, _NewID)
+THEN
+DB_EG_DecidedDivinity(_Character);
+
+IF
+CharacterReservedUserIDChanged(_Character, _OldID, _NewID)
+AND
+DB_EG_DivinityCompetitor(_Character)
+AND
+QRY_EG_UserHasOtherDivinityCompetitor(_Character, _NewID)
+THEN
+DB_EG_SuppressedDivinityCompetitor(_Character);
+NOT DB_EG_DivinityCompetitor(_Character);
+
+IF
+CharacterReservedUserIDChanged(_Character, _OldID, _NewID)
+AND
+DB_EG_SuppressedDivinityCompetitor(_Character)
+AND
+NOT QRY_EG_UserHasOtherDivinityCompetitor(_Character, _NewID)
+THEN
+NOT DB_EG_SuppressedDivinityCompetitor(_Character);
+DB_EG_DivinityCompetitor(_Character);
+
+PROC
+PROC_EG_TryStartDilemmaOnReassign((CHARACTERGUID)_Character, (INTEGER)_NewID)
+AND
+NOT QRY_EG_PlayerHasOtherCharacterInDilemma(_Character, _NewID)
+THEN
+Proc_StartDialog(0, "EG_PrisonersDilemma", _Character);
+DB_EG_DecidingDivinity(_Character);
+
+QRY
+QRY_EG_ReassignedCharacterDecidedDivinity((CHARACTERGUID)_Character)
+AND
+ObjectGetFlag(_Character, "EG_Companion_Crypt_Allowed", 1) //If they're a Companion who already agreed to fight for their Avatar, they shouldn't change their mind.
+THEN
+DB_NOOP(1);
+
+QRY
+QRY_EG_ReassignedCharacterDecidedDivinity((CHARACTERGUID)_Character)
+AND
+ObjectGetFlag(_Character, "EG_PlayerChoseNoDivinity", 1) //Likewise, don't try to start the dialogue if they've already made their decision.
+THEN
+DB_NOOP(1);
+
+QRY
+QRY_EG_ReassignedCharacterDecidedDivinity((CHARACTERGUID)_Character)
+AND
+DB_EG_DivinityCompetitor(_Character)
+THEN
+DB_NOOP(1);
+
+
+QRY
+QRY_EG_PlayerHasOtherCharacterInDilemma((CHARACTERGUID)_Character, (INTEGER)_ID)
+AND
+DB_EG_DecidingDivinity(_OtherCharacter)
+AND
+NOT DB_EG_DecidedDivinity(_OtherCharacter)
+AND
+_OtherCharacter != _Character
+AND
+CharacterGetReservedUserID(_OtherCharacter, _ID)
+THEN
+DB_NOOP(1);
+
+QRY
+QRY_EG_UserHasOtherDivinityCompetitor((CHARACTERGUID)_Character, (INTEGER)_ID)
+AND
+DB_EG_DivinityCompetitor(_OtherCharacter)
+AND
+_OtherCharacter != _Character
+AND
+CharacterGetReservedUserID(_Character, _ID)
+THEN
+DB_NOOP(1);
+
+//For those left behind after the reassign
+IF
+CharacterReservedUserIDChanged(_Character, _OldID, _NewID)
+AND
+QRY_EG_PlayersInPrisonerDilemma()
+AND
+DB_EG_DecidingDivinity(_Character)
+AND
+NOT DB_EG_DecidedDivinity(_Character)
+THEN
+Proc_EG_UpdateDecidedDivinityForUser(_OldID);
+Proc_EG_TryFindDilemmaMemberForUser(_OldID);
+
+IF
+CharacterReservedUserIDChanged(_Character, _OldID, _NewID)
+AND
+DB_EG_DivinityCompetitor(_Character)
+THEN
+PROC_EG_UnsuppressDivinityCompetitor(_OldID);
+
+PROC
+Proc_EG_UpdateDecidedDivinityForUser((INTEGER)_ID)
+AND
+DB_EG_DecidedDivinity(_Player)
+AND
+CharacterGetReservedUserID(_Player, _ID)
+AND
+NOT QRY_EG_UserHasOtherDivinityCompetitor(_Player, _ID)
+AND
+NOT QRY_EG_ReassignedCharacterDecidedDivinity(_Player)
+THEN
+NOT DB_EG_DecidedDivinity(_Player);
+
+PROC
+Proc_EG_TryFindDilemmaMemberForUser((INTEGER)_ID)
+THEN
+NOT DB_OnlyOnce("EG_FindDilemmaMemberForUser");
+
+PROC
+Proc_EG_TryFindDilemmaMemberForUser((INTEGER)_ID)
+AND
+DB_IsPlayer(_Player)
+AND
+NOT QRY_EG_ReassignedCharacterDecidedDivinity(_Player)
+AND
+NOT DB_Dead(_Player)
+AND
+QueryOnlyOnce("EG_FindDilemmaMemberForUser")
+THEN
+Proc_StartDialog(0, "EG_PrisonersDilemma", _Player);
+DB_EG_DecidingDivinity(_Player);
+
+PROC
+PROC_EG_UnsuppressDivinityCompetitor((INTEGER)_ID)
+AND
+DB_EG_SuppressedDivinityCompetitor(_Character)
+AND
+CharacterGetReservedUserID(_Character, _ID)
+AND
+NOT QRY_EG_UserHasOtherDivinityCompetitor(_Character, _ID)
+THEN
+NOT DB_EG_SuppressedDivinityCompetitor(_Character);
+DB_EG_DivinityCompetitor(_Character);
+
+QRY
+QRY_EG_PrisonersDilemmaStartedAndUnresolved()
+AND
+DB_DialogPlayers(_ID, _Player, _)
+AND
+DB_DialogName("EG_PrisonersDilemma",_ID)
+THEN
+DB_NOOP(1);
+
+IF
+CharacterReservedUserIDChanged(_Character, _OldID, _NewID)
+AND
+QRY_EG_PrisonersDilemmaStartedAndUnresolved()
+AND
+NOT QRY_EG_PlayersInPrisonerDilemma()
+THEN
+PROC_EG_ResolvePrisonersDilemma();
+//END_REGION
+
+//REGION Resolving the prisoners Dilemma
+QRY
+QRY_EG_PlayersInDialogue()
+AND
+DB_IsPlayer(_Player)
+AND
+IsSpeakerReserved(_Player, 1)
+THEN
+DB_NOOP(0);
+
+PROC
+PROC_EG_ResolvePrisonersDilemma()
+AND
+NOT QRY_EG_PlayersInDialogue()
+THEN
+NOT DB_OnlyOnce("EG_ResolvePrisonersDilemma_WaitingForDialogueEnd");
+DB_OnlyOnce("EG_ResolvePrisonersDilemma_DoneWaiting");
+
+PROC
+PROC_EG_ResolvePrisonersDilemma()
+AND
+NOT QRY_EG_PlayersInDialogue()
+AND
+DB_IsPlayer(_Player)
+THEN
+CharacterUnfreeze(_Player);
+
+//Noone stepped up: God King Greever wins!
+PROC
+PROC_EG_ResolvePrisonersDilemma()
+AND
+NOT QRY_EG_PlayersInDialogue()
+AND
+SysCount("DB_EG_DivinityCompetitor",1,0)
+AND
+DB_EG_DecidedDivinity(_Player)
+AND
+QueryOnlyOnce("EG_NooneChooseDivinity")
+THEN
+GlobalSetFlag("EG_Ending4_GodKing");
+DB_GlobalFlag("EG_Ending4_GodKing");
+PROC_EG_MakeTheChoice(_Player);
+
+//Exactly one competitor stepped up. They get to choose.
+PROC
+PROC_EG_ResolvePrisonersDilemma()
+AND
+NOT QRY_EG_PlayersInDialogue()
+AND
+SysCount("DB_EG_DivinityCompetitor",1,1)
+AND
+DB_EG_DivinityCompetitor(_Player)
+THEN
+PROC_EG_MakeTheChoice(_Player);
+
+//More than 1 competitor wants to make the choice. ARENAFIGHT!!!!!
+PROC
+PROC_EG_ResolvePrisonersDilemma()
+AND
+NOT QRY_EG_PlayersInDialogue()
+AND
+SysCount("DB_EG_DivinityCompetitor",1,_Amount)
+AND
+_Amount > 1
+THEN
+PROC_EG_LaunchFinalArena();
+
+PROC
+PROC_EG_ResolvePrisonersDilemma()
+AND
+NOT DB_OnlyOnce("EG_ResolvePrisonersDilemma_DoneWaiting")
+AND
+QRY_EG_PlayersInDialogue()
+THEN
+PROC_RetryResolvePrisonerDilemma();
+
+PROC
+PROC_RetryResolvePrisonerDilemma()
+THEN
+DB_OnlyOnce("EG_ResolvePrisonersDilemma_WaitingForDialogueEnd");
+
+PROC
+PROC_RetryResolvePrisonerDilemma()
+AND
+DB_IsPlayer(_Player)
+THEN
+ProcForceStopDialog(_Player);
+
+IF
+DialogEnded(_, _ID)
+AND
+DB_OnlyOnce("EG_ResolvePrisonersDilemma_WaitingForDialogueEnd")
+THEN
+PROC_EG_ResolvePrisonersDilemma(); //Keep trying with every ended dialogue.
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "EndGame"

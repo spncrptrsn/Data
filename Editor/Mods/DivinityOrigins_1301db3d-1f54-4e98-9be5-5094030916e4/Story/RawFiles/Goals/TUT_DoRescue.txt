@@ -1,0 +1,171 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//REGION Once an origin on the lower deck sees a player that came down the ladder (ladder unlocked), go up
+// See a living origin -> yell and make all origins move to the top deck
+IF
+DB_Sees(_Origin,_Player)
+AND
+DB_TUT_OriginsToRescue(_Origin)
+AND
+NOT DB_Dead(_Origin)
+AND
+NOT DB_IsPlayer(_Origin)
+AND
+DB_IsPlayer(_Player)
+THEN
+GlobalSetFlag("TUT_LowerDeck_OriginsFleeingToTop");
+GlobalSetFlag("TUT_ChoseRescueOthers");
+PROC_TUT_LowerDeck_OriginEscape(_Player);
+
+// No one to rescue -> done
+IF
+DB_Sees(_Player,_Origin)
+AND
+DB_IsPlayer(_Player)
+AND
+DB_TUT_OriginsToRescue(_Origin)
+AND
+NOT DB_IsPlayer(_Origin)
+AND
+DB_Dead(_Origin)
+AND
+NOT QRY_TUT_AnyRescueOriginNPCAlive()
+AND
+ObjectIsInTrigger(_Player, TRIGGERGUID_S_TUT_LowerDeck_VoidlingArena_7426287c-a87b-4f01-b5d6-7e0c189c8540, 1)
+AND
+QueryOnlyOnce("TUT_AD_LowerDeck_GatherOriginsForEscape")
+THEN
+Proc_StartDialog(1,"TUT_AD_LowerDeck_EveryoneIncapacitated",_Player);
+PROC_TUT_LowerDeck_LaunchVoidLings();
+GoalCompleted;
+
+PROC
+PROC_TUT_LowerDeck_OriginEscape((CHARACTERGUID)_Player)
+AND
+NOT DB_OnlyOnce("TUT_AD_LowerDeck_GatherOriginsForEscape")
+THEN
+GlobalSetFlag("TUT_LowerDeck_OriginsFleeingToTop");
+GlobalSetFlag("TUT_ChoseRescueOthers");
+Proc_StartDialog(1,"TUT_AD_LowerDeck_GatherOriginsForEscape",_Player);
+
+PROC
+PROC_TUT_LowerDeck_OriginEscape((CHARACTERGUID)_Player)
+AND
+NOT DB_OnlyOnce("TUT_AD_LowerDeck_GatherOriginsForEscape")
+AND
+DB_TUT_OriginsToRescue(_Origin)
+AND
+NOT DB_IsPlayer(_Origin)
+AND
+NOT DB_TUT_LowerDeck_OriginsGoingUp(_Origin)
+AND
+CharacterIsDead(_Origin, 0)
+THEN
+DB_TUT_LowerDeck_OriginsGoingUp(_Origin);
+SetHasDialog(_Origin, 0);
+CharacterSetReactionPriority(_Origin, "AutomatedDialog_Interrupt", 0);
+SetVarFixedString(_Origin, "currentState", "");
+ProcCharacterDisableAllCrimes(_Origin);
+CharacterSetForceSynch(_Origin, 1);
+CharacterSetForceUpdate(_Origin, 1);
+ProcStateManagerCharacterMoveTo(_Origin, TRIGGERGUID_S_TUT_ShipEscapeTrigger_Ladder_88c09b90-93d1-4603-88e9-f06d1c84e240, 1, 4.0, "TUT_LowerDeck_OriginAtLowerLadder", "");
+
+PROC
+PROC_TUT_LowerDeck_OriginEscape((CHARACTERGUID)_Player)
+THEN
+DB_OnlyOnce("TUT_AD_LowerDeck_GatherOriginsForEscape");
+
+IF
+StoryEvent(_, "TUT_LowerDeck_OriginAtLowerLadder")
+AND
+DB_TUT_RescueCombat_FinishAD(_Origin)
+THEN
+NOT DB_TUT_RescueCombat_FinishAD(_Origin);
+
+IF
+StoryEvent((CHARACTERGUID)_Char, "TUT_LowerDeck_OriginAtLowerLadder")
+THEN
+CharacterUseItem(_Char, ITEMGUID_S_TUT_LowerDeck_LadderToUpperDeck_bf532327-8799-4fdd-8dbc-b6283a242f9b, "");
+ProcStateManagerCharacterMoveTo(_Char, S_TUT_ShipEscapeTrigger_81842e84-6f40-4c65-993d-6b9a8e89debe, 1, 3.0, "TUT_LowerDeck_OriginAtBoat", "");
+
+
+IF
+StoryEvent((CHARACTERGUID)_Char,"TUT_LowerDeck_OriginAtBoat")
+AND
+DB_TUT_LowerDeck_OriginsGoingUp(_Char)
+THEN
+//ProcCharacterEnableAllCrimes(_Char);
+CharacterSetReactionPriority(_Char, "State_Manager_Go_To_Trigger", 0);
+SetVarFixedString(_Char, "currentState", "");
+CharacterUseItem(_Char, ITEMGUID_S_TUT_EscapeBoat_Sit_6f6c5c2e-024c-4960-bf36-82d7917d820a, "");
+CharacterSetForceSynch(_Char, 0);
+
+IF
+CharacterUsedItem(_Char, ITEMGUID_S_TUT_EscapeBoat_Sit_6f6c5c2e-024c-4960-bf36-82d7917d820a)
+AND
+DB_TUT_LowerDeck_OriginsGoingUp(_Char)
+THEN
+SetVarFixedString(_Char, "currentState", "");
+NOT DB_TUT_LowerDeck_OriginsGoingUp(_Char);
+CharacterSetForceUpdate(_Char, 0);
+CharacterSetForceSynch(_Char, 0);
+CharacterSetReactionPriority(_Char, "AutomatedDialog_Interrupt", 1700);
+PROC_TUT_LowerDeck_CheckAllOriginsGone();
+ProcForceStopDialog(CHARACTERGUID_S_TUT_LowerDeck_LohseSongGirl1_a681c125-8493-4046-ab1f-6c2201336a22);
+ItemSetCanInteract(ITEMGUID_S_TUT_EscapeBoat_Speak_af0d5c51-44ef-4db3-a2af-8f4b1fd4ccc9, 0);
+
+IF
+CharacterDied(_Char)
+AND
+DB_TUT_LowerDeck_OriginsGoingUp(_Char)
+THEN
+NOT DB_TUT_LowerDeck_OriginsGoingUp(_Char);
+CharacterSetForceUpdate(_Char, 0);
+CharacterSetForceSynch(_Char, 0);
+SetVarFixedString(_Char, "currentState", "");
+CharacterSetReactionPriority(_Char, "AutomatedDialog_Interrupt", 1700);
+PROC_TUT_LowerDeck_CheckAllOriginsGone();
+
+PROC
+PROC_TUT_LowerDeck_CheckAllOriginsGone()
+AND
+QRY_TUT_AnyRescueOriginNPCAlive()
+AND
+NOT DB_TUT_LowerDeck_OriginsGoingUp(_)
+THEN
+//SetOnStage(ITEMGUID_S_TUT_EscapeBoat_af0d5c51-44ef-4db3-a2af-8f4b1fd4ccc9, 0);
+ProcTriggerRegisterForPlayers(TRIGGERGUID_S_TUT_LaunchShipDestruction_25c759a4-ee42-4b6c-b6b7-f9df18a9528d);
+SetVarString(CHARACTERGUID_S_TUT_LowerDeck_LohseSongGirl1_a681c125-8493-4046-ab1f-6c2201336a22, "SloopDialog", "");
+GoalCompleted;
+
+PROC
+PROC_TUT_LowerDeck_CheckAllOriginsGone()
+AND
+NOT QRY_TUT_AnyRescueOriginNPCAlive()
+THEN
+ItemSetCanInteract(ITEMGUID_S_TUT_EscapeBoat_Speak_af0d5c51-44ef-4db3-a2af-8f4b1fd4ccc9, 1);
+
+// Failsafe
+PROC
+ProcRegionEnded("TUT_Tutorial_A")
+AND
+DB_TUT_LowerDeck_OriginsGoingUp(_Char)
+THEN
+CharacterSetForceSynch(_Char, 0);
+CharacterSetForceUpdate(_Char, 0);
+NOT DB_TUT_LowerDeck_OriginsGoingUp(_Char);
+CharacterSetReactionPriority(_Char, "AutomatedDialog_Interrupt", 1700);
+
+PROC
+ProcRegionEnded("TUT_Tutorial_A")
+THEN
+GoalCompleted;
+
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "TUT_Rescue"

@@ -1,0 +1,13 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+ProcRegionStarted("LV_HoE_Main");
+KBSECTION
+PROC
+ProcRegionStarted("LV_HoE_Main")
+THEN
+GoalCompleted;
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "LadyVengeance"

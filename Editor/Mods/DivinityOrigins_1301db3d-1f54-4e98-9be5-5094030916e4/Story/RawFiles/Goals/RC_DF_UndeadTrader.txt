@@ -1,0 +1,405 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+DB_Dialogs(CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,"RC_DF_UndeadTrader");
+
+SetTagPriceModifier(CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04, "RC_DF_UNDEADTRADER_ING", 3); // Chanterelle
+
+ItemToInventory(ITEMGUID_S_RC_DF_UndeadTrader_DeadNote_2b97acd7-dc7f-439a-80dd-29ed911e77ae,ITEMGUID_S_RC_DF_UneadTrader_SKEL_Humans_A_000_b69748f9-8687-449b-bf7e-22ebab75315f);
+SetOnStage(ITEMGUID_S_RC_DF_UneadTrader_SKEL_Humans_A_000_b69748f9-8687-449b-bf7e-22ebab75315f,0);
+
+KBSECTION
+//REGION Picking up ingredient (Chanterelle)
+
+PROC
+PROC_RC_DF_UndeadTrader_FindIngredient(_)
+AND
+DB_RC_DF_UndeadTrader_AnchorFindIngredient(_Player)
+THEN
+NOT DB_RC_DF_UndeadTrader_AnchorFindIngredient(_Player);
+
+PROC
+PROC_RC_DF_UndeadTrader_FindIngredient((CHARACTERGUID)_AnchorPlayer)
+THEN
+DB_RC_DF_UndeadTrader_AnchorFindIngredient(_AnchorPlayer);
+
+PROC
+PROC_RC_DF_UndeadTrader_FindIngredient((CHARACTERGUID)_AnchorPlayer)
+THEN
+ProcClearMagicPocketsOwnershipFlag(_AnchorPlayer, "RC_DF_UndeadTrader_HasIngredientA");
+
+PROC 
+PROC_RC_DF_UndeadTrader_FindIngredient((CHARACTERGUID)_AnchorPlayer)
+AND
+NOT DB_GlobalFlag("RC_DF_UndeadTrader_Died")
+AND
+CharacterGetReservedUserID(_AnchorPlayer,_OwnerUser)
+AND
+DB_IsPlayer(_Player)
+AND
+CharacterGetReservedUserID(_Player,_OwnerUser)
+AND
+ItemTemplateIsInCharacterInventory(_Player,"BOOK_Skill_Fire_CorpseExplosion_67720f85-237f-4f7f-b4b3-d11d90c7a9bf",_Cnt)
+AND
+_Cnt>0
+THEN
+ProcSetMagicPocketsOwnershipFlag(_AnchorPlayer, "RC_DF_UndeadTrader_HasIngredientA");
+
+PROC
+Proc_ItemEventCheck()
+AND
+DB_IsPlayer(_Player)
+THEN
+PROC_RC_DF_UndeadTrader_FindIngredient(_Player);
+
+
+//--- Checking for the item to set the flag:
+IF
+ItemTemplateAddedToCharacter(BOOK_Skill_Fire_CorpseExplosion_67720f85-237f-4f7f-b4b3-d11d90c7a9bf, _, _Player)
+THEN
+PROC_RC_DF_UndeadTrader_FindIngredient(_Player);
+
+IF
+ItemTemplateRemovedFromCharacter("BOOK_Skill_Fire_CorpseExplosion_67720f85-237f-4f7f-b4b3-d11d90c7a9bf", _, _Player)
+THEN
+PROC_RC_DF_UndeadTrader_FindIngredient(_Player);
+
+IF
+DialogStarted("RC_DF_UndeadTrader",_Inst)
+AND
+DB_IsPlayer(_Player)
+THEN
+PROC_RC_DF_UndeadTrader_FindIngredient(_Player);
+
+
+//--- Eithne:
+IF
+ItemTemplateAddedToCharacter(BOOK_Skill_Fire_CorpseExplosion_67720f85-237f-4f7f-b4b3-d11d90c7a9bf,_,CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04)
+THEN
+ProcSetMagicPocketsOwnershipFlag(CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,"RC_DF_UndeadTrader_HasIngredientA");
+
+IF
+ItemTemplateRemovedFromCharacter("BOOK_Skill_Fire_CorpseExplosion_67720f85-237f-4f7f-b4b3-d11d90c7a9bf",_,CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04)
+THEN
+ProcClearMagicPocketsOwnershipFlag(CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,"RC_DF_UndeadTrader_HasIngredientA");
+
+//END_REGION
+
+
+//REGION Quest updates & weird ways she can get the ingredient
+
+//--- Putting the ingredient in her inventory through pickpocket
+IF
+ObjectFlagSet("RC_DF_UndeadTrader_HasIngredientA",CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,0) // ID == 0
+AND
+NOT Qry_RC_DF_UndeadTrader_InInteractiveDialog()
+THEN
+Proc_RC_DF_UndeadTrader_InitiateDying();
+
+IF
+ObjectFlagSet("RC_DF_UndeadTrader_HasIngredientA",CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,0) // ID == 0
+AND
+Qry_RC_DF_UndeadTrader_InInteractiveDialog()
+THEN
+DB_NOOP(1);
+//DB_RC_DF_UndeadTrader_LeaveAfterDialog(1);
+
+
+QRY
+Qry_RC_DF_UndeadTrader_InInteractiveDialog()
+AND
+DB_DialogNPCs(_Inst,CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,_)
+AND
+NOT DB_AutomatedDialog(_Inst)
+THEN
+DB_NOOP(1);
+
+
+IF
+TradeEnds(_Player,CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04)
+AND
+ObjectGetFlag(CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,"RC_DF_UndeadTrader_HasIngredientA",1)
+THEN
+DB_RC_DF_UndeadTrader_LeaveAfterDialog(1);
+ProcForceStopDialog(CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04);
+Proc_StartDialog(0,"RC_DF_UndeadTrader_Thanks",CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,_Player);
+
+
+//--- Quest update when finding ingredient
+IF
+ObjectFlagSet("RC_DF_UndeadTrader_HasIngredientA",(CHARACTERGUID)_Player,_)
+AND
+CharacterIsPlayer(_Player,1)
+THEN
+UserSetFlag(_Player,"QuestUpdate_RC_DF_UndeadTrader_HasIngredientA");
+
+IF
+ObjectFlagSet("QuestUpdate_RC_DF_UndeadTrader_GaveIngredientA",(CHARACTERGUID)_Player,_)
+THEN
+Proc_RC_DF_UndeadTrader_CloseQuest(_Player);
+
+IF
+ObjectFlagSet("QuestUpdate_RC_DF_UndeadTrader_GaveIngredientA",(CHARACTERGUID)_Player,_)
+THEN
+SetVarString(CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,"splineAD","");
+
+PROC
+Proc_RC_DF_UndeadTrader_CloseQuest((CHARACTERGUID)_Player)
+THEN
+NOT DB_RC_DF_UndeadTrader_TradeIngredient(_Player);
+CharacterAddAttitudeTowardsPlayer(CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,_Player,100);
+CharacterSetRelationFactionToFaction("RC_DF_UndeadTrader","Hero",100);
+CharacterSetRelationFactionToFaction("Hero","RC_DF_UndeadTrader",100);
+
+IF
+DialogEnded("RC_DF_UndeadTrader_Thanks",_)
+AND
+DB_RC_DF_UndeadTrader_LeaveAfterDialog(1)
+THEN
+NOT DB_RC_DF_UndeadTrader_LeaveAfterDialog(1);
+Proc_RC_DF_UndeadTrader_InitiateDying();
+
+IF
+DialogRequestFailed("RC_DF_UndeadTrader_Thanks",_)
+AND
+DB_RC_DF_UndeadTrader_LeaveAfterDialog(1)
+THEN
+NOT DB_RC_DF_UndeadTrader_LeaveAfterDialog(1);
+Proc_RC_DF_UndeadTrader_InitiateDying();
+
+//END_REGION
+
+
+//REGION Dying
+
+PROC
+Proc_RC_DF_UndeadTrader_InitiateDying()
+THEN
+GlobalSetFlag("RC_DF_UndeadTrader_Died");
+ClearVarObject(CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,"SplineGUID");
+SetStoryEvent(CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,"InterruptPatrol");
+DialogRequestStop(CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04);
+SetHasDialog(CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,0);
+ProcCharacterDisappearOutOfSightToObject(CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,TRIGGERGUID_S_RC_DF_UndeadTrader_Dying_Point_5042a9a5-6f6d-4802-8ea4-e4457c91778c,0,"RC_DF_UndeadTrader_LeaveToDyingPoint",0);
+ObjectSetFlag(CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,"RC_DF_UndeadTrader_StopSpotPlayer");
+
+
+IF
+StoryEvent(CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,"RC_DF_UndeadTrader_LeaveToDyingPoint")
+THEN
+CharacterAppearOutOfSightTo(CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,TRIGGERGUID_S_RC_DF_UndeadTrader_Dying_Point_5042a9a5-6f6d-4802-8ea4-e4457c91778c,180,0,"RC_DF_UndeadTrader_AppearAtDyingPoint");
+
+IF
+StoryEvent(CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,"RC_DF_UndeadTrader_AppearAtDyingPoint")
+THEN
+ProcCharacterMoveTo(CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,TRIGGERGUID_S_RC_DF_UndeadTrader_Dying_Point_5042a9a5-6f6d-4802-8ea4-e4457c91778c,0,"RC_DF_UndeadTrader_MoveToDyingPoint");
+
+IF
+StoryEvent(CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,"RC_DF_UndeadTrader_MoveToDyingPoint")
+THEN
+ItemOpen(ITEMGUID_S_RC_DF_UndeadTrader_Grating_Door_A_b62e11ed-01b7-408f-b534-0e9e16ebcef0);
+ApplyStatus(CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,"CONSUME",2.0);
+Proc_RC_DF_UndeadTrader_ConsumeIngredient();
+CharacterDie(CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,0,"Physical");
+Poof(CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04);
+ProcTriggerRegisterForPlayers(TRIGGERGUID_S_RC_DF_UndeadTrader_DeadBox_151a724a-e4fb-43e4-afa8-bb4ac4791ed5);
+SetOnStage(ITEMGUID_S_RC_DF_UneadTrader_SKEL_Humans_A_000_b69748f9-8687-449b-bf7e-22ebab75315f,1);
+
+PROC
+Proc_RC_DF_UndeadTrader_ConsumeIngredient()
+AND
+GetItemForItemTemplateInInventory(CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,"BOOK_Skill_Fire_CorpseExplosion_67720f85-237f-4f7f-b4b3-d11d90c7a9bf",_Item)
+AND
+ObjectExists(_Item,1)
+THEN
+ItemDestroy(_Item);
+
+//END_REGION
+
+
+//REGION Checking trades
+
+IF
+TradeEnds(_Player,CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04)
+AND
+ObjectGetFlag(CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,"RC_DF_UndeadTrader_HasIngredientA",1)
+THEN
+DB_RC_DF_UndeadTrader_TradeIngredient(_Player);
+
+IF
+DialogEnded("RC_DF_UndeadTrader",_)
+AND
+DB_RC_DF_UndeadTrader_TradeIngredient(_Player)
+AND
+UserGetFlag(_Player,"QuestUpdate_RC_DF_UndeadTrader_GaveIngredientA",0)
+THEN
+Proc_RC_DF_UndeadTrader_InitiateDying();
+
+
+//END_REGION
+
+
+//REGION Spot player
+
+IF
+DialogStarted("RC_DF_UndeadTrader",_Inst)
+THEN
+ObjectSetFlag(CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,"RC_DF_UndeadTrader_StopSpotPlayer");
+
+IF
+DialogEnded("RC_DF_UndeadTrader",_Inst)
+THEN
+Proc_RC_DF_UndeadTrader_RestartLooking();
+
+
+//--- Player already spotted recently
+IF
+CharacterCharacterEvent(CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,_Player,"RC_DF_UndeadTrader_SpottedPlayer")
+AND
+DB_RC_DF_UndeadTrader_WavedAt(_Player)
+THEN
+Proc_RC_DF_UndeadTrader_RestartLooking();
+
+
+//--- New player spotted
+IF
+CharacterCharacterEvent(CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,_Player,"RC_DF_UndeadTrader_SpottedPlayer")
+AND
+NOT DB_RC_DF_UndeadTrader_WavedAt(_Player)
+THEN
+DB_RC_DF_UndeadTrader_WavedAt(_Player);
+CharacterLookAt(CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,_Player);
+Proc_StartDialog(1,"RC_DF_AD_UndeadTrader_CallPlayer",CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,_Player);
+PlayAnimation(CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,"Wave_02");
+Proc_RC_DF_UndeadTrader_RestartLooking();
+Proc_RC_DF_UndeadTrader_WaveAgain(_Player);
+
+
+//--- Restart looking (to spot other characters)
+PROC
+Proc_RC_DF_UndeadTrader_RestartLooking()
+THEN
+ProcObjectTimerCancel(CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,"RC_DF_UndeadTrader_DelayRestartSpot");
+ProcObjectTimer(CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,"RC_DF_UndeadTrader_DelayRestartSpot",20000);
+
+PROC
+ProcObjectTimerFinished(CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,"RC_DF_UndeadTrader_DelayRestartSpot")
+AND
+GlobalGetFlag("RC_DF_UndeadTrader_Died",0)
+THEN
+ObjectSetFlag(CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,"RC_DF_UndeadTrader_StartSpotPlayer");
+
+
+//--- Restart waving to a character with delay
+IF
+DialogEnded("RC_DF_UndeadTrader",_Inst)
+AND
+GlobalGetFlag("RC_DF_UndeadTrader_Died",0)
+AND
+DB_DialogPlayers(_Inst,_Player,_)
+THEN
+Proc_RC_DF_UndeadTrader_WaveAgain((CHARACTERGUID)_Player);
+
+PROC
+Proc_RC_DF_UndeadTrader_WaveAgain((CHARACTERGUID)_Player)
+AND
+DB_RC_DF_UndeadTrader_WavedAt(_Player)
+AND
+DB_RC_DF_UndeadTrader_ActiveTimer(_Player)
+THEN
+ProcObjectTimerCancel(_Player,"RC_DF_UndeadTrader_WaveAgain");
+ProcObjectTimer(_Player,"RC_DF_UndeadTrader_WaveAgain",30000);
+
+PROC
+Proc_RC_DF_UndeadTrader_WaveAgain((CHARACTERGUID)_Player)
+AND
+DB_RC_DF_UndeadTrader_WavedAt(_Player)
+AND
+NOT DB_RC_DF_UndeadTrader_ActiveTimer(_Player)
+THEN
+DB_RC_DF_UndeadTrader_ActiveTimer(_Player);
+ProcObjectTimer(_Player,"RC_DF_UndeadTrader_WaveAgain",30000);
+
+
+PROC
+ProcObjectTimerFinished(_Player,"RC_DF_UndeadTrader_WaveAgain")
+AND
+NOT DB_DialogPlayers(_,_Player,_)
+THEN
+NOT DB_RC_DF_UndeadTrader_WavedAt((CHARACTERGUID)_Player);
+NOT DB_RC_DF_UndeadTrader_ActiveTimer((CHARACTERGUID)_Player);
+
+PROC
+ProcObjectTimerFinished(_Player,"RC_DF_UndeadTrader_WaveAgain")
+AND
+DB_DialogPlayers(_Inst,_Player,_)
+AND
+NOT DB_DialogNPCs(_Inst,CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,_)
+THEN
+NOT DB_RC_DF_UndeadTrader_WavedAt((CHARACTERGUID)_Player);
+NOT DB_RC_DF_UndeadTrader_ActiveTimer((CHARACTERGUID)_Player);
+
+PROC
+ProcObjectTimerFinished(_Player,"RC_DF_UndeadTrader_WaveAgain")
+AND
+DB_DialogPlayers(_Inst,_Player,_)
+AND
+DB_DialogNPCs(_Inst,CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,_)
+THEN
+Proc_RC_DF_UndeadTrader_WaveAgain((CHARACTERGUID)_Player);
+
+//END_REGION
+
+
+//REGION Final update (dead trader)
+
+//--- Normal death:
+IF
+CharacterEnteredTrigger(_Player,TRIGGERGUID_S_RC_DF_UndeadTrader_DeadBox_151a724a-e4fb-43e4-afa8-bb4ac4791ed5)
+AND
+UserGetFlag(_Player,"QuestUpdate_RC_DF_UndeadTrader_GaveIngredientA",1)
+THEN
+UserSetFlag(_Player,"QuestUpdate_RC_DF_UndeadTrader_TraderDeadAtRV",0);
+
+
+//--- Alternative death:
+IF
+CharacterSawCharacter(_Player,CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04)
+AND
+DB_IsPlayer(_Player)
+AND
+DB_Dead(CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04)
+THEN
+UserSetFlag(_Player,"QuestUpdate_RC_DF_UndeadTrader_TraderIsDeadElse",0);
+
+
+IF
+CharacterDied(CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04)
+AND
+DB_IsPlayer(_Player)
+AND
+CharacterCanSee(_Player,CHARACTERGUID_S_RC_DF_UndeadTrader_4e5290d8-440b-4b95-b1fd-fae79c27cf04,1)
+THEN
+UserSetFlag(_Player,"QuestUpdate_RC_DF_UndeadTrader_TraderIsDeadElse",0);
+
+
+//--- Player had the quest but didn't deliver the ingredient
+IF
+CharacterEnteredTrigger(_Player,TRIGGERGUID_S_RC_DF_UndeadTrader_DeadBox_151a724a-e4fb-43e4-afa8-bb4ac4791ed5)
+AND
+UserGetFlag(_Player,"QuestUpdate_RC_DF_UndeadTrader_GaveIngredientA",0)
+AND
+UserGetFlag(_Player,"QuestUpdate_RC_DF_UndeadTrader_HeardStory",1)
+THEN
+UserSetFlag(_Player,"QuestUpdate_RC_DF_UndeadTrader_TraderIsDeadElse",0);
+
+
+
+//END_REGION
+
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "ReapersCoast"

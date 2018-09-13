@@ -1,0 +1,168 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//REGION Losing the PROMISED tag
+IF
+ObjectLostTag((CHARACTERGUID)_Player,"PROMISED")
+THEN
+ObjectSetFlag(_Player,"GLO_Promise_PromiseBreaker");
+NOT DB_GLO_Promise_HasBeenAccepted(_Player);
+ObjectClearFlag(_Player,"GLO_Promise_PromiseBound",0);
+
+IF
+ObjectLostTag((CHARACTERGUID)_Player,"PROMISED")
+AND
+CharacterHasSkill(_Player,"Target_Curse",1)
+THEN
+CharacterRemoveSkill(_Player,"Target_Curse");
+
+IF
+ObjectLostTag((CHARACTERGUID)_Player,"PROMISED")
+AND
+CharacterHasSkill(_Player,"Target_Bless",0)
+THEN
+CharacterAddSkill(_Player,"Target_Bless");
+
+IF
+ObjectLostTag((CHARACTERGUID)_Player,"PROMISED")
+AND
+NOT DB_GLO_Promise_HasBeenAccepted(_)
+THEN
+GlobalClearFlag("GLO_Promise_Accepted");
+//END_REGION
+
+//REGION Reset promise in case someone breaks the promise
+// Break promise with punishment in dialog
+IF
+DialogEnded(_Dialog,_Inst)
+AND
+DB_GLO_Promise_BreakPromiseDialog((STRING)_Dialog)
+AND
+DialogGetInvolvedPlayer(_Inst,1,_Char)
+AND
+ObjectGetFlag(_Char,"GLO_Promise_Broken",1)
+THEN
+ObjectClearFlag(_Char,"GLO_Promise_Broken",_Inst);
+PROC_GLO_Promise_Broken((CHARACTERGUID)_Char,1);
+
+// Break promise with punishment -> die and never can be recruited again
+PROC
+PROC_GLO_Promise_Broken((CHARACTERGUID)_Char,1)
+AND
+DB_GLO_Promise_HasBeenAccepted(_Char)
+THEN
+NOT DB_IsPlayer(_Char);
+CharacterDie(_Char,0,"DoT");
+CharacterRemoveFromParty(_Char);
+// NPCs can't be resurrected
+CharacterMakeNPC(_Char);
+
+//Break Promise without Punishment
+IF
+ObjectFlagSet("GLO_Promise_Relieved",(CHARACTERGUID)_Player,_Inst)
+THEN
+ObjectClearFlag(_Player,"GLO_Promise_Relieved",_Inst);
+CharacterUseSkill(_Player, "Shout_Quest_PromiseBreak", _Player, 1, 1, 1);
+
+PROC
+PROC_GLO_Promise_Broken((CHARACTERGUID)_Char,(INTEGER)_WithPunishment)
+AND
+DB_GLO_Promise_HasBeenAccepted(_Char)
+THEN
+ClearTag(_Char,"PROMISED");
+//END_REGION //Reset promise in case someone breaks the promise
+
+//REGION Flags for breaking the Promise effects
+PROC
+Proc_OneTimeEventFlag(_Character,"GLO_PromiseBreak_Effect_Prepare",_)
+THEN
+Proc_GLO_PromiseBreak_Effect_Prepare(_Character);
+
+PROC
+Proc_OneTimeEventFlag(_Character,"GLO_PromiseBreak_Effect_Accept",_)
+THEN
+Proc_GLO_PromiseBreak_Effect_Accept(_Character);
+
+PROC
+Proc_OneTimeEventFlag(_Character,"GLO_Promise_Effect_Stop",_)
+THEN
+Proc_GLO_Promise_Effect_Stop(_Character);
+
+//END_REGION
+
+//REGION Effects of breaking out of Promise
+PROC
+Proc_GLO_PromiseBreak_Effect_Prepare((GUIDSTRING)_Character)
+AND
+DB_CurrentLevel(_CurLevel)
+THEN
+PROC_LoopEffect("RS3_FX_GP_ScriptedEvent_BreakPromise_Start_01",_Character,"FX_GLO_PromiseBreak_Prepare",_CurLevel,"");
+
+PROC
+Proc_GLO_PromiseBreak_Effect_Accept((GUIDSTRING)_Character)
+AND
+DB_CurrentLevel(_CurLevel)
+THEN
+PlayAnimation(_Character,"skill_cast_shout_01_cast");
+PlayEffect(_Character,"RS3_FX_GP_ScriptedEvent_BreakPromise_End_01");
+Proc_GLO_PromiseBreak_Effect_Stop(_Character);
+
+PROC
+Proc_GLO_PromiseBreak_Effect_Stop((GUIDSTRING)_Character)
+THEN
+PROC_StopLoopEffect(_Character,"FX_GLO_PromiseBreak_Prepare");
+
+//END_REGION
+
+//REGION Promise breaking skill
+IF
+CharacterUsedSkill(_Char,"Shout_Quest_PromiseBreak",_,_)
+THEN
+PROC_GLO_Promise_Broken(_Char,0);
+Proc_GLO_PromiseBreaker_BreakIt(_Char);
+
+PROC
+Proc_GLO_PromiseBreaker_BreakIt((CHARACTERGUID)_Char)
+AND
+DB_IsPlayer(_Char)
+AND
+ItemTemplateIsInUserInventory(_Char,"WPN_Ataraxians_Scythe_2H_A_3b45c978-5a42-40b5-a7aa-183852616910",1,_Count)
+AND
+_Count >= 1
+AND
+GetItemForItemTemplateInInventory(_Char,"WPN_Ataraxians_Scythe_2H_A_3b45c978-5a42-40b5-a7aa-183852616910",_Scythe)
+THEN
+ItemSetDurability(_Scythe,0);
+CharacterUnequipItem(_Char,_Scythe);
+UserSetFlag(_Char,"QuestUpdate_CORE_Covenant_Freed");
+
+PROC
+Proc_GLO_PromiseBreaker_BreakIt((CHARACTERGUID)_Char)
+AND
+NOT DB_IsPlayer(_Char)
+AND
+GetItemForItemTemplateInInventory(_Char,"WPN_Ataraxians_Scythe_2H_A_3b45c978-5a42-40b5-a7aa-183852616910",_Scythe)
+THEN
+ItemSetDurability(_Scythe,0);
+CharacterUnequipItem(_Char,_Scythe);
+
+
+//END_REGION
+
+
+//REGION Giving Promise breaker to NPCs (Windego/Almira/Red Princess)
+IF
+ObjectFlagSet("GLO_PromiseBreaker_UseSkill",_Character,_)
+AND
+ObjectIsCharacter(_Character,1)
+THEN
+CharacterUseSkill((CHARACTERGUID)_Character,"Shout_Quest_PromiseBreak",_Character,1,1,1);
+
+//END_REGION
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "GLO_ThePromise_Activation"

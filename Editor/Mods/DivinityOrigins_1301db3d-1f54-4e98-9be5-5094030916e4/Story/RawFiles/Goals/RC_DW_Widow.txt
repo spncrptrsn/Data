@@ -1,0 +1,70 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+//	See Dwarven Widow for details
+//	http://fileserver-dmz/mediawiki/index.php/Dwarven_Widow
+/*
+DB_Dialogs(RC_DW_Docks_Widow_8a4a5e4c-7f27-472c-9e85-1672a700ffd9,"RC_DW_Docks_Widow");
+DB_Dialogs(RC_DW_Docks_WidowHusband_Ghost_18f33649-59b8-4306-81ba-4e942cd078f3,"RC_DW_Docks_WidowHusband_Ghost");
+DB_Dialogs(RC_DW_Docks_WidowSon_66e4cef1-edbc-4dfa-99d2-5c5cb95af497,"RC_DW_Docks_WidowSon");
+
+DB_DW_WidowEvents("RC_DW_WidowResolution_Crazy");
+DB_DW_WidowEvents("RC_DW_WidowResolution_Cheater");
+DB_DW_WidowEvents("RC_DW_WidowResolution_Treasure");
+*/
+KBSECTION
+/*IF
+ObjectFlagSet(_Event,(CHARACTERGUID)_Char,_)
+AND
+DB_DW_WidowEvents(_Event)
+THEN
+DB_Queue(_Event,_Char);
+GlobalSetFlag(_Event);
+
+IF
+DialogEnded("RC_DW_Docks_Widow",_)
+AND
+DB_Queue(_Event,_)
+AND
+DB_DW_WidowEvents(_Event)
+AND
+CharacterIsDead(RC_DW_Docks_WidowSon_66e4cef1-edbc-4dfa-99d2-5c5cb95af497,0)
+THEN
+PROC_RemoveDialogFromCharacter(RC_DW_Docks_Widow_8a4a5e4c-7f27-472c-9e85-1672a700ffd9);
+PROC_RemoveDialogFromCharacter(RC_DW_Docks_WidowSon_66e4cef1-edbc-4dfa-99d2-5c5cb95af497);
+Proc_StartDialog(1,"RC_DW_AD_Docks_Widow",RC_DW_Docks_Widow_8a4a5e4c-7f27-472c-9e85-1672a700ffd9);
+ProcCharacterDisappearOutOfSight(RC_DW_Docks_Widow_8a4a5e4c-7f27-472c-9e85-1672a700ffd9,180,0,"",1);
+ProcCharacterDisappearOutOfSight(RC_DW_Docks_WidowSon_66e4cef1-edbc-4dfa-99d2-5c5cb95af497,180,0,"",1);
+
+IF
+DialogEnded("RC_DW_Docks_Widow",_)
+AND
+DB_Queue(_Event,_)
+AND
+DB_DW_WidowEvents(_Event)
+AND
+CharacterIsDead(RC_DW_Docks_WidowSon_66e4cef1-edbc-4dfa-99d2-5c5cb95af497,1)
+THEN
+PROC_RemoveDialogFromCharacter(RC_DW_Docks_Widow_8a4a5e4c-7f27-472c-9e85-1672a700ffd9);
+ProcCharacterDisappearOutOfSight(RC_DW_Docks_Widow_8a4a5e4c-7f27-472c-9e85-1672a700ffd9,180,0,"",1);
+
+
+
+IF
+ObjectFlagSet("RC_DW_WidowResolution_Treasure",_,_)
+AND
+NOT DB_OnlyOnce("RC_DW_WidowHiddenTreasure_GenerateTreasure")
+THEN
+DB_OnlyOnce("RC_DW_WidowHiddenTreasure_GenerateTreasure");
+
+
+IF
+CharacterUsedItem(_Char,RC_DW_WidowHiddenTreasure_b7972798-77af-4492-954b-fac41dfd5de4)
+AND
+QueryOnlyOnce("RC_DW_WidowHiddenTreasure_GenerateTreasure")
+THEN
+GenerateTreasure(RC_DW_WidowHiddenTreasure_b7972798-77af-4492-954b-fac41dfd5de4,"RewardSmall",-1,_Char);*/
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "ReapersCoast"

@@ -1,0 +1,22 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+DB_GLO_FirstLevelAfterCharacterCreation("TUT_Tutorial_A");
+
+// level name, start point trigger, name of movie to play (if any)
+DB_CharacterCreationTransitionInfo("FJ_FortJoy_Main",(TRIGGERGUID)TRIGGERGUID_StartPoint_001_34d67d87-441c-427d-97bb-4cc506b42fe0,"CS_Drowning");
+DB_CharacterCreationTransitionInfo("TUT_Tutorial_A",(TRIGGERGUID)TRIGGERGUID_StartPoint_000__000_fe2995bf-aa16-8ce7-33a2-8cb8cf228152,"CS_Intro");
+KBSECTION
+PROC
+ProcRemoveOtherOrigins()
+AND
+DB_Origins((CHARACTERGUID)_Origin)
+AND
+IsTagged(_Origin,"AVATAR",0)
+THEN
+// For source collars
+DB_OriginNotSelected(_Origin);
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "DOS2ModWrapper"

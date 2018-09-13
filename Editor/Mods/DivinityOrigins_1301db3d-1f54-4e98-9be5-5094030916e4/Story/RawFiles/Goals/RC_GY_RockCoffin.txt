@@ -1,0 +1,72 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+// Rock coffin
+DB_ShovelArea(TRIGGERGUID_S_RC_GY_RockCoffinArea_9619463b-0153-4866-a8f5-a9e7252f2720,"RC_GY_RockCoffinReward",ITEMGUID_S_RC_GY_RockCoffinPile_1a077945-bcdf-43ab-9112-405900f8a7cc);
+DB_ShovelRewardItemAppear("RC_GY_RockCoffinReward",ITEMGUID_S_RC_GY_RockCoffin_4af9efd6-5c06-4d3d-b131-1f9411ded00d,TRIGGERGUID_S_RC_GY_RockCoffinReward_151277ef-bd98-4dbd-ad3e-1861660ce214);
+
+DB_RC_GY_RockCoffinItem((ITEMGUID)ITEMGUID_S_RC_GY_CoffinRock_1_3dfadf91-478e-4609-a6da-e508e2e96140);
+DB_RC_GY_RockCoffinItem(ITEMGUID_S_RC_GY_CoffinRock_2_bb9c0693-070c-4bbc-98ab-a6f14bb9f31b);
+DB_RC_GY_RockCoffinItem(ITEMGUID_S_RC_GY_CoffinRock_3_e2f0ab7f-266e-4f0d-8e26-54ad5f14a2e0);
+DB_RC_GY_RockCoffinItem(ITEMGUID_S_RC_GY_RockCoffinLetter_f121fad2-d5d4-4cd4-bb27-939bdd458782);
+
+DB_Dialogs(ITEMGUID_S_RC_GY_RockCoffinSkeleton_7d488538-9508-43f5-9223-c8b0eb9ad9a7,"RC_GY_RockCoffinSkeleton");
+
+//QuestUpdate_RC_GY_RockCoffin_KnowAboutRocks
+// QuestUpdate_RC_GY_RockCoffin_KnowAboutSkeleton
+
+//DB_QuestDef_AddEvent("RC_GY_RockCoffin","QuestUpdate_RC_GY_WronglyBuried_SeenGrave");
+//DB_QuestDef_State("RC_GY_RockCoffin","KnowAboutRocks");
+//DB_QuestDef_State("RC_GY_RockCoffin","KnowAboutSkeleton");
+
+//RockCoffin Grave
+DB_Ghosts(CHARACTERGUID_S_RC_GY_RockCoffinGhost_61279052-dc8d-4e1f-903b-093a21d16b1e,"RC_GY_RockCoffinGhost");
+
+DB_ShovelArea(TRIGGERGUID_S_RC_FL_RockCoffinLootArea_74e82653-65c0-421d-b6f4-c20f47c71976,"RC_GY_RockCoffinLoot",ITEMGUID_S_RC_FL_RockCoffinLoot_e3ce7b84-7895-4f06-a4e6-652acb05175c);
+DB_ShovelRewardItemAppear("RC_GY_RockCoffinLoot",ITEMGUID_S_RC_FL_RockCoffinChest_ac67da57-a620-422e-be89-867cc96a3676,TRIGGERGUID_S_RC_FL_RockCoffinLoot_9024b787-b654-4585-bbb0-338bcc8f9bdd);
+KBSECTION
+IF
+DialogEnded("RC_GY_RockCoffinSkeleton",_ID)
+AND
+DialogGetInvolvedPlayer(_Id,1,(CHARACTERGUID)_Player)
+AND
+UserGetFlag(_Player,"RC_GY_RockCoffinSkeletonComment",0)
+THEN
+UserSetFlag(_Player,"RC_GY_RockCoffinSkeletonComment");
+StartVoiceBark("RC_GY_VB_RockCoffinSkeleton",_Player);
+
+IF
+GameBookInterfaceClosed(ITEMGUID_S_RC_GY_RockCoffinLetter_f121fad2-d5d4-4cd4-bb27-939bdd458782,_Player)
+AND
+UserGetFlag(_Player,"RC_GY_RockCoffinLetter",0)
+THEN
+CloseUI(_Player,"Inventory");
+UserSetFlag(_Player,"RC_GY_RockCoffinLetter");
+//ObjectSetFlag(_Player,"QuestUpdate_RC_GY_RockCoffin_KnowAboutRocks");
+StartVoiceBark("RC_GY_VB_RockCoffinNote",_Player);
+
+IF
+DB_RC_GY_RockCoffinItem(_Item)
+THEN
+ItemToInventory(_Item,ITEMGUID_S_RC_GY_RockCoffin_4af9efd6-5c06-4d3d-b131-1f9411ded00d);
+
+IF
+CharacterUsedItem(_Player,ITEMGUID_S_RC_GY_RockCoffin_4af9efd6-5c06-4d3d-b131-1f9411ded00d)
+AND
+QueryOnlyOnce("RC_GY_RockCoffinRocksVB")
+THEN
+StartVoiceBark("RC_GY_VB_RockCoffinRocks",_Player);
+
+IF
+ObjectFlagSet("QuestUpdate_RC_GY_RockCoffin_Loot",(CHARACTERGUID)_Player,_)
+THEN
+AddSecret(_Player,"RC_FL_RockCoffinLoot");
+
+PROC
+ProcShovelRewards(_,"RC_GY_RockCoffinLoot")
+THEN
+Proc_GhostHacks_GhostPoof(CHARACTERGUID_S_RC_GY_RockCoffinGhost_61279052-dc8d-4e1f-903b-093a21d16b1e);
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "ReapersCoast"

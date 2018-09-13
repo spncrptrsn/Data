@@ -1,0 +1,577 @@
+<root version="0.0">
+	<modules>
+		<module name="Color" id="B369FAD0-CC26-42F3-BDC2-0B8F120C6081" required="False">
+			<properties>
+				<property name="Color" id="93b34a52-eef2-4f88-80f6-19e3126188ca" component="ParticleSystem" operation="Multiply" number_of_parameters="4" />
+				<property name="Color" id="2bd3e2db-d026-4087-9ffa-2acdf9cf7e25" component="Billboard" operation="Multiply" number_of_parameters="4" />
+				<property name="Brightness" id="eee0f178-cc3a-419a-9da5-28990a669357" component="Billboard" operation="Multiply" number_of_parameters="1" />
+				<property name="Color" id="4dd77ddd-853f-4f44-9c4d-83f8493dd54a" component="Model" operation="Multiply" number_of_parameters="4" />
+				<property name="Brightness" id="6cbb9e51-0d17-4916-9666-30d8c7b47e81" component="Model" operation="Multiply" number_of_parameters="1" />
+				<property name="Color" id="44ef1221-1385-4834-98b7-4a727f1aa6da" component="Light" />
+				<property name="Override Light Template Color" id="e6619a81-60ae-4807-ab75-42be259ebaa8" component="Light" />
+				<property name="Use Random Color" id="7ce1d562-43cb-46e2-97f3-6f0207298d83" component="ParticleSystem" />
+				<property name="Brightness" id="7b01f163-d329-4cd0-97f0-31115055b9c8" component="ParticleSystem" operation="Multiply" number_of_parameters="1" />
+				<property name="Color" id="2c9b4a60-d769-4697-b0fd-dd02eda88443" component="Decal" operation="Multiply" number_of_parameters="4" />
+				<property name="Brightness" id="590ace0d-11d8-41bf-a337-ee8e9782de3f" component="Decal" operation="Multiply" number_of_parameters="1" />
+				<property name="Color" id="9d4c91f9-a9bd-4be0-a416-bf3d1242e727" component="Ribbon" operation="Multiply" number_of_parameters="4" />
+				<property name="Brightness" id="749facaa-68e8-4c2c-b7c5-fe36da20f5e7" component="Ribbon" operation="Multiply" number_of_parameters="1" />
+				<property name="Initial Color" id="e90b3cdf-e477-4212-9193-d746c74313a9" component="Ribbon" />
+				<property name="Initial Brightness" id="dc4081ae-136a-43f5-bda5-5884ef07363f" component="Ribbon" />
+				<property name="Color" id="3237a2f2-de49-49e9-939f-2224ee8413a9" component="OverlayMaterial" operation="Multiply" number_of_parameters="4" />
+				<property name="Brightness" id="18f82423-f5a6-47bc-8e35-3731038b5bb3" component="OverlayMaterial" />
+			</properties>
+		</module>
+		<module name="Color Over Effect Life" id="bf4bb6b1-21ad-4f8b-adfb-581a277c8ccb" required="False">
+			<properties>		
+				<property name="Color" id="bb1e9c04-b4b9-4407-af31-effec5a9d46a" component="ParticleSystem" />
+				<property name="Brightness" id="1dc673ff-bbe4-4852-9615-78cd6a835d19" component="ParticleSystem" operation="Multiply" number_of_parameters="1" />
+				<property name="Color" id="ddca64b7-7411-439f-ba99-7e6f842121f1" component="Ribbon" />
+				<property name="Brightness" id="02a1ee37-3994-4250-990e-27ead277c1c2" component="Ribbon" operation="Multiply" number_of_parameters="1" />
+			</properties>				
+		</module>
+		<module name="Flipbook" id="77FCFF12-C782-43BB-84C4-9626D2FD1575" required="False">
+			<properties>
+				<property name="Horizontal Image Count" id="b0a263d3-3d10-466d-8028-91be42b846e9" component="ParticleSystem" />
+				<property name="Vertical Image Count" id="346b8050-9a4e-49ad-8d58-f9c92585aaa7" component="ParticleSystem" />
+				<property name="Image Controller" id="b10c884a-ff26-4a8b-a124-d9830381129a" component="ParticleSystem" />
+				<property name="Use Random Start Frame" id="2a830022-e27e-4620-8bfa-02ecae81c08b" component="ParticleSystem" />
+				<property name="Use Image Controller" id="11522cb4-a43f-4a3d-924a-37191d74df1f" component="ParticleSystem" />
+				<property name="Frame Rate" id="c9d2f8b5-4122-4ec8-9be3-4b536571e879" component="ParticleSystem" />
+				<property name="Initial Frame" id="18bbdfb0-2fc0-4f0d-943e-3d2b792bc713" component="ParticleSystem" />
+				<property name="Frame Range" id="6c6b4ae6-64cf-4db4-8ada-45f602dd7686" component="ParticleSystem" />				
+				<property name="Horizontal Image Count" id="2debeb9d-11f7-4cf8-ac3a-6bd8f584d329" component="Ribbon" />
+				<property name="Vertical Image Count" id="f10f74b4-9130-4023-956e-fbffa6e95cb2" component="Ribbon" />
+				<property name="Image Controller" id="172609c7-1aa5-4c57-88aa-f77d285f9713" component="Ribbon" />
+				<property name="Use Random Start Frame" id="bc4566fd-0058-4a04-9a5c-6ff43d17aaf0" component="Ribbon" />
+				<property name="Use Image Controller" id="7130cbaf-a378-4c8c-9248-6309828d5a8a" component="Ribbon" />
+				<property name="Frame Rate" id="5a4c0ad3-d21c-4da5-a430-ff58753c5274" component="Ribbon" />
+				<property name="Initial Frame" id="73bd9167-043a-4144-a4f0-50b251a4e8cb" component="Ribbon" />
+				<property name="Frame Range" id="f2447654-cd28-49c9-89bd-7244082eba3c" component="Ribbon" />
+			</properties>
+		</module>
+		<module name="Scale" id="6737872C-53C1-424D-A16D-61A87A84D8E7" required="False">
+			<properties>
+				<property name="Axis Scale" id="3ab58b27-d41b-4221-b714-cb35fd213ce7" component="ParticleSystem" operation="Multiply" number_of_parameters="3" />
+				<property name="Axis Scale" id="2bea542b-790f-4ef8-877b-5a97335adb1f" component="Model" operation="Multiply" number_of_parameters="3" />
+				<property name="Axis Scale" id="f3484110-d5df-45ca-98d8-3353741a04cd" component="Ribbon" operation="Multiply" number_of_parameters="3" />
+				<property name="Uniform Scale" id="02e6012f-51af-4f4c-8897-2b8421952fa1" component="ParticleSystem" operation="Multiply" number_of_parameters="1" />
+				<property name="Uniform Scale" id="d185f572-3310-4908-8066-52c3813e3256" component="Billboard" operation="Multiply" number_of_parameters="1" />
+				<property name="Uniform Scale" id="f80eefa7-3ffe-4c08-b043-596ae48487f8" component="Model" operation="Multiply" number_of_parameters="1" />
+				<property name="Uniform Scale" id="77096776-b8e7-464f-a1f4-2c827606bf04" component="Decal" operation="Multiply" number_of_parameters="1" />
+				<property name="Uniform Scale" id="a7aa3070-02be-4618-a67d-d7a86c07f38a" component="Ribbon" operation="Multiply" number_of_parameters="1" />
+			</properties>
+		</module>
+		<module name="Scale Over Effect Life" id="a422ed8c-1310-461e-8362-c85018b918c5" required="False">
+			<properties>
+				<property name="Axis Scale" id="b7f89b82-4697-458a-b7c0-9a31e4313e71" component="ParticleSystem" operation="Multiply" number_of_parameters="3" />
+				<property name="Axis Scale" id="84b21ef1-9b34-4758-9cd5-1978bdd3bb04" component="Ribbon" operation="Multiply" number_of_parameters="3" />
+				<property name="Uniform Scale" id="9984af4f-eed0-43dc-bd02-ff09d3052919" component="ParticleSystem" operation="Multiply" number_of_parameters="1" />
+				<property name="Uniform Scale" id="30a7e529-76f5-43db-aa11-ab24a95c0f4c" component="Ribbon" operation="Multiply" number_of_parameters="1" />
+			</properties>		
+		</module>
+		<module name="Position" id="E2AFC256-8CF0-4FB7-94AB-88CFB02CC1F4" required="False">
+			<properties>
+				<property name="Position" id="726ea55f-d0f9-4176-9a22-c5539199a83a" component="ParticleSystem" operation="Add" number_of_parameters="3" />
+				<property name="Position" id="743865b1-2100-483e-97d7-dcde81dc5069" component="Billboard" operation="Add" number_of_parameters="3" />
+				<property name="Position" id="47a42cb9-3508-427e-8a09-8d8cc74771b7" component="Model" operation="Add" number_of_parameters="3" />
+				<property name="Position" id="5b80f982-c9f9-426c-8d35-cdcad8250e4b" component="GravityForce" operation="Add" number_of_parameters="3" />
+				<property name="Position" id="12722684-fa38-4a52-b851-958300ac67aa" component="TurbulenceForce" operation="Add" number_of_parameters="3" />
+				<property name="Position" id="23c87db2-a7b6-4a5a-b67b-025c4d13cc93" component="RadialForce" operation="Add" number_of_parameters="3" />
+				<property name="Position" id="6446ffbf-d9af-458b-bafa-cfb01b311d36" component="VortexForce" operation="Add" number_of_parameters="3" />
+				<property name="Position" id="ab008548-c038-4110-ac22-cbb9fb501ded" component="OrbitForce" operation="Add" number_of_parameters="3" />
+				<property name="Position" id="ee45a854-d341-4e79-931c-6616b8e68b73" component="DragForce" operation="Add" number_of_parameters="3" />
+				<property name="Position" id="019c887c-aa10-484c-b834-67e8daa1d85f" component="SpinForce" operation="Add" number_of_parameters="3" />
+				<property name="Position" id="c1115291-39d1-43a2-8259-31c2ef4dbd93" component="BoundingSphere" operation="Add" number_of_parameters="3" />
+				<property name="Position" id="cb4e2b66-a917-4cd3-a8ea-4170e256c945" component="Light" operation="Add" number_of_parameters="3" />
+				<property name="Position" id="5f4ed802-b17e-4533-aaef-8a1c2bf8742c" component="Decal" operation="Add" number_of_parameters="3" />
+				<property name="Position" id="0eb8a07f-3d26-45ef-b824-50fff8255c3d" component="Ribbon" operation="Add" number_of_parameters="3" />
+			</properties>
+		</module>
+		<module name="Orientation" id="850BBB8B-7D61-4C52-9A62-8743AD42D5BC" required="False">
+			<properties>
+				<property name="Initial Orientation/Axis Lock" id="00951f0a-c966-41f6-a86a-32e4a0ea8443" component="ParticleSystem" />
+				<property name="Use Random Orientation" id="ba86eab9-3098-44e7-aa8b-f64351c31e48" component="ParticleSystem" />
+				<property name="Use Random Yaw" id="33eb2734-bc72-4eba-84ab-8897447b951f" component="ParticleSystem" />
+				<property name="Align To Camera" id="d2019da1-1d79-41cd-89f1-3040c9ea9168" component="ParticleSystem" />
+				<property name="Align To Velocity" id="8918e423-678f-4a00-ba83-47ccbcf45048" component="ParticleSystem" />
+				<property name="Initial Orientation/Axis Lock" id="340fde63-0fe7-4e61-9135-683fa05251ed" component="Ribbon" />
+				<property name="Use Random Orientation" id="847c5ebb-c788-4e2f-9cda-9da19c80df11" component="Ribbon" />
+				<property name="Use Random Yaw" id="2c705480-0d19-40c5-ad12-4ff2cfd4d319" component="Ribbon" />
+				<property name="Align To Camera" id="41e653d9-a8b6-42bd-a36d-3142dd3c8a1c" component="Ribbon" />
+				<property name="Align To Velocity" id="b00dcd0a-9510-4f72-97ab-7f63162ceac0" component="Ribbon" />				
+			</properties>
+		</module>
+		<module name="Lifetime" id="65EB458E-EF51-4FBD-BD7F-BEDACD59A02F" required="False">
+			<properties>
+				<property name="Lifetime" id="352fac77-0097-47ec-908c-7c0d334fc161" component="ParticleSystem" operation="Multiply" number_of_parameters="2" />
+				<property name="Infinite Lifetime" id="b3d95d98-4a86-4b94-84c5-fd58a083e65f" component="ParticleSystem" />
+				<property name="Lifetime" id="40a59ac7-517e-4aff-bb57-265baa1dfbd6" component="Ribbon" operation="Multiply" number_of_parameters="1" />
+			</properties>
+		</module>
+		<module name="Initial Rotation" id="640CB9E3-BCCE-4067-A699-7F92FA927931" required="False">
+			<properties>
+				<property name="Random Initial Rotation" id="a1d24203-e9f7-4066-ba47-6ee9f9ebcf83" component="ParticleSystem" />
+				<property name="Initial Rotation Angle" id="8ac28820-26ab-4bbe-bded-41597208ba05" component="ParticleSystem" />
+				<property name="Initial Rotation" id="4a72a815-57fb-4fcb-9a50-1024331ce66a" component="Model" /> 
+				<property name="Initial Rotation" id="154e8e14-029e-4d73-baa2-8a4206733a60" component="Light" /> 
+			</properties>
+		</module>
+		<module name="Snap To Ground" id="2E014286-AC9F-42B4-B093-FA5899B30DB7" required="False">
+			<properties>
+				<property name="Snap To Ground" id="ccdcf9a0-c9c4-43d1-ae12-1d5950b7d04a" component="Model" />
+				<property name="Snap To Ground" id="ef23c219-bdf5-4523-9c1b-8340ba6e0038" component="Billboard" />
+				<property name="Snap To Ground" id="2638e6a3-aea9-472a-90d9-bb09aa9399bf" component="ParticleSystem" />
+				<property name="Snap To Ground" id="16999b81-6d94-4dac-975e-d1ee57a8e8d5" component="Light" />
+			</properties>
+		</module>		
+		<module name="Rotation Over Life" id="CA00908F-840D-47ED-9DC2-8AB4372EE17C" required="False">
+			<properties>
+				<property name="Rotation/Life" id="ba01543e-cd06-4c35-8e81-68d3fd7a7af8" component="ParticleSystem" />
+				<property name="Rotation/Life" id="c57b1310-2df9-4339-bdf8-a97475e121ff" component="Model" />
+				<property name="Rotation/Life" id="6bbd1006-0420-4be8-9531-e5dfda758606" component="Light" />
+			</properties>
+		</module>
+		<module name="Initial Rotation Rate" id="7A5401D4-8169-4140-AEE9-4B8BB7A6364E" required="False">
+			<properties>
+				<property name="Initial Rotation Rate" id="7b539b7a-acad-48fb-b469-4edb97e395af" component="ParticleSystem" />
+			</properties>
+		</module>
+		<module name="Rotation Rate Over Life" id="A3D58C51-3BF5-44CA-9772-2957BC2C79CE" required="False">
+			<properties>
+				<property name="Rotation Rate/Life" id="51cb5783-3b15-4f74-9d21-66e91b65a054" component="ParticleSystem" operation="Multiply" number_of_parameters="1" />
+			</properties>
+		</module>
+		<module name="Initial Velocity" id="CB4F2A13-F7BF-4568-88EC-0211637C05CF" required="False">
+			<properties>
+				<property name="Initial Velocity" id="79ab5e9c-2d87-496c-83bd-1b6c78cbd095" component="ParticleSystem" operation="Multiply" number_of_parameters="1" />
+				<property name="Init. Velocity Angle" id="48938cdf-26e0-489f-b123-db5cffbc75bf" component="ParticleSystem" />
+				<property name="Init. Velocity Axis" id="917df2bc-bbb3-4205-8d28-2450ea069f00" component="ParticleSystem" />
+				<property name="Init. Velocity Axis Rotation" id="c3104b9e-4fe7-48cc-8cfd-6fe58528b7ea" component="ParticleSystem" />
+				<property name="Initial Velocity" id="2c698d7d-d7fa-4d75-8194-3755f3a5fb19" component="Ribbon" operation="Multiply" number_of_parameters="1" />
+				<property name="Init. Velocity Angle" id="5e33f89f-6c02-4872-9195-523ae4384694" component="Ribbon" />
+				<property name="Init. Velocity Axis" id="6a7ff03d-85c5-4829-be4d-128dc28619de" component="Ribbon" />
+				<property name="Init. Velocity Axis Rotation" id="7d54698b-2838-4a92-a5cb-c1ab750ab592" component="Ribbon" />				
+			</properties>
+		</module>
+		<module name="Inherit Velocity" id="C38EA347-1E82-4EE2-B929-8A6153530F8D" required="False">
+			<properties>
+				<property name="Inherit Velocity" id="ec6a86f4-b53b-495a-99d2-df3accb37755" component="ParticleSystem" />
+				<property name="Inherit Velocity" id="ad7af8f5-89c8-4771-8d7f-900f4a342bb9" component="Ribbon" />
+			</properties>
+		</module>
+		<module name="Keyframed Position" id="7A790AE7-3B1C-463E-BB1F-5CC14980B78C" required="False">
+			<properties>
+				<property name="Keyframed Position" id="a14d2803-fec4-4015-9e37-eb67e1c2f1d8" component="ParticleSystem" operation="Add" number_of_parameters="3" />
+				<property name="Keyframed Position" id="37b047c1-8fb7-4e7c-9319-58db9da44e77" component="Model" operation="Add" number_of_parameters="3" />
+				<property name="Keyframed Position" id="d333ce4c-c2e0-4288-a254-fe16cea14618" component="Billboard" operation="Add" number_of_parameters="3" />
+				<property name="Keyframed Position" id="721afcae-d45c-4a53-a4fb-79878039ed69" component="GravityForce" operation="Add" number_of_parameters="3" />
+				<property name="Keyframed Position" id="8d4c058c-d5c5-4b1f-832b-246ba27d7b83" component="TurbulenceForce" operation="Add" number_of_parameters="3" />
+				<property name="Keyframed Position" id="0231ab31-6eb3-4927-b07e-6381c1fa556e" component="RadialForce" operation="Add" number_of_parameters="3" />
+				<property name="Keyframed Position" id="f8df9f43-0557-452e-b558-bada0730378f" component="VortexForce" operation="Add" number_of_parameters="3" />
+				<property name="Keyframed Position" id="eaad015a-d436-4eda-8461-fb6032d2e92c" component="OrbitForce" operation="Add" number_of_parameters="3" />
+				<property name="Keyframed Position" id="10c6268b-cda8-47c4-9cda-59983feb3d03" component="DragForce" operation="Add" number_of_parameters="3" />
+				<property name="Keyframed Position" id="edd76c2e-6d13-43d0-816f-1c95b97a3a36" component="SpinForce" operation="Add" number_of_parameters="3" />
+				<property name="Keyframed Position" id="c6976232-4af2-4ba1-984b-662bcb27a04a" component="Light" operation="Add" number_of_parameters="3" />
+				<property name="Keyframed Position" id="6039a9ff-8523-42f6-a906-f8a113615580" component="Decal" operation="Add" number_of_parameters="3" />
+				<property name="Keyframed Position" id="74ef588e-bbc9-4260-bb62-95d4203b4a0e" component="Ribbon" operation="Add" number_of_parameters="3" />
+			</properties>
+		</module>
+		<module name="Local Origin" id="D81411DB-361B-4977-8404-C801792E6F0F" required="False">
+			<properties>
+				<property name="Local Origin" id="e61c0b01-fb6f-44d5-a872-72307b531297" component="ParticleSystem" />
+			</properties>
+		</module>
+		<module name="Velocity Over Life" id="58D5F6D5-40E6-4C1A-B576-41DE2D87FA88" required="False">
+			<properties>
+				<property name="Velocity/Life" id="d21302c1-7e5f-4277-ba5c-bbed2297fa84" component="ParticleSystem" />
+				<property name="Velocity/Life" id="27017ce3-8674-4dfb-95e5-06ea093019ad" component="Ribbon" />
+			</properties>
+		</module>
+		<module name="Bloom" id="94A1372A-4EF5-4DD2-A204-EE002A85A716" required="False">
+			<properties>
+				<property name="Enabled" id="20588fe1-aa57-4b6a-8e8c-9c50ab2697c4" component="PostProcess" />
+				<property name="Threshold" id="e527a8da-1b59-4090-9132-bbbd40f94c53" component="PostProcess" />
+				<property name="Amount" id="c874c8f1-4a4e-40dc-b904-77d7b056a26a" component="PostProcess" />
+			</properties>
+		</module>
+		<module name="Color Correction" id="5DC9E113-4260-491F-84E2-250A0B18140C" required="False">
+			<properties>
+				<property name="Enabled" id="c842ec0e-aa7d-4aba-854c-2e6ace5dd47b" component="PostProcess" />
+				<property name="Saturation" id="7f496d34-3109-497f-b609-5c21a1357311" component="PostProcess" />
+				<property name="Target Color" id="fe27ebcb-aaf2-4783-9ccb-f6624cde277b" component="PostProcess" />
+				<property name="Source Color" id="e29175a6-f089-4280-a687-26e0c6d678bd" component="PostProcess" />
+			</properties>
+		</module>
+		<module name="Depth Of Field" id="50193F98-5C7A-4E27-BA06-0F2CAE3B5C7A" required="False">
+			<properties>
+				<property name="Enabled" id="1d219ead-f7fe-4fad-a7c9-90bccd6b48e2" component="PostProcess" />
+				<property name="Aperature" id="deced8be-3a0e-4dcc-ad87-5b1e29ebdfc9" component="PostProcess" />
+				<property name="Focal Distance" id="573b8b80-b88e-4af1-9c4c-b281de5ded61" component="PostProcess" />
+				<property name="Near Only" id="fce4468a-553b-4239-9acf-4985a68ba056" component="PostProcess" />
+			</properties>
+		</module>
+		<module name="FTM" id="3C69D5CB-5F2A-40B7-915D-8238E58C75C2" required="False">
+			<properties>
+				<property name="Enabled" id="7d014f3b-622c-4dc3-bad1-8f9a38df00bc" component="PostProcess" />
+				<property name="Shoulder Strength" id="38a7fd6b-6362-4a91-aba2-93dcc1b005fa" component="PostProcess" />
+				<property name="Linear Strength" id="12729ad3-5a3d-410b-b88f-b4b57974a0d9" component="PostProcess" />
+				<property name="Toe Strength" id="edfe3278-a357-4527-8ad8-7abd6917c8e1" component="PostProcess" />
+			</properties>
+		</module>
+		<module name="Vignette" id="2DB67B3F-B6A4-4B50-BFE6-1383F60984FA" required="False">
+			<properties>
+				<property name="Enabled" id="a23a0fc1-8003-485a-8395-bc34cace0907" component="PostProcess" />
+				<property name="Color" id="e9f9ab29-4fa2-46f1-8949-ba1dffeeb5de" component="PostProcess" />
+				<property name="Intensity" id="2d99ae82-2f91-4170-a93d-be68d6c30af9" component="PostProcess" />
+				<property name="Power" id="ebe6f8be-3b50-4373-9c71-36aa2a6ef708" component="PostProcess" />
+			</properties>
+		</module>
+		<module name="Influence Radius" id="6FAF6F60-8C77-4A47-B9FE-624B540F49D4" required="False">
+			<properties>
+				<property name="Influence Radius" id="dddbc8df-85ae-42fc-8808-9bd1b4b327ae" component="GravityForce" operation="Multiply" number_of_parameters="1" />
+				<property name="Influence Radius Applied" id="324b6513-313a-481c-bdd4-af5d055c01f5" component="GravityForce" />
+				<property name="Influence Radius" id="50891b1b-75e5-4370-96a4-d6d057f27d12" component="TurbulenceForce" operation="Multiply" number_of_parameters="1" />
+				<property name="Influence Radius Applied" id="3b9f9e24-afc5-4549-a5d8-58c603c057eb" component="TurbulenceForce" />
+				<property name="Influence Radius" id="8599ceea-95f4-4d03-98c4-6f040b8ccadb" component="RadialForce" operation="Multiply" number_of_parameters="1" />
+				<property name="Influence Radius Applied" id="068e53a8-a37a-467d-905e-08b509228004" component="RadialForce" />
+				<property name="Influence Radius" id="52a310d1-c0ab-49a6-8088-65fa453cc231" component="VortexForce" operation="Multiply" number_of_parameters="1" />
+				<property name="Influence Radius Applied" id="527c83db-9795-4428-848c-589d5cda5b77" component="VortexForce" />
+				<property name="Influence Radius" id="c2c55696-7739-4ff7-9800-5a3b7c97e8f3" component="DragForce" operation="Multiply" number_of_parameters="1" />
+				<property name="Influence Radius Applied" id="6ea43df4-b027-4e5f-9d12-336272097ba4" component="DragForce" />
+				<property name="Influence Radius" id="ff5f3988-acbe-4215-8f38-eece1cb7418d" component="SpinForce" operation="Multiply" number_of_parameters="1" />
+				<property name="Influence Radius Applied" id="d6323bb1-cffb-494c-9192-88d5f710a0d5" component="SpinForce" />
+			</properties>
+		</module>
+		<module name="Lock Distance" id="E31BC899-2650-45BA-A3B8-ECDA836443F5" required="False">
+			<properties>
+				<property name="Lock Distance" id="c8884121-a043-48b3-a2c4-881eb210b5e5" component="RadialForce" />
+				<property name="Lock Distance Applied" id="e8dbcc06-bb3f-48a9-b0b0-36a69fc79879" component="RadialForce" />
+			</properties>
+		</module>
+		<module name="Required" id="286DF729-035E-4BB8-A210-C836DDBBBACC" required="True">
+			<properties>
+				<property name="Name" id="ef1d7d1e-02b6-4548-80d9-5ef2fbcda237" component="ParticleSystem" />
+				<property name="Start / End Time" id="035b5248-d0ca-44b7-853f-3acb84110e67" component="ParticleSystem" />
+				<property name="Maximum Particle Count" id="21176254-19ca-43e0-a890-b20fd264cca3" component="ParticleSystem" />
+				<property name="Emit Rate" id="b16512bc-8157-4c11-bfde-732ec940b841" component="ParticleSystem" />
+				<property name="Emit Stutter" id="7da7d536-8b67-49b7-b3fe-97e9843eb902" component="ParticleSystem" />
+				<property name="Initial Particle Count" id="20d22bbd-2e85-41e1-bc13-00b2a72cdf9b" component="ParticleSystem" />
+				<property name="Render Style" id="c6f612f7-5a7a-4c31-88c3-e554a499cc12" component="ParticleSystem" />
+				<property name="Mesh GUID" id="9cfd15fe-53b7-4718-bd42-5f58b16ec045" component="ParticleSystem" />
+				<property name="Attached Fx" id="123dfa31-cfa4-4213-b61c-fa55d2487610" component="ParticleSystem" />
+				<property name="Attached Fx Align To Velocity" id="30c62052-66a7-4190-8a2e-cc91baac184b" component="ParticleSystem" />
+				<property name="Render Order" id="4d78b4b0-04ad-4590-953b-74d4dbce1043" component="ParticleSystem" />
+				<property name="Coordinate Space" id="b13c2ffd-c94f-4d56-947e-07077287ec52" component="ParticleSystem" />
+				<property name="Warm Up Time" id="0b3e3b0f-e0c6-492d-892c-a7100b2d9edd" component="ParticleSystem" />
+				<property name="Render Channel" id="5921288b-5879-451a-8cea-9dcf57d5cae4" component="ParticleSystem" />
+				<property name="Material GUID" id="f01fec2b-558c-48b2-b8bc-0644cdb9fcca" component="ParticleSystem" />
+				<property name="Attached Effect Only" id="46a4220d-fdfc-4a4c-b0d5-a6f001c53a1e" component="ParticleSystem" />
+				<property name="Attached Effect Inherits Scale" id="9fbf3c9e-e278-4248-bc28-c0856033efeb" component="ParticleSystem" />
+				<property name="Apply Lighting" id="8cbc5ac4-3768-479a-9157-dd353fa98970" component="ParticleSystem" />
+				<property name="Name" id="ef1d7d1e-02b6-4548-80d9-5ef2fbcda237" component="Billboard" />
+				<property name="Start / End Time" id="035b5248-d0ca-44b7-853f-3acb84110e67" component="Billboard" />
+				<property name="Text" id="3dbd903d-b1ba-41cc-a945-cee20521c43c" component="Billboard" />
+				<property name="Font" id="ac3365ed-f6e7-4835-af1d-1545024f7479" component="Billboard" />
+				<property name="Character Height" id="bcd05997-d1a6-427d-af54-f5c3c94e51d4" component="Billboard" />
+				<property name="Facing" id="8000b283-17a0-4ee2-b7fb-72e1bd244fd4" component="Billboard" />
+				<property name="Size" id="04696f8f-df5d-4027-a565-b392b791b288" component="Billboard" />
+				<property name="Orientation" id="abc80e33-e0fc-4d16-a5ca-a0ae3e170017" component="Billboard" />
+				<property name="Render Channel" id="29b4ee91-ceae-467b-a51d-f26f8769fe73" component="Billboard" />
+				<property name="Material GUID" id="df08d1dc-6a90-43b8-b72c-7feb0340b319" component="Billboard" />
+				<property name="Name" id="ef1d7d1e-02b6-4548-80d9-5ef2fbcda237" component="Model" />
+				<property name="Start / End Time" id="035b5248-d0ca-44b7-853f-3acb84110e67" component="Model" />
+				<property name="Mesh GUID" id="15864e49-e811-41aa-9f27-f2ca410a13cf" component="Model" />
+				<property name="Render Channel" id="8d939afa-16c8-40ac-b38d-6c425ebf65e1" component="Model" />
+				<property name="Animation" id="9afe3e5a-45f2-4adb-87d7-65dddc618e21" component="Model" />
+				<property name="Animation Speed" id="bf03c940-4b49-46cd-8147-cd335ea7397a" component="Model" />
+				<property name="Show Skeleton" id="064a54e8-0f77-493d-9e0c-593157cc5bef" component="Model" />
+				<property name="Rotation" id="e5ece95a-a162-4a49-b029-cbc701fb00e4" component="Model" />
+				<property name="Fade Out Time" id="8771c2c7-091d-4d1f-b7cb-91f87f6a486a" component="Model" />
+				<property name="UV Offset" id="ce8b26c1-f96f-4644-914e-ba2ed398654e" component="Model" />
+				<property name="Cast Shadows" id="485f96e4-96e0-42eb-b8f5-82821474cde7" component="Model" />
+				<property name="Receive Decals" id="cefb821b-d1da-4110-a993-3b2736595cec" component="Model" />
+				<property name="Name" id="ef1d7d1e-02b6-4548-80d9-5ef2fbcda237" component="GravityForce" />
+				<property name="Start / End Time" id="035b5248-d0ca-44b7-853f-3acb84110e67" component="GravityForce" />
+				<property name="Acceleration" id="7e7b19f5-6f86-410f-abb9-67695236e227" component="GravityForce" />
+				<property name="Direction" id="4b80d294-aeb1-490c-a8d9-95eab2923e71" component="GravityForce" />
+				<property name="Name" id="ef1d7d1e-02b6-4548-80d9-5ef2fbcda237" component="TurbulenceForce" />
+				<property name="Start / End Time" id="035b5248-d0ca-44b7-853f-3acb84110e67" component="TurbulenceForce" />
+				<property name="Acceleration" id="5e485ea6-1444-4e00-ade6-2cfc241e6bd6" component="TurbulenceForce" />
+				<property name="Name" id="ef1d7d1e-02b6-4548-80d9-5ef2fbcda237" component="RadialForce" />
+				<property name="Start / End Time" id="035b5248-d0ca-44b7-853f-3acb84110e67" component="RadialForce" />
+				<property name="Acceleration" id="2490a1d1-f133-4732-a99a-be3642596f0b" component="RadialForce" />
+				<property name="Name" id="ef1d7d1e-02b6-4548-80d9-5ef2fbcda237" component="VortexForce" />
+				<property name="Start / End Time" id="035b5248-d0ca-44b7-853f-3acb84110e67" component="VortexForce" />
+				<property name="Rotation Axis" id="0905a05c-f4c5-4f19-bd3d-d25c2aad8c8d" component="VortexForce" />
+				<property name="Spin Velocity" id="a462b01f-d4af-43eb-ab78-fcb71bc19075" component="VortexForce" />
+				<property name="Name" id="ef1d7d1e-02b6-4548-80d9-5ef2fbcda237" component="OrbitForce" />
+				<property name="Start / End Time" id="035b5248-d0ca-44b7-853f-3acb84110e67" component="OrbitForce" />
+				<property name="Orbit Radius" id="ce861f7a-cfd8-4e1e-a3e7-02ff3b853ddc" component="OrbitForce" />
+				<property name="Name" id="ef1d7d1e-02b6-4548-80d9-5ef2fbcda237" component="DragForce" />
+				<property name="Start / End Time" id="035b5248-d0ca-44b7-853f-3acb84110e67" component="DragForce" />
+				<property name="Damping" id="e04d1103-0acb-473a-9049-66cf19d03f3e" component="DragForce" />
+				<property name="Name" id="ef1d7d1e-02b6-4548-80d9-5ef2fbcda237" component="SpinForce" />
+				<property name="Start / End Time" id="035b5248-d0ca-44b7-853f-3acb84110e67" component="SpinForce" />
+				<property name="Spin Axis" id="74c47888-f255-4cde-8579-93daa94d7ccf" component="SpinForce" />
+				<property name="Spin Velocity" id="07a362c8-942e-439a-a2e7-d2da724664c0" component="SpinForce" />
+				<property name="Name" id="ef1d7d1e-02b6-4548-80d9-5ef2fbcda237" component="WindForce" />
+				<property name="Start / End Time" id="035b5248-d0ca-44b7-853f-3acb84110e67" component="WindForce" />
+				<property name="Speed Multiplier" id="be08f10b-f8b9-4d4e-b0fa-6ad9734f2446" component="WindForce" />
+				<property name="Name" id="ef1d7d1e-02b6-4548-80d9-5ef2fbcda237" component="CameraFX" />
+				<property name="Start / End Time" id="035b5248-d0ca-44b7-853f-3acb84110e67" component="CameraFX" />
+				<property name="Falloff Start-End" id="23be889c-9e6b-4bf0-81f2-1a9431b659cc" component="CameraFX" />
+				<property name="Effect Type" id="f9ce16ac-762a-421d-860d-bb649c03a11b" component="CameraFX" />
+				<property name="Wobble Strength Y" id="4049c9b6-065f-4eff-bab4-fdb2f2e6b2df" component="CameraFX" />
+				<property name="Wobble Strength X" id="66f73e43-eae8-45b1-871e-84f00ec406bd" component="CameraFX" />
+				<property name="Shake Vibration Frequency" id="10cec873-db65-4b2d-8316-da7369812ede" component="CameraFX" />
+				<property name="Shake Strength" id="4298e3ea-378d-4b6b-8633-44908958b9b9" component="CameraFX" />
+				<property name="Name" id="ef1d7d1e-02b6-4548-80d9-5ef2fbcda237" component="CameraShake" />
+				<property name="Start / End Time" id="035b5248-d0ca-44b7-853f-3acb84110e67" component="CameraShake" />
+				<property name="Falloff Start-End" id="fccc0d26-14c5-4e35-881b-e47aa6b6716a" component="CameraShake" />
+				<property name="Shake Strength" id="cd5bbe05-d87d-41c2-b7ea-a2bcc0f3ffce" component="CameraShake" />
+				<property name="Shake Vibration Frequency" id="e711fd92-9e77-4e28-b5e0-2acccbcd3ac1" component="CameraShake" />
+				<property name="Name" id="ef1d7d1e-02b6-4548-80d9-5ef2fbcda237" component="CameraWobble" />
+				<property name="Start / End Time" id="035b5248-d0ca-44b7-853f-3acb84110e67" component="CameraWobble" />
+				<property name="Falloff Start-End" id="983de371-16ac-46fa-83e6-89968bfc6eee" component="CameraWobble" />
+				<property name="Wobble Strength X" id="d550b7a0-31bb-4257-93d8-89c6fbe01202" component="CameraWobble" />
+				<property name="Wobble Strength Y" id="675ba953-4bbd-43a5-a8f1-67ca7501f348" component="CameraWobble" />
+				<property name="Name" id="ef1d7d1e-02b6-4548-80d9-5ef2fbcda237" component="BoundingSphere" />
+				<property name="Start / End Time" id="035b5248-d0ca-44b7-853f-3acb84110e67" component="BoundingSphere" />
+				<property name="Radius" id="ba2ee0f9-d369-4d36-bd63-30d4c8c46a0a" component="BoundingSphere" operation="Multiply" number_of_parameters="1" />
+				<property name="Name" id="ef1d7d1e-02b6-4548-80d9-5ef2fbcda237" component="Light" />
+				<property name="Start / End Time" id="035b5248-d0ca-44b7-853f-3acb84110e67" component="Light" />
+				<property name="Intensity" id="ff68db76-6f76-4ae2-b476-c3ecad6bd2dd" component="Light" />
+				<property name="Light GUID" id="d15b1af4-7bc6-4661-9120-96bc3445a3f2" component="Light" />
+				<property name="Radius" id="ba116247-e3cd-4398-948d-99e535ed42ff" component="Light" />
+				<property name="Modulate Light Template Radius" id="87a0f4b1-b746-42b7-9679-c2fd7f9e0f2e" component="Light" />
+				<property name="Bounding Volume" id="1fbcd67c-54bd-4646-9841-e2af11884a0c" component="Light" />
+				<property name="Animate Manually" id="40a2a318-6820-4fd1-a244-c7b7e57d9eb8" component="Light" />
+				<property name="Ignore Parent Rotation" id="7fb7d93a-ac76-4005-863c-48bd55837e6f" component="Light" />
+				<property name="Coordinate Space" id="ec5325b8-ab8c-4525-a048-7caadb5228ed" component="Light" />
+				<property name="RPM" id="d6592696-6e3e-460e-a34d-4dd0acf91823" component="Light" />
+				<property name="Name" id="ef1d7d1e-02b6-4548-80d9-5ef2fbcda237" component="Decal" />
+				<property name="Start / End Time" id="035b5248-d0ca-44b7-853f-3acb84110e67" component="Decal" />
+				<property name="Material" id="d17bfe9f-c87a-4bc7-bd33-9a49197d6d6f" component="Decal" />
+				<property name="Distance" id="4b287d0f-ea89-4189-83fd-32a88ab61033" component="Decal" />
+				<property name="Projected Offset" id="c20bed39-2cbb-4b86-9d54-65874490df05" component="Decal" />
+				<property name="Show Bounds" id="d686d685-a60c-42c6-a3fe-62e9fca01360" component="Decal" />
+				<property name="Dimensions" id="3fb4512b-613d-4323-852d-7f77f5f3e925" component="Decal" />
+				<property name="Tiling Y" id="56219a8b-66ee-4de5-aa1a-1a5f0953f30e" component="Decal" />
+				<property name="Tiling X" id="3f9e4766-9131-4407-aac0-a5853d4abc25" component="Decal" />
+				<property name="Axis" id="9bdd2ce6-800e-45b0-a2d6-48d2d0a4c4b9" component="Decal" />
+				<property name="Rotation" id="ac2a59c2-25e4-4309-8e66-1162aa1aeb16" component="Decal" />
+				<property name="Ignore Parent Rotation" id="8b70170b-e49d-45d5-a9b9-599222ab6f6c" component="Decal" />
+				<property name="Coordinate Space" id="e2fa17bd-79ba-4555-b235-f4ca31136064" component="Decal" />
+				<property name="Name" id="ef1d7d1e-02b6-4548-80d9-5ef2fbcda237" component="PostProcess" />
+				<property name="Start / End Time" id="035b5248-d0ca-44b7-853f-3acb84110e67" component="PostProcess" />
+				<property name="Fade-In Time" id="3b0d67ed-6e51-4c5d-96a5-a179c6328667" component="PostProcess" />
+				<property name="Fade-Out Time" id="88616b23-8f9a-4f78-81f1-7f3e27435748" component="PostProcess" />
+				<property name="Name" id="ef1d7d1e-02b6-4548-80d9-5ef2fbcda237" component="Sound" />
+				<property name="Play On" id="d44a643d-e831-4fc6-b8ab-c13e52162f34" component="Sound" />
+				<property name="Start / End Time" id="035b5248-d0ca-44b7-853f-3acb84110e67" component="Sound" />
+				<property name="Enter Event" id="d9c8f8f4-03ef-4a81-afcc-9979213be536" component="Sound" />
+				<property name="Leave Event" id="83f4fce2-68bb-41eb-b2fe-9082b8fc9147" component="Sound" />
+				<property name="Activation Range" id="d719a367-01a3-44b3-a94d-830503c01095" component="Sound" />
+				<property name="Name" id="ef1d7d1e-02b6-4548-80d9-5ef2fbcda237" component="Ribbon" />
+				<property name="Start / End Time" id="035b5248-d0ca-44b7-853f-3acb84110e67" component="Ribbon" />
+				<property name="Maximum Particle Count" id="0b4f5972-902f-4f41-bc24-97b4f854bb21" component="Ribbon" />
+				<property name="Update Interval (ms)" id="a2306e78-cc29-43b8-8f6f-2610c91fa10b" component="Ribbon" />
+				<property name="Spawn Initial Trail Segment" id="003a780f-452a-4f7b-9dc9-fadcb691e4ae" component="Ribbon" />
+				<property name="Render Style" id="4d3fcc1f-e28e-4ee9-af56-bfcb51240fb4" component="Ribbon" />
+				<property name="Render Order" id="e1ae5db2-a553-4a40-bb43-39e54c8f5dec" component="Ribbon" />
+				<property name="Coordinate Space" id="aba0f7f3-757b-4233-bd7a-b5a6e664e1c6" component="Ribbon" />
+				<property name="Warm Up Time" id="339c3d75-653e-4bf9-a463-7f14a5e742ba" component="Ribbon" />				
+				<property name="Render Channel" id="73e48637-4139-4f71-af0d-8da6a3e7e63c" component="Ribbon" />
+				<property name="Material GUID" id="b7756664-490a-4118-8560-3f74263cb3fa" component="Ribbon" />
+				<property name="Name" id="ef1d7d1e-02b6-4548-80d9-5ef2fbcda237" component="OverlayMaterial" />
+				<property name="Start / End Time" id="035b5248-d0ca-44b7-853f-3acb84110e67" component="OverlayMaterial" />				
+				<property name="Material GUID" id="c4298659-2875-4dca-bd1c-6eb147c17032" component="OverlayMaterial" />
+				<property name="Overlay Type" id="7213a5a7-7f49-4b88-b0c4-66149b2f8e00" component="OverlayMaterial" />
+				<property name="Fade Time (in seconds)" id="17a70058-f575-4c23-bbca-49afea80df9f" component="OverlayMaterial" />
+				<property name="Overlay Priority" id="146a0283-052c-48de-a921-8a61ef50d600" component="OverlayMaterial" />
+				<property name="Target Visual" id="c264cdea-ce1b-4bf3-a5d0-8575d9f656fc" component="OverlayMaterial" visible="false" />				
+			</properties>
+		</module>
+		<module name="Point Emitter" id="C34965EF-FBAF-4C42-A156-2B493F448F6D" typename="Emitter" required="False">
+			<properties>
+				<property name="Type" id="d1fe8ba8-a5d8-4feb-853a-e0ead4913148" component="ParticleSystem" value="3" visible="False" />
+				<property name="Show Emitter" id="40a5b37b-f093-4bbe-8ca7-f4d4cc844312" component="ParticleSystem" />
+				<property name="Keyframed Point Position" id="932ab923-6728-41cf-adc8-b2d5b974830b" component="ParticleSystem" />
+				<property name="Type" id="6f1668b9-810f-43af-a784-1e271c86e4d7" component="Ribbon" value="3" visible="False" />
+				<property name="Keyframed Point Position" id="fcaa2ca8-790b-4613-8dae-1d785401b7d5" component="Ribbon" />				
+			</properties>
+		</module>
+		<module name="Cube Emitter" id="EFA40A0B-E098-411F-A8A2-7A37ACE7022B" typename="Emitter" required="False">
+			<properties>
+				<property name="Type" id="d1fe8ba8-a5d8-4feb-853a-e0ead4913148" component="ParticleSystem" value="0" visible="False" />
+				<property name="Show Emitter" id="40a5b37b-f093-4bbe-8ca7-f4d4cc844312" component="ParticleSystem" />
+				<property name="Dimensions" id="7593273b-bac1-4129-a4a1-326b1cc6343e" component="ParticleSystem" operation="Multiply" number_of_parameters="3" />
+				<property name="Rotation" id="035e4af1-34ff-4877-a7a6-61d658e7099b" component="ParticleSystem" />
+				<property name="Emit On Surface" id="135a113e-9a91-4789-a5d3-83d455eaba53" component="ParticleSystem" />				
+			</properties>
+		</module>
+		<module name="Cylinder Emitter" id="E1F7CFE1-1FDC-482C-A449-4F7E08AF938D" typename="Emitter" required="False">
+			<properties>
+				<property name="Type" id="d1fe8ba8-a5d8-4feb-853a-e0ead4913148" component="ParticleSystem" value="2" visible="False" />
+				<property name="Show Emitter" id="40a5b37b-f093-4bbe-8ca7-f4d4cc844312" component="ParticleSystem" />
+				<property name="Up Axis" id="26753027-edc9-4bf5-9b27-ac4a98836cda" component="ParticleSystem" />
+				<property name="Radius" id="b0e13a65-91f5-4382-a507-748c257b36c8" component="ParticleSystem" operation="Multiply" number_of_parameters="1" />
+				<property name="Height" id="5f042807-09d5-4841-846e-2b13f7a3d80d" component="ParticleSystem" operation="Multiply" number_of_parameters="1" />
+				<property name="Emit On Surface" id="135a113e-9a91-4789-a5d3-83d455eaba53" component="ParticleSystem" />				
+			</properties>
+		</module>
+		<module name="Sphere Emitter" id="CBB892AF-ACF1-40D2-A73D-002FE22F65BE" typename="Emitter" required="False">
+			<properties>
+				<property name="Type" id="d1fe8ba8-a5d8-4feb-853a-e0ead4913148" component="ParticleSystem" value="1" visible="False" />
+				<property name="Show Emitter" id="40a5b37b-f093-4bbe-8ca7-f4d4cc844312" component="ParticleSystem" />
+				<property name="Radius" id="f0d3e3dd-054f-4560-b870-9d7e50c50ef7" component="ParticleSystem" operation="Multiply" number_of_parameters="1" />
+				<property name="Keyframed Sphere Position" id="989ad7ee-2c2a-488c-892d-207b300d4250" component="ParticleSystem" />
+				<property name="Emit On Surface" id="135a113e-9a91-4789-a5d3-83d455eaba53" component="ParticleSystem" />				
+			</properties>
+		</module>
+		<module name="Fixed Line Emitter" id="0609DE2E-4249-40FE-85F3-464B2CD6A36D" typename="Emitter" required="False">
+			<properties>
+				<property name="Type" id="d1fe8ba8-a5d8-4feb-853a-e0ead4913148" component="ParticleSystem" value="4" visible="False" />
+				<property name="Show Emitter" id="40a5b37b-f093-4bbe-8ca7-f4d4cc844312" component="ParticleSystem" />
+				<property name="Axis" id="a82a3e72-bbab-458d-b8a1-e4fdea895f28" component="ParticleSystem" />
+				<property name="Length" id="e7011b2d-8add-4e29-998c-3a7e4d2c0559" component="ParticleSystem" />
+				<property name="Emit Position Count" id="3340fe20-36bd-4c63-a14b-ba42dc5d4132" component="ParticleSystem" />
+			</properties>
+		</module>
+		<module name="Random Line Emitter" id="30D0C3D3-AA35-43FB-915D-2E4F8CAC18A7" typename="Emitter" required="False">
+			<properties>
+				<property name="Type" id="d1fe8ba8-a5d8-4feb-853a-e0ead4913148" component="ParticleSystem" value="5" visible="False" />
+				<property name="Show Emitter" id="40a5b37b-f093-4bbe-8ca7-f4d4cc844312" component="ParticleSystem" />
+				<property name="Axis" id="c5a64846-f3a6-45de-8acf-30b04c122dad" component="ParticleSystem" />
+				<property name="Length" id="85426d93-bba1-4537-a198-2a9e0fbc19c1" component="ParticleSystem" />
+				<property name="Length Offset" id="317405ff-ddf0-4eeb-9da7-ee84edcf34bd" component="ParticleSystem" />
+			</properties>
+		</module>
+		<module name="Circle Emitter" id="A9069163-3F1E-425E-AA9D-E99AE3C56153" typename="Emitter" required="False">
+			<properties>
+				<property name="Type" id="d1fe8ba8-a5d8-4feb-853a-e0ead4913148" component="ParticleSystem" value="6" visible="False" />
+				<property name="Show Emitter" id="40a5b37b-f093-4bbe-8ca7-f4d4cc844312" component="ParticleSystem" />
+				<property name="Up Axis" id="38f395e7-9a5d-42d6-941b-a1a1994c7d94" component="ParticleSystem" />
+				<property name="Radius" id="c6bd606f-0ef4-4b4a-9f33-a2f6d9122c32" component="ParticleSystem" operation="Multiply" number_of_parameters="1" />
+				<property name="Emit Position Count" id="c8162139-f350-4cf0-aa23-c8f4a2bdbd03" component="ParticleSystem" />
+			</properties>
+		</module>
+		<module name="Mesh Emitter" id="13AB8875-378D-4B19-ACD0-EE86F1752A67" typename="Emitter" required="False">
+			<properties>
+				<property name="Type" id="d1fe8ba8-a5d8-4feb-853a-e0ead4913148" component="ParticleSystem" value="7" visible="False" />
+				<property name="Show Emitter" id="40a5b37b-f093-4bbe-8ca7-f4d4cc844312" component="ParticleSystem" />
+				<property name="Mesh Proxy GUID" id="2b83bf1b-9c97-488b-b2fc-2671d9c570b8" component="ParticleSystem" />
+				<property name="Scale" id="e6822954-329b-4e8e-b726-a8b5a90b8fde" component="ParticleSystem" operation="Multiply" number_of_parameters="3" />
+				<property name="Orientation" id="9d4fbd94-33dc-44f9-8177-45c8bb627473" component="ParticleSystem" />
+				<property name="Spawn Location" id="57659447-1899-4678-8638-19c064536312" component="ParticleSystem" />
+				<property name="Use Normals" id="be517219-0583-4d91-ac43-c8a522bcc87f" component="ParticleSystem" />
+			</properties>
+		</module>
+		<module name="Recycle Particles" id="968A54AA-8BA0-4AE6-89E4-984A4B7BABB6" required="False">
+			<properties>
+				<property name="Recycle Particles" id="ebb40e07-1b5c-40bc-b5f1-2d6ddd44a448" component="ParticleSystem" value="1" visible="False" />
+				<property name="Recycle Radius" id="66dc2f2a-56a7-4250-bb72-014975ea8f00" component="ParticleSystem" operation="Multiply" number_of_parameters="1" />
+				<property name="Show Recycle Radius" id="7f7b3357-b671-4b8c-b92d-191e24ecb146" component="ParticleSystem" />
+			</properties>
+		</module>
+		<module name="Spawn on Death" id="0622b964-bfed-4604-80b2-bfd89821d212" required="false">
+			<properties>
+				<property name="Spawn Chance" id="21b8b05b-1e5d-4417-8195-980759fd3918" component="ParticleSystem" />
+				<property name="Spawn Fx" id="d37590b6-08a5-4474-8368-d95b022ec5e0" component="ParticleSystem" />
+                <property name="Death Fx Inherits Alpha" id="c50a6f0d-bece-4f71-acda-337b54c4cc26" component="ParticleSystem" />
+			</properties>
+		</module>
+		<module name="Apply Flags" id="a7cfc18a-591a-4b15-ad0c-b316c805f108" required="false">
+		    <properties>
+				<property name="Apply to Body" id="73f523ee-4c6e-4e3d-9dd8-fc09a6501860" component="OverlayMaterial" />
+				<property name="Apply to Armour" id="2222b911-fd92-47f1-850a-4e22f839779d" component="OverlayMaterial" />
+				<property name="Apply to Weapon" id="ded89a18-8bba-4b36-a81f-a822efa2d4fb" component="OverlayMaterial" />
+				<property name="Apply to Wings" id="5da1a208-d9c0-4a6f-8bdb-502e29502483" component="OverlayMaterial" />
+				<property name="Apply to Horns" id="f4e3ae96-c15e-4924-9497-7bd5c8dc60ff" component="OverlayMaterial" />
+				<property name="Apply to Overhead" id="b58358f9-cf0c-4adb-aa2c-477d05fa1ccd" component="OverlayMaterial" />
+				<property name="Apply Normal Map" id="183c704c-21c5-43c1-a805-0d17ea9d037b" component="OverlayMaterial" />
+			</properties>
+		</module>
+		<module name="Debug Mesh" id="64bbe1b1-bc83-47b6-b0c5-db713044c3c6" required="false">
+		    <properties>
+				<property name="Mesh GUID" id="53761578-c43d-4ffe-bb6b-edb38894fd4d" component="OverlayMaterial" />
+				<property name="Render Channel" id="4a1f3684-04a1-41a3-b394-65b11bdd9686" component="OverlayMaterial" />
+				<property name="Mesh Animation" id="83adc2a7-025a-4ae8-b7c4-d08e65788299" component="OverlayMaterial" />
+				<property name="Mesh Animation Speed" id="03d1b529-753f-4955-94e7-43e22d1b8d95" component="OverlayMaterial" />			
+			</properties>
+		</module>
+		<module name="Flicker" id="8e902192-00b8-4f21-8ace-73134522b67e" required="false">
+		    <properties>
+				<property name="Flicker Amount" id="3c0b5887-d884-47e7-890f-eb86aea6bf04" component="Light" />
+				<property name="Flicker Speed" id="8b67ba0c-2d4b-4c32-836e-b722c022e508" component="Light" />
+				<property name="Override Light Template Flicker Speed" id="67f39af2-27d1-416a-9266-8009bf078aef" component="Light" />			
+			</properties>
+		</module>
+	</modules>
+	<categories>
+		<category name="Lifetime" id="C29D48AE-F851-4AAE-89D5-59F0F01AA623">
+			<module id="65EB458E-EF51-4FBD-BD7F-BEDACD59A02F" />
+		</category>
+		<category name="Position" id="7CF5E830-50BF-43E6-A31B-AD29C6A8E1CE">
+			<module id="E2AFC256-8CF0-4FB7-94AB-88CFB02CC1F4" />
+			<module id="7A790AE7-3B1C-463E-BB1F-5CC14980B78C" />
+			<module id="2E014286-AC9F-42B4-B093-FA5899B30DB7" />
+		</category>
+		<category name="Orientation" id="F049ACAF-AB39-4DFB-ACF0-2BFA8A241F1F">
+			<module id="850BBB8B-7D61-4C52-9A62-8743AD42D5BC" />
+		</category>
+		<category name="Velocity" id="C72B7369-CD88-40AC-B538-CB92EFC0DA61">
+			<module id="CB4F2A13-F7BF-4568-88EC-0211637C05CF" />
+			<module id="C38EA347-1E82-4EE2-B929-8A6153530F8D" />
+			<module id="58D5F6D5-40E6-4C1A-B576-41DE2D87FA88" />
+		</category>
+		<category name="Material" id="2CE8B978-2AE9-4055-9BD1-9E184BD16D50">
+			<module id="B369FAD0-CC26-42F3-BDC2-0B8F120C6081" />
+			<module id="77FCFF12-C782-43BB-84C4-9626D2FD1575" />
+		</category>
+		<category name="Scale" id="D2862022-E160-47E5-973C-E0EBD0F4BEC4">
+			<module id="6737872C-53C1-424D-A16D-61A87A84D8E7" />
+		</category>
+		<category name="Rotation" id="42FBE0E0-508E-4A65-AFE6-EBCEDF9564B5">
+			<module id="640CB9E3-BCCE-4067-A699-7F92FA927931" />
+			<module id="CA00908F-840D-47ED-9DC2-8AB4372EE17C" />
+			<module id="7A5401D4-8169-4140-AEE9-4B8BB7A6364E" />
+			<module id="A3D58C51-3BF5-44CA-9772-2957BC2C79CE" />
+		</category>
+		<category name="Local Origin" id="CF6A6C2F-101A-42B1-8214-00E5B04A8B87">
+			<module id="D81411DB-361B-4977-8404-C801792E6F0F" />
+		</category>
+		<category name="Emitter Type" id="0183D1E6-83C2-4896-AF9D-0739A70892EE">
+			<module id="C34965EF-FBAF-4C42-A156-2B493F448F6D" />
+			<module id="EFA40A0B-E098-411F-A8A2-7A37ACE7022B" />
+			<module id="E1F7CFE1-1FDC-482C-A449-4F7E08AF938D" />
+			<module id="CBB892AF-ACF1-40D2-A73D-002FE22F65BE" />
+			<module id="0609DE2E-4249-40FE-85F3-464B2CD6A36D" />
+			<module id="30D0C3D3-AA35-43FB-915D-2E4F8CAC18A7" />
+			<module id="A9069163-3F1E-425E-AA9D-E99AE3C56153" />
+			<module id="13AB8875-378D-4B19-ACD0-EE86F1752A67" />
+		</category>
+		<category name="Distance" id="0AFFEC11-5568-4FF1-9894-D889D82567C6">
+			<module id="E31BC899-2650-45BA-A3B8-ECDA836443F5" />
+			<module id="6FAF6F60-8C77-4A47-B9FE-624B540F49D4" />
+		</category>
+		<category name="Other" id="07F05576-49E1-42B6-B02D-6D0B99A85DE1">
+			<module id="94A1372A-4EF5-4DD2-A204-EE002A85A716" />
+			<module id="5DC9E113-4260-491F-84E2-250A0B18140C" />
+			<module id="50193F98-5C7A-4E27-BA06-0F2CAE3B5C7A" />
+			<module id="3C69D5CB-5F2A-40B7-915D-8238E58C75C2" />
+			<module id="2DB67B3F-B6A4-4B50-BFE6-1383F60984FA" />
+			<module id="968A54AA-8BA0-4AE6-89E4-984A4B7BABB6" />
+			<module id="0622b964-bfed-4604-80b2-bfd89821d212" />
+			<module id="8e902192-00b8-4f21-8ace-73134522b67e" />
+		</category>
+		<category name="Effect" id="683cbaa6-0c1d-48fe-b80a-50db2f47ff86">
+			<module id="bf4bb6b1-21ad-4f8b-adfb-581a277c8ccb" />
+			<module id="a422ed8c-1310-461e-8362-c85018b918c5" />
+		</category>
+		<category name="Overlay Material" id="333f200b-0bc3-4cf1-b426-56617a2b1f0b">
+			<module id="a7cfc18a-591a-4b15-ad0c-b316c805f108" />
+			<module id="64bbe1b1-bc83-47b6-b0c5-db713044c3c6" />
+		</category>
+	</categories>
+</root>

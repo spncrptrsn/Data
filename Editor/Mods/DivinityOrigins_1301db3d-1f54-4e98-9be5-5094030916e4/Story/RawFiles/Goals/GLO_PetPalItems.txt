@@ -1,0 +1,34 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+IF
+ObjectFlagSet("GLO_FillMilkBucket", _Player, _)
+AND
+QryRemoveItemTemplateFromMagicPockets((CHARACTERGUID)_Player,"ITEMGUID_FUR_Bucket_A_0f653d13-3152-46d6-86a1-4b64b37e0668",1)
+THEN
+ItemTemplateAddTo("ITEMGUID_FUR_Bucket_A_Milk_361f3611-b117-43cb-9095-29d53acd5000", _Player, 1);
+
+IF
+ObjectFlagSet("GLO_FillMilkBucket", _Player, _)
+THEN
+ObjectClearFlag(_Player, "GLO_FillMilkBucket", 0);
+
+IF
+ObjectFlagSet("GLO_GaveEgg", _, _ID)
+AND
+DB_DialogPlayers(_ID, _Player, 1)
+THEN
+ItemTemplateAddTo("CON_Food_Egg_A_acb75510-f2ea-467a-a7d0-452750fd888d", _Player, 1);
+
+IF
+ObjectFlagSet("GLO_GaveWool", _, _ID)
+AND
+DB_DialogPlayers(_ID, _Player, 1)
+THEN
+ItemTemplateAddTo("LOOT_Wool_A_e6df557c-3bcb-42bf-8817-de282c64f16f", _Player, 1);
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start"

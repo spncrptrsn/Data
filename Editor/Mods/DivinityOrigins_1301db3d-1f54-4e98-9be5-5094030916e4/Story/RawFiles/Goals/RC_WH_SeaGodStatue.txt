@@ -1,0 +1,161 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+//https://sites.google.com/a/larian.com/projecttest/home/wiki-articles/quest-design-documentation/statue-of-the-sea-god
+//https://www.lucidchart.com/documents/edit/3b46c212-2d77-4699-905a-3eca4f011714#
+// See also RC_WH_SeaGodStatue_VBs goal for Voice Barks
+
+DB_Dialogs(ITEMGUID_S_RC_WH_SeaGodStatue_c15f7f1e-b973-4df4-a7c7-5b53bf4544ae,"RC_WH_SeaGodStatue_Statue");
+// All torches
+DB_RC_WH_SeaGodStatue_Torches(ITEMGUID_S_RC_WH_SeaGodStatue_Torch1_381068a0-5052-439c-a15f-c3032101267a);
+DB_RC_WH_SeaGodStatue_Torches(ITEMGUID_S_RC_WH_SeaGodStatue_Torch2_83e85068-5252-40f3-b7a3-c8343ac08bca);
+DB_RC_WH_SeaGodStatue_Torches(ITEMGUID_S_RC_WH_SeaGodStatue_Torch3_3e52d2b7-e6fd-4570-bc1a-559a269fcdff);
+DB_RC_WH_SeaGodStatue_Torches(ITEMGUID_S_RC_WH_SeaGodStatue_Torch4_ea34159e-772b-4959-9829-4d1d2df90342);
+DB_RC_WH_SeaGodStatue_Torches(ITEMGUID_S_RC_WH_SeaGodStatue_Torch5_68cc2db4-e8c2-4e2d-a5da-f0ddbb617ee5);
+// All doused torches
+DB_RC_WH_SeaGodStatue_TorchesDoused(ITEMGUID_S_RC_WH_SeaGodStatue_Torch1_381068a0-5052-439c-a15f-c3032101267a);
+DB_RC_WH_SeaGodStatue_TorchesDoused(ITEMGUID_S_RC_WH_SeaGodStatue_Torch2_83e85068-5252-40f3-b7a3-c8343ac08bca);
+DB_RC_WH_SeaGodStatue_TorchesDoused(ITEMGUID_S_RC_WH_SeaGodStatue_Torch3_3e52d2b7-e6fd-4570-bc1a-559a269fcdff);
+DB_RC_WH_SeaGodStatue_TorchesDoused(ITEMGUID_S_RC_WH_SeaGodStatue_Torch4_ea34159e-772b-4959-9829-4d1d2df90342);
+DB_RC_WH_SeaGodStatue_TorchesDoused(ITEMGUID_S_RC_WH_SeaGodStatue_Torch5_68cc2db4-e8c2-4e2d-a5da-f0ddbb617ee5);
+
+// Counter for character Voice Bark after 3 times the torch douses
+ProcDeclareCounter("RC_WH_SeaGodStatue_TorchDoused");
+
+// Disable statue interaction for now
+//ItemSetCanInteract(S_RC_WH_SeaGodStatue_c15f7f1e-b973-4df4-a7c7-5b53bf4544ae,0);
+
+// Put rainbow and the chest off stage
+SetOnStage(ITEMGUID_S_RC_WH_SeaGodStatue_Rainbow_b4570109-be37-479b-b368-194f4f7e74ea,0);
+SetOnStage(ITEMGUID_S_RC_WH_SeaGodStatue_BookOfProphecies_453bb313-1985-4c63-a3f6-1c9a0bcd4119,0);
+
+// Journal Trigger
+ProcTriggerRegisterForPlayers(TRIGGERGUID_S_RC_WH_SeaGodStatue_DiscoverTrigger_f43c276d-ca61-46e1-a9cb-5663f154e957);
+KBSECTION
+//REGION Debug
+IF
+TextEventSet("rcwhtorches")
+THEN
+GlobalSetFlag("RC_WH_SeaGodStatue_AllTorchesLit");
+TimerCancel("RC_WH_SeaGodStatue_AllTorchesLitTimer");
+TimerLaunch("RC_WH_SeaGodStatue_AllTorchesLitTimer",3000);
+//END_REGION
+
+
+//REGION Discover Trigger
+IF
+CharacterEnteredTrigger(_Player,TRIGGERGUID_S_RC_WH_SeaGodStatue_DiscoverTrigger_f43c276d-ca61-46e1-a9cb-5663f154e957)
+AND
+DB_IsPlayer(_Player)
+THEN
+ObjectSetFlag(_Player,"QuestUpdate_RC_WH_SeaGodStatue_DiscoveredStatue");
+//END_REGION
+
+
+//REGION Torches logic
+// Add to DB if not BURNING
+IF
+ItemStatusRemoved(_Item,"BURNING",_)
+AND
+DB_RC_WH_SeaGodStatue_Torches(_Item)
+THEN
+DB_RC_WH_SeaGodStatue_TorchesDoused(_Item);
+
+
+// Remove from DB if BURNING, check their status, launch timer
+IF
+ItemStatusChange(_Item,"BURNING",_)
+AND
+DB_RC_WH_SeaGodStatue_Torches(_Item)
+AND
+HasActiveStatus(_Item,"BURNING",1)
+THEN
+NOT DB_RC_WH_SeaGodStatue_TorchesDoused(_Item);
+Proc_RC_WH_SeaGodStatue_CheckAllTorchesLit();
+ProcObjectTimerCancel(_Item,"DouseTimer");
+ProcObjectTimer(_Item,"DouseTimer",1000);
+
+// Douse on timer end
+PROC
+ProcObjectTimerFinished(_Torch,"DouseTimer")
+AND
+DB_RC_WH_SeaGodStatue_Torches(_Torch)
+AND
+GlobalGetFlag("RC_WH_SeaGodStatue_AllTorchesLit",_AllTorchesLit)
+AND
+_AllTorchesLit == 0
+THEN
+RemoveStatus(_Torch,"BURNING");
+ProcIncreaseCounter("RC_WH_SeaGodStatue_TorchDoused");
+Proc_RC_WH_SeaGodStatue_CheckDouseCounter();
+
+
+// Send event if all torches are lit
+PROC
+Proc_RC_WH_SeaGodStatue_CheckAllTorchesLit()
+AND
+NOT DB_RC_WH_SeaGodStatue_TorchesDoused(_)
+THEN
+GlobalSetFlag("RC_WH_SeaGodStatue_AllTorchesLit");
+TimerCancel("RC_WH_SeaGodStatue_AllTorchesLitTimer");
+TimerLaunch("RC_WH_SeaGodStatue_AllTorchesLitTimer",3000);
+
+
+// On the final timer end the statue can talk
+IF
+TimerFinished("RC_WH_SeaGodStatue_AllTorchesLitTimer")
+AND
+GlobalGetFlag("RC_WH_SeaGodStatue_RainbowShown",0)
+AND
+GetClosestAlivePlayer(ITEMGUID_S_RC_WH_SeaGodStatue_c15f7f1e-b973-4df4-a7c7-5b53bf4544ae,_Character,_)
+THEN
+GlobalSetFlag("RC_WH_SeaGodStatue_RainbowShown");
+SetOnStage(ITEMGUID_S_RC_WH_SeaGodStatue_Rainbow_b4570109-be37-479b-b368-194f4f7e74ea,1);
+PlaySound(ITEMGUID_S_RC_WH_SeaGodStatue_c15f7f1e-b973-4df4-a7c7-5b53bf4544ae,"SE_RC_WH_SeaGodStatue_Rainbow");
+StartVoiceBark("RC_WH_VB_SeaGodStatue_Rainbow",_Character);
+//ItemSetCanInteract(S_RC_WH_SeaGodStatue_c15f7f1e-b973-4df4-a7c7-5b53bf4544ae,1);
+ObjectSetFlag(_Character,"QuestUpdate_RC_WH_SeaGodStatue_AllTorchesLit");
+PROC_LoopEffect("RS3_FX_GP_ScriptedEvent_PuzzleCompleted_01",TRIGGERGUID_S_RC_WH_SeaGodStatue_EffectTrigger_5d59d89c-7acf-4f3e-9ae6-610effca1701,"FX_RC_WH_SeaGodStatue_SolvedEffect","RC_Main","");
+
+
+// Call a Voice Bark on count 3
+PROC
+Proc_RC_WH_SeaGodStatue_CheckDouseCounter()
+AND
+DB_GlobalCounter("RC_WH_SeaGodStatue_TorchDoused",(INTEGER)_Count)
+AND
+_Count == 3
+AND
+GetClosestAlivePlayer(ITEMGUID_S_RC_WH_SeaGodStatue_c15f7f1e-b973-4df4-a7c7-5b53bf4544ae,_Character,_)
+THEN
+StartVoiceBark("RC_WH_VB_SeaGodStatue_DouseComment",_Character);
+ObjectSetFlag(_Character,"QuestUpdate_RC_WH_SeaGodStatue_TorchesDoused");
+//END_REGION
+
+
+//REGION Finish quest
+IF
+DialogEnded("RC_WH_SeaGodStatue_Statue",_Inst)
+AND
+GlobalGetFlag("RC_WH_SeaGodStatue_RainbowShown",_RainbowShown)
+AND
+_RainbowShown == 1
+AND
+GlobalGetFlag("RC_WH_SeaGodStatue_RewardGiven",0)
+AND
+DB_DialogPlayers(_Inst,_Character,_)
+THEN
+Foop(ITEMGUID_S_RC_WH_SeaGodStatue_BookOfProphecies_453bb313-1985-4c63-a3f6-1c9a0bcd4119);
+GlobalSetFlag("RC_WH_SeaGodStatue_RewardGiven");
+ObjectSetFlag(_Character,"QuestUpdate_RC_WH_SeaGodStatue_Reward");
+PROC_StopLoopEffect(TRIGGERGUID_S_RC_WH_SeaGodStatue_EffectTrigger_5d59d89c-7acf-4f3e-9ae6-610effca1701,"FX_RC_WH_SeaGodStatue_SolvedEffect");
+GoalCompleted;
+
+//END_REGION
+EXITSECTION
+SysClear("DB_RC_WH_SeaGodStatue_Torches",1);
+SysClear("DB_RC_WH_SeaGodStatue_TorchesDoused",1);
+ProcRemoveCounter("RC_WH_SeaGodStatue_TorchDoused");
+ProcTriggerUnregisterForPlayers(TRIGGERGUID_S_RC_WH_SeaGodStatue_DiscoverTrigger_f43c276d-ca61-46e1-a9cb-5663f154e957);
+ENDEXITSECTION
+ParentTargetEdge "ReapersCoast"

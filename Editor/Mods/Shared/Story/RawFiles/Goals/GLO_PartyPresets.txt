@@ -1,0 +1,312 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//REGION Party Preset handling
+ 
+QRY
+QryIsDebugProfileAvatar((CHARACTERGUID)_Char)
+AND
+DB_DebugProfileChar(_Char)
+AND
+IsTagged(_Char,"AVATAR",1)
+THEN
+DB_Noop(1);
+
+PROC
+ProcTryClearAvatarTag((CHARACTERGUID)_Char)
+AND
+NOT DB_DebugAVATARFound(_Char)
+THEN
+ClearTag(_Char,"AVATAR");
+
+IF
+CharacterLoadedInPreset(_Char)
+AND
+NOT DB_GLO_PartyPresets_Block(1)
+THEN
+NOT DB_DoNotFace(_Char);
+SetOnStage(_Char,1);
+DB_DebugProfileChar(_Char);
+ProcSelectDebugAVATAR(_Char);
+
+IF
+PartyPresetLoaded(_Profile)
+AND
+NOT DB_GLO_PartyPresets_Block(1)
+THEN
+ProcSetupDebugParty();
+ProcDoDebugSetup(_Profile);
+
+IF
+PartyPresetLoaded(_)
+AND
+NOT DB_GLO_PartyPresets_Block(1)
+AND
+DB_DebugAVATARFound(_Char)
+THEN
+NOT DB_DebugAVATARFound(_Char);
+
+IF
+DB_DebugAVATARFound((CHARACTERGUID)_Char)
+THEN
+ProcMarkUndeadOrigin(_Char);
+
+PROC
+ProcSetupDebugParty()
+THEN
+ProcVerifyDebugAvatar();
+
+//clear old party
+PROC
+ProcSetupDebugParty()
+AND
+DB_IsPlayer(_Char)
+AND
+NOT DB_GenericOrigins(_Char)
+AND
+NOT QryIsDebugProfileAvatar(_Char)
+THEN
+NOT DB_IsPlayer(_Char);
+ProcUnRegisterPlayerTriggers(_Char);
+ProcTryClearAvatarTag(_Char);
+DB_GLO_PartyMembers_BlockReturnToRecruitmentPosition(_Char);
+PROC_GLO_PartyMembers_Remove(_Char,NULL_00000000-0000-0000-0000-000000000000,1,0);
+NOT DB_GLO_PartyMembers_BlockReturnToRecruitmentPosition(_Char);
+
+PROC
+ProcSetupDebugParty()
+AND
+DB_IsPlayer(_Char)
+AND
+DB_GenericOrigins(_Char)
+AND
+NOT DB_DebugProfileChar(_Char)
+THEN
+NOT DB_IsPlayer(_Char);
+ProcUnRegisterPlayerTriggers(_Char);
+ProcTryClearAvatarTag(_Char);
+DB_GLO_PartyMembers_BlockReturnToRecruitmentPosition(_Char);
+PROC_GLO_PartyMembers_Remove(_Char,NULL_00000000-0000-0000-0000-000000000000,1,0);
+NOT DB_GLO_PartyMembers_BlockReturnToRecruitmentPosition(_Char);
+
+//setup new one
+PROC
+ProcSetupDebugParty()
+AND
+DB_DebugProfileChar(_Char)
+AND
+NOT DB_IsPlayer(_Char)
+THEN
+ObjectSetFlag(_Char,"GLO_CompanionHasBeenRecruited");
+ProcAddDebugCharToParty(_Char);
+
+PROC
+ProcSelectDebugAVATAR((CHARACTERGUID)_Char)
+AND
+NOT DB_DebugAVATARFound(_)
+AND
+IsTagged(_Char,"AVATAR",1)
+THEN
+DB_DebugAVATARFound(_Char);
+
+PROC
+ProcVerifyDebugAvatar()
+AND
+NOT DB_DebugAVATARFound(_)
+AND
+CharacterGetHostCharacter(_Host)
+THEN
+SetTag(_Host,"AVATAR");
+DB_DebugAVATARFound(_Host);
+
+PROC
+ProcVerifyDebugAvatar()
+AND
+DB_DebugAVATARFound(_Char)
+AND
+NOT DB_GLO_PartyMembers_DefaultFaction(_Char,_)
+AND
+GetFaction(_Char,_PlayerFaction)
+THEN
+DB_GLO_PartyMembers_DefaultFaction(_Char,_PlayerFaction);
+
+PROC
+ProcAddDebugCharToParty((CHARACTERGUID)_Char)
+AND
+DB_DebugAVATARFound(_Host)
+AND
+IsTagged(_Char,"AVATAR",0)
+THEN
+PROC_GLO_PartyMembers_Add(_Char,_Host);
+ObjectSetFlag(_Char,"GLO_HasSelectedPreset");
+
+PROC
+ProcAddDebugCharToParty((CHARACTERGUID)_Origin)
+AND
+DB_DebugAVATARFound(_Host)
+AND
+IsTagged(_Origin,"AVATAR",1)
+AND
+DB_GLO_PartyMembers_DefaultFaction(_Origin,_PlayerFaction)
+THEN
+ProcCharacterDisableAllCrimes(_Origin);
+ProcAssignCharacterToPlayer(_Origin,_Host);
+ProcRegisterPlayerTriggers(_Origin);
+SetFaction(_Origin,_PlayerFaction);
+DB_IsPlayer(_Origin);
+ProcRemoveAllDialogEntriesForSpeaker(_Origin);
+SetHasDialog(_Origin,0);
+NOT DB_GLO_PartyMembers_DefaultFaction(_Origin,_PlayerFaction);
+CharacterAttachToGroup(_Origin,_Host);
+Proc_CheckPartyFull();
+
+PROC
+ProcAddDebugCharToParty((CHARACTERGUID)_Char)
+AND
+NOT DB_DebugAVATARFound(_)
+AND
+GetFaction(_Char,_PlayerFaction)
+THEN
+CharacterMakePlayer(_Char, NULL_00000000-0000-0000-0000-000000000000);
+MakePlayerActive(_Char);
+SetTag(_Char,"AVATAR");
+DB_DebugAVATARFound(_Char);
+DB_GLO_PartyMembers_DefaultFaction(_Char,_PlayerFaction);
+ProcAddDebugCharToParty(_Char);
+
+PROC
+ProcSetupDebugParty()
+AND
+DB_DebugProfileChar(_Char)
+AND
+CharacterHasTalent(_Char,"AnimalEmpathy",1)
+THEN
+SetTag(_Char,"PETPAL");
+
+//END_REGION
+//REGION Logic
+PROC
+ProcDoDebugSetup((STRING)_Region)
+THEN
+DB_InDebugSetup(1);
+ProcDebugResetPreviousRegion();
+ProcDebugSetCurrentRegion(_Region);
+ProcDebugGiveTags(_Region);
+ProcDebugGiveGlobalFlags(_Region);
+ProcDebugGivePlayerCharacterFlags(_Region);
+ProcDebugGiveObjectFlags(_Region);
+FireOsirisEvents();
+NOT DB_InDebugSetup(1);
+
+PROC
+ProcDebugResetPreviousRegion()
+AND
+DB_DebugPreviousRegion(_Region)
+THEN
+ProcDebugRemoveObjectFlags(_Region);
+ProcDebugRemovePlayerCharacterFlags(_Region);
+ProcDebugRemoveGlobalFlags(_Region);
+ProcDebugRemoveTags(_Region);
+
+PROC
+ProcDebugSetCurrentRegion((STRING)_)
+AND
+DB_DebugPreviousRegion(_Region)
+THEN
+NOT DB_DebugPreviousRegion(_Region);
+
+PROC
+ProcDebugSetCurrentRegion((STRING)_Region)
+THEN
+DB_DebugPreviousRegion(_Region);
+
+//REGION Adding
+PROC
+ProcDebugGiveTag((CHARACTERGUID)_Player,(STRING)_Tag,1)
+AND
+IsTagged(_Player,"AVATAR",1)
+THEN
+SetTag(_Player,_Tag);
+
+PROC
+ProcDebugGiveTag((CHARACTERGUID)_Player,(STRING)_Tag,0)
+THEN
+SetTag(_Player,_Tag);
+
+PROC
+ProcDebugGiveTags((STRING)_Region)
+AND
+DB_DebugTags((STRING)_Region,(STRING)_Tag,(INTEGER)_AvatarOnly)
+AND
+DB_IsPlayer(_Player)
+THEN
+ProcDebugGiveTag(_Player,_Tag,_AvatarOnly);
+
+PROC
+ProcDebugGiveGlobalFlags((STRING)_Region)
+AND
+DB_DebugGlobalFlags((STRING)_Region,(STRING)_Flag)
+THEN
+GlobalSetFlag(_Flag);
+
+PROC
+ProcDebugGivePlayerCharacterFlags((STRING)_Region)
+AND
+DB_DebugPlayerCharacterFlags((STRING)_Region,(STRING)_Flag)
+AND
+DB_IsPlayer(_Player)
+THEN
+ObjectSetFlag(_Player,_Flag,0);
+
+PROC
+ProcDebugGiveObjectFlags((STRING)_Region)
+AND
+DB_DebugObjectFlags((STRING)_Region,(GUIDSTRING)_Object,(STRING)_Flag)
+THEN
+ObjectSetFlag(_Object,_Flag,0);
+//END_REGION
+
+//REGION Removing
+PROC
+ProcDebugRemoveTags((STRING)_Region)
+AND
+DB_DebugTags(_Region,_Tag,_)
+AND
+DB_IsPlayer(_Player)
+THEN
+ClearTag(_Player,_Tag);
+
+PROC
+ProcDebugRemoveGlobalFlags((STRING)_Region)
+AND
+DB_DebugGlobalFlags(_Region,_Flag)
+THEN
+GlobalClearFlag(_Flag);
+
+PROC
+ProcDebugRemovePlayerCharacterFlags((STRING)_Region)
+AND
+DB_DebugPlayerCharacterFlags(_Region,_Flag)
+AND
+DB_IsPlayer(_Player)
+THEN
+ObjectClearFlag(_Player,_Flag,0);
+
+PROC
+ProcDebugRemoveObjectFlags((STRING)_Region)
+AND
+DB_DebugObjectFlags(_Region,_Object,_Flag)
+THEN
+ObjectClearFlag(_Object,_Flag,0);
+
+//END_REGION
+
+//END_REGION
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "__Shared_Campaign"

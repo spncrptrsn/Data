@@ -1,0 +1,63 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+DB_HasTemplateItem("QUEST_AtaraxianTablet_PromiseInfo_23edac9b-2517-4fd0-a068-6bc9e60d1bbc","GLO_HasAtaraxianTablet_PromiseInfo");
+KBSECTION
+/*
+// Promise-breaking artifact usage
+
+IF
+CharacterUsedItemTemplate(_Player,ActiveArtifact,_Item)
+AND
+DB_IsPlayer(_Player)
+THEN
+Proc_AtaraxianArtifact_Active_Use(_Player,_Item);
+
+
+PROC
+Proc_AtaraxianArtifact_Active_Use((CHARACTERGUID)_Player,(ITEMGUID)_Tablet)
+THEN
+CloseUI(_Player,"Inventory");
+StartVoiceBark("GEN_VB_AtaraxianTablet_Use",_Player);
+
+PROC
+Proc_AtaraxianArtifact_Active_Use((CHARACTERGUID)_Player,(ITEMGUID)_Tablet)
+//TODO
+//CHECK _Player HAS PROMISE
+AND
+IsTagged(_Player,"PROMISE",1)
+THEN
+Proc_AtaraxianArtifact_UseTransform(_Tablet);
+//REMOVE PROMISE
+
+PROC
+Proc_AtaraxianArtifact_UseTransform((ITEMGUID)_Artifact)
+AND
+GetTemplate(_Artifact,ActiveArtifact)
+THEN
+Transform(_Artifact,UsedArtifact,1);
+
+
+IF
+CharacterUsedItemTemplate(_Player,UsedArtifact,_)
+AND
+DB_IsPlayer(_Player)
+THEN
+CloseUI(_Player,"Inventory");
+StartVoiceBark("GEN_VB_AtaraxianTablet_AlreadyUsed",_Player);
+*/
+
+//Needed for correct checking/transition of the PromiseInfo
+IF
+ItemAddedToCharacter(_Item,_Char)
+AND
+GetItemForItemTemplateInInventory(_Char,"QUEST_AtaraxianTablet_PromiseInfo_23edac9b-2517-4fd0-a068-6bc9e60d1bbc",_Item)
+AND
+NOT DB_HasStoryEvent(_Item,_)
+THEN
+DB_HasStoryEvent(_Item,"GLO_HasPorimiseInfo");
+DB_GiveItemToEventWithClear(_Item,"GLO_GivePorimiseInfo");
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start"

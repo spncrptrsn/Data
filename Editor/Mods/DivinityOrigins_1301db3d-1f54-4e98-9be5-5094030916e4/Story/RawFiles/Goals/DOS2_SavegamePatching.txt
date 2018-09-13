@@ -1,0 +1,40 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//REGION DOS2EE-5709
+// Bug: waypoints get disabled at the start of Act 1.5, but not re-enabled for companions that were assigned
+//   to another player than the original recruiter.
+// Reason: those companions are NPCs at the start of Act 2, and PROC_UnblockWaypointUsage() did nothing for
+//   characters not in DB_IsPlayer()
+// Solution:
+//   * make PROC_UnblockWaypointUsage() also work for characters not in DB_IsPlayer(), because
+//     PROC_BlockWaypointUsage() already checked if they were players
+//   * since we block waypoint shrines in only a few places, we can explicitly filter those out and remove
+//     blocking for everyone else.
+IF
+SavegameLoaded(_Major,_Minor,_Rev,_Build)
+AND
+QRY_VersionIsOlderThan(_Major,_Minor,_Rev,_Build, 3, 6, 0, 1)
+AND
+DB_BlockWaypointUsage((CHARACTERGUID)_Player)
+AND
+// Horror sleep arena
+NOT DB_InRegion(_Player, S_ARX_HorrorSleep_Arena_1b8cf005-392f-434a-a564-ecae6778fab0)
+AND
+// Meistr dream scene
+NOT DB_InRegion(_Player, S_RC_DW_Meistr_DreamScene_f206d532-488e-469f-bb2a-5fb4270aa438)
+AND
+// Gods scene in the swamps; since the bug manifests itself after Fort Joy, filter it out completely
+NOT DB_CurrentLevel("FJ_FortJoy_Main")
+AND
+// End game
+NOT DB_CurrentLevel("ARX_EndGame")
+THEN
+PROC_UnblockWaypointUsage(_Player);
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "DOS2ModWrapper"

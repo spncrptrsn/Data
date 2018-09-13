@@ -1,0 +1,14 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+IF
+StoryEvent((CHARACTERGUID)_Character,"GLO_SilentMonk_NoLowAttitudeDialog")
+THEN
+DB_NoLowAttitudeDialog(_Character);
+DB_BlockThreatenedDialog(_Character);
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start"

@@ -1,0 +1,187 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+DB_ArenaM_FireGrillState(0);
+
+DB_ArenaM_FireGrillLevers(ITEMGUID_AreanaM_GrillLeverA_862cf070-4244-47d4-aa2e-7fcd3400ed88);
+
+//DB_ArenaM_CharactersOnFireGrill();
+//DB_ArenaM_ItemsOnFireGrill();
+
+DB_ArenaM_GrillTriggers(TRIGGERGUID_ArenaM_FireGrillTriggerA_8d807d46-28b8-440a-a5d2-672db916ab0a);
+DB_ArenaM_GrillTriggers(TRIGGERGUID_ArenaM_FireGrillTriggerB_918aee81-0cde-4dd3-a90a-ef795d528a0c);
+DB_ArenaM_GrillTriggers(TRIGGERGUID_ArenaM_FireGrillTriggerC_946a3614-41ce-4b9d-ad6d-0d1d8f4c652f);
+DB_ArenaM_GrillTriggers(TRIGGERGUID_ArenaM_FireGrillTriggerD_1be87d1b-345e-48b5-a3f3-1221e6a4bd82);
+DB_ArenaM_GrillTriggers(TRIGGERGUID_ArenaM_FireGrillTriggerE_136156d0-a006-448b-aaaf-b0536c9e3983);
+DB_ArenaM_GrillTriggers(TRIGGERGUID_ArenaM_FireGrillTriggerJ_3ec9f3b3-e67a-4148-8545-d1b780e36609);
+
+Proc_ArenaM_Int();
+KBSECTION
+//REGION Int
+PROC
+Proc_ArenaM_Int()
+AND
+DB_ArenaM_GrillTriggers(_trigger)
+THEN
+ProcTriggerRegisterForPlayers((TRIGGERGUID)_trigger);
+TriggerRegisterForItems((TRIGGERGUID)_trigger);
+//END_REGION
+
+//REGION In trigger
+//Item entered trigger
+IF
+ItemEnteredTrigger(_item,_trigger,_)
+AND
+DB_ArenaM_GrillTriggers(_trigger)
+THEN
+DB_ArenaM_ItemsOnFireGrill(_item);
+DebugText(_item,"Item on FireGrill");
+
+//Item left trigger
+IF
+ItemLeftTrigger(_item,_trigger,_)
+AND
+DB_ArenaM_GrillTriggers(_trigger)
+THEN
+NOT DB_ArenaM_ItemsOnFireGrill(_item);
+DebugText(_item,"Item left FireGrill");
+
+//Character entered trigger
+IF
+CharacterEnteredTrigger(_char,_trigger)
+AND
+DB_ArenaM_GrillTriggers(_trigger)
+THEN
+DB_ArenaM_CharactersOnFireGrill(_char);
+DebugText(_char,"Character on FireGrill");
+
+//Character left trigger
+IF
+CharacterLeftTrigger(_char,_trigger)
+AND
+DB_ArenaM_GrillTriggers(_trigger)
+THEN
+NOT DB_ArenaM_CharactersOnFireGrill(_char);
+DebugText(_char,"Character left FireGrill");
+//END_REGION
+
+
+//REGION Turning on and off FireGrill
+//Using lever
+IF
+CharacterUsedItem(_char,_lever)
+AND
+ObjectIsItem(_lever,1)
+AND
+DB_ArenaM_FireGrillLevers(_lever)
+THEN
+//Proc_ArenaM_FireGrillOnOff();
+Proc_ArenaM_FireTheGrill();
+DebugText(_lever,"Turned Grill On");
+
+//END_REGION
+
+//REGION Fire grill once
+//On Character
+PROC
+Proc_ArenaM_FireTheGrill()
+AND
+DB_ArenaM_CharactersOnFireGrill(_charOnGrill)
+THEN
+DebugText(_charOnGrill,"GRILL FIRES!"); //Debug
+ApplyStatus(_charOnGrill,"BURNING",18.0);
+ApplyDamage((CHARACTERGUID)_charOnGrill,150,"Fire");
+
+//On Item
+PROC
+Proc_ArenaM_FireTheGrill()
+AND
+DB_ArenaM_ItemsOnFireGrill(_itemOnGrill)
+THEN
+DebugText(_itemOnGrill,"GRILL FIRES!"); //Debug
+ApplyStatus(_itemOnGrill,"BURNING",6.0);
+//ApplyDamage(_itemOnGrill,10,"Fire");
+//END_REGION
+
+
+/* BROKEN!
+//REGION FireGrill fire on end turn
+//Turning Fire grill on
+PROC
+Proc_ArenaM_FireGrillOnOff()
+AND
+DB_ArenaM_FireGrillState(0)
+AND
+DB_ArenaM_FireGrillLevers(_lever) //Debug
+THEN
+NOT DB_ArenaM_FireGrillState(0);
+DB_ArenaM_FireGrillState(1);
+DebugText(_lever,"FIRE GRILL ON"); //Debug
+DB_ArenaM_FireGrillWasEnabled(1);
+
+//Turning Fire grill off
+PROC
+Proc_ArenaM_FireGrillOnOff()
+AND
+NOT DB_ArenaM_FireGrillWasEnabled(1)
+AND
+DB_ArenaM_FireGrillState(1)
+AND
+DB_ArenaM_FireGrillLevers(_lever) //Debug
+THEN
+NOT DB_ArenaM_FireGrillState(1);
+DB_ArenaM_FireGrillState(0);
+DebugText(_lever,"FIRE GRILL OFF"); //Debug
+
+//Proc clean up
+PROC
+Proc_ArenaM_FireGrillOnOff()
+THEN
+DB_ArenaM_FireGrillWasEnabled(1);
+
+
+
+IF
+ObjectTurnEnded(_)
+AND
+DB_ArenaM_FireGrillState(1)
+AND
+DB_ArenaM_CharactersOnFireGrill(_charOnGrill)
+AND
+DB_ArenaM_ItemsOnFireGrill(_itemOnGrill)
+THEN
+DebugText(_charOnGrill,"GRILL FIRES!"); //Debug
+DebugText(_itemOnGrill,"GRILL FIRES!"); //Debug
+ApplyStatus(_charOnGrill,"BURNING",3.0);
+ApplyDamage((CHARACTERGUID)_charOnGrill,10,"Fire");
+ApplyStatus(_itemOnGrill,"BURNING",3.0);
+//ApplyDamage(_itemOnGrill,10,"Fire");
+
+//DEBUG
+IF
+ObjectTurnEnded(_char)
+AND
+DB_IsPlayer((CHARACTERGUID)_char)
+THEN
+DebugText(_char,"Turn ended");
+//END_REGION
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "__Start"

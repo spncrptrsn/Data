@@ -1,0 +1,140 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+DB_LoopEffectDisabledInCombat("RS3_FX_UI_PersonIcon_01");
+KBSECTION
+IF
+GlobalFlagSet("GLO_DisableRelationshipDialogsPermanently")
+THEN
+GoalCompleted;
+
+PROC
+Proc_RelationshipDialog((CHARACTERGUID)_Companion,(STRING)_Dialog,(CHARACTERGUID)_Anchor)
+AND
+NOT DB_Dead(_Companion)
+AND
+DB_CompanionAvatarBond(_Companion,_)
+AND
+NOT DB_RelationshipDialogsFinished(_Companion,_Dialog)
+AND
+NOT DB_HandlingRelationshipDialog(_Companion,_Dialog)
+AND
+GetDistanceTo(_Companion,_Anchor,_Dist)
+AND
+_Dist < 30.0
+THEN
+DB_RelationshipDialog_Queue(_Companion,_Dialog);
+ProcLaunchTestCompanionQueueTimer();
+
+PROC
+ProcLaunchTestCompanionQueueTimer()
+AND
+NOT DB_TestingCompanionQueue(1)
+THEN
+DB_TestingCompanionQueue(1);
+TimerLaunch("Test_RelationshipDialog_Queue",1500);
+
+IF
+TimerFinished("Test_RelationshipDialog_Queue")
+THEN
+NOT DB_TestingCompanionQueue(1);
+Proc_Test_RelationshipDialog_Queue();
+
+IF
+DialogEnded(_Dialog,_)
+AND
+DB_HandlingRelationshipDialog(_Companion,_Dialog)
+THEN
+PROC_StopLoopEffect(_Companion,"RelationshipMarker");
+NOT DB_HandlingRelationshipDialog(_Companion,_Dialog);
+DB_RelationshipDialogsFinished(_Companion,_Dialog);
+
+IF
+DialogEnded(_,_Instance)
+AND
+DB_DialogPlayers(_Instance,_Companion,1)
+AND
+DB_RelationshipDialog_Queue((CHARACTERGUID)_Companion,_Dialog)
+THEN
+Proc_Test_RelationshipDialog_Queue();
+
+IF
+CharacterDied(_Companion)
+AND
+IsTagged(_Companion,"AVATAR",0)
+THEN
+ProcCancelAllRelationshipDialogs(_Companion);
+
+PROC
+Proc_Test_RelationshipDialog_Queue()
+AND
+DB_RelationshipDialog_Queue((CHARACTERGUID)_Companion,(STRING)_Dialog)
+AND
+NOT DB_ReflectionDialogs_Queued(_Companion,_)
+AND
+NOT DB_HandlingRelationshipDialog(_Companion,_)
+THEN
+DB_HandlingRelationshipDialog(_Companion,_Dialog);
+NOT DB_RelationshipDialog_Queue(_Companion,_Dialog);
+PROC_LoopEffect("RS3_FX_UI_PersonIcon_01",_Companion,"RelationshipMarker","__ANY__","Dummy_OverheadFX");
+DB_RelationshipDialogs(_Companion,_Dialog);
+
+IF
+DB_ReflectionDialogs_Queued(_Companion,_)
+AND
+DB_RelationshipDialogs(_Companion,_Dialog)
+THEN
+PROC_StopLoopEffect(_Companion,"RelationshipMarker");
+NOT DB_HandlingRelationshipDialog(_Companion,_Dialog);
+NOT DB_RelationshipDialogs(_Companion,_Dialog);
+DB_RelationshipDialog_Queue(_Companion,_Dialog);
+
+PROC
+ProcCancelAllRelationshipDialogsForAllCompanions()
+AND
+DB_IsPlayer(_Companion)
+AND
+IsTagged(_Companion,"AVATAR",0)
+THEN
+ProcCancelAllRelationshipDialogs(_Companion);
+
+PROC
+ProcCancelAllRelationshipDialogs((CHARACTERGUID)_Companion)
+AND
+DB_HandlingRelationshipDialog(_Companion,_Dialog)
+THEN
+PROC_StopLoopEffect(_Companion,"RelationshipMarker");
+NOT DB_HandlingRelationshipDialog(_Companion,_Dialog);
+NOT DB_RelationshipDialogs(_Companion,_Dialog);
+
+PROC
+ProcCancelAllRelationshipDialogs((CHARACTERGUID)_Companion)
+AND
+DB_RelationshipDialog_Queue((CHARACTERGUID)_Companion,(STRING)_Dialog)
+THEN
+NOT DB_RelationshipDialog_Queue(_Companion,_Dialog);
+
+PROC
+ProcCancelOneRelationshipDialog((CHARACTERGUID)_Companion,(STRING)_Dialog)
+AND
+DB_HandlingRelationshipDialog(_Companion,_Dialog)
+THEN
+PROC_StopLoopEffect(_Companion,"RelationshipMarker");
+NOT DB_HandlingRelationshipDialog(_Companion,_Dialog);
+NOT DB_RelationshipDialogs(_Companion,_Dialog);
+
+PROC
+ProcCancelOneRelationshipDialog((CHARACTERGUID)_Companion,(STRING)_Dialog)
+AND
+DB_RelationshipDialog_Queue((CHARACTERGUID)_Companion,(STRING)_Dialog)
+THEN
+NOT DB_RelationshipDialog_Queue(_Companion,_Dialog);
+
+PROC
+ProcCancelOneRelationshipDialog((CHARACTERGUID)_Companion,(STRING)_Dialog)
+THEN
+DB_RelationshipDialogsFinished(_Companion,_Dialog);
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "__Shared_Campaign"

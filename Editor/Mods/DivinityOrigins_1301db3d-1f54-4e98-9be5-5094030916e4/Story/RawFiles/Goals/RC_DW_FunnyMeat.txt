@@ -1,0 +1,1058 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+//https://sites.google.com/a/larian.com/projecttest/home/wiki-articles/quest-design-documentation/funny-meat
+DB_Dialogs(CHARACTERGUID_S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,"RC_DW_Tavern_Chef");
+DB_Dialogs(CHARACTERGUID_S_RC_DW_Magister_Barracks_Investigator_f19a8674-160b-4907-b97d-7a15ee53dd76,"RC_DW_Magister_Barracks_Investigator");
+DB_Ghosts(CHARACTERGUID_S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,S_RC_DW_Tavern_GhostOfChef_4ec68ab2-0df4-457b-9962-59cfa31c7bb2,"RC_DW_Tavern_GhostOfChef");
+
+DB_DeadEvent(S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,"RC_DW_FunnyMeat_KilledChef");
+
+// No longer used, transform to DB_DialogMoneyTransfer() if still needed
+//DB_NPCMoneyInDialog("RC_DW_Tavern_WaiterBuyStew",11,"GiveNPC");
+//DB_NPCMoneyInDialog("RC_DW_Tavern_WaiterCheckGoldStewAndBeer",13,"GiveNPC");
+
+DB_DialogMoneyTransfer(1,"RC_DW_Battacks_Magister_Officer",500);
+CharacterAddGold(S_RC_DW_Barracks_Magister_Officer_e8e89cb2-f4b7-4066-a3cb-e04422dcdfa4,520);
+
+DB_RC_DW_FunnyMeat_Investigators((CHARACTERGUID)S_RC_DW_Magister_Barracks_Investigator_f19a8674-160b-4907-b97d-7a15ee53dd76);
+
+// Flags for RC_DW_Tavern_Chef are unused; Should it be needed, remove the DB_TEMP_GoldCheck
+// line and uncomment the DB_DialogMoneyTransfer line below it. Also adapt the dialog.
+// See https://sites.google.com/a/larian.com/larian-wikisite/osiris-api-tips#TOC-DB_DialogMoneyTransfer
+// DB_TEMP_GoldCheck("RC_DW_Tavern_Chef","RC_DW_Tavern_Chef_HasGold","RC_DW_Tavern_Chef_GiveGold",15);
+//DB_DialogMoneyTransfer(1,"RC_DW_Tavern_Chef",15);
+//DB_RC_DW_Tavern_FunnyMeatLoot((ITEMGUID)ITEMGUID_S_RC_DW_FunnyMeat_MagisterSeal_16109e75-f13b-4838-ba1f-3d2a6fcb5bb4);
+
+ItemToInventory(ITEMGUID_S_RC_DW_FunnyMeat_MagisterSeal_16109e75-f13b-4838-ba1f-3d2a6fcb5bb4,ITEMGUID_S_RC_DW_Tavern_FunnyMeat_LoosePlank_00d2a84d-d58d-4bb7-a5c3-c4a6818cf5f5);
+ItemToInventory(ITEMGUID_S_RC_DW_Tavern_Chef_Ledger_e35ceda9-84c1-4f71-9c9f-cc813d33ae82,CHARACTERGUID_S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698);
+
+SetOnStage(S_RC_DW_Tavern_Chef_BodyPart_69e028a3-9328-4249-b20a-bb8a1618c0bf,0);
+
+DB_HasStoryEvent(ITEMGUID_S_RC_DW_Tavern_Chef_Ledger_e35ceda9-84c1-4f71-9c9f-cc813d33ae82,"RC_DW_FunnyMeat_HasChefLedger");
+DB_GiveItemToEvent(ITEMGUID_S_RC_DW_Tavern_Chef_Ledger_e35ceda9-84c1-4f71-9c9f-cc813d33ae82,"RC_DW_FunnyMeat_GiveChefLedger");
+DB_HasStoryEvent(ITEMGUID_S_RC_DW_FunnyMeat_MagisterSeal_16109e75-f13b-4838-ba1f-3d2a6fcb5bb4,"RC_DW_FunnyMeat_HasMagisterSeal");
+DB_GiveItemToEvent(ITEMGUID_S_RC_DW_FunnyMeat_MagisterSeal_16109e75-f13b-4838-ba1f-3d2a6fcb5bb4,"RC_DW_FunnyMeat_GiveMagisterSeal");
+
+//Updates that can also start the quest:
+DB_RC_DW_FunnyMeat_DialogJournalUpdate("RC_DW_Barracks_Magister_Officer", "RC_DW_FunnyMeatInvestigation_Started", "QuestUpdate_RC_DW_FunnyMeat_Magister_Lead");
+DB_RC_DW_FunnyMeat_DialogJournalUpdate("RC_DW_Barracks_Magister_Officer", "RC_DW_FunnyMeatInvestigation_Started", "QuestUpdate_RC_DW_FunnyMeat_Magister_InvestigatingOfficer");
+
+DB_RC_DW_FunnyMeat_DialogJournalUpdate("RC_DW_FishFactory_Magister1", "RC_DW_FunnyMeatInvestigation_Started", "QuestUpdate_RC_DW_FunnyMeat_Magister_Lead");
+DB_RC_DW_FunnyMeat_DialogJournalUpdate("RC_DW_FishFactory_Magister2", "RC_DW_FunnyMeatInvestigation_Started", "QuestUpdate_RC_DW_FunnyMeat_Magister_Lead");
+DB_RC_DW_FunnyMeat_DialogJournalUpdate("RC_DW_FishFactory_Magister3", "RC_DW_FunnyMeatInvestigation_Started", "QuestUpdate_RC_DW_FunnyMeat_Magister_Lead");
+DB_RC_DW_FunnyMeat_DialogJournalUpdate("RC_DW_Tavern_ExMagister", "RC_DW_FunnyMeatInvestigation_Started", "QuestUpdate_RC_DW_FunnyMeat_ExMagister_Lead");
+DB_RC_DW_FunnyMeat_DialogJournalUpdate("RC_DW_Tavern_ExMagister", "RC_DW_FunnyMeatInvestigation_Started", "QuestUpdate_RC_DW_FunnyMeat_Magister_Lead");
+DB_RC_DW_FunnyMeat_DialogJournalUpdate("RC_DW_IdlingMagister_1", "RC_DW_FunnyMeatInvestigation_Started", "QuestUpdate_RC_DW_FunnyMeat_Magister_Lead");
+DB_RC_DW_FunnyMeat_DialogJournalUpdate("RC_DW_IdlingMagister_2", "RC_DW_FunnyMeatInvestigation_Started", "QuestUpdate_RC_DW_FunnyMeat_Magister_Lead");
+
+DB_RC_DW_FunnyMeat_DialogJournalUpdate("RC_DW_FishBarrel", "RC_DW_FishBarrelStart", "QuestUpdate_RC_DW_FunnyMeat_Chest_Talk");
+DB_RC_DW_FunnyMeat_DialogJournalUpdate("RC_DW_FishBarrel", "RC_DW_FunnyMeat_Cook_Lead", "QuestUpdate_RC_DW_FunnyMeat_Cook_Lead");
+DB_RC_DW_FunnyMeat_DialogJournalUpdate("RC_DW_Tavern_FunnyMeat_Ghost", "RC_DW_FunnyMeat_Ghost_PromisedToReturnRing", "QuestUpdate_RC_DW_FunnyMeat_Ghost_PromisedToReturnRing");
+DB_RC_DW_FunnyMeat_DialogJournalUpdate("RC_DW_FishBarrelGhost", "RC_DW_FunnyMeat_Cook_Lead", "QuestUpdate_RC_DW_FunnyMeat_Cook_Lead");
+DB_RC_DW_FunnyMeat_DialogJournalUpdate("RC_DW_Tavern_Chef", "RC_DW_FunnyMeat_KnowsAboutChef", "QuestUpdate_RC_DW_FunnyMeat_Cook_Confronted");
+DB_RC_DW_FunnyMeat_DialogJournalUpdate("RC_DW_Tavern_ExMagister", "RC_DW_FunnyMeat_ToldCookDead", "QuestUpdate_RC_DW_FunnyMeat_ExMagister_ToldCookDead");
+DB_RC_DW_FunnyMeat_DialogJournalUpdate("RC_DW_Tavern_ExMagister", "RC_DW_FunnyMeat_ToldCookAlive", "QuestUpdate_RC_DW_FunnyMeat_ExMagister_ToldCookAlive");
+
+//Only Updates:
+DB_RC_DW_FunnyMeat_DialogJournalUpdateOnly("RC_DW_Barracks_Magister_Officer", "RC_DW_Tavern_Chef_MagisterSendsYouToInvestigate", "QuestUpdate_RC_DW_FunnyMeat_Cook_ReportedTasked");
+DB_RC_DW_FunnyMeat_DialogJournalUpdateOnly("RC_DW_Barracks_Magister_Officer", "RC_DW_HigbaNotKiller", "QuestUpdate_RC_DW_FunnyMeat_Chest_Lead");
+DB_RC_DW_FunnyMeat_DialogJournalUpdateOnly("RC_DW_Tavern_FunnyMeat_Ghost", "RC_DW_FunnyMeat_HarrickGhostLead", "QuestUpdate_RC_DW_FunnyMeat_HarrickGhost_Lead");
+
+//Updates that closes the quest:
+DB_RC_DW_FunnyMeat_DialogJournalClose("RC_DW_Barracks_Magister_Officer", "RC_DW_FunnyMeat_UserResolvedAndGotBounty", "QuestUpdate_RC_DW_FunnyMeat_Cook_ReportedDead");
+DB_RC_DW_FunnyMeat_DialogJournalClose("RC_DW_Barracks_Magister_Officer", "RC_DW_Tavern_KilledChefDidntGotBounty", "QuestUpdate_RC_DW_FunnyMeat_Cook_ReportedDead");
+
+DB_Ghosts(CHARACTERGUID_S_RC_DW_Tavern_FunnyMeat_Ghost_bf345263-bdf5-44cf-9e0a-0ec77f157682,"RC_DW_Tavern_FunnyMeat_Ghost");
+
+DB_FunnyMeat_LeadsList("RC_DW_Tavern_Chef_AteMeat");
+DB_FunnyMeat_LeadsList("RC_DW_FunnyMeat_HasMagisterSeal");
+DB_FunnyMeat_LeadsList("RC_DW_FunnyMeat_HasChefLedger");
+DB_FunnyMeat_LeadsList("RC_DW_FishFactoryPatrolman");
+
+
+DB_RC_DW_FunnyMeat_DiscoveredTheCookJournalupdates("QuestUpdate_RC_DW_FunnyMeat_Cook_Confronted");
+DB_RC_DW_FunnyMeat_DiscoveredTheCookJournalupdates("QuestUpdate_RC_DW_FunnyMeat_Cook_FoundRing");
+DB_RC_DW_FunnyMeat_DiscoveredTheCookJournalupdates("QuestUpdate_RC_DW_FunnyMeat_Cook_FoundLedger");
+
+DB_RC_DW_FunnyMeat_BothKeyNPCDead(S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698);
+DB_RC_DW_FunnyMeat_BothKeyNPCDead(S_RC_DW_Barracks_Magister_Officer_e8e89cb2-f4b7-4066-a3cb-e04422dcdfa4);
+KBSECTION
+//REGION Journal updates
+
+IF
+DB_Dead(CHARACTERGUID_S_RC_DW_Tavern_ExMagister_2c1dba6f-dd37-4bd0-a249-d390338715cd)
+AND
+GlobalGetFlag("RC_DW_ExMagisterConfrontsChef",1)
+AND
+DB_IsPlayer(_Player)
+AND
+DB_Sees(_Player,CHARACTERGUID_S_RC_DW_Tavern_ExMagister_2c1dba6f-dd37-4bd0-a249-d390338715cd)
+THEN
+PartySetFlag(_Player,"QuestUpdate_RC_DW_FunnyMeat_ExMagister_ConfrontDead");
+
+IF
+ObjectFlagSet("FunnyMeatInvestigation_Knows_MurgaFoughtMagisters",_Player,_)
+THEN
+ObjectSetFlag((CHARACTERGUID)_Player, "FunnyMeatInvestigation_Knows_MurgaFoughtMagisters");
+
+IF
+ObjectFlagSet("RC_DW_Tavern_Chef_MagisterToInvestigate", CHARACTERGUID_S_RC_DW_Barracks_Magister_Officer_e8e89cb2-f4b7-4066-a3cb-e04422dcdfa4,_Inst)
+AND
+DB_DialogPlayers(_Inst,_Player,_)
+THEN
+ObjectSetFlag((CHARACTERGUID)_Player, "QuestUpdate_RC_DW_FunnyMeat_Cook_ReportedAlive");
+
+// Start & update
+IF
+DialogEnded(_Dialog,_Inst)
+AND
+DB_RC_DW_FunnyMeat_DialogJournalUpdate(_Dialog,_Flag,_Update)
+AND
+DB_DialogPlayers(_Inst,_Player,_)
+AND
+UserGetFlag((CHARACTERGUID)_Player,_Flag,1)
+THEN
+ObjectSetFlag(_Player, "QuestAdd_RC_DW_FunnyMeat");
+ObjectSetFlag(_Player, _Update);
+
+//Only Updates
+IF
+DialogEnded(_Dialog,_Inst)
+AND
+DB_RC_DW_FunnyMeat_DialogJournalUpdateOnly(_Dialog,_Flag,_Update)
+AND
+DB_DialogPlayers(_Inst,_Player,_)
+AND
+UserGetFlag((CHARACTERGUID)_Player,_Flag,1)
+THEN
+ObjectSetFlag(_Player, _Update);
+
+// Update & close
+IF
+DialogEnded(_Dialog,_Inst)
+AND
+DB_RC_DW_FunnyMeat_DialogJournalClose(_Dialog,_Flag,_Update)
+AND
+DB_DialogPlayers(_Inst,_Player,_)
+AND
+UserGetFlag((CHARACTERGUID)_Player,_Flag,1)
+THEN
+ObjectSetFlag(_Player, _Update);
+ObjectSetFlag(_Player, "QuestUpdate_RC_DW_FunnyMeat_Investigation_Over");
+//ObjectSetFlag(_Player, "QuestClose_RC_DW_FunnyMeat"); //QUESTCLOSEPASS
+
+IF
+CharacterDied(CHARACTERGUID_S_RC_DW_FishBarrel_c262ed6e-3edc-48f0-9e5d-35551b47cdbc)
+AND
+DB_IsPlayer(_Player)
+AND
+UserGetFlag((CHARACTERGUID)_Player,"RC_DW_FunnyMeatInvestigation_Started",1)
+THEN
+ObjectSetFlag(_Player, "QuestUpdate_RC_DW_FunnyMeat_Chest_Dead");
+
+IF
+ObjectFlagSet("RC_DW_FunnyMeatInvestigation_Started",_Player,_)
+AND
+CharacterIsDead(CHARACTERGUID_S_RC_DW_FishBarrel_c262ed6e-3edc-48f0-9e5d-35551b47cdbc,1)
+THEN
+ObjectSetFlag((CHARACTERGUID)_Player, "QuestUpdate_RC_DW_FunnyMeat_Chest_Dead");
+/*
+IF
+CharacterKilledByCharacter(S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,_Player)
+AND
+DB_IsPlayer(_Player)
+AND
+DB_RC_DW_FunnyMeat_DiscoveredTheCookJournalupdates(_Flag)
+AND
+UserGetFlag((CHARACTERGUID)_Player,_Flag,1)
+THEN
+PartySetFlag(_Player, "QuestUpdate_RC_DW_FunnyMeat_Cook_Killed");
+*/
+IF
+CharacterDied(S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698)
+AND
+DB_IsPlayer(_Player)
+AND
+DB_RC_DW_FunnyMeat_DiscoveredTheCookJournalupdates(_Flag)
+AND
+UserGetFlag((CHARACTERGUID)_Player,_Flag,1)
+THEN
+ObjectSetFlag(_Player, "QuestUpdate_RC_DW_FunnyMeat_Cook_Killed");
+
+IF
+CharacterKilledBy(S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,_AttackerOwner,_Attacker)
+AND
+DB_IsPlayer(_AttackerOwner)
+THEN
+UserSetFlag(_AttackerOwner,"RC_DW_FunnyMeat_PlayerKilledCook");
+
+IF
+ObjectFlagSet(_Flag,_Player,_)
+AND
+DB_RC_DW_FunnyMeat_DiscoveredTheCookJournalupdates(_Flag)
+AND
+CharacterIsDead(S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,1)
+THEN
+ObjectSetFlag((CHARACTERGUID)_Player, "QuestUpdate_RC_DW_FunnyMeat_Cook_Killed");
+
+IF
+ObjectFlagSet("RC_DW_Tavern_Chef_AteMeat",(CHARACTERGUID)_Player,_ID)
+THEN
+ObjectSetFlag(_Player, "QuestAdd_RC_DW_FunnyMeat");
+ObjectSetFlag(_Player, "QuestUpdate_RC_DW_FunnyMeat_Cook_AteMeat");
+
+/* 
+ * "QuestUpdate_RC_DW_FunnyMeat_Cook_AteMeat" set in RC_DW_FunnyMeat script. 
+ */
+
+IF
+DB_Dead(_NPC1)
+AND
+DB_RC_DW_FunnyMeat_BothKeyNPCDead(_NPC1)
+AND
+DB_RC_DW_FunnyMeat_BothKeyNPCDead(_NPC2)
+AND
+_NPC1 != _NPC2
+AND
+CharacterIsDead((CHARACTERGUID)_NPC2,1)
+AND
+DB_IsPlayer(_Player)
+AND
+DB_Sees(_Player,(CHARACTERGUID)_NPC1)
+AND
+DB_RC_DW_FunnyMeat_DiscoveredTheCookJournalupdates(_Flag)
+AND
+UserGetFlag((CHARACTERGUID)_Player,_Flag,1)
+THEN
+PartySetFlag(_Player,"QuestUpdate_RC_DW_FunnyMeat_Cook_Officer_Dead");
+
+
+//END_REGION
+
+//REGION OrderStew
+
+IF
+ObjectFlagSet("RC_DW_Tavern_Chef_GiveMeat",(CHARACTERGUID)_Char,_)
+THEN
+ItemTemplateAddTo("QUEST_FunnyMeat_7284fb63-6469-4ea7-9058-e144a82ef90b",_Char,1);
+
+IF
+ObjectFlagSet("RC_DW_Innkeeper_GaveStew",(CHARACTERGUID)_Char,_)
+THEN
+ItemTemplateAddTo("QUEST_FunnyMeat_7284fb63-6469-4ea7-9058-e144a82ef90b",_Char,1);
+
+IF
+TextEventSet("meat")
+THEN
+ItemTemplateAddTo("QUEST_FunnyMeat_7284fb63-6469-4ea7-9058-e144a82ef90b",CHARACTERGUID_S_Player_Sebille_c8d55eaf-e4eb-466a-8f0d-6a9447b5b24c,1);
+
+IF
+ObjectFlagSet("RC_DW_Tavern_Chef_GiveNormalMeat",(CHARACTERGUID)_Char,_)
+THEN
+ItemTemplateAddTo("Quest_RC_DW_FunnyMeat_VeggieStew_72acf5b3-f555-444d-a490-c43093efdf7b",_Char,1);
+
+IF
+ObjectFlagSet("RC_DW_Tavern_WaiterLivy_GiveStew",(CHARACTERGUID)_Char,_)
+THEN
+ItemTemplateAddTo("QUEST_FunnyMeat_7284fb63-6469-4ea7-9058-e144a82ef90b",_Char,1);
+
+IF
+ObjectFlagSet("RC_DW_Tavern_WaiterLivy_GiveStew",(CHARACTERGUID)_Char,_)
+AND
+ObjectGetFlag(_Char,"RC_DW_Tavern_WaiterLivy_BuyBeer",1)
+THEN
+ObjectClearFlag(_Char,"RC_DW_Tavern_WaiterLivy_BuyBeer",0);
+ItemTemplateAddTo("CON_Drink_Mug_A_Beer_2cda275d-2aea-4e57-970a-0cdb9c342b86",_Char,1);
+
+IF //Doesn't Fit in latest Design // Double Check
+GlobalFlagSet("RC_DW_Ryker_PlayerToldFunnyMeat")
+AND
+CharacterIsDead(S_RC_DW_Ryker_522b8095-b539-4a82-84f3-bf8e5a74dfe4,0)
+THEN
+GlobalSetFlag("RC_DW_Tavern_Chef_InitiateDeathTimer");
+
+//END_REGION
+
+//REGION Talk To Magister  
+
+
+
+// Magister Carvern Interegation Dialog Tavern Clue 
+IF
+ObjectFlagSet((STRING)_Flag,(CHARACTERGUID)_Player,_)
+AND
+DB_FunnyMeat_LeadsList(_Flag)
+AND
+DB_IsPlayer(_Player)
+THEN
+PartySetFlag(_Player,"RC_DW_FunnyMeatGotTavernClue"); // This is used in RC_DW_Barracks_Magister_Officer Dialog to open dialog options to report the clue
+proc_RC_DW_FunnyMeat_GotTavernClue(_Flag,_Player);
+
+
+PROC
+proc_RC_DW_FunnyMeat_GotTavernClue((STRING)_Flag,(CHARACTERGUID)_Player)
+AND
+_Flag != "RC_DW_FishFactoryPatrolman"
+AND
+ObjectGetFlag(_Player,"RC_DW_FunnyMeatInvestigation_Started",1)
+AND
+ObjectGetFlag(_Player,"QuestUpdate_RC_DW_FunnyMeat_Cook_HasSrongEvidance",0)
+THEN
+ObjectSetFlag(_Player,"QuestUpdate_RC_DW_FunnyMeat_Cook_HasSrongEvidance"); 
+
+IF
+ObjectFlagSet("RC_DW_FunnyMeatInvestigation_Started",_Player,_)
+AND
+DB_FunnyMeat_LeadsList(_Flag)
+AND
+_Flag != "RC_DW_FishFactoryPatrolman"
+AND
+ObjectGetFlag(_Player,_Flag,1)
+AND
+ObjectGetFlag(_Player,"QuestUpdate_RC_DW_FunnyMeat_Cook_HasSrongEvidance",0)
+THEN
+ObjectSetFlag(_Player,"QuestUpdate_RC_DW_FunnyMeat_Cook_HasSrongEvidance"); 
+
+
+
+
+// Magister Carvern Interegation Dialog FishFactory Clue 
+IF
+ObjectFlagSet("RC_DW_FishFactory_FoundCache",(CHARACTERGUID)_Player,_)
+AND
+DB_IsPlayer(_Player)
+THEN
+UserSetFlag(_Player,"RC_DW_FunnyMeat_GotFishFactoryClue");
+
+IF
+ObjectFlagSet("RC_DW_FishBarrelStart",(CHARACTERGUID)_Player,_)
+AND
+DB_IsPlayer(_Player)
+THEN
+UserSetFlag(_Player,"RC_DW_FunnyMeat_GotFishFactoryClue");
+
+// Magister Carvern Interegation Dialog UnderTavern Clue 
+IF
+ObjectFlagSet("RC_DW_KnowsAbout_DreamerDen",(CHARACTERGUID)_Player,_)
+AND
+DB_IsPlayer(_Player)
+THEN
+UserSetFlag(_Player,"RC_DW_FunnyMeat_GotUnderTavernClue");
+
+IF
+ObjectFlagSet("RC_DW_Gossips_Dorotya",(CHARACTERGUID)_Player,_)
+AND
+DB_IsPlayer(_Player)
+THEN
+UserSetFlag(_Player,"RC_DW_FunnyMeat_GotUnderTavernClue");
+
+IF
+ObjectFlagSet("FunnyMeatInvestigation_Knows_MurgaFoughtMagisters",(CHARACTERGUID)_Player,_)
+AND
+DB_IsPlayer(_Player)
+THEN
+UserSetFlag(_Player,"RC_DW_FunnyMeat_GotUnderTavernClue");
+
+// Magister Carvern Interegation Dialog Misc Reporting
+IF
+ObjectFlagSet("RC_DU_SeenCaraven",(CHARACTERGUID)_Player,_)
+AND
+DB_IsPlayer(_Player)
+THEN
+UserSetFlag(_Player,"RC_DW_OfficerMagister_GotMiscClue");
+
+
+//END_REGION
+
+//REGION Send the Magister To Investigate
+
+IF
+CharacterDied(CHARACTERGUID_S_RC_DW_Magister_Barracks_Investigator_f19a8674-160b-4907-b97d-7a15ee53dd76)
+THEN
+GlobalSetFlag("RC_DW_MagisterInvestigatorDead");
+
+IF
+DialogEnded("RC_DW_Barracks_Magister_Officer",_Instance)
+AND
+DB_DialogNPCs(_Instance,_NPC,1)
+AND
+ObjectGetFlag(_NPC,"RC_DW_Tavern_Chef_MagisterToInvestigate",1)
+AND
+DB_RC_DW_FunnyMeat_Investigators(_MagisterInvestigator)
+AND
+QRY_SpeakerIsAvailable(_MagisterInvestigator)
+THEN
+PROC_RC_DW_FunnyMeatSendInvestigator(_MagisterInvestigator);
+
+IF
+DialogEnded("RC_DW_Barracks_Magister_Officer",_Instance)
+AND
+DB_DialogNPCs(_Instance,_NPC,1)
+AND
+ObjectGetFlag(_NPC,"RC_DW_Tavern_Chef_MagisterToInvestigate",1)
+AND
+DB_RC_DW_FunnyMeat_Investigators(_MagisterInvestigator)
+AND
+NOT QRY_SpeakerIsAvailable(_MagisterInvestigator)
+THEN
+DB_RC_DW_FunnyMeat_IvenstigateWhenReady(_MagisterInvestigator);
+
+IF
+DialogEnded("RC_DW_Magister_Barracks_Investigator",_Instance) 
+AND
+DB_DialogNPCs(_Instance,_MagisterInvestigator,1)
+AND
+DB_RC_DW_FunnyMeat_IvenstigateWhenReady((CHARACTERGUID)_MagisterInvestigator)
+THEN
+PROC_RC_DW_FunnyMeatSendInvestigator(_MagisterInvestigator);
+
+IF
+ObjectLeftCombat(_MagisterInvestigator,_ID)
+AND
+DB_RC_DW_FunnyMeat_IvenstigateWhenReady((CHARACTERGUID)_MagisterInvestigator)
+THEN
+PROC_RC_DW_FunnyMeatSendInvestigator(_MagisterInvestigator);
+
+PROC
+PROC_RC_DW_FunnyMeatSendInvestigator((CHARACTERGUID)_MagisterInvestigator)
+THEN
+ProcCharacterMoveTo(_MagisterInvestigator,CHARACTERGUID_S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,1,"RC_DW_Tavern_InvestigatorArrived_ArrivedToChef");
+SetHasDialog(_MagisterInvestigator,0);
+//ProcCharacterDisappearOutOfSight(_MagisterInvestigator,270,1,"RC_DW_Tavern_Chef_MagisterWentToInvestigate",1);
+
+PROC
+PROC_RC_DW_FunnyMeatSendInvestigator((CHARACTERGUID)_MagisterInvestigator)
+AND
+DB_RC_DW_FunnyMeat_IvenstigateWhenReady(_MagisterInvestigator)
+THEN
+NOT DB_RC_DW_FunnyMeat_IvenstigateWhenReady(_MagisterInvestigator);
+
+// Investigator Arrived
+IF
+StoryEvent(_,"RC_DW_Tavern_InvestigatorArrived_ArrivedToChef")
+AND
+DB_IsPlayer(_Char)
+AND
+DB_RC_DW_FunnyMeat_Investigators(_MagisterInvestigator)
+AND
+CharacterCanSee(_Char,_MagisterInvestigator,1)
+THEN
+UserSetFlag(_Char,"RC_DW_PlayerSaw_InvestigatorConforntsChef");
+
+IF
+StoryEvent(_,"RC_DW_Tavern_InvestigatorArrived_ArrivedToChef")
+AND
+DB_RC_DW_FunnyMeat_Investigators(_MagisterInvestigator)
+THEN
+GlobalSetFlag("RC_DW_InvestigatorConforntsChef");
+ProcForceStopDialog(CHARACTERGUID_S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698);
+Proc_StartDialog(1,"RC_DW_AD_Magister_Barracks_Investigator",_MagisterInvestigator,CHARACTERGUID_S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698);
+CharacterSetRelationIndivFactionToIndivFaction(_MagisterInvestigator,CHARACTERGUID_S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,0);
+CharacterSetRelationIndivFactionToIndivFaction(CHARACTERGUID_S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,_MagisterInvestigator,0);
+ProcSetRelationToPlayers(CHARACTERGUID_S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,50);
+
+/*
+IF
+StoryEvent(_,"RC_DW_Tavern_InvestigatorArrived_ArrivedToChef")
+AND
+GlobalGetFlag("RC_DW_InvestigatorConforntsChef",0)
+AND
+DB_IsPlayer(_Char)
+AND
+DB_RC_DW_FunnyMeat_Investigators(_MagisterInvestigator)
+AND
+CharacterCanSee(_Char,_MagisterInvestigator,0)
+THEN
+SetOnStage(_MagisterInvestigator,0);
+GlobalSetFlag("RC_DW_MagisterInvestigatorDead");
+ObjectSetFlag(S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,"RC_DW_Tavern_Chef_ConfrontPlayerOnSight");
+proc_RC_DW_FunnyMeat_ChefClosesTheDoor((CHARACTERGUID)S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698);
+*/
+
+IF
+CombatEnded(_ID)
+AND
+DB_WasInCombat(S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,_ID)
+AND
+DB_WasInCombat(S_RC_DW_Magister_Barracks_Investigator_f19a8674-160b-4907-b97d-7a15ee53dd76,_ID)
+AND
+DB_IsPlayer(_Player)
+AND
+CharacterCanSee(_Player,S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,1)
+AND
+GlobalGetFlag("RC_DW_InvestigatorConforntsChef",1)
+AND
+GlobalGetFlag("RC_DW_InvestigatorConforntsChef_PlayerInSight",0)
+THEN
+GlobalSetFlag("RC_DW_InvestigatorConforntsChef_PlayerInSight");
+
+
+IF
+CombatEnded(_ID)
+AND
+DB_WasInCombat(S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,_ID)
+AND
+DB_WasInCombat(S_RC_DW_Magister_Barracks_Investigator_f19a8674-160b-4907-b97d-7a15ee53dd76,_ID)
+AND
+GlobalGetFlag("RC_DW_InvestigatorConforntsChef",1)
+AND
+GlobalGetFlag("RC_DW_InvestigatorConforntsChef_PlayerInSight",0)
+THEN
+proc_RC_DW_FunnyMeat_ChefClosesTheDoor((CHARACTERGUID)S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698);
+
+IF
+CombatEnded(_ID)
+AND
+DB_WasInCombat(S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,_ID)
+AND
+DB_WasInCombat(S_RC_DW_Magister_Barracks_Investigator_f19a8674-160b-4907-b97d-7a15ee53dd76,_ID)
+AND
+GlobalGetFlag("RC_DW_InvestigatorConforntsChef",1)
+THEN
+ObjectSetFlag(S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,"RC_DW_Tavern_Chef_ConfrontPlayerOnSight");
+
+
+//END_REGION
+
+//REGION Chef Is Dead
+
+IF
+CharacterKilledBy(S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,_AttackerOwner,_Attacker)
+AND
+DB_IsPlayer(_AttackerOwner)
+THEN
+UserSetFlag(_AttackerOwner,"RC_DW_FunnyMeat_KilledChef");
+
+IF
+CharacterDying(S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698)
+THEN
+GlobalSetFlag("RC_DW_FunnyMeat_ChefIsDead");
+SetOnStage(S_RC_DW_Tavern_Chef_BodyPart_69e028a3-9328-4249-b20a-bb8a1618c0bf,1);
+ItemToInventory(S_RC_DW_Tavern_Chef_BodyPart_69e028a3-9328-4249-b20a-bb8a1618c0bf,S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698);
+//ItemDrop(S_RC_DW_Tavern_Chef_BodyPart_69e028a3-9328-4249-b20a-bb8a1618c0bf);
+
+/*
+IF
+CharacterLeftTrigger(_Char,S_RC_DW_Tavern_61589961-28fb-49c5-9e1a-f988d77ff57c)
+AND
+DB_IsPlayer(_Player)
+AND
+NOT DB_InRegion(_Player,S_RC_DW_Tavern_61589961-28fb-49c5-9e1a-f988d77ff57c)
+THEN
+GlobalSetFlag("RC_DW_Tavern_Waitress_IsChef");
+SetOnStage(S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,0);
+*/
+
+IF
+DialogEnded("RC_DW_Tavern_Chef",_)
+AND
+GlobalGetFlag("RC_DW_Tavern_Chef_FleeAfterDialog",1)
+THEN
+ProcCharacterDisappearOutOfSight(S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,0,1,"",1);
+SetHasDialog(S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,0);
+
+IF
+CharacterLeftTrigger(_Char,S_RC_DW_Tavern_61589961-28fb-49c5-9e1a-f988d77ff57c)
+AND
+QRY_AnyRegionActive()
+AND
+NOT DB_InRegion(_,S_RC_DW_Tavern_61589961-28fb-49c5-9e1a-f988d77ff57c)
+AND
+GlobalGetFlag("RC_DW_Tavern_Chef_FleeAfterDialog",1)
+AND
+CharacterIsDead(S_RC_DW_Ryker_522b8095-b539-4a82-84f3-bf8e5a74dfe4,0)
+THEN
+GlobalSetFlag("RC_DW_Tavern_Chef_InitiateDeath");
+//END_REGION
+
+//REGION ex magister leaves
+IF
+DialogEnded("RC_DW_Tavern_ExMagister",_)
+AND
+GlobalGetFlag("RC_DW_Tavern_ExMagister_ReportToOfficer",1)
+THEN
+ProcCharacterDisappearOutOfSight(CHARACTERGUID_S_RC_DW_Tavern_ExMagister_2c1dba6f-dd37-4bd0-a249-d390338715cd,-90,1,"",0);
+SetHasDialog(CHARACTERGUID_S_RC_DW_Tavern_ExMagister_2c1dba6f-dd37-4bd0-a249-d390338715cd,0);
+
+IF
+DialogEnded("RC_DW_Tavern_ExMagister",_)
+AND
+GlobalGetFlag("RC_DW_Tavern_ExMagister_ConfrontChef",1)
+THEN
+ProcCharacterMoveTo(CHARACTERGUID_S_RC_DW_Tavern_ExMagister_2c1dba6f-dd37-4bd0-a249-d390338715cd,CHARACTERGUID_S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,1,"RC_DW_Tavern_ExMagister_ArrivedToChef");
+
+IF
+StoryEvent(_,"RC_DW_Tavern_ExMagister_ArrivedToChef")
+AND
+DB_IsPlayer(_Char)
+AND
+CharacterCanSee(_Char,CHARACTERGUID_S_RC_DW_Tavern_ExMagister_2c1dba6f-dd37-4bd0-a249-d390338715cd,1)
+THEN
+UserSetFlag(_Char,"RC_DW_PlayerSaw_ExMagisterConfrontsChef");
+
+IF
+StoryEvent(_,"RC_DW_Tavern_ExMagister_ArrivedToChef")
+THEN
+GlobalSetFlag("RC_DW_ExMagisterConfrontsChef"); //This is used in behaviour Script
+ProcForceStopDialog(CHARACTERGUID_S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698);
+Proc_StartDialog(1,"RC_DW_AD_Tavern_ExMagister",CHARACTERGUID_S_RC_DW_Tavern_ExMagister_2c1dba6f-dd37-4bd0-a249-d390338715cd,CHARACTERGUID_S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698);
+CharacterSetTemporaryHostileRelation(CHARACTERGUID_S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,CHARACTERGUID_S_RC_DW_Tavern_ExMagister_2c1dba6f-dd37-4bd0-a249-d390338715cd);
+ProcSetRelationToPlayers(CHARACTERGUID_S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,50);
+
+/*
+IF
+StoryEvent(_,"RC_DW_Tavern_ExMagister_ArrivedToChef")
+AND
+GlobalGetFlag("RC_DW_ExMagisterConfrontsChef",0)
+AND
+DB_IsPlayer(_Char)
+AND
+CharacterCanSee(_Char,CHARACTERGUID_S_RC_DW_Tavern_ExMagister_2c1dba6f-dd37-4bd0-a249-d390338715cd,0)
+THEN
+//SetOnStage(CHARACTERGUID_S_RC_DW_Tavern_ExMagister_2c1dba6f-dd37-4bd0-a249-d390338715cd,0);
+ObjectSetFlag(S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,"RC_DW_Tavern_Chef_ConfrontPlayerOnSight");
+proc_RC_DW_FunnyMeat_ChefClosesTheDoor((CHARACTERGUID)S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698);
+*/
+
+IF
+CombatEnded(_ID)
+AND
+DB_WasInCombat(S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,_ID)
+AND
+DB_WasInCombat(S_RC_DW_Tavern_ExMagister_2c1dba6f-dd37-4bd0-a249-d390338715cd, _ID)
+AND
+GlobalGetFlag("RC_DW_ExMagisterConfrontsChef",1)
+AND
+DB_IsPlayer(_Player)
+AND
+CharacterCanSee(_Player,S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,1)
+THEN
+GlobalSetFlag("RC_DW_ExMagisterConfrontsChef_PlayerInSight");
+
+IF
+CombatEnded(_ID)
+AND
+DB_WasInCombat(S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,_ID)
+AND
+DB_WasInCombat(S_RC_DW_Tavern_ExMagister_2c1dba6f-dd37-4bd0-a249-d390338715cd, _ID)
+AND
+GlobalGetFlag("RC_DW_ExMagisterConfrontsChef",1)
+AND
+GlobalGetFlag("RC_DW_ExMagisterConfrontsChef_PlayerInSight",0)
+THEN
+proc_RC_DW_FunnyMeat_ChefClosesTheDoor((CHARACTERGUID)S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698);
+
+IF
+CombatEnded(_ID)
+AND
+DB_WasInCombat(S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,_ID)
+AND
+DB_WasInCombat(S_RC_DW_Tavern_ExMagister_2c1dba6f-dd37-4bd0-a249-d390338715cd, _ID)
+AND
+GlobalGetFlag("RC_DW_ExMagisterConfrontsChef",1)
+THEN
+ObjectSetFlag(S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,"RC_DW_Tavern_Chef_ConfrontPlayerOnSight");
+
+//END_REGION
+
+//REGION Cook Ready To Confront
+
+IF
+ObjectFlagSet("RC_DW_Tavern_Chef_ToldMagister",(CHARACTERGUID)_Player,_)
+AND
+DB_IsPlayer(_Players)
+AND
+DB_InRegion((CHARACTERGUID)_Players,S_RC_DW_Tavern_61589961-28fb-49c5-9e1a-f988d77ff57c)
+AND
+ObjectIsInTrigger(_Players,TRIGGERGUID_S_RC_DW_OnwershipTrigger_TavernKitchen_ef3518ba-3eea-411c-b0ad-002880ff2dfe,1)
+THEN
+DB_RC_DW_Tavern_ChefConfrontPlayerAfterLeft(S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698);
+
+IF
+ObjectFlagSet("RC_DW_Tavern_Chef_ToldMagister",(CHARACTERGUID)_Player,_)
+AND
+QueryOnlyOnce("RC_DW_Tavern_Chef_ToldMagister")
+AND
+NOT DB_RC_DW_Tavern_ChefConfrontPlayerAfterLeft(S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698)
+THEN
+ObjectSetFlag(S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,"RC_DW_Tavern_Chef_ConfrontPlayerOnSight");
+
+IF
+CharacterLeftTrigger(_Char,S_RC_DW_Tavern_61589961-28fb-49c5-9e1a-f988d77ff57c)
+AND
+QRY_AnyRegionActive()
+AND
+NOT QryCheckOtherPlayersInTrigger(NULL_00000000-0000-0000-0000-000000000000,S_RC_DW_Tavern_61589961-28fb-49c5-9e1a-f988d77ff57c)
+AND
+DB_RC_DW_Tavern_ChefConfrontPlayerAfterLeft(S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698)
+THEN
+NOT DB_RC_DW_Tavern_ChefConfrontPlayerAfterLeft(S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698);
+ObjectSetFlag(S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,"RC_DW_Tavern_Chef_ConfrontPlayerOnSight");
+
+IF
+StoryEvent(_Player,"RC_DW_Tavern_ChefStartConfrontPlayer")
+THEN
+GlobalSetFlag("RC_DW_Tavern_Chef_ConfrontOnSight");
+Proc_StartDialog(0,"RC_DW_Tavern_Chef",CHARACTERGUID_S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,_Player);
+
+IF
+TextEventSet("talkChf")
+AND
+DB_RC_DW_FunnyMeat_Investigators(_Magister)
+THEN
+Proc_StartDialog(0,"GEB_Sebille_Warning_Assault",S_Player_Sebille_c8d55eaf-e4eb-466a-8f0d-6a9447b5b24c,_Magister);
+
+//END_REGION
+
+//REGION Cook Asks to leave all the time
+IF 
+DialogEnded("RC_DW_Tavern_Chef",_id)
+AND
+DB_DialogPlayers(_id,_Player,1)
+AND
+ObjectGetFlag(_Player,"RC_DW_Tavern_Chef_HasMet",1)
+THEN
+ProcObjectTimerCancel(_Player,"RC_DW_Tavern_Chef_AskPlayerToLeave");
+ProcObjectTimer(_Player,"RC_DW_Tavern_Chef_AskPlayerToLeave",30000);
+
+PROC
+ProcObjectTimerFinished(_Player,"RC_DW_Tavern_Chef_AskPlayerToLeave")
+AND
+ObjectIsInTrigger(_Player,TRIGGERGUID_S_RC_DW_OnwershipTrigger_TavernKitchen_ef3518ba-3eea-411c-b0ad-002880ff2dfe,1)
+AND
+CharacterCanSee(CHARACTERGUID_S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,_Player,1)
+AND
+QRY_SpeakerIsAvailable(_Player)
+AND
+QRY_SpeakerIsAvailable(CHARACTERGUID_S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698)
+THEN
+Proc_StartDialog(0,"RC_DW_Tavern_Chef",CHARACTERGUID_S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,_Player);
+
+PROC
+ProcObjectTimerFinished(_Player,"RC_DW_Tavern_Chef_AskPlayerToLeave")
+AND
+CharacterCanSee(CHARACTERGUID_S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,_Player,0)
+AND
+DB_InRegion((CHARACTERGUID)_Player,S_RC_DW_Tavern_61589961-28fb-49c5-9e1a-f988d77ff57c)
+THEN
+ProcObjectTimer(_Player,"RC_DW_Tavern_Chef_AskPlayerToLeave",30000);
+//END_REGION
+
+//REGION Closing the Kitchen Door
+// Closing the Door
+PROC
+proc_RC_DW_FunnyMeat_ChefClosesTheDoor((CHARACTERGUID)_Chef)
+THEN
+CharacterUseItem(_Chef,S_1m_WorkerHouse_A_Door_A_022_6a9ce92e-4e43-4eaf-befe-950fdb522d9e,"RC_DW_Tavern_ChefClosedDoor");
+DB_RC_DW_FunnyMeat_ChefClosesTheDoor(_Chef);
+
+IF
+CharacterUsedItem(_Char,S_1m_WorkerHouse_A_Door_A_022_6a9ce92e-4e43-4eaf-befe-950fdb522d9e) // Event is not registeredat
+AND
+DB_RC_DW_FunnyMeat_ChefClosesTheDoor(_Chef)
+THEN
+CharacterPurgeQueue(_Chef);
+NOT DB_RC_DW_FunnyMeat_ChefClosesTheDoor(_Chef);
+ProcCharacterMoveTo(_Chef,S_RC_DW_Tavern_Kitchen_FirePlace_0404265b-b29b-449d-81de-6ef8601bd6e9,0,"");
+//END_REGION
+
+//REGION Finding ring & ledger
+/*
+IF
+DB_RC_DW_Tavern_FunnyMeatLoot(_Loot)
+THEN
+SetOnStage(_Loot,0);
+
+IF
+CharacterUsedItem(_Char,ITEMGUID_S_RC_DW_Tavern_FunnyMeat_LoosePlank_00d2a84d-d58d-4bb7-a5c3-c4a6818cf5f5)
+AND
+GetPosition(ITEMGUID_S_RC_DW_Tavern_FunnyMeat_LoosePlank_00d2a84d-d58d-4bb7-a5c3-c4a6818cf5f5,_X,_Y,_Z)
+AND
+DB_RC_DW_Tavern_FunnyMeatLoot(_Loot)
+THEN
+SetOnStage(_Loot,1);
+ItemScatterAt(_Loot,_X,_Y,_Z);
+*/
+
+IF
+GameBookInterfaceClosed(ITEMGUID_S_RC_DW_Tavern_Chef_Ledger_e35ceda9-84c1-4f71-9c9f-cc813d33ae82,_Player)
+AND
+DB_IsPlayer(_Player)
+THEN
+ObjectSetFlag(_Player, "QuestAdd_RC_DW_FunnyMeat");
+ObjectSetFlag(_Player, "QuestUpdate_RC_DW_FunnyMeat_Cook_FoundLedger");
+
+
+IF
+ItemAddedToCharacter(ITEMGUID_S_RC_DW_Tavern_Chef_Ledger_e35ceda9-84c1-4f71-9c9f-cc813d33ae82,_Player)
+AND
+DB_IsPlayer(_Player)
+AND
+QueryOnlyOnce("RC_DW_AD_FunnyMeat_FindNote")
+THEN
+Proc_StartDialog(1,"RC_DW_AD_FunnyMeat_FindNote",_Player);
+
+
+IF
+ItemAddedToCharacter(ITEMGUID_S_RC_DW_FunnyMeat_MagisterSeal_16109e75-f13b-4838-ba1f-3d2a6fcb5bb4,_Player)
+AND
+DB_IsPlayer(_Player)
+AND
+QueryOnlyOnce("RC_DW_AD_FunnyMeat_FindRing")
+THEN
+Proc_StartDialog(1,"RC_DW_AD_FunnyMeat_FindRing",_Player);
+ObjectSetFlag(_Player, "QuestAdd_RC_DW_FunnyMeat");
+ObjectSetFlag(_Player, "QuestUpdate_RC_DW_FunnyMeat_Cook_FoundRing");
+//END_REGION
+
+//REGION Harrison Ghost
+/* Using Vanish Flag in Dialog
+IF
+DialogEnded("RC_DW_Tavern_FunnyMeat_Ghost",_ID)
+AND
+DialogGetInvolvedNPC(_ID,1,_Ghost)
+AND
+ObjectGetFlag(_Ghost,"RC_DW_Tavern_FunnyMeat_Ghost_DisappearAfterDialog",1)
+THEN
+SetOnStage(CHARACTERGUID_S_RC_DW_Tavern_FunnyMeat_Ghost_bf345263-bdf5-44cf-9e0a-0ec77f157682,0);
+*/
+//END_REGION
+
+//REGION Magister Is Dead
+IF 
+CharacterDied(S_RC_DW_Barracks_Magister_Officer_e8e89cb2-f4b7-4066-a3cb-e04422dcdfa4)
+THEN
+GlobalSetFlag("RC_DW_Barracks_MagisterOfficer_Dead");
+
+IF 
+DB_Dead(S_RC_DW_Barracks_Magister_Officer_e8e89cb2-f4b7-4066-a3cb-e04422dcdfa4)
+AND
+DB_IsPlayer(_Player)
+AND
+ObjectGetFlag((CHARACTERGUID)_Player,"QuestAdd_RC_DW_FunnyMeat",1)
+AND
+DB_Sees(_Player,CHARACTERGUID_S_RC_DW_Barracks_Magister_Officer_e8e89cb2-f4b7-4066-a3cb-e04422dcdfa4)
+THEN
+Proc_RC_DW_FunnyMeat_OfficerDead_CookAlive_SetUpdate(_Player);
+//ObjectSetFlag(_Player, "QuestUpdate_RC_DW_FunnyMeat_Investigation_Over_OfficerDead");
+//ObjectSetFlag(_Player, "QuestClose_RC_DW_FunnyMeat"); //QUESTCLOSEPASS
+
+IF
+ObjectFlagSet("QuestAdd_RC_DW_FunnyMeat",(CHARACTERGUID)_Player,_)
+AND
+CharacterIsDead(S_RC_DW_Barracks_Magister_Officer_e8e89cb2-f4b7-4066-a3cb-e04422dcdfa4,1)
+THEN
+ObjectSetFlag(_Player, "QuestUpdate_RC_DW_FunnyMeat_Investigation_Over_OfficerDead");
+Proc_RC_DW_FunnyMeat_OfficerDead_CookAlive_SetUpdate(_Player);
+//ObjectSetFlag(_Player, "QuestClose_RC_DW_FunnyMeat"); //QUESTCLOSEPASS
+
+PROC
+Proc_RC_DW_FunnyMeat_OfficerDead_CookAlive_SetUpdate((CHARACTERGUID)_Player)
+AND
+NOT DB_Dead(CHARACTERGUID_S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698)
+AND
+ObjectGetFlag(_Player,"QuestUpdate_RC_DW_FunnyMeat_Cook_HasSrongEvidance",1)
+THEN
+PartySetFlag(_Player,"QuestUpdate_RC_DW_FunnyMeat_OfficerDead_CookAlive");
+
+PROC
+Proc_RC_DW_FunnyMeat_OfficerDead_CookAlive_SetUpdate((CHARACTERGUID)_Player)
+AND
+NOT DB_Dead(CHARACTERGUID_S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698)
+AND
+ObjectGetFlag(_Player,"QuestUpdate_RC_DW_FunnyMeat_Cook_Confronted",1)
+THEN
+PartySetFlag(_Player,"QuestUpdate_RC_DW_FunnyMeat_OfficerDead_CookAlive");
+
+PROC
+Proc_RC_DW_FunnyMeat_OfficerDead_CookAlive_SetUpdate((CHARACTERGUID)_Player)
+AND
+NOT DB_Dead(CHARACTERGUID_S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698)
+AND
+ObjectGetFlag(_Player,"QuestUpdate_RC_DW_FunnyMeat_Cook_HasSrongEvidance",0)
+THEN
+ObjectSetFlag(_Player, "QuestUpdate_RC_DW_FunnyMeat_Investigation_Over_OfficerDead");
+
+PROC
+Proc_RC_DW_FunnyMeat_OfficerDead_CookAlive_SetUpdate((CHARACTERGUID)_Player)
+AND
+NOT DB_Dead(CHARACTERGUID_S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698)
+AND
+ObjectGetFlag(_Player,"QuestUpdate_RC_DW_FunnyMeat_Cook_Confronted",0)
+THEN
+ObjectSetFlag(_Player, "QuestUpdate_RC_DW_FunnyMeat_Investigation_Over_OfficerDead");
+
+//END_REGION
+
+//REGION Chef Is Attakcing
+
+IF
+DialogEnded("RC_DW_Tavern_Chef",_Id)
+AND
+GlobalGetFlag("RC_DW_Tavern_Chef_HostileToMagisters",1)
+THEN
+CharacterSetRelationFactionToFaction("RC_DW_Tavern_Chef","DW_Magister",0);
+CharacterSetRelationFactionToFaction("DW_Magister","RC_DW_Tavern_Chef",0);
+// Will need 1 RC_DW_Magister Aligmnet
+CharacterSetRelationFactionToFaction("RC_DW_Tavern_Chef","RC_DW_CheckpointMagisters",0);
+CharacterSetRelationFactionToFaction("RC_DW_CheckpointMagisters","RC_DW_Tavern_Chef",0);
+
+CharacterSetRelationFactionToFaction("RC_DW_Tavern_Chef","RC_DW_FishFactoryMagister",0);
+CharacterSetRelationFactionToFaction("RC_DW_FishFactoryMagister","RC_DW_Tavern_Chef",0);
+
+CharacterSetRelationFactionToFaction("RC_DW_Tavern_Chef","RC_DW_WestCheckPointMagisters",0);
+CharacterSetRelationFactionToFaction("RC_DW_WestCheckPointMagisters","RC_DW_Tavern_Chef",0);
+
+CharacterSetRelationFactionToFaction("RC_DW_Tavern_Chef","RC_DW_WhiteMagister",0);
+CharacterSetRelationFactionToFaction("RC_DW_WhiteMagister","RC_DW_Tavern_Chef",0);
+//END_REGION
+
+
+IF
+DialogStarted("RC_DW_Barracks_Magister_Officer",_Inst)
+AND
+DialogGetInvolvedPlayer(_Inst,1,(CHARACTERGUID)_Player)
+AND
+DB_FunnyMeat_LeadsList(_Flag)
+AND
+UserGetFlag(_Player,_Flag,1)
+THEN
+ObjectSetFlag(_Player,"RC_DW_FunnyMeat_HasClue");
+
+IF
+ObjectFlagSet("RC_DW_Tavern_Chef_SpilledStewOnPlayer",_Player,_ID)
+THEN
+ApplyStatus(_Player,"WET",5.0);
+
+IF
+DialogEnded("RC_DW_Tavern_Chef",_ID)
+AND
+DialogGetInvolvedPlayer(_ID,1,_Player)
+AND
+ObjectGetFlag(_Player,"RC_DW_Tavern_Chef_SpilledStewOnPlayer",1)
+THEN
+ObjectClearFlag(_Player,"RC_DW_Tavern_Chef_SpilledStewOnPlayer",0);
+
+/*
+IF
+DialogEnded("RC_DW_Barracks_Magister_Officer",_Inst)
+AND
+DialogGetInvolvedPlayer(_Inst,1,(CHARACTERGUID)_Player)
+AND
+DB_FunnyMeat_LeadsList(_Flag)
+THEN
+ObjectClearFlag(_Player,_Flag,0);
+*/
+
+//REGION ExMagister Chair moved
+IF
+CharacterMovedItem(_char,S_FUR_Humans_Citz_Stool_C_019_d1b34a34-14cf-4311-ac1e-57c24e1e7c4a)
+AND
+CharacterIsDead(S_RC_DW_Tavern_ExMagister_2c1dba6f-dd37-4bd0-a249-d390338715cd,0)
+AND
+_char != S_RC_DW_Tavern_ExMagister_2c1dba6f-dd37-4bd0-a249-d390338715cd
+THEN
+ObjectSetFlag(S_RC_DW_Tavern_ExMagister_2c1dba6f-dd37-4bd0-a249-d390338715cd,"RC_DW_ExMagisterChairMoved");
+
+//END_REGION
+
+//REGION Debug Flag
+//DisapperOutOfSisghtFlags
+
+IF
+TextEventSet("ExMagisterDisappearReset")
+THEN
+SetOnStage(CHARACTERGUID_S_RC_DW_Tavern_ExMagister_2c1dba6f-dd37-4bd0-a249-d390338715cd,1);
+TeleportTo(CHARACTERGUID_S_RC_DW_Tavern_ExMagister_2c1dba6f-dd37-4bd0-a249-d390338715cd,TRIGGERGUID_S_RC_DW_ExMagisterSeatLocation_7c4dffef-bb05-4042-ad74-8f2ced8e7e15);
+
+IF
+TextEventSet("ExMagisterDisappearOutOfSight_90")
+THEN
+ProcCharacterDisappearOutOfSight(CHARACTERGUID_S_RC_DW_Tavern_ExMagister_2c1dba6f-dd37-4bd0-a249-d390338715cd,-90,1,"",0);
+
+
+
+IF
+TextEventSet("RC_DW_FunnyMeat_SetReportingFlags")
+AND
+DB_IsPlayer(_Player)
+THEN
+UserSetFlag(_Player,"RC_DW_FishFactory_FoundCache");
+UserSetFlag(_Player,"RC_DW_FishBarrelStart");
+UserSetFlag(_Player,"RC_DW_KnowsAbout_DreamerDen");
+UserSetFlag(_Player,"RC_DW_Gossips_Dorotya");
+UserSetFlag(_Player,"FunnyMeatInvestigation_Knows_MurgaFoughtMagisters");
+UserSetFlag(_Player,"RC_DU_SeenCaraven");
+
+
+IF
+TextEventSet("RC_DW_FunnyMeat_SetCookFlags")
+AND
+DB_IsPlayer(_Player)
+AND
+DB_FunnyMeat_LeadsList(_Flag)
+THEN
+UserSetFlag(_Player,_Flag);
+
+
+IF
+TextEventSet("RC_DW_FunnyMeat_Send_Investigator")
+AND
+DB_RC_DW_FunnyMeat_Investigators(_MagisterInvestigator)
+THEN
+PROC_RC_DW_FunnyMeatSendInvestigator(_MagisterInvestigator);
+//ProcCharacterDisappearOutOfSight(_MagisterInvestigator,270,1,"RC_DW_Tavern_Chef_MagisterWentToInvestigate",1);
+
+IF
+TextEventSet("RC_DW_FunnyMeat_Send_Investigator")
+AND
+DB_IsPlayer(_Player)
+THEN
+ObjectSetFlag(_Player,"RC_DW_Tavern_Chef_ToldMagister");
+
+IF
+TextEventSet("RC_DW_FunnyMeat_Send_ExMagister")
+THEN
+CharacterMoveTo(CHARACTERGUID_S_RC_DW_Tavern_ExMagister_2c1dba6f-dd37-4bd0-a249-d390338715cd,CHARACTERGUID_S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,1,"RC_DW_Tavern_ExMagister_ArrivedToChef",0);
+GlobalSetFlag("RC_DW_Tavern_ExMagister_ConfrontChef");
+
+IF
+TextEventSet("RC_DW_FunnyMeatGiveEvidnace")
+AND
+DB_IsPlayer(_Player)
+AND
+QueryOnlyOnce("RC_DW_FunnyMeatGiveEvidnace")
+THEN
+ItemToInventory(ITEMGUID_S_RC_DW_Tavern_Chef_Ledger_e35ceda9-84c1-4f71-9c9f-cc813d33ae82,_Player);
+ItemToInventory(ITEMGUID_S_RC_DW_FunnyMeat_MagisterSeal_16109e75-f13b-4838-ba1f-3d2a6fcb5bb4,_Player);
+
+IF
+TextEventSet("RC_DW_FunnyMeat_ChefComeToMeAndHostile")
+AND
+DB_IsPlayer(_Player)
+THEN
+CharacterMoveTo(CHARACTERGUID_S_RC_DW_Tavern_Chef_de730f5b-6c8e-46b3-aa14-12ad3a535698,_Player,1,"",1);
+
+CharacterSetRelationFactionToFaction("RC_DW_Tavern_Chef","Hero",0);
+CharacterSetRelationFactionToFaction("Hero","RC_DW_Tavern_Chef",0);
+
+CharacterSetRelationFactionToFaction("RC_DW_Tavern_Chef","DW_Magister",0);
+CharacterSetRelationFactionToFaction("DW_Magister","RC_DW_Tavern_Chef",0);
+// Will need 1 RC_DW_Magister Aligmnet
+CharacterSetRelationFactionToFaction("RC_DW_Tavern_Chef","RC_DW_CheckpointMagisters",0);
+CharacterSetRelationFactionToFaction("RC_DW_CheckpointMagisters","RC_DW_Tavern_Chef",0);
+
+CharacterSetRelationFactionToFaction("RC_DW_Tavern_Chef","RC_DW_FishFactoryMagister",0);
+CharacterSetRelationFactionToFaction("RC_DW_FishFactoryMagister","RC_DW_Tavern_Chef",0);
+
+CharacterSetRelationFactionToFaction("RC_DW_Tavern_Chef","RC_DW_WestCheckPointMagisters",0);
+CharacterSetRelationFactionToFaction("RC_DW_WestCheckPointMagisters","RC_DW_Tavern_Chef",0);
+
+CharacterSetRelationFactionToFaction("RC_DW_Tavern_Chef","RC_DW_WhiteMagister",0);
+CharacterSetRelationFactionToFaction("RC_DW_WhiteMagister","RC_DW_Tavern_Chef",0);
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "ReapersCoast"

@@ -1,0 +1,477 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//REGION Character DB_KillCounter
+PROC
+ProcCheckCounter((INTEGER)_Count,(STRING)_CounterDB)
+AND
+DB_KillCounterCounts(_CounterDB,_OldCount)
+THEN
+NOT DB_KillCounterCounts(_CounterDB,_OldCount);
+DB_KillCounterCounts(_CounterDB,_Count);
+
+PROC
+ProcClearCounterDB((STRING)_CounterDB)
+AND
+DB_KillCounter_Internal(_Character,_CounterDB)
+THEN
+NOT DB_KillCounter_Internal(_Character,_CounterDB);
+
+PROC
+ProcClearCounterDB((STRING)_CounterDB)
+AND
+DB_KillCounterDied(_Char,_CounterDB)
+THEN
+NOT DB_KillCounterDied(_Char,_CounterDB);
+
+PROC
+ProcCheckCounter(_Count,_CounterDB)
+AND
+DB_KillCounter((STRING)_CounterDB,(INTEGER)_TargetCount)
+AND
+_Count == _TargetCount 
+THEN
+//NOT DB_KillCounter(_CounterDB,_TargetCount);
+ProcClearCounterDB(_CounterDB);
+ProcKillCounterReached(_CounterDB);
+NOT DB_KillCounterCounterDefined(_CounterDB);
+//NOT DB_KillCounterCounts(_CounterDB,_TargetCount);
+
+PROC
+ProcCheckCounter(_Count, _CounterDB)
+AND
+DB_KillCounter((STRING)_CounterDB,(INTEGER)_TargetCount)
+AND
+IntegerSubtract(_TargetCount, 1, _New)
+AND
+_Count == _New
+AND
+DB_KillCounter_Internal(_LastCharacter, _CounterDB)
+THEN
+DB_LastManStanding((CHARACTERGUID)_LastCharacter, (STRING)_CounterDB);
+
+IF
+CharacterDying(_Character)
+AND
+DB_KillCounter_Internal(_Character,_CounterDB)
+AND
+DB_CombatCharacters(_Character,_ID)
+THEN
+ProcSetCounterCombatID(_CounterDB,_ID);
+
+PROC
+ProcClearCounterCombatID((STRING)_Counter)
+AND
+DB_CounterCombatID(_Counter,_OldID)
+THEN
+NOT DB_CounterCombatID(_Counter,_OldID);
+
+PROC
+ProcSetCounterCombatID((STRING)_Counter,(INTEGER)_ID)
+THEN
+ProcClearCounterCombatID(_Counter);
+DB_CounterCombatID(_Counter,_ID);
+
+IF
+ObjectEnteredCombat((CHARACTERGUID)_Char, _ID)
+AND
+DB_KillCounter_Internal(_Char, _Counter)
+THEN
+ProcClearCounterCombatID(_Counter);
+
+IF
+ObjectEnteredCombat((CHARACTERGUID)_LastMan, _ID)
+AND
+DB_KillCounter_Internal(_LastMan, _Counter)
+AND
+DB_KillCounter(_Counter,1)
+THEN
+DB_LastManStanding((CHARACTERGUID)_LastMan, (STRING)_Counter);
+
+IF
+CharacterKilledBy(_Defender, _AttackerOwner, _Attacker)
+AND
+DB_LastManStanding(_Defender, _CounterDB)
+THEN
+NOT DB_LastManStanding(_Defender, _CounterDB);
+DB_LastManInCombatKilledBy(_AttackerOwner, (STRING)_CounterDB);
+
+IF
+CharacterDied(_Character)
+AND
+DB_KillCounter_Internal(_Character,_CounterDB)
+AND
+DB_KillCounterCounts(_CounterDB,_Count)
+AND
+IntegerSum(_Count,1,_NewCount)
+THEN
+NOT DB_KillCounter_Internal(_Character,_CounterDB);
+DB_KillCounterDied(_Character,_CounterDB);
+ProcCheckCounter(_NewCount,_CounterDB);
+
+IF
+CharacterResurrected(_Character)
+AND
+DB_KillCounterDied(_Character,_CounterDB)
+AND
+DB_KillCounterCounts(_CounterDB,_Count)
+AND
+IntegerSubtract(_Count,1,_NewCount)
+THEN
+DB_KillCounter_Internal(_Character,_CounterDB);
+NOT DB_KillCounterDied(_Character,_CounterDB);
+ProcCheckCounter(_NewCount,_CounterDB);
+
+IF
+DB_KillCounter_Internal(_Character,_CounterDB)
+AND
+NOT DB_KillCounterCounterDefined(_CounterDB)
+THEN
+DB_KillCounterCounts(_CounterDB,0);
+DB_KillCounterCounterDefined(_CounterDB);
+
+IF
+CombatEnded(_CombatID)
+AND
+DB_CounterCombatID(_CounterDB,_CombatID)
+AND
+DB_KillCounterCounts(_CounterDB,_Count)
+THEN
+ProcCheckCounterCombatOver(_CounterDB,_CombatID);
+ProcCheckCounter(_Count,_CounterDB);
+
+IF
+DB_CombatCharacters(_Char, _CombatID)
+AND
+DB_KillCounter_Internal(_Char,_CounterDB)
+THEN
+ProcClearCombatOverDB(_CounterDB);
+
+PROC
+ProcClearCombatOverDB((STRING)_CounterDB)
+AND
+DB_KillCounterCombatOver(_OldCombatID, _CounterDB)
+THEN
+NOT DB_KillCounterCombatOver(_OldCombatID, _CounterDB);
+
+//killed people outside of combat
+PROC
+ProcKillCounterReached((STRING)_CounterDB)
+AND
+NOT DB_CounterCombatID(_CounterDB,_)
+THEN
+ReactOnKillCounter(_CounterDB);
+
+PROC
+ProcKillCounterReached((STRING)_CounterDB)
+AND
+DB_KillCounterCombatOver(_CombatID, _CounterDB)
+THEN
+ReactOnKillCounter(_CounterDB);
+NOT DB_KillCounterCombatOver(_CombatID, _CounterDB);
+
+//Wasn't involved in combat
+PROC
+ProcCheckCounterCombatOver((STRING)_CounterDB,(INTEGER)_CombatID)
+THEN
+NOT DB_KillCounterCombatOver(_CombatID, _CounterDB);
+
+PROC
+ProcCheckCounterCombatOver((STRING)_CounterDB,(INTEGER)_CombatID)
+AND
+CombatGetNumberOfInvolvedPartyMembers(_CombatID, 0)
+THEN
+DB_KillCounterCombatOver(_CombatID, _CounterDB);
+
+
+PROC
+ReactOnKillCounter((STRING)_CounterDB)
+AND
+DB_KillCounterCounts(_CounterDB,_Count)
+AND
+DB_KillCounter(_CounterDB,_TargetCount)
+THEN
+NOT DB_KillCounterCounts(_CounterDB,_Count);
+NOT DB_KillCounter(_CounterDB,_TargetCount);
+
+//END_REGION
+
+//REGION Item Destroy Counter
+PROC
+CheckItemCounter((INTEGER)_Count,(STRING)_CounterDB)
+AND
+DB_ItemDestroyCounterCounts(_CounterDB,_OldCount)
+THEN
+NOT DB_ItemDestroyCounterCounts(_CounterDB,_OldCount);
+DB_ItemDestroyCounterCounts(_CounterDB,_Count);
+
+PROC
+ClearDB_ItemDestroyCounter_Internal((STRING)_CounterDB)
+AND
+DB_ItemDestroyCounter_Internal(_Item,_CounterDB)
+THEN
+NOT DB_ItemDestroyCounter_Internal(_Item,_CounterDB);
+
+PROC
+CheckItemCounter(_Count,_CounterDB)
+AND
+DB_ItemDestroyCounter((STRING)_CounterDB,(INTEGER)_TargetCount)
+AND
+_Count == _TargetCount 
+THEN
+NOT DB_ItemDestroyCounter(_CounterDB,_TargetCount);
+ClearDB_ItemDestroyCounter_Internal(_CounterDB);
+NOT DB_ItemDestroyCounterCounterDefined(_CounterDB);
+NOT DB_ItemDestroyCounter(_CounterDB,_TargetCount);
+
+IF
+ItemDestroyed(_Item)
+AND
+DB_ItemDestroyCounter_Internal(_Item,_CounterDB)
+AND
+DB_ItemDestroyCounterCounts(_CounterDB,_Count)
+AND
+IntegerSum(_Count,1,_NewCount)
+THEN
+NOT DB_ItemDestroyCounter_Internal(_Item,_CounterDB);
+CheckItemCounter(_NewCount,_CounterDB);
+
+IF
+DB_ItemDestroyCounter_Internal(_Item,_CounterDB)
+AND
+NOT DB_ItemDestroyCounterCounterDefined(_CounterDB)
+THEN
+DB_ItemDestroyCounterCounts(_CounterDB,0);
+DB_ItemDestroyCounterCounterDefined(_CounterDB);
+//END_REGION
+
+//REGION Comment for hidden effect
+PROC
+PROC_CommentHiddenEffect((CHARACTERGUID)_Player)
+THEN
+Proc_StartDialog(1,"GLO_AD_ActivatedSwitch", _Player);
+//END_REGION
+
+//REGION SneakTrigger
+IF
+DB_SneakTriggerSpotter((TRIGGERGUID)_Trigger, (CHARACTERGUID)_Char)
+THEN
+SetVarObject(_Char, "SpottedTrigger", _Trigger);
+ProcTriggerRegisterForPlayers(_Trigger);
+
+PROC
+ProcHandleSneakSpotted((CHARACTERGUID)_Char)
+THEN
+DB_NOOP(1);
+
+IF
+StoryEvent((CHARACTERGUID)_Char, "GLO_SpotterSneaker")
+AND
+DB_SneakTriggerSpotter(_Trigger, _Char)
+AND
+GetVarObject(_Char, "SpottedDude", _Player)
+THEN
+ProcCharInTriggerSpotted((CHARACTERGUID)_Player,_Trigger);
+ProcCharInTriggerSpottedByChar((CHARACTERGUID)_Player,_Trigger,_Char);
+ProcHandleSneakSpotted(_Char);
+ProcCleanUpSneakTrigger(_Trigger);
+
+PROC
+ProcCharInTriggerSpottedByChar((CHARACTERGUID)_Player,(TRIGGERGUID)_Trigger,(CHARACTERGUID)_Spotter)
+THEN
+DB_NOOP(1);
+
+PROC
+ProcCleanUpSneakTrigger((TRIGGERGUID)_Trigger)
+AND
+DB_SneakTriggerSpotter((TRIGGERGUID)_Trigger, (CHARACTERGUID)_Char)
+THEN
+SetVarInteger(_Char, "SpottedCounter", 1);
+NOT DB_SneakTriggerSpotter(_Trigger, _Char);
+
+PROC
+ProcTriggerUnregisterForPlayers((TRIGGERGUID)_Trigger)
+AND
+DB_SneakTriggerSpotter(_Trigger, _Char)
+THEN
+NOT DB_SneakTriggerSpotter(_Trigger, _Char);
+//END_REGION
+
+//REGION DB_AmbushTrigger
+IF
+DB_AmbushTrigger((TRIGGERGUID)_Trigger, (ITEMGUID)_Helper)
+THEN
+ProcTriggerRegisterForPlayers(_Trigger);
+SetOnStage(_Helper, 1);
+
+IF
+CharacterEnteredTrigger(_Player,_Trigger)
+AND
+DB_AmbushTrigger(_Trigger, _)
+AND
+HasActiveStatus(_Player, "INVISIBLE", 0)
+AND
+HasActiveStatus(_Player, "SNEAKING", 0)
+THEN
+ProcLaunchAmbush(_Trigger, _Player);
+
+IF
+CharacterStatusRemoved(_Player, "INVISIBLE",_)
+AND
+DB_InRegion(_Player, _Trigger)
+AND
+DB_AmbushTrigger(_Trigger, _)
+THEN
+ProcLaunchAmbush(_Trigger, _Player);
+
+IF
+CharacterStatusRemoved(_Player, "SNEAKING",_)
+AND
+DB_InRegion(_Player, _Trigger)
+AND
+DB_AmbushTrigger(_Trigger, _Helper)
+THEN
+ProcLaunchAmbush(_Trigger, _Player);
+
+PROC
+ProcLaunchAmbush((TRIGGERGUID)_Trigger, (CHARACTERGUID)_Player)
+AND
+DB_AmbushTrigger(_Trigger, _Helper)
+THEN
+ProcTriggerUnregisterForPlayers(_Trigger);
+NOT DB_AmbushTrigger(_Trigger, _Helper);
+SetOnStage(_Helper, 0);
+//END_REGION
+
+//REGION Queuing Dialog
+//1 Speaker
+PROC
+PROC_MandatoryOneSpeakerDialog((STRING)_Dialog,(CHARACTERGUID)_Player)
+AND
+NOT QRY_SpeakerIsAvailable(_Player)
+THEN
+DB_QueuedOneSpeakerDialog(_Player,_Dialog);
+
+PROC
+PROC_MandatoryOneSpeakerDialog((STRING)_Dialog,(CHARACTERGUID)_Player)
+AND
+QRY_SpeakerIsAvailable(_Player)
+THEN
+MakePlayerActive(_Player);
+Proc_StartDialog(0,_Dialog,_Player);
+
+IF
+DialogEnded(_,_)
+AND
+DB_QueuedOneSpeakerDialog(_Player,_Dialog)
+AND
+DB_IsPlayer(_Player)
+AND
+QRY_SpeakerIsAvailable(_Player)
+THEN
+NOT DB_QueuedOneSpeakerDialog(_Player,_Dialog);
+MakePlayerActive(_Player);
+Proc_StartDialog(0,_Dialog,_Player);
+
+IF
+ObjectLeftCombat((CHARACTERGUID)_Player,_)
+AND
+DB_QueuedOneSpeakerDialog(_Player,_Dialog)
+AND
+DB_IsPlayer(_Player)
+AND
+QRY_SpeakerIsAvailable(_Player)
+THEN
+NOT DB_QueuedOneSpeakerDialog(_Player,_Dialog);
+MakePlayerActive(_Player);
+Proc_StartDialog(0,_Dialog,_Player);
+
+//END_REGION
+
+//REGION Quest Reward
+PROC
+ProcRewardQuestMedium((TRIGGERGUID)_Trigger)
+THEN
+ItemCreateAtTrigger(_Trigger, "Quest_Reward_Small_94e12298-5e59-405a-9e93-95833e648ce2");
+PlayEffect(_Trigger,"RS3_FX_GP_ScriptedEvent_Teleport_GenericSmoke_01");
+
+PROC
+ProcRewardQuestBig((TRIGGERGUID)_Trigger)
+THEN
+ItemCreateAtTrigger(_Trigger, "Quest_Reward_Big_b67596ec-18ca-4790-9273-8af23d8a7a43");
+PlayEffect(_Trigger,"RS3_FX_GP_ScriptedEvent_Teleport_GenericSmoke_01");
+//END_REGION
+
+
+//REGION secret regions
+IF
+DB_SecretRegions_OnOpenedDoor(_Trig,_)
+THEN
+LockSecretRegion(_Trig);
+
+IF
+DB_SecretRegions_OnEnteredTrig(_Trig,_OtherTrig)
+THEN
+ProcTriggerRegisterForPlayers(_OtherTrig);
+LockSecretRegion(_Trig);
+
+IF
+CharacterUsedItem(_,_Door)
+AND
+DB_SecretRegions_OnOpenedDoor(_Trig,_Door)
+AND
+DoorIsOpening(_Door,1)
+THEN
+UnlockSecretRegion(_Trig);
+NOT DB_SecretRegions_OnOpenedDoor(_Trig,_Door);
+
+IF
+ItemOpened(_Door)
+AND
+DB_SecretRegions_OnOpenedDoor(_Trig,_Door)
+THEN
+UnlockSecretRegion(_Trig);
+NOT DB_SecretRegions_OnOpenedDoor(_Trig,_Door);
+
+IF
+ItemDestroying(_Door)
+AND
+DB_SecretRegions_OnOpenedDoor(_Trig,_Door)
+THEN
+UnlockSecretRegion(_Trig);
+NOT DB_SecretRegions_OnOpenedDoor(_Trig,_Door);
+
+IF
+ItemDestroyed(_Door)
+AND
+DB_SecretRegions_OnOpenedDoor(_Trig,_Door)
+THEN
+UnlockSecretRegion(_Trig);
+NOT DB_SecretRegions_OnOpenedDoor(_Trig,_Door);
+
+
+IF
+CharacterEnteredTrigger(_Char,_EnteredTrig)
+AND
+DB_SecretRegions_OnEnteredTrig(_Trig,(TRIGGERGUID)_EnteredTrig)
+AND
+DB_IsPlayer(_Char)
+THEN
+UnlockSecretRegion(_Trig);
+NOT DB_SecretRegions_OnEnteredTrig(_Trig,_EnteredTrig);
+
+IF
+StoryEvent(_,_Event)
+AND
+DB_SecretRegions_OnStoryEvent(_Trig,_Event)
+THEN
+UnlockSecretRegion(_Trig);
+NOT DB_SecretRegions_OnStoryEvent(_Trig,_Event);
+
+
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION

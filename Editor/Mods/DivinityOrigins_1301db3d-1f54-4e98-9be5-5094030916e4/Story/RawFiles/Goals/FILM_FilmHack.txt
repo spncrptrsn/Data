@@ -1,0 +1,287 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+DB_FILM_Counter(0);
+//DB_FILM_Attacks(Character, Target, Time)
+//DB_FILM_Animations(_Character, _Animation, _Time)
+//DB_FILM_Skills(Character, Skill, Target, Time)
+//DB_FILM_MoveTo(Character, Target, _Running, Time)
+//DB_FILM_Effect((GUIDSTRING)Target, (STRING)Effect, (INTEGER)Time)
+//DB_FILM_Effect(FTJ_Humans_Male_Gheists_001_1a3a16cb-291d-443f-b9b0-7a3a0a58db96, "RS3_FX_GP_Impacts_Wand_Water_01_a7ffd3f5-72a7-4660-a306-5cee9ea57d81", 10000);
+
+DB_FILM_Animations((CHARACTERGUID)Humans_Male_Armor_Blackring_A_000_69de41ec-ed63-490e-b0e4-177bd15e6a9d, "Dust_Off_01", 5000);
+
+DB_FILM_MoveTo((CHARACTERGUID)Humans_Male_Armor_Blackring_A_000_69de41ec-ed63-490e-b0e4-177bd15e6a9d, EventTrigger_000_40be8387-544d-4365-9f6a-015f9daa675a, 0, 7500);
+
+DB_FILM_MoveTo((CHARACTERGUID)Humans_Male_Armor_Blackring_A_000_69de41ec-ed63-490e-b0e4-177bd15e6a9d, EventTrigger_000_40be8387-544d-4365-9f6a-015f9daa675a, 0, 7500);
+
+KBSECTION
+//REGION Animations
+IF
+TextEventSet("StartFilm")
+AND
+DB_FILM_TimedAnimations(_, _, _Timer)
+THEN
+TimerCancel(_Timer);
+
+IF
+TextEventSet("StartFilm")
+AND
+DB_FILM_Counter(_Num)
+THEN
+NOT DB_FILM_Counter(_Num);
+
+IF
+TextEventSet("StartFilm")
+THEN
+DB_FILM_Counter(0);
+
+IF
+TextEventSet("StartFilm")
+AND
+DB_FILM_Animations((CHARACTERGUID)_Character, (STRING)_Animation, (INTEGER)_Time)
+THEN
+PROC_FILM_AddAnimation(_Character, _Animation, _Time);
+
+PROC
+PROC_FILM_AddAnimation((CHARACTERGUID)_Character, (STRING)_Animation, (INTEGER)_Time)
+AND
+DB_FILM_Counter(_Num)
+AND
+IntegerSum(_Num, 1, _NewNum)
+AND
+IntegertoString(_Num, _NumString)
+AND
+StringConcatenate("FILM_Timer_Animation_", _NumString, _String1)
+THEN
+DB_FILM_TimedAnimations(_Character, _Animation, _String1);
+TimerLaunch(_String1, _Time);
+NOT DB_FILM_Counter((INTEGER)_Num);
+DB_FILM_Counter((INTEGER)_NewNum);
+
+
+IF
+TimerFinished(_Timer)
+AND
+DB_FILM_TimedAnimations(_Character, _Animation, _Timer)
+THEN
+PlayAnimation(_Character, _Animation);
+//END_REGION
+
+//REGION Attacks
+IF
+TextEventSet("StartFilm")
+AND
+DB_FILM_TimedAttacks(_Character, _Target, _Timer)
+THEN
+TimerCancel(_Timer);
+
+
+IF
+TextEventSet("StartFilm")
+AND
+DB_FILM_Counter(_Num)
+THEN
+NOT DB_FILM_Counter(_Num);
+
+IF
+TextEventSet("StartFilm")
+THEN
+DB_FILM_Counter(0);
+
+IF
+TextEventSet("StartFilm")
+AND
+DB_FILM_Attacks((CHARACTERGUID)_Character, (GUIDSTRING)_Target, (INTEGER)_Time)
+THEN
+PROC_FILM_AddAttack(_Character, _Target, _Time);
+
+PROC
+PROC_FILM_AddAttack((CHARACTERGUID)_Character, (GUIDSTRING)_Target, (INTEGER)_Time)
+AND
+DB_FILM_Counter(_Num)
+AND
+IntegerSum(_Num, 1, _NewNum)
+AND
+IntegertoString(_Num, _NumString)
+AND
+StringConcatenate("FILM_Timer_Attack_", _NumString, _String1)
+THEN
+DB_FILM_TimedAttacks(_Character, _Target, _String1);
+TimerLaunch(_String1, _Time);
+NOT DB_FILM_Counter((INTEGER)_Num);
+DB_FILM_Counter((INTEGER)_NewNum);
+
+IF
+TimerFinished(_Timer)
+AND
+DB_FILM_TimedAttacks(_Character, _Target, _Timer)
+THEN
+CharacterAttack(_Character, _Target);
+//END_REGION
+
+
+//REGION Skills
+IF
+TextEventSet("StartFilm")
+AND
+DB_FILM_TimedSkills(_Character, _Skill, _Target, _Timer)
+THEN
+TimerCancel(_Timer);
+
+IF
+TextEventSet("StartFilm")
+AND
+DB_FILM_Counter(_Num)
+THEN
+NOT DB_FILM_Counter(_Num);
+
+IF
+TextEventSet("StartFilm")
+THEN
+DB_FILM_Counter(0);
+
+IF
+TextEventSet("StartFilm")
+AND
+DB_FILM_Skills((CHARACTERGUID)_Character, (STRING)_Skill, (GUIDSTRING)_Target, (INTEGER)_Time)
+THEN
+PROC_FILM_AddSkill(_Character, _Skill, _Target, _Time);
+
+PROC
+PROC_FILM_AddSkill((CHARACTERGUID)_Character, (STRING)_Skill, (GUIDSTRING)_Target, (INTEGER)_Time)
+AND
+DB_FILM_Counter(_Num)
+AND
+IntegerSum(_Num, 1, _NewNum)
+AND
+IntegertoString(_Num, _NumString)
+AND
+StringConcatenate("FILM_Timer_Skill_", _NumString, _String1)
+THEN
+CharacterAddSkill(_Character, _Skill);
+DB_FILM_TimedSkills(_Character, _Skill, _Target, _String1);
+TimerLaunch(_String1, _Time);
+NOT DB_FILM_Counter((INTEGER)_Num);
+DB_FILM_Counter((INTEGER)_NewNum);
+
+
+IF
+TimerFinished(_Timer)
+AND
+DB_FILM_TimedSkills(_Character, _Skill, _Target, _Timer)
+THEN
+CharacterUseSkill(_Character, _Skill, _Target);
+
+//END_REGION
+
+//REGION Movement
+IF
+TextEventSet("StartFilm")
+AND
+DB_FILM_TimedMoveTo(_Character, _Target, _Running, _Timer)
+THEN
+TimerCancel(_Timer);
+
+IF
+TextEventSet("StartFilm")
+AND
+DB_FILM_Counter(_Num)
+THEN
+NOT DB_FILM_Counter(_Num);
+
+IF
+TextEventSet("StartFilm")
+THEN
+DB_FILM_Counter(0);
+
+IF
+TextEventSet("StartFilm")
+AND
+DB_FILM_MoveTo((CHARACTERGUID)_Character, (GUIDSTRING)_Target, (INTEGER)_Running, (INTEGER)_Time)
+THEN
+PROC_FILM_AddMove(_Character, _Target, _Running, _Time);
+
+PROC
+PROC_FILM_AddMove((CHARACTERGUID)_Character, (GUIDSTRING)_Target, (INTEGER)_Running, (INTEGER)_Time)
+AND
+DB_FILM_Counter(_Num)
+AND
+IntegerSum(_Num, 1, _NewNum)
+AND
+IntegertoString(_Num, _NumString)
+AND
+StringConcatenate("FILM_Timer_MoveTo_", _NumString, _String1)
+THEN
+DB_FILM_TimedMoveTo(_Character, _Target, _Running, _String1);
+TimerLaunch(_String1, _Time);
+NOT DB_FILM_Counter((INTEGER)_Num);
+DB_FILM_Counter((INTEGER)_NewNum);
+
+
+IF
+TimerFinished(_Timer)
+AND
+DB_FILM_TimedMoveTo(_Character, _Target, _Running, _Timer)
+THEN
+CharacterMoveTo(_Character, _Target, _Running, "", 0);
+
+//END_REGION
+
+//REGION Effects
+IF
+TextEventSet("StartFilm")
+AND
+DB_FILM_TimedEffect(_Target, _Effect, _Timer)
+THEN
+TimerCancel(_Timer);
+
+IF
+TextEventSet("StartFilm")
+AND
+DB_FILM_Counter(_Num)
+THEN
+NOT DB_FILM_Counter(_Num);
+
+IF
+TextEventSet("StartFilm")
+THEN
+DB_FILM_Counter(0);
+
+IF
+TextEventSet("StartFilm")
+AND
+DB_FILM_Effect((GUIDSTRING)_Target, (STRING)_Effect, (INTEGER)_Time)
+THEN
+PROC_FILM_AddEffect(_Target, _Effect, _Time);
+
+PROC
+PROC_FILM_AddEffect((GUIDSTRING)_Target, (STRING)_Effect, (INTEGER)_Time)
+AND
+DB_FILM_Counter(_Num)
+AND
+IntegerSum(_Num, 1, _NewNum)
+AND
+IntegertoString(_Num, _NumString)
+AND
+StringConcatenate("FILM_Timer_Effect_", _NumString, _String1)
+THEN
+DB_FILM_TimedEffect(_Target, _Effect, _String1);
+TimerLaunch(_String1, _Time);
+NOT DB_FILM_Counter((INTEGER)_Num);
+DB_FILM_Counter((INTEGER)_NewNum);
+
+
+IF
+TimerFinished(_Timer)
+AND
+DB_FILM_TimedEffect(_Target, _Effect, _Timer)
+THEN
+PlayEffect(_Target, _Effect);
+
+//END_REGION
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "DOS2ModWrapper"

@@ -1,0 +1,65 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+DB_RE_ReactiveImmunity("FROZEN","RALLY_FROZEN",1);
+DB_RE_ReactiveImmunity("STUNNED","RALLY_STUNNED",2);
+DB_RE_ReactiveImmunity("PETRIFIED","RALLY_PETRIFIED",3);
+DB_RE_ReactiveImmunity("CHICKEN","RALLY_PETRIFIED",3);
+DB_RE_ReactiveImmunity("KNOCKED_DOWN","RALLY_KNOCKED_DOWN",4);
+DB_RE_ReactiveImmunity("SLEEPING","RALLY_SLEEP",5);
+DB_RE_ReactiveImmunity("FEAR","RALLY_SLEEP",5);
+DB_RE_ReactiveImmunity("CHARMED","RALLY_CHARMED",6);
+DB_RE_ReactiveImmunity("MADNESS","RALLY_CHARMED",6);
+KBSECTION
+IF
+CharacterStatusRemoved((CHARACTERGUID)_Char,(STRING)_Status,_)
+AND
+DB_RE_ReactiveImmunity(_Status,_Reaction,_)
+AND
+CharacterIsPlayer(_Char, 0)
+AND
+QRY_RE_WalkingItOff(_Char)
+AND
+DB_RE_Walker(_Char,_Turns)
+THEN
+ApplyStatus(_Char,(STRING)_Reaction,(REAL)_Turns,0);
+NOT DB_RE_Walker(_Char,_Turns);
+
+QRY
+QRY_RE_WalkingItOff((CHARACTERGUID)_Char)
+AND
+CharacterHasTalent(_Char,"WalkItOff",0)
+THEN
+DB_RE_Walker(_Char,12.0);
+
+QRY
+QRY_RE_WalkingItOff((CHARACTERGUID)_Char)
+AND
+CharacterHasTalent(_Char,"WalkItOff",1)
+THEN
+DB_RE_Walker(_Char,18.0);
+
+IF
+ObjectEnteredCombat((CHARACTERGUID)_Char,_)
+AND
+IsBoss(_Char,1)
+AND
+NOT DB_RE_BossBuff(_Char,_)
+AND
+Random(6,(INTEGER)_Random)
+THEN
+DB_RE_BossBuff(_Char,_Random);
+PROC_RE_RandomBuff(_Char);
+
+PROC
+PROC_RE_RandomBuff((CHARACTERGUID)_Char)
+AND
+DB_RE_BossBuff(_Char,_Random)
+AND
+DB_RE_ReactiveImmunity(_,_Status,_Random)
+THEN
+ApplyStatus(_Char,(STRING)_Status,-1.0,0);
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "RallyingEnemies"

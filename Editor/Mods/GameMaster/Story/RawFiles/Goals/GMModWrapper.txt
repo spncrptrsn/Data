@@ -1,0 +1,20 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+CharacterMakeNPC(CHARACTERGUID_GM_Player1_89ac1b71-c4f7-4ea8-9119-f3cb99fb6383);
+CharacterMakeNPC(CHARACTERGUID_GM_Player2_09839ddd-d22a-4013-83be-10add0761be1);
+CharacterMakeNPC(CHARACTERGUID_GM_Player3_ff94c13d-7e8c-4d85-9a7d-b6280c2f23ac);
+CharacterMakeNPC(CHARACTERGUID_GM_Player4_49f17eb5-ed3c-4fb0-9168-bf46f1757398);
+SetOnStage(CHARACTERGUID_GM_Player1_89ac1b71-c4f7-4ea8-9119-f3cb99fb6383,0);
+SetOnStage(CHARACTERGUID_GM_Player2_09839ddd-d22a-4013-83be-10add0761be1,0);
+SetOnStage(CHARACTERGUID_GM_Player3_ff94c13d-7e8c-4d85-9a7d-b6280c2f23ac,0);
+SetOnStage(CHARACTERGUID_GM_Player4_49f17eb5-ed3c-4fb0-9168-bf46f1757398,0);
+KBSECTION
+IF
+GameModeStarted("GameMaster",_IsEditorMode)
+THEN
+GoalCompleted;
+Proc_GameModeStarted("GameMaster",_IsEditorMode);
+EXITSECTION
+
+ENDEXITSECTION

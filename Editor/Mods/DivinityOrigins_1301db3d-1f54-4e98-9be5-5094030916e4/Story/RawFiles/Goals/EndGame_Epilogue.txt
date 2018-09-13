@@ -1,0 +1,405 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+DB_EG_Companion_Ghosts((CHARACTERGUID)S_Player_RedPrince_a26a1efb-cdc8-4cf3-a7b2-b2f9544add6f,(CHARACTERGUID)CHARACTERGUID_LV_RedPrince_Ghost_14a63143-b1a5-4d7d-8ed8-360f159e8d4d,(TRIGGERGUID)TRIGGERGUID_S_EG_RedPrincePoint_745db8b3-4d74-4dd2-a61c-ee74516a1e1c,"EG_Epilogue_RedPrince", "EG_Epilogue_RedPrince_Ghost");
+DB_EG_Companion_Ghosts(CHARACTERGUID_S_Player_Ifan_ad9a3327-4456-42a7-9bf4-7ad60cc9e54f,CHARACTERGUID_LV_Ifan_Ghost_8623e194-02bb-4fc9-855c-6f0da8a1c87a,TRIGGERGUID_S_EG_LV_IfanPoint_8cc1a62c-f3a1-4a3a-9de0-2dc5af676b58,"EG_Epilogue_Ifan","EG_Epilogue_Ifan_Ghost");
+DB_EG_Companion_Ghosts(CHARACTERGUID_S_Player_Sebille_c8d55eaf-e4eb-466a-8f0d-6a9447b5b24c,CHARACTERGUID_LV_Sebille_Ghost_fe763c4d-0687-40d8-ac0e-97a2e9b1d9b8,TRIGGERGUID_S_EG_LV_SebillePoint_756d5169-42be-4d7e-a3fa-8ddc652a8c4d,"EG_Epilogue_Sebille","EG_Epilogue_Sebille_Ghost");
+DB_EG_Companion_Ghosts(CHARACTERGUID_S_Player_Lohse_bb932b13-8ebf-4ab4-aac0-83e6924e4295,CHARACTERGUID_LV_Lohse_Ghost_422c4340-f8aa-44f6-9a37-1868659bc2b7,TRIGGERGUID_S_EG_LV_LohsePoint_4622aff9-92cc-41ca-adef-3b3b43d765a0,"EG_Epilogue_Lohse","EG_Epilogue_Lohse_Ghost");
+DB_EG_Companion_Ghosts(CHARACTERGUID_S_Player_Beast_f25ca124-a4d2-427b-af62-df66df41a978,CHARACTERGUID_LV_Beast_Ghost_0b6c190c-305f-4fc5-922c-99f0bb087d3a,TRIGGERGUID_S_EG_BeastPoint_145fa5ff-f717-4067-92ea-dc3abce19c8e,"EG_Epilogue_Beast","EG_Epilogue_Beast_Ghost");
+DB_EG_Companion_Ghosts(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,CHARACTERGUID_LV_Fane_Ghost_43619c0e-dea6-4d90-b1a7-127e7542a662,TRIGGERGUID_S_EG_LV_FanePoint_19120347-759a-423c-a671-763705eb16e1,"EG_Epilogue_Fane","EG_Epilogue_Fane_Ghost");
+
+DB_EG_BoatNPCs((CHARACTERGUID)CHARACTERGUID_S_GLO_River_f4931ebe-10b0-43c4-9182-640cf052717e, "EG_Epilogue_River", (TRIGGERGUID)TRIGGERGUID_S_EG_Epilogue_MaladyPoint_4ffe921d-317a-4985-a292-4365557f71de);
+DB_EG_BoatNPCs(CHARACTERGUID_S_FTJ_SW_Warrior_SeekerCaptain_1329f018-23e4-4717-9bc8-074b28d04c54, "EG_Epilogue_Gareth", TRIGGERGUID_S_EG_Epilogue_GarethPoint_73ab6d92-5f6f-4b53-bc6f-4ac20b2b5f62);
+DB_EG_BoatNPCs(CHARACTERGUID_S_GLO_Tarquin_a3d0cdcc-d0b0-464d-9ad7-43b38baed620, "EG_Epilogue_Tarquin", TRIGGERGUID_S_EG_Epilogue_TarquinPoint_e63a64ed-995f-4aa8-9786-8108a0c0c54c);
+DB_EG_BoatNPCs(CHARACTERGUID_S_GLO_Almira_49b466a9-e67f-4e3c-8f66-3636ba7dd54f, "EG_Epilogue_Almira", TRIGGERGUID_S_EG_Epilogue_AlmiraPoint_807b2d38-ae09-4ac5-afc6-60608c5a2dd0);
+DB_Dialogs(ITEMGUID_S_EG_LV_ShipHead_7cf50dfd-5a3d-4a1a-973e-556c22cd5a7a,"EG_Epilogue_Shiphead");
+
+ProcRemoveAllDialogEntriesForSpeaker(CHARACTERGUID_S_FTJ_CapturedChild_53d4aa5c-dd91-4e12-9ca8-d66879cc6ffb);
+DB_Dialogs(CHARACTERGUID_S_FTJ_CapturedChild_53d4aa5c-dd91-4e12-9ca8-d66879cc6ffb, "EG_Epilogue_Han");
+TeleportTo(CHARACTERGUID_S_FTJ_CapturedChild_53d4aa5c-dd91-4e12-9ca8-d66879cc6ffb, TRIGGERGUID_S_EG_Epilogue_HanPoint_a6875aae-1df1-4c6c-a758-fdc548ebca22);
+KBSECTION
+// Block use of stairs to lower decks 
+IF
+CharacterUsedItem(_Player,50383ea0-e7ef-85bd-3140-f7f8e76032c3)
+THEN
+Proc_StartDialog(1,"EG_AD_NoLowerDeck",_Player);
+
+PROC
+PROC_EG_Epilogue_Start()
+AND
+GlobalGetFlag("EG_Ending4_GodKing",1)
+THEN
+TriggerSetAtmosphere(TRIGGERGUID_AtmosphereTrigger_ARX_Endgame_LV_Sea_200201fb-f09e-48a4-b566-797cb61f9b2c,"477ee3c6-5925-4fb7-817b-4a08f916b3fa");
+
+PROC
+PROC_EG_Epilogue_Start()
+THEN
+DB_EG_EpilogueSetupStarted(1);
+
+PROC
+PROC_EG_Epilogue_Start()
+AND
+DB_IsPlayer(_Player)
+THEN
+DB_EG_TeleportingPlayerToEpilogue(_Player);
+
+// Remove the "Can't talk" ad for companions
+PROC
+PROC_EG_Epilogue_Start()
+AND
+DB_IsPlayer(_Player)
+AND
+DB_AD_Dialog(_Player,_AD)
+THEN
+NOT DB_AD_Dialog(_Player,_AD);
+
+PROC
+PROC_EG_Epilogue_Start()
+AND
+DB_EG_DivinityCompetitor(_Player)
+AND
+DB_AD_Dialog(_Player,_AD)
+THEN
+NOT DB_AD_Dialog(_Player,_AD);
+
+PROC
+PROC_EG_Epilogue_Start()
+THEN
+CharacterTeleportPartiesToTrigger(TRIGGERGUID_S_EG_LV_PlayerArrivalTrigger_f0f200ee-ac5f-4ae7-9422-714a8a779365,"EG_EpilogueArrived");
+
+PROC
+PROC_EG_Epilogue_Start()
+AND
+DB_GlobalFlag("EG_Ending3_Purge")
+AND
+DB_IsPlayer(_Player)
+THEN
+RemoveStatus(_Player,"QUEST_REVERED");
+CharacterOverrideMaxSourcePoints(_Player, 0);
+
+//REGION Epilogue setup
+IF
+StoryEvent((CHARACTERGUID)_Player,"EG_EpilogueArrived")
+THEN
+NOT DB_EG_TeleportingPlayerToEpilogue(_Player);
+PROC_EG_Epilogue_CheckAllPlayersArrived();
+
+PROC
+PROC_EG_Epilogue_CheckAllPlayersArrived()
+AND
+NOT DB_EG_TeleportingPlayerToEpilogue(_)
+THEN
+PROC_EG_Epilogue_Setup();
+
+//Restore all alignments to friendly.
+PROC
+PROC_EG_Epilogue_Setup()
+AND
+DB_IsPlayer(_Player)
+AND
+DB_IsPlayer(_Player2)
+AND
+GetFaction(_Player, _Faction)
+AND
+NOT GetFaction(_Player2, _Faction)
+THEN
+CharacterSetRelationIndivFactionToIndivFaction(_Player, _Player2, 100);
+CharacterSetRelationIndivFactionToIndivFaction(_Player2, _Player, 100);
+
+PROC
+PROC_EG_Epilogue_Setup()
+AND
+DB_IsPlayer(_Player)
+THEN
+RemoveHarmfulStatuses(_Player);
+
+PROC
+PROC_EG_Epilogue_Setup()
+AND
+DB_IsPlayer(_Player)
+AND
+DB_EG_DivinityCompetitor(_Player2)
+AND
+NOT DB_IsPlayer(_Player2)
+AND
+GetFaction(_Player, _Faction)
+AND
+NOT GetFaction(_Player2, _Faction)
+THEN
+CharacterSetRelationIndivFactionToIndivFaction(_Player, _Player2, 100);
+CharacterSetRelationIndivFactionToIndivFaction(_Player2, _Player, 100);
+
+// Dismiss all companions (except in case a user only has a companion assigned)
+PROC
+PROC_EG_Epilogue_Setup()
+THEN
+// 0 = don't set off-stage
+PROC_GLO_PartyMembers_TempRemoveAll(0);
+PROC_EG_Epilogue_ResurrectKeptPlayers();
+
+PROC
+PROC_EG_Epilogue_ResurrectKeptPlayers()
+AND
+DB_GLO_PartyMembers_CollectDismissAll_Keep(_Player)
+AND
+DB_EG_EpilogueSetupStarted(1)
+AND
+CharacterIsDead(_Player, 1)
+AND
+NOT DB_EG_ResurrectingEpiloguePlayer(_Player)
+THEN
+CharacterResurrect(_Player);
+DB_EG_ResurrectingEpiloguePlayer(_Player);
+
+IF
+CharacterResurrected(_Player)
+AND
+DB_EG_ResurrectingEpiloguePlayer(_Player)
+THEN
+NOT DB_EG_ResurrectingEpiloguePlayer(_Player);
+
+// Put the dismissed henchmen off-stage
+// (don't just remove all henchmen, because that's all a player may have had left)
+PROC
+PROC_EG_Epilogue_Setup()
+AND
+DB_IsPlayer(_Player)
+AND
+DB_GLO_PartyMembers_CollectDismissAll_OriginalOwningUserChar(_Player,_Companion)
+AND
+IsTagged(_Companion,"HENCHMAN",1)
+THEN
+SetOnStage(_Companion,0);
+
+PROC
+PROC_EG_Epilogue_Setup()
+AND
+DB_IsPlayer(_Player)
+AND
+DB_EG_Companion_Ghosts(_Companion,_,_,_,_)
+THEN
+CharacterSetRelationIndivFactionToIndivFaction(_Player, _Companion, 100);
+CharacterSetRelationIndivFactionToIndivFaction(_Companion, _Player, 100);
+
+// Give every player permanent spirit vision
+PROC
+PROC_EG_Epilogue_Setup()
+AND
+DB_IsPlayer(_Player)
+THEN
+ApplyStatus(_Player,"SPIRIT_VISION",-1.0,1);
+
+// Set up ghosts of dead companions
+
+// Re-enable ghosts after they got disabled after the DNotS
+// (because we don't want companion ghosts to appear when companions are normally killed)
+PROC
+PROC_EG_Epilogue_Setup()
+AND
+DB_EG_Companion_Ghosts(_Origin,_OriginGhost,_OriginTrigger,_,_OriginGhostDialog)
+AND
+NOT DB_IsPlayer(_Origin)
+AND
+DB_Dead(_Origin)
+AND
+// Filter out kicked avatars (Sworn, demon dealer, ...)
+NOT QRY_GLO_PartyMembers_IsKickedAvatarNpc(_Origin)
+THEN
+Proc_GhostHacks_EnableGlobalNPCGhostIfDisabled(_OriginGhost);
+
+PROC
+PROC_EG_Epilogue_Setup()
+AND
+DB_EG_Companion_Ghosts(_Origin,_OriginGhost,_OriginTrigger,_,_OriginGhostDialog)
+AND
+// Can have been source vampirised in Act 2.5
+NOT DB_GoneGhosts(_OriginGhost)
+AND
+NOT DB_IsPlayer(_Origin)
+AND
+DB_Dead(_Origin)
+AND
+// Filter out kicked avatars (Sworn, demon dealer, ...)
+NOT QRY_GLO_PartyMembers_IsKickedAvatarNpc(_Origin)
+AND
+NOT DB_Ghosts(_Origin,_OriginGhost,_)
+THEN
+DB_Ghosts(_Origin,_OriginGhost,_OriginGhostDialog);
+
+PROC
+PROC_EG_Epilogue_Setup()
+AND
+DB_EG_Companion_Ghosts(_Origin,_OriginGhost,_OriginTrigger,_,_OriginGhostDialog)
+AND
+// Can have been source vampirised in Act 2.5
+NOT DB_GoneGhosts(_OriginGhost)
+AND
+NOT DB_IsPlayer(_Origin)
+AND
+DB_Dead(_Origin)
+AND
+// Filter out kicked avatars (Sworn, demon dealer, ...)
+NOT QRY_GLO_PartyMembers_IsKickedAvatarNpc(_Origin)
+THEN
+Proc_GhostHacks_ChangeGhostDialog(_OriginGhost,_OriginGhostDialog);
+// Need body in this level and force active to have ghost active
+TeleportTo(_Origin,TRIGGERGUID_S_EG_PlayerTalkSpot_3ddfdee7-5b9a-405b-bef5-558d9939c4c6,"",0);
+CharacterSetForceSynch(_Origin,1);
+TeleportTo(_OriginGhost,_OriginTrigger);
+CharacterLookFromTrigger(_OriginGhost,_OriginTrigger,1);
+ObjectSetFlag(_OriginGhost,"EG_EpilogueGhost");
+SetOnStage(_OriginGhost,1);
+
+PROC
+ProcRegionEnded("ARX_Endgame")
+AND
+DB_EG_Companion_Ghosts(_Origin,_OriginGhost,_OriginTrigger,_,_)
+THEN
+CharacterSetForceSynch(_Origin,0);
+
+// Set up living companions
+QRY
+QRY_EG_Epilogue_CompanionLeftPermanentlyBeforeEndGame((CHARACTERGUID)_Origin)
+AND
+NOT DB_OriginRecruitmentDialog_Region(_,_Origin,_)
+AND
+NOT DB_EG_PlayerInEndGame(_Origin)
+THEN
+DB_NOOP(1);
+
+PROC
+PROC_EG_Epilogue_Setup()
+AND
+DB_EG_Companion_Ghosts(_Origin,_,_OriginTrigger,_OriginDialog,_)
+AND
+NOT DB_IsPlayer(_Origin)
+AND
+NOT DB_Dead(_Origin)
+AND
+NOT QRY_EG_Epilogue_CompanionLeftPermanentlyBeforeEndGame(_Origin)
+THEN
+TeleportTo(_Origin,_OriginTrigger);
+CharacterLookFromTrigger(_Origin,_OriginTrigger,1);
+ProcRemoveAllDialogEntriesForSpeaker(_Origin);
+DB_Dialogs(_Origin,_OriginDialog);
+ProcSetInvulnerable(_Origin,1);
+
+PROC
+PROC_EG_Epilogue_Setup()
+AND
+DB_IsPlayer(_Player)
+THEN
+ProcSetInvulnerable(_Player,1);
+
+PROC
+PROC_EG_Epilogue_Setup()
+AND
+DB_EG_BoatNPCs(_NPC, _, _)
+THEN
+ProcRemoveAllDialogEntriesForSpeaker(_NPC);
+
+PROC
+PROC_EG_Epilogue_Setup()
+AND
+DB_EG_BoatNPCs(_NPC, _Dialog, _Trigger)
+AND
+NOT DB_Dead(_NPC)
+AND
+QRY_EG_ImportantNPCIsAllied(_NPC)
+THEN
+DB_Dialogs(_NPC, _Dialog);
+TeleportTo(_NPC, _Trigger);
+SetOnStage(_NPC, 1);
+CharacterSetAnimationOverride(_NPC, "");
+PROC_StopLoopEffect(_NPC, "EG_SourcePrayerEffect");
+
+PROC
+PROC_EG_Epilogue_Start()
+THEN
+DB_EG_EpilogueSetupFinished(1);
+
+IF
+DB_Dialogs(CHARACTERGUID_S_GLO_Jahan_4d222cfd-49c8-41d3-8cb7-2a2b56232633,"EG_Epilogue_Jahan")
+THEN
+ApplyStatus(CHARACTERGUID_S_GLO_Jahan_4d222cfd-49c8-41d3-8cb7-2a2b56232633,"CLEAR_MINDED",-1.0,1);
+GlobalClearFlag("ARX_TheCrash_Jahan_DisappearOutOfSight");
+ClearVarObject(CHARACTERGUID_S_GLO_Jahan_4d222cfd-49c8-41d3-8cb7-2a2b56232633,"WanderArea");
+
+//END_REGION
+
+//REGION Purged ending -> VB about fact that players are not silent monks
+IF
+DB_EG_EpilogueSetupFinished(1)
+AND
+DB_GlobalFlag("EG_Ending3_Purge")
+THEN
+// Workaround in case you arrive via the debug book
+PROC_EG_WaitTillPlayersOutOfDialog();
+
+PROC
+PROC_EG_WaitTillPlayersOutOfDialog()
+AND
+DB_DialogPlayers(_ID, _Player, _)
+THEN
+DB_EG_PlayerDebugBookDialogID(_ID);
+
+PROC
+PROC_EG_WaitTillPlayersOutOfDialog()
+AND
+NOT DB_EG_PlayerDebugBookDialogID(_)
+THEN
+TimerLaunch("EG_PurgeEndingVB",500);
+
+IF
+DialogEnded(_, _ID)
+AND
+DB_EG_PlayerDebugBookDialogID(_ID)
+THEN
+PROC_EG_EpilogueCheckStartNotPurgedVB(_ID);
+
+PROC
+PROC_EG_EpilogueCheckStartNotPurgedVB((INTEGER)_ID)
+THEN
+NOT DB_EG_PlayerDebugBookDialogID(_ID);
+
+PROC
+PROC_EG_EpilogueCheckStartNotPurgedVB((INTEGER)_ID)
+AND
+NOT DB_EG_PlayerDebugBookDialogID(_)
+THEN
+TimerLaunch("EG_PurgeEndingVB",500);
+
+IF
+TimerFinished("EG_PurgeEndingVB")
+AND
+DB_IsPlayer(_Player)
+AND
+NOT DB_Dead(_Player)
+AND
+QueryOnlyOnce("EG_VB_EpiloguePurgedStart_Once")
+THEN
+StartVoiceBark("EG_VB_EpiloguePurgedStart", _Player);
+//END_REGION
+
+//REGION Give final journal updates
+PROC
+PROC_EG_Epilogue_Setup()
+THEN
+PROC_EG_GiveFinalJournalUpdates();
+
+//END_REGION
+
+//REGION Character has low attitude dialogues on tutorial ship
+PROC
+PROC_EG_Epilogue_Setup()
+AND
+DB_EG_Companion_Ghosts(_Body, _Ghost, _, _, _)
+THEN
+DB_NoLowAttitudeDialog(_Body);
+DB_NoLowAttitudeDialog(_Ghost);
+
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "EndGame"
