@@ -1,0 +1,46 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+IF
+CombatStarted(_)
+AND
+DB_IsPlayer(_Char)
+AND
+CharacterIsInCombat((CHARACTERGUID)_Char,1)
+AND
+HasActiveStatus(_Char,"SOURCE_MUTED",0)
+AND
+CharacterGetMaxSourcePoints(_Char,(INTEGER)_Points)
+AND
+_Points > 1
+AND
+CharacterGetSourcePoints(_Char,_CurrentPoints)
+AND
+_CurrentPoints == 0
+THEN
+ApplyStatus(_Char,"SOURCE_SURFACE",0.0,1,_Char);
+
+IF
+CombatEnded(_ID)
+AND
+DB_IsPlayer(_Char)
+AND
+CharacterIsInCombat(_Char,0)
+AND
+HasActiveStatus(_Char,"SOURCE_MUTED",0)
+AND
+CharacterGetMaxSourcePoints(_Char,(INTEGER)_Points)
+AND
+_Points > 1
+AND
+CharacterGetSourcePoints(_Char,_CurrentPoints)
+AND
+_CurrentPoints == 0
+THEN
+CharacterAddSourcePoints(_Char,1);
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "NoMoreSourceChores"
