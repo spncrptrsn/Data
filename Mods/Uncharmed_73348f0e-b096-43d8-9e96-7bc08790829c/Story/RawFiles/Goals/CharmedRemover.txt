@@ -1,0 +1,46 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+IF 
+CharacterStatusApplied((CHARACTERGUID)_Char,"CHARMED",(CHARACTERGUID)_Source)
+AND
+GetFaction(_Source,(STRING)_Faction)
+THEN
+DB_CH_CharmedSource(_Char,_Source,_Faction);
+
+IF
+CharacterStatusRemoved((CHARACTERGUID)_Char,"CHARMED",_)
+AND
+DB_CH_CharmedSource(_Char,_Charmer,_Faction)
+THEN
+NOT DB_CH_CharmedSource(_Char,_Charmer,_Faction);
+
+IF 
+CharacterReceivedDamage((CHARACTERGUID)_Char,_,(CHARACTERGUID)_Source)
+AND
+HasActiveStatus(_Char,"CHARMED",1)
+AND
+DB_CH_CharmedSource(_Char,_Charmer,_Faction)
+AND
+CharacterIsInPartyWith(_Charmer,_Source,1)
+THEN
+RemoveStatus(_Char,"CHARMED");
+
+IF 
+CharacterReceivedDamage((CHARACTERGUID)_Char,_,(CHARACTERGUID)_Source)
+AND
+HasActiveStatus(_Char,"CHARMED",1)
+AND
+DB_CH_CharmedSource(_Char,_Charmer,_Faction)
+AND
+GetFaction(_Source,(STRING)_OtherFaction)
+AND
+_Faction == _OtherFaction
+THEN
+RemoveStatus(_Char,"CHARMED");
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "CharmLossOnDamage"
