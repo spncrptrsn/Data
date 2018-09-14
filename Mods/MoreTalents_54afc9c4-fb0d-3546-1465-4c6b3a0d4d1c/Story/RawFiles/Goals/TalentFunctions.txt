@@ -1,0 +1,215 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//===========================================================//
+//                   Unruly Visitors (Beastmaster)          *//
+//===========================================================//
+
+IF
+	CharacterStatusApplied((CHARACTERGUID)_Char,"SUMMONING_ABILITY",_)
+AND
+	CharacterIsSummon(_Char,1)
+AND
+	CharacterIsPlayer(_Char, 1)
+AND
+	CharacterGetOwner(_Char,_Owner)
+AND
+	CharacterHasTalent(_Owner,"Beastmaster",1)
+THEN
+	SetVarObject(_Char,"BeastmasterLeader",_Owner);
+	SetStoryEvent(_Char,"BeastmasterReapply");
+
+//===========================================================//
+//                   Generous Host (Charm)                  *//
+//===========================================================//
+
+IF
+	CharacterStatusApplied(_Summon, "SUMMONING_ABILITY", _)
+AND
+	CharacterIsSummon(_Summon, 1)
+AND
+	CharacterIsPlayer(_Summon, 1)
+AND
+	CharacterGetOwner(_Summon, _Owner)
+AND
+	CharacterHasTalent(_Owner, "Charm", 1)
+AND
+	GetUUID(_Owner, _UUID)
+AND
+	StringConcatenate("MT_GenerousHostTimer_", _UUID, _GHTimer)
+THEN
+	DB_MT_GH_SummonControl(_Owner, _Summon);
+	PROC_MT_SummonSpawnControl(_Owner);
+	DB_MT_GH_Timer(_Owner, _GHTimer);
+	TimerLaunch(_GHTimer, 500);
+
+IF
+	TimerFinished(_GHTimer)
+AND
+	DB_MT_GH_Timer(_Owner, _GHTimer)
+THEN
+	PROC_MT_ApplySummonStatus(_Owner);
+	NOT DB_MT_GH_Timer(_Owner, _GHTimer);
+
+PROC
+	PROC_MT_SummonSpawnControl((CHARACTERGUID)_Owner)
+AND
+	DB_MT_MaxSummonControl(_Owner, _Number)
+AND
+	IntegerSum(_Number, 1, _Sum)
+THEN
+	NOT DB_MT_MaxSummonControl(_Owner, _Number);
+	DB_MT_MaxSummonControl(_Owner, _Sum);
+
+PROC
+	PROC_MT_SummonSpawnControl((CHARACTERGUID)_Owner)
+AND
+	NOT DB_MT_MaxSummonControl(_Owner, _)
+THEN
+	DB_MT_MaxSummonControl(_Owner, 1);
+
+IF
+	CharacterDied(_Summon)
+AND
+	DB_MT_GH_SummonControl(_Owner, _Summon)
+AND
+	GetUUID(_Owner, _UUID)
+AND
+	StringConcatenate("MT_GenerousHostTimer_", _UUID, _GHTimer)
+THEN
+	NOT DB_MT_GH_SummonControl(_Owner, _Summon);
+	PROC_MT_SummonDieControl(_Owner);
+	DB_MT_GH_Timer(_Owner, _GHTimer);
+	TimerLaunch(_GHTimer, 500);
+
+PROC
+	PROC_MT_SummonDieControl((CHARACTERGUID)_Owner)
+AND
+	DB_MT_MaxSummonControl(_Owner, _Number)
+AND
+	IntegerSubtract(_Number, 1, _Subtraction)
+THEN
+	NOT DB_MT_MaxSummonControl(_Owner, _Number);
+	DB_MT_MaxSummonControl(_Owner, _Subtraction);
+
+PROC
+	PROC_MT_ApplySummonStatus((CHARACTERGUID)_Owner)
+AND
+	DB_MT_MaxSummonControl(_Owner, _Number)
+AND
+	_Number >= 2
+AND
+	HasActiveStatus(_Owner, "GENEROUS_HOST", 0)
+THEN
+	ApplyStatus(_Owner, "GENEROUS_HOST", -1.0, 1);
+
+PROC
+	PROC_MT_ApplySummonStatus((CHARACTERGUID)_Owner)
+AND
+	DB_MT_MaxSummonControl(_Owner, _Number)
+AND
+	_Number < 2
+AND
+	HasActiveStatus(_Owner, "GENEROUS_HOST", 1)
+THEN
+	RemoveStatus(_Owner, "GENEROUS_HOST");
+
+IF
+	ObjectFlagSet("MT_RefundTalents", (CHARACTERGUID)_Char, _)
+AND
+	DB_MT_MaxSummonControl(_Char, _Number)
+THEN
+	NOT DB_MT_MaxSummonControl(_Char, _Number);
+	RemoveStatus(_Char, "GENEROUS_HOST");
+
+//===========================================================//
+//                    Perforator (Backstab)                 *//
+//===========================================================//	
+
+IF
+StoryEvent((CHARACTERGUID)_Char,"BackstabTimer")
+THEN
+DB_MT_Backstab_Switcher(_Char);
+TimerLaunch("BackstabTicker",500);
+
+IF
+TimerFinished("BackstabTicker")
+AND
+DB_MT_Backstab_Switcher(_Char)
+THEN
+SetStoryEvent((CHARACTERGUID)_Char,"BackstabEvent");
+
+//===========================================================//
+//                 Reactionary (ChanceToHitMelee)           *//
+//===========================================================//	
+
+IF 
+CharacterCharacterEvent((CHARACTERGUID)_Char,(CHARACTERGUID)_Attacker,"ChanceToHitMeleeEvent")
+THEN
+CharacterLookAt(_Char,_Attacker);
+PROC_MT_CanSeeReactionary(_Char,_Attacker);
+
+PROC 
+PROC_MT_CanSeeReactionary((CHARACTERGUID)_Char,(CHARACTERGUID)_Attacker)
+AND
+CharacterCanSee(_Char,_Attacker,1)
+THEN
+CharacterAttack(_Char,_Attacker);
+
+//===========================================================//
+//                   Voltage Spike (SpillNoBlood)           *//
+//===========================================================//
+
+IF
+CharacterStatusAttempt((CHARACTERGUID)_Char,"SHOCKED",_)
+AND
+CharacterHasTalent(_Char,"SpillNoBlood",1)
+AND
+CharacterGetMagicArmorPercentage(_Char,(REAL)_MagicArmor)
+AND
+_MagicArmor > 1.0
+THEN
+SetStoryEvent(_Char,"VoltageHit");
+
+IF
+CharacterStatusAttempt((CHARACTERGUID)_Char,"STUNNED",_)
+AND
+CharacterHasTalent(_Char,"SpillNoBlood",1)
+AND
+CharacterGetMagicArmorPercentage(_Char,(REAL)_MagicArmor)
+AND
+_MagicArmor > 1.0
+THEN
+SetStoryEvent(_Char,"VoltageHit");
+
+IF
+CharacterStatusRemoved((CHARACTERGUID)_Char,"OVERCHARGED",_)
+THEN
+CharacterSetMagicArmorPercentage(_Char,0.0);
+
+IF
+CharacterStatusApplied((CHARACTERGUID)_Char,"DEF_SHOCKED",_)
+AND
+CharacterHasTalent(_Char,"SpillNoBlood",1)
+THEN
+SetStoryEvent(_Char,"VoltageHit");
+
+IF
+CharacterStatusApplied((CHARACTERGUID)_Char,"DEF_STUNNED",_)
+AND
+CharacterHasTalent(_Char,"SpillNoBlood",1)
+THEN
+SetStoryEvent(_Char,"VoltageHit");
+
+//IF
+//StoryEvent((CHARACTERGUID)_Char,"VoltageHit")
+//AND
+//HasActiveStatus(_Char,"OVERCHARGED",0)
+//THEN
+//ApplyStatus(_Char,"OVERCHARGED",6.0,1,NULL_00000000-0000-0000-0000-000000000000);
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "MoreTalents"
