@@ -1,0 +1,20 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+IF
+DB_Children((CHARACTERGUID)_Child)
+THEN
+CharacterSetImmortal(_Child,1);
+ProcCharacterDisableAllCrimes(_Child);
+SetCanFight(_Child,0);
+SetCanJoinCombat(_Child,0);
+DB_CrimeReaction_DoNotInterrogate(_Child);
+ProcCharacterEnableCrime(_Child,"PickPocketFailed");
+ProcCharacterEnableCrime(_Child,"ActiveUndead");
+ProcCharacterEnableCrime(_Child,"Steal");
+ProcCharacterEnableCrime(_Child,"TeleportPlayerDialog");
+EXITSECTION
+
+ENDEXITSECTION

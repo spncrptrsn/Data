@@ -1,0 +1,547 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+ApplyStatus(ITEMGUID_S_ARX_Pipes_FieldStatue_9024ba5a-b784-48f8-b289-59a5d1c32948, "BLESSED", -1.0, 1);
+
+DB_ARX_Pipes_ForceFields(ITEMGUID_S_ARX_Pipes_ForceField_001_6e346ebe-f908-4411-b5f6-284cab250a6f, 1300);
+DB_ARX_Pipes_ForceFields(ITEMGUID_S_ARX_Pipes_ForceField_002_fca9fea1-993a-4e5d-ae7d-3861e276b76d , 1600);
+DB_ARX_Pipes_ForceFields(ITEMGUID_S_ARX_Pipes_ForceField_003_a15d0e0c-fa2c-41ed-aa3b-b8d7be91ec98, 1600);
+DB_ARX_Pipes_ForceFields(ITEMGUID_S_ARX_Pipes_ForceField_006_e5b59e1d-9a35-4690-a485-5de4c1524b82, 2500);
+DB_ARX_Pipes_ForceFields(ITEMGUID_S_ARX_Pipes_ForceField_008_99878adf-51f4-44ec-a5ea-527a746aeee9, 2500);
+
+DB_ARX_Pipes_DrawerDefaults(ITEMGUID_S_Arx_Pipes_SurfaceDrawer2_e2be66a1-397f-4b3e-9eba-2a431e5a965c, TRIGGERGUID_S_ARX_Pipes_SurfaceSource_2_fceb6155-d932-4a9d-a347-bf6f5237c6e2, ITEMGUID_S_ARX_Pipes_Origin2_34774240-e314-41f0-b76b-8a10f62695e5, ITEMGUID_S_ARX_Pipes_Split62_d2e6c9cf-dfbc-4dd6-9a40-3e8965c6386a, "Curse");
+DB_ARX_Pipes_DrawerDefaults(ITEMGUID_S_Arx_Pipes_SurfaceDrawer4_66b88630-97b9-4090-8393-94973d7faa7b, TRIGGERGUID_S_ARX_Pipes_SurfaceSource_4_65628258-a103-47f4-9faa-61d0ca218b93, ITEMGUID_S_ARX_Pipes_Origin4_203ce9e9-2a67-43d8-bb15-1fbfded83998, ITEMGUID_S_ARX_Pipes_Split64_a95e93bb-f93a-406e-a45e-9abf5d7729fc, "Purify");
+DB_ARX_Pipes_DrawerDefaults(ITEMGUID_S_Arx_Pipes_SurfaceDrawer6_b8fe641a-62c9-4b3c-8d40-8b70634bb8ff, TRIGGERGUID_S_ARX_Pipes_SurfaceSource_6_865d8108-2201-4fd1-b5d0-6967d96a7b1b, ITEMGUID_S_ARX_Pipes_Origin6_59097e58-eb33-4fec-a16d-21cf9b7540c0, ITEMGUID_S_ARX_Pipes_Split66_a18a4728-5ce6-4105-849d-81c1adc3ea3b, "Bless");
+
+DB_ARX_Pipes_SurfaceTransformations(TRIGGERGUID_S_ARX_Pipes_SurfaceSource_2_fceb6155-d932-4a9d-a347-bf6f5237c6e2, "Curse");
+DB_ARX_Pipes_SurfaceTransformations(TRIGGERGUID_S_ARX_Pipes_SurfaceSource_4_65628258-a103-47f4-9faa-61d0ca218b93, "Purify");
+DB_ARX_Pipes_SurfaceTransformations(TRIGGERGUID_S_ARX_Pipes_SurfaceSource_6_865d8108-2201-4fd1-b5d0-6967d96a7b1b, "Bless");
+
+GlobalSetFlag("ARX_Pipes_Setup");
+GlobalClearFlag("ARX_Pipes_Setup");
+
+DB_ARX_Pipes_Ends(ITEMGUID_S_ARX_Pipes_Destination_2_b6f0ab20-56ad-43fc-b29f-315264545dd3, "BURNING");
+DB_ARX_Pipes_Ends(ITEMGUID_S_ARX_Pipes_Destination_4_d6b89dcf-1fcd-4388-a1a9-2d2a184f39b4, "POISONED");
+DB_ARX_Pipes_Ends(ITEMGUID_S_ARX_Pipes_Destination_6_049b3304-4188-44f8-8836-32b51ef11d58, "SHOCKED");
+
+DB_ARX_Pipes_SolvedFlags("S_ARX_Pipes_Surface2Matched", ITEMGUID_S_ARX_Pipes_Destination_2_b6f0ab20-56ad-43fc-b29f-315264545dd3, TRIGGERGUID_S_ARX_Pipes_SurfaceTarget_2_ef29ba97-4f0a-4522-b0af-4150bb08bcf0);
+DB_ARX_Pipes_SolvedFlags("S_ARX_Pipes_Surface4Matched", ITEMGUID_S_ARX_Pipes_Destination_4_d6b89dcf-1fcd-4388-a1a9-2d2a184f39b4, TRIGGERGUID_S_ARX_Pipes_SurfaceTarget_4_29e2e938-81a3-4edc-aafb-6ade5980fcb7);
+DB_ARX_Pipes_SolvedFlags("S_ARX_Pipes_Surface6Matched", ITEMGUID_S_ARX_Pipes_Destination_6_049b3304-4188-44f8-8836-32b51ef11d58, TRIGGERGUID_S_ARX_Pipes_SurfaceTarget_6_4a1651f3-2b6b-47cc-93fd-a116266ed4dd);
+
+DB_ARX_Pipes_Valves(ITEMGUID_S_ARX_Pipes_Valve2_2da40677-3f4a-4a79-98b2-70899938bc8b, ITEMGUID_S_Arx_Pipes_SurfaceDrawer2_e2be66a1-397f-4b3e-9eba-2a431e5a965c);
+DB_ARX_Pipes_Valves(ITEMGUID_S_ARX_Pipes_Valve4_7c6a4073-dec4-4bde-ae06-78494dcff17e, ITEMGUID_S_Arx_Pipes_SurfaceDrawer4_66b88630-97b9-4090-8393-94973d7faa7b);
+DB_ARX_Pipes_Valves(ITEMGUID_S_ARX_Pipes_Valve6_fb21074f-2fd1-44c8-ba51-9d376f1497b6, ITEMGUID_S_Arx_Pipes_SurfaceDrawer6_b8fe641a-62c9-4b3c-8d40-8b70634bb8ff);
+
+DB_ARX_Pipes_SolvedEffect("RS3_FX_GP_ScriptedEvent_ARX_PipesPuzzle_LightBeam_01");
+
+ProcTriggerRegisterForPlayers(TRIGGERGUID_S_ARX_Pipes_Downstairs_336b0398-e876-4a81-a722-e3705e106e3f);
+KBSECTION
+IF
+TextEventSet("ARX_ResetPipes")
+THEN
+GlobalSetFlag("ARX_Pipes_Setup");
+GlobalClearFlag("ARX_Pipes_Setup");
+
+IF
+TextEventSet("ARX_TestPipes")
+THEN
+GlobalSetFlag("ARX_Pipes_Setup");
+GlobalClearFlag("ARX_Pipes_Setup");
+PROC_ARX_Pipes_Start();
+
+IF
+TextEventSet("ARX_TestPipesCamera")
+AND
+CharacterGetHostCharacter(_Character)
+THEN
+CameraActivate(_Character, "S_ARX_Pipes_OverviewTrigger", -1.0, 1, 0, 1);
+
+IF
+TextEventSet("ARX_TestPipesUI")
+AND
+CharacterGetHostCharacter(_Character)
+THEN
+CharacterShowStoryElementUI((CHARACTERGUID)_Character, 2, "ARX_PipesUI");
+
+
+IF
+TextEventSet("ARX_StopTestPipesUI")
+AND
+CharacterGetHostCharacter(_Character)
+THEN
+CharacterCloseStoryElementUI(_Character, 2, "ARX_PipesUI");
+
+IF
+TextEventSet("ARX_TestPointerForce")
+AND
+CharacterGetHostCharacter(_Character)
+THEN
+SetSelectorCameraMode(_Character, 1);
+
+IF
+TextEventSet("ARX_StopTestPipesCamera")
+AND
+CharacterGetHostCharacter(_Character)
+THEN
+CameraActivate(_Character, "S_ARX_Pipes_OverviewTrigger", 0.1, 1, 0, 1);
+SetSelectorCameraMode(_Character, 0);
+
+//REGION Manually opening individual valves
+IF
+CharacterUsedItem(_, _Valve)
+AND
+DB_ARX_Pipes_Valves(_Valve, _Drawer)
+AND
+DB_ARX_Pipes_DrawerDefaults(_Drawer, _SurfaceSampler, _Origin, _FirstPipe, _)
+AND
+GetSurfaceGroundAt(_SurfaceSampler, _Surface)
+AND
+GetSurfaceTypeIndex(_Surface, _TypeIndex)
+AND
+GetVarString(_FirstPipe, "CalculationEvent", _Event)
+THEN
+SetStoryEvent(_Drawer, "ARX_Pipes_StopSurfaceDraw");
+TeleportTo(_Drawer, _Origin, "ARX_Pipes_StartSurfaceDraw", 0);
+SetVarObject(_Drawer, "LastPipe", _Origin);
+CreateSurface(_Origin, _Surface, 2.0, -1.0);
+SetVarInteger(_Drawer, "SurfaceType", _TypeIndex);
+SetVarObject(_Drawer, "NextPipe", _FirstPipe);
+SetStoryEvent(_Drawer, _Event);
+
+//END_REGION
+
+//REGION Puzzle component setup
+IF
+StoryEvent(_Item, "ARX_Pipes_SetUp")
+AND
+GetUUID(_Item, _UUID)
+AND
+StringConcatenate(_UUID, "_Arrive", _ArriveEvent)
+AND
+StringConcatenate(_UUID, "_Calculate", _CalculationEvent)
+THEN
+SetVarString(_Item, "ArriveEvent", _ArriveEvent);
+SetVarString(_Item, "CalculationEvent", _CalculationEvent);
+ItemSetForceSynch((ITEMGUID)_Item, 1);
+
+IF
+StoryEvent((ITEMGUID)_Item, "ARX_Pipes_SetUp")
+AND
+GetVarInteger(_Item, "Orientation", _Orientation)
+AND
+IntegerProduct(_Orientation, 90, _AngleInt)
+AND
+Real(_AngleInt, _Angle)
+THEN
+ItemRotateToAngleY((ITEMGUID)_Item, _Angle, 40.0);
+SetVarInteger(_Item, "CurrentOrientation", _Orientation);
+SetStoryEvent(_Item, "CalcActive");
+//END_REGION
+
+//REGION Puzzle Finished
+IF
+DB_GlobalFlag("S_ARX_Pipes_Surface2Matched")
+AND
+DB_GlobalFlag("S_ARX_Pipes_Surface4Matched")
+AND
+DB_GlobalFlag("S_ARX_Pipes_Surface6Matched")
+AND
+QueryOnlyOnce("ARX_Pipes_Finished")
+THEN
+TimerLaunch("ARX_Pipes_Finished", 2000);
+
+IF
+TimerFinished("ARX_Pipes_Finished")
+THEN
+PROC_ARX_Pipes_Finished();
+
+IF
+GlobalFlagSet(_Flag)
+AND
+DB_ARX_Pipes_SolvedFlags(_Flag, _Helper, _Trigger)
+AND
+DB_ARX_Pipes_SolvedEffect(_Effect)
+THEN
+PROC_LoopEffect(_Effect, _Helper, "ARX_Pipes_BeamOfLight","ARX_Main","");
+PROC_LoopEffect(_Effect, _Trigger, "ARX_Pipes_BeamOfLight","ARX_Main","");
+
+IF
+GlobalFlagSet(_Flag)
+AND
+DB_ARX_Pipes_SolvedFlags(_Flag, _Helper, _Trigger)
+THEN
+PlaySound(_Helper,"RS3_FX_GP_ScriptedEvent_ARX_PipesPuzzle_LightBeam_01_Start");
+
+IF
+GlobalFlagCleared(_Flag)
+AND
+DB_ARX_Pipes_SolvedFlags(_Flag, _Helper, _Trigger)
+THEN
+PROC_StopLoopEffect(_Helper, "ARX_Pipes_BeamOfLight");
+PROC_StopLoopEffect(_Trigger, "ARX_Pipes_BeamOfLight");
+//END_REGION
+
+//REGION Puzzle UI
+
+PROC
+ProcResetCharacterPipesState((CHARACTERGUID)_Player)
+THEN
+ItemSetCanInteract(ITEMGUID_S_ARX_Pipes_FieldStatue_9024ba5a-b784-48f8-b289-59a5d1c32948, 1);
+RemoveStatus(_Player, "ARX_PIPES_LOCKED");
+ProcSetInvulnerable(_Player, 0);
+
+IF
+ObjectFlagSet("ARX_Pipes_ShowUI", _Player, _)
+THEN
+CharacterShowStoryElementUI((CHARACTERGUID)_Player, 2, "ARX_PipesUI");
+ItemSetCanInteract(ITEMGUID_S_ARX_Pipes_FieldStatue_9024ba5a-b784-48f8-b289-59a5d1c32948, 0);
+ProcForceStopDialog(_Player);
+CameraActivate(_Player, "S_ARX_Pipes_OverviewTrigger", -1.0, 1, 0, 1);
+//SetSelectorCameraMode(_Player, 1);
+GlobalSetFlag("ARX_Pipes_Clear");
+GlobalClearFlag("ARX_Pipes_Clear");
+DB_ARX_Pipes_HasPipesUIOpen(_Player);
+ProcSetInvulnerable(_Player, 1);
+ApplyStatus(_Player, "ARX_PIPES_LOCKED", -1.0, 1);
+
+IF
+DB_ARX_Pipes_HasPipesUIOpen((CHARACTERGUID)_Player)
+AND
+NOT DB_DialogPlayers(_, _Player, _)
+THEN
+TimerLaunch("ARX_Pipes_SelectorCameraModeDelay", 500);
+
+IF
+TimerFinished("ARX_Pipes_SelectorCameraModeDelay")
+AND
+DB_ARX_Pipes_HasPipesUIOpen(_Player)
+THEN
+SetSelectorCameraMode(_Player, 1);
+
+IF
+SavegameLoaded(_, _, _, _)
+AND
+DB_ARX_Pipes_HasPipesUIOpen(_Player)
+THEN
+ProcResetCharacterPipesState(_Player);
+NOT DB_ARX_Pipes_HasPipesUIOpen(_Player);
+ObjectClearFlag(_Player, "ARX_Pipes_ShowUI");
+Proc_StartDialog(0,"ARX_Pipes_FieldStatue",ITEMGUID_S_ARX_Pipes_FieldStatue_9024ba5a-b784-48f8-b289-59a5d1c32948, ITEMGUID_S_ARX_Pipes_GodKing_InvisHelper_998da54c-b2e3-4cb1-9918-dfba5589b84e, _Player);
+
+IF
+CharacterReservedUserIDChanged(_Player, _, _)
+AND
+DB_ARX_Pipes_HasPipesUIOpen(_Player)
+THEN
+NOT DB_OnlyOnce("ARX_Pipes_ActivePlayerChangedID");
+
+IF
+CharacterReservedUserIDChanged(_Player, _OldUserID, _)
+AND
+DB_ARX_Pipes_HasPipesUIOpen(_Player)
+AND
+DB_IsPlayer(_OtherPlayer)
+AND
+CharacterGetReservedUserID(_OtherPlayer, _OldUserID)
+AND
+NOT DB_OnlyOnce("ARX_Pipes_ActivePlayerChangedID")
+THEN
+DB_OnlyOnce("ARX_Pipes_ActivePlayerChangedID");
+CameraActivate(_OtherPlayer, "S_ARX_Pipes_OverviewTrigger", 0.1, 1, 0, 1);
+SetSelectorCameraMode(_OtherPlayer, 0);
+CharacterCloseStoryElementUI(_OtherPlayer, 2, "ARX_PipesUI");
+
+// If the above loop did not find another player character (ARX_Pipes_ActivePlayerChangedID still not set), it means the client disconnected. So there is no UI to close (manual reset)
+IF
+CharacterReservedUserIDChanged(_Player, _, _)
+AND
+DB_ARX_Pipes_HasPipesUIOpen(_Player)
+AND
+NOT DB_OnlyOnce("ARX_Pipes_ActivePlayerChangedID")
+THEN
+ProcResetCharacterPipesState(_Player);
+NOT DB_ARX_Pipes_HasPipesUIOpen(_Player);
+ObjectClearFlag(_Player, "ARX_Pipes_ShowUI");
+Proc_StartDialog(0,"ARX_Pipes_FieldStatue",ITEMGUID_S_ARX_Pipes_FieldStatue_9024ba5a-b784-48f8-b289-59a5d1c32948, ITEMGUID_S_ARX_Pipes_GodKing_InvisHelper_998da54c-b2e3-4cb1-9918-dfba5589b84e, _Player);
+
+IF
+StoryEvent(_Pipe, "ARX_Pipes_RotateOnuse")
+AND
+NOT DB_ARX_Pipes_Rotating((ITEMGUID)_Pipe)
+THEN
+DB_ARX_Pipes_Rotating(_Pipe);
+ItemSetForceSynch(_Pipe, 1);
+ItemRotateY(_Pipe, 90.0, 65.0);
+ProcObjectTimer(_Pipe, "ARX_Pipes_Rotation", 1500);
+PlaySound(_Pipe, "Items_Puzzles_MovingObjects_STONE_Start");
+
+IF
+PuzzleUIClosed(_Player, "ARX_PipesUI", 2)
+AND
+DB_ARX_Pipes_HasPipesUIOpen(_Player)
+THEN
+ProcResetCharacterPipesState(_Player);
+Proc_StartDialog(0,"ARX_Pipes_FieldStatue",ITEMGUID_S_ARX_Pipes_FieldStatue_9024ba5a-b784-48f8-b289-59a5d1c32948, ITEMGUID_S_ARX_Pipes_GodKing_InvisHelper_998da54c-b2e3-4cb1-9918-dfba5589b84e, _Player);
+CameraActivate(_Player, "S_ARX_Pipes_OverviewTrigger", 0.1, 1, 0, 1);
+SetSelectorCameraMode(_Player, 0);
+NOT DB_ARX_Pipes_HasPipesUIOpen(_Player);
+
+PROC
+ProcObjectTimerFinished((ITEMGUID)_Pipe, "ARX_Pipes_Rotation")
+THEN
+ObjectClearFlag(_Pipe, "ARX_Pipes_Rotating", 0);
+NOT DB_ARX_Pipes_Rotating(_Pipe);
+SetStoryEvent(_Pipe, "Rotate");
+ItemSetForceSynch(_Pipe, 0);
+PlaySound(_Pipe, "Items_Puzzles_MovingObjects_STONE_Stop");
+
+IF
+CharacterTeleported(_Player, _, _, _, _, _X, _Y, _Z, _)
+AND
+DB_ARX_Pipes_HasPipesUIOpen(_Player)
+AND
+GetDistanceToPosition(ITEMGUID_S_ARX_Pipes_FieldStatue_9024ba5a-b784-48f8-b289-59a5d1c32948, _X, _Y, _Z, _Dist)
+AND
+_Dist >= 5
+THEN
+ProcResetCharacterPipesState(_Player);
+NOT DB_ARX_Pipes_HasPipesUIOpen(_Player);
+CharacterCloseStoryElementUI(_Player, 2, "ARX_PipesUI");
+ItemSetCanInteract(ITEMGUID_S_ARX_Pipes_FieldStatue_9024ba5a-b784-48f8-b289-59a5d1c32948, 1);
+CameraActivate(_Player, "S_ARX_Pipes_OverviewTrigger", 0.1, 1, 0, 1);
+SetSelectorCameraMode(_Player, 0);
+ObjectClearFlag(_Player, "ARX_Pipes_ShowUI");
+
+//END_REGION
+
+
+//REGION Starting and shutting down puzzle
+IF
+DialogEnded("ARX_Pipes_FieldStatue", _ID)
+AND
+DB_DialogPlayers(_ID, _Player, 1)
+AND
+ObjectGetFlag((CHARACTERGUID)_Player, "ARX_Pipes_ResetPuzzle", 1)
+THEN
+GlobalSetFlag("ARX_Pipes_Clear");
+GlobalClearFlag("ARX_Pipes_Clear");
+GlobalSetFlag("ARX_Pipes_Setup");
+GlobalClearFlag("ARX_Pipes_Setup");
+ObjectClearFlag(_Player, "ARX_Pipes_ResetPuzzle", 0);
+PlaySound(ITEMGUID_S_ARX_Pipes_FieldStatue_9024ba5a-b784-48f8-b289-59a5d1c32948,"SE_ARX_Pipes_FieldStatue_DistantMachine");
+
+IF
+DialogEnded("ARX_Pipes_FieldStatue", _ID)
+AND
+DB_DialogPlayers(_ID, _Player, 1)
+AND
+ObjectGetFlag((CHARACTERGUID)_Player, "ARX_Pipes_StartPuzzle", 1)
+THEN
+GlobalSetFlag("ARX_Pipes_Clear");
+GlobalClearFlag("ARX_Pipes_Clear");
+ObjectClearFlag(_Player, "ARX_Pipes_StartPuzzle", 0);
+PlaySound(ITEMGUID_S_ARX_Pipes_FieldStatue_9024ba5a-b784-48f8-b289-59a5d1c32948,"SE_ARX_Pipes_FieldStatue_DistantMachine");
+PROC_ARX_Pipes_Start();
+
+PROC
+PROC_ARX_Pipes_Start()
+THEN
+TimerLaunch("ARX_Pipes_Start", 500);
+
+IF
+TimerFinished("ARX_Pipes_Start")
+AND
+DB_ARX_Pipes_DrawerDefaults(_Drawer, _SurfaceSampler, _Origin, _FirstPipe, _)
+AND
+GetSurfaceGroundAt(_SurfaceSampler, _Surface)
+AND
+GetSurfaceTypeIndex(_Surface, _TypeIndex)
+AND
+GetVarString(_FirstPipe, "CalculationEvent", _Event)
+THEN
+TeleportTo(_Drawer, _Origin, "ARX_Pipes_StartSurfaceDraw", 0);
+SetVarObject(_Drawer, "LastPipe", _Origin);
+CreateSurface(_Origin, _Surface, 2.0, -1.0);
+SetVarInteger(_Drawer, "SurfaceType", _TypeIndex);
+SetVarObject(_Drawer, "NextPipe", _FirstPipe);
+SetStoryEvent(_Drawer, _Event);
+
+/*PROC
+ProcObjectTimerFinished(_Drawer, "ARX_SurfaceStep1")
+AND
+DB_ARX_Pipes_DrawerDefaults(_Drawer, _SurfaceSampler, _Origin, _, _)
+THEN
+TransformSurface(_Origin, "Purify", "Ground", 2.0, 0.1, NULL_00000000-0000-0000-0000-000000000000);
+TransformSurface(_SurfaceSampler, "Purify", "Ground", 2.0, 100.0, NULL_00000000-0000-0000-0000-000000000000);
+ProcObjectTimer(_Drawer, "ARX_SurfaceStep2", 1100);
+
+PROC
+ProcObjectTimerFinished(_Drawer, "ARX_SurfaceStep2")
+AND
+DB_ARX_Pipes_DrawerDefaults(_Drawer, _SurfaceSampler, _Origin, _, _Transform)
+THEN
+TransformSurface(_Origin, _Transform, "Ground", 2.0,  -1.0, NULL_00000000-0000-0000-0000-000000000000);
+TransformSurface(_SurfaceSampler, _Transform, "Ground", 2.0, 10.0, NULL_00000000-0000-0000-0000-000000000000);
+ProcObjectTimer(_Drawer, "ARX_SurfaceStep3", 500);*/
+//END_REGION
+
+//REGION Drawing Surface
+IF
+StoryEvent(_Drawer, "ARX_Pipes_StartSurfaceDraw")
+AND
+DB_ARX_Pipes_SurfaceDrawing(_Drawer, _Integer)
+THEN
+StopDrawSurfaceOnPath(_Integer);
+NOT DB_ARX_Pipes_SurfaceDrawing(_Drawer, _Integer);
+
+IF
+StoryEvent(_Drawer, "ARX_Pipes_StartSurfaceDraw")
+AND
+GetVarInteger(_Drawer, "SurfaceType", _TypeIndex)
+AND
+GetSurfaceNameByTypeIndex(_TypeIndex, _Surface)
+AND
+_Surface != "SurfaceNone"
+AND
+DrawSurfaceOnPath(_Drawer, _Drawer, _Surface, 0.45, -1.0, _Integer)
+THEN
+DB_ARX_Pipes_SurfaceDrawing(_Drawer, _Integer);
+
+IF
+StoryEvent(_Drawer, "ARX_Pipes_StopSurfaceDraw")
+AND
+DB_ARX_Pipes_SurfaceDrawing(_Drawer, _Integer)
+THEN
+NOT DB_ARX_Pipes_SurfaceDrawing(_Drawer, _Integer);
+StopDrawSurfaceOnPath(_Integer);
+//END_REGION
+
+//REGION Promised characters cheating their way through.
+IF
+ItemStatusAttempt(ITEMGUID_S_ARX_Pipes_FieldStatue_9024ba5a-b784-48f8-b289-59a5d1c32948, "CURSED", _)
+THEN 
+PROC_ARX_Pipes_DestroyStatue();
+
+PROC
+PROC_ARX_Pipes_DestroyStatue()
+AND
+DB_ARX_Pipes_HasPipesUIOpen(_Player)
+THEN
+ProcResetCharacterPipesState(_Player);
+NOT DB_ARX_Pipes_HasPipesUIOpen(_Player);
+CharacterCloseStoryElementUI(_Player, 2, "ARX_PipesUI");
+CameraActivate(_Player, "S_ARX_Pipes_OverviewTrigger", 0.1, 1, 0, 1);
+ObjectClearFlag(_Player, "ARX_Pipes_ShowUI");
+SetSelectorCameraMode(_Player, 0);
+
+PROC
+PROC_ARX_Pipes_DestroyStatue()
+THEN
+ItemSetCanInteract(ITEMGUID_S_ARX_Pipes_FieldStatue_9024ba5a-b784-48f8-b289-59a5d1c32948, 0);
+PROC_LoopEffect("RS3_FX_Skills_Void_Netherswap_Prepare_Root_01", ITEMGUID_S_ARX_Pipes_FieldStatue_9024ba5a-b784-48f8-b289-59a5d1c32948, "ARX_Pipes_Statue_DestroyLoop", "ARX_Main", "");
+PlayEffect(ITEMGUID_S_ARX_Pipes_FieldStatue_9024ba5a-b784-48f8-b289-59a5d1c32948, "RS3_FX_Char_Animals_Crocodile_A_ScalePortation_Disappear_Overlay_01");
+TimerLaunch("ARX_FieldStatue_Recurse", 3000);
+ProcObjectTimer(ITEMGUID_S_ARX_Pipes_FieldStatue_9024ba5a-b784-48f8-b289-59a5d1c32948, "ARX_FieldStatue_Destroy", 1200);
+Proc_CameraShakeAroundCharacter(ITEMGUID_S_ARX_Pipes_FieldStatue_9024ba5a-b784-48f8-b289-59a5d1c32948, 700, 20.0);
+GlobalSetFlag("ARX_Pipes_Curse");
+GlobalSetFlag("ARX_Pipes_Cursed");
+GlobalClearFlag("ARX_Pipes_Curse");
+NOT DB_ARX_Pipes_SolvedEffect("RS3_FX_GP_ScriptedEvent_ARX_PipesPuzzle_LightBeam_01");
+DB_ARX_Pipes_SolvedEffect("RS3_FX_GP_ScriptedEvent_LightBeam_Blue_01");
+TriggerSetAtmosphere(TRIGGERGUID_ATM_ARX_Cathedral_Catacombs_1de59f6e-8015-45e3-bb68-de7586f15b00, "6546a079-a35c-4c1e-9173-605e651e8bf6");
+
+PROC
+PROC_ARX_Pipes_DestroyStatue()
+AND
+DB_ARX_Pipes_SolvedFlags(_Flag, _Helper, _Trigger)
+AND
+DB_GlobalFlag(_Flag)
+THEN
+PROC_StopLoopEffect(_Helper, "ARX_Pipes_BeamOfLight");
+PROC_StopLoopEffect(_Trigger, "ARX_Pipes_BeamOfLight");
+PROC_LoopEffect("RS3_FX_GP_ScriptedEvent_LightBeam_Blue_01", _Helper, "ARX_Pipes_BeamOfLight","ARX_Main","");
+PROC_LoopEffect("RS3_FX_GP_ScriptedEvent_LightBeam_Blue_01", _Trigger, "ARX_Pipes_BeamOfLight","ARX_Main","");
+
+IF
+StoryEvent(_Pipe, "ARX_Pipes_DisableMyRemoteUse")
+THEN
+ItemSetUseRemotely((ITEMGUID)_Pipe, 0);
+
+PROC
+PROC_ARX_Pipes_DestroyStatue()
+AND
+DB_ARX_Pipes_SurfaceDrawing(_Drawer, _)
+THEN
+SetStoryEvent(_Drawer, "ARX_Pipes_StopSurfaceDraw");
+
+PROC
+ProcObjectTimerFinished(ITEMGUID_S_ARX_Pipes_FieldStatue_9024ba5a-b784-48f8-b289-59a5d1c32948, "ARX_FieldStatue_Destroy")
+AND
+GetPosition(ITEMGUID_S_ARX_Pipes_FieldStatue_9024ba5a-b784-48f8-b289-59a5d1c32948, _X, _Y, _Z)
+THEN
+ItemDestroy(ITEMGUID_S_ARX_Pipes_FieldStatue_9024ba5a-b784-48f8-b289-59a5d1c32948);
+PlayEffectAtPosition("RS3_FX_Skills_Void_SwapGround_Impact_Root_01", _X, _Y, _Z);
+PlayEffectAtPosition("RS3_FX_GP_Combat_CorpseExplosion_SourceStone_01_Huge", _X, _Y, _Z);
+PlayEffect(ITEMGUID_S_ARX_Pipes_FieldStatue_9024ba5a-b784-48f8-b289-59a5d1c32948, "RS3_FX_GP_ScriptedEvent_CameraShake_Intense_01");
+
+IF
+TimerFinished("ARX_FieldStatue_Recurse")
+THEN
+GlobalSetFlag("ARX_Pipes_Curse");
+GlobalClearFlag("ARX_Pipes_Curse");
+
+PROC
+PROC_ARX_Pipes_DestroyStatue()
+AND
+DB_ARX_Pipes_ForceFields(_ForceField, _Timer)
+THEN
+ProcObjectTimer(_ForceField, "ARX_Pipes_DestroyForceField", _Timer);
+NOT DB_ARX_Pipes_ForceFields(_ForceField, _Timer);
+
+PROC
+ProcObjectTimerFinished(_ForceField, "ARX_Pipes_DestroyForceField")
+THEN
+SetStoryEvent(_ForceField, "shutDown");
+
+IF
+DialogEnded("ARX_Pipes_FieldStatue", _ID)
+AND
+DB_DialogPlayers(_ID, _Player, 1)
+AND
+ObjectGetFlag((CHARACTERGUID)_Player, "ARX_Pipes_UseCurse", 1)
+THEN
+ObjectClearFlag(_Player, "ARX_Pipes_UseCurse", 0);
+CharacterUseSkill(_Player, "Target_Curse", ITEMGUID_S_ARX_Pipes_FieldStatue_9024ba5a-b784-48f8-b289-59a5d1c32948, 1, 0, 0);
+
+
+//END_REGION
+
+//REGION Dialog 
+IF
+CharacterUsedItem(_Player, ITEMGUID_S_ARX_Pipes_FieldStatue_9024ba5a-b784-48f8-b289-59a5d1c32948)
+AND
+DB_CombatCharacters(_Player, _)
+THEN
+Proc_StartDialog(1,"GLO_AD_CannotUseNow", _Player);
+
+IF
+CharacterUsedItem(_Player,ITEMGUID_S_ARX_Pipes_FieldStatue_9024ba5a-b784-48f8-b289-59a5d1c32948)
+AND
+NOT DB_CombatCharacters(_Player, _)
+THEN
+Proc_StartDialog(0,"ARX_Pipes_FieldStatue",ITEMGUID_S_ARX_Pipes_FieldStatue_9024ba5a-b784-48f8-b289-59a5d1c32948, ITEMGUID_S_ARX_Pipes_GodKing_InvisHelper_998da54c-b2e3-4cb1-9918-dfba5589b84e, _Player);
+
+//END_REGION
+
+//REGION Dialog when using grating
+IF
+CharacterUsedItemTemplate(_Player, "ARX_Pipes_Intake_cfbd4ae7-be7c-417e-b65a-33fffa9c5e7b", _)
+AND
+CharacterIsInCombat(_Player, 0)
+THEN
+Proc_StartDialog(0, "ARX_Pipes_Grating", _Player);
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "ARX"

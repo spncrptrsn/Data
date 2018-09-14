@@ -1,0 +1,279 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+// Public interface:
+//  * PROC_GLO_AllDead_Notification((CHARACTERGUID)_Char)
+//
+//    Define this routine if you want to be notified when all of a user's characters
+//    are dead _Char is one of the user's characters, but not necessarily the last
+//    one that died (since observers often only care about avatars, or characters with
+//    certain tags or other pre-conditions)
+//
+// Delays before notifying observers:
+//  - 0/1 users (players): after 4 seconds (protection against two characters dying almost simulataneously resulting in two events)
+//  - 2 or more users (players): after 6 seconds (leave some time to other players to resurrect)
+DB_GLO_AllDead_UserCountTimerDelay(1,4000);
+DB_GLO_AllDead_UserCountTimerDelay(2,6000);
+KBSECTION
+//REGION Notify observers of user wipe
+PROC
+PROC_GLO_AllDead_Notification((CHARACTERGUID)_Char)
+THEN
+DB_NOOP(1);
+//END_REGION
+
+//REGION Determine whether all user-controlled characters are dead
+// Interface:
+//   QRY_GLO_AllDead_AllUserCharsDead((INTEGER)_UserId)
+//     Result: false/true
+QRY
+QRY_GLO_AllDead_AllUserCharsDead((INTEGER)_UserId)
+AND
+NOT QRY_GLO_AllDead_OneUserCharAlive(_UserId)
+THEN
+DB_NOOP(1);
+
+// Player alive
+QRY
+QRY_GLO_AllDead_OneUserCharAlive((INTEGER)_UserId)
+AND
+DB_IsPlayer(_Player)
+AND
+CharacterGetReservedUserID(_Player,_UserId)
+AND
+CharacterIsDead(_Player,0)
+THEN
+DB_NOOP(1);
+
+//REGION Character re-assignment
+// If a living character is assigned to another user,
+// we have to check whether the old user only has
+// dead characters left now. Unfortunately, we don't
+// know the ID of the old user -> check for all...
+
+// This goal only activates in RC_Main, but who knows what character respec
+// or henchman recruitment will do -> filter events related to character creation
+IF
+CharacterMadePlayer(_Player)
+THEN
+DB_IgnoreReservedChanged(_Player);
+
+IF
+DB_CharacterCreationDummy((CHARACTERGUID)_Char)
+THEN
+DB_IgnoreReservedChanged(_Char);
+
+IF
+CharacterReservedUserIDChanged(_Char,_,_UserID)
+AND
+NOT DB_IgnoreReservedChanged(_Char)
+AND
+NOT DB_Dead(_Char)
+THEN
+PROC_GLO_AllDead_CheckAllUserCharsDeadForAny();
+
+IF
+CharacterReservedUserIDChanged(_Char,_,_UserID)
+THEN
+NOT DB_IgnoreReservedChanged(_Char);
+//END_REGION //Character re-assignment
+
+//END_REGION //Determine whether all user-controlled characters are dead
+
+//REGION Trigger when all characters are dead
+// Sets DB_GLO_AllDead_TriggerAfterCombat(_Char) in case all characters
+// of the user owning _Char are dead.
+IF
+CharacterDied(_Char)
+AND
+DB_IsPlayer(_Char)
+THEN
+PROC_GLO_AllDead_CheckAllUserCharsDead(_Char);
+
+PROC
+PROC_GLO_AllDead_CheckAllUserCharsDead((CHARACTERGUID)_Char)
+AND
+DB_GLO_AllDead_QueuedUser(_AnyChar)
+THEN
+NOT DB_GLO_AllDead_QueuedUser(_AnyChar);
+
+PROC
+PROC_GLO_AllDead_CheckAllUserCharsDead((CHARACTERGUID)_Char)
+AND
+CharacterGetReservedUserID(_Char,_UserId)
+AND
+QRY_GLO_AllDead_AllUserCharsDead(_UserId)
+THEN
+DB_GLO_AllDead_QueuedUser(_Char);
+DB_GLO_AllDead_TriggerAfterCombat(_Char);
+
+PROC
+PROC_GLO_AllDead_CheckAllUserCharsDeadForAny()
+AND
+DB_IsPlayer(_Char)
+AND
+CharacterGetReservedUserID(_Char,_UserId)
+AND
+NOT DB_GLO_AllDead_CheckAllUserCharsDeadForAny(_UserId)
+THEN
+DB_GLO_AllDead_CheckAllUserCharsDeadForAny(_UserId);
+PROC_GLO_AllDead_CheckAllUserCharsDead(_Char);
+
+PROC
+PROC_GLO_AllDead_CheckAllUserCharsDeadForAny()
+AND
+DB_GLO_AllDead_CheckAllUserCharsDeadForAny(_UserId)
+THEN
+NOT DB_GLO_AllDead_CheckAllUserCharsDeadForAny(_UserId);
+//END_REGION //Trigger whether all characters are dead
+
+//REGION Combat tracking
+// Notify if all of a user's characters have been dead for at least X seconds
+// (if died in combat: X seconds since the end of the last combat).
+// Short delay if only user, since then there is no one that could resurrect them.
+
+//REGION Register combats
+// If none of the user's characters were in active combats, start waiting immediately
+// (if any were in combat, this code will be triggered again after those combats have
+//  finished)
+IF
+DB_GLO_AllDead_TriggerAfterCombat(_SignalChar)
+THEN
+PROC_GLO_AllDead_RecordUserCombats(_SignalChar);
+
+IF
+DB_GLO_AllDead_TriggerAfterCombat(_SignalChar)
+AND
+NOT DB_GLO_AllDead_FoundCombatForSignaledUser(_SignalChar)
+THEN
+NOT DB_GLO_AllDead_TriggerAfterCombat(_SignalChar);
+PROC_GLO_AllDead_StartTriggerTimer(_SignalChar);
+
+// X seconds after a tagged combat has finished, we will check all users
+// for whether all of their characters are dead. Keeping track of the
+// individual characters is not useful because they can be reassigned to
+// other users, characters can be resurrected, etc. Keeping track of all
+// of those situations (and thinking them up) is way more trouble than
+// simply checking again after the end of the relevant combats which
+// users are stuck with only dead characters.
+IF
+DB_GLO_AllDead_TriggerAfterCombat(_SignalChar)
+THEN
+NOT DB_GLO_AllDead_TriggerAfterCombat(_SignalChar);
+NOT DB_GLO_AllDead_FoundCombatForSignaledUser(_SignalChar);
+
+// One thing we do have to take into account: combat switching
+// (not sure if dead characters can switch combats, but better safe than
+//  sorry)
+IF
+ObjectSwitchedCombat(_Char,_OldCombatID,_NewCombatID)
+AND
+DB_Dead((CHARACTERGUID)_Char)
+AND
+DB_IsPlayer(_Char)
+AND
+DB_GLO_AllDead_WaitTillEndOfCombat(_OldCombatID)
+THEN
+// Don't remove the original combat, since the user may still have characters there
+// (or even only characters there, since we don't know whether the character that
+//  switched belonged to a player with all dead characters)
+DB_GLO_AllDead_WaitTillEndOfCombat(_NewCombatID);
+
+PROC
+PROC_GLO_AllDead_RecordUserCombats((CHARACTERGUID)_SignalChar)
+AND
+CharacterGetReservedUserID(_SignalChar,_UserId)
+AND
+DB_IsPlayer(_Char)
+AND
+CharacterGetReservedUserID(_Char,_UserId)
+AND
+DB_WasInCombat(_Char,_CombatID)
+AND
+IsCombatActive(_CombatID,1)
+THEN
+// Also set in case DB_GLO_AllDead_WaitTillEndOfCombat(_CombatID)
+// was already defined, because then we still want to define
+// DB_GLO_AllDead_FoundCombatForSignaledUse
+// (so we don't think that none of this user's characters are
+//  in combat and immediately start the timer to notify observers)
+DB_GLO_AllDead_FoundCombatForSignaledUser(_SignalChar);
+DB_GLO_AllDead_WaitTillEndOfCombat(_CombatID);
+//END_REGION //Register combats
+
+//REGION React to end of combat
+IF
+CombatEnded(_CombatID)
+AND
+DB_GLO_AllDead_WaitTillEndOfCombat(_CombatID)
+THEN
+NOT DB_GLO_AllDead_WaitTillEndOfCombat(_CombatID);
+PROC_GLO_AllDead_CheckAllUserCharsDeadForAny();
+//END_REGION //React to end of combat
+
+//END_REGION //Combat tracking
+
+//REGION Timer before triggering
+PROC
+PROC_GLO_AllDead_StartTriggerTimer((CHARACTERGUID)_SignalChar)
+// Check whether no other timer for one of this user's characters was already ongoing.
+// Can happen if two characters die (almost) at the same time, in which case we get
+// two CharacterDied() events and for both all characters of the user are already dead.
+// Can't encode the user id in the timer due to the possibility of user id changes at
+// any time.
+AND
+NOT QRY_GLO_AllDead_UserAllDeadTimerStarted(_SignalChar)
+AND
+GetUserCount(_UserCount)
+AND
+IntegerMax(_UserCount,1,_MinUserCount)
+AND
+IntegerMin(_MinUserCount,2,_MinMaxUserCount)
+AND
+DB_GLO_AllDead_UserCountTimerDelay(_MinMaxUserCount,_Delay)
+THEN
+DB_GLO_AllDead_TimerStarted(1);
+ProcObjectTimer(_SignalChar,"GLO_AllDead_WaitToSendNotification",_Delay);
+
+PROC
+PROC_GLO_AllDead_StartTriggerTimer((CHARACTERGUID)_SignalChar)
+AND
+NOT DB_GLO_AllDead_TimerStarted(1)
+THEN
+NOT DB_GLO_AllDead_QueuedUser(_SignalChar);
+
+PROC
+PROC_GLO_AllDead_StartTriggerTimer((CHARACTERGUID)_SignalChar)
+THEN
+NOT DB_GLO_AllDead_TimerStarted(1);
+
+QRY
+QRY_GLO_AllDead_UserAllDeadTimerStarted((CHARACTERGUID)_SignalChar)
+AND
+CharacterGetReservedUserID(_SignalChar,_UserID)
+AND
+DB_ObjectTimer(_Player,_,"GLO_AllDead_WaitToSendNotification")
+AND
+CharacterGetReservedUserID((CHARACTERGUID)_Player,_UserID)
+THEN
+DB_NOOP(1);
+
+PROC
+ProcObjectTimerFinished(_SignalChar,"GLO_AllDead_WaitToSendNotification")
+AND
+CharacterGetReservedUserID((CHARACTERGUID)_SignalChar,_UserId)
+AND
+// Final check: all user's chars still dead?
+QRY_GLO_AllDead_AllUserCharsDead(_UserId)
+THEN
+PROC_GLO_AllDead_Notification(_SignalChar);
+
+PROC
+ProcObjectTimerFinished(_SignalChar,"GLO_AllDead_WaitToSendNotification")
+THEN
+NOT DB_GLO_AllDead_QueuedUser((CHARACTERGUID)_SignalChar);
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "GLO_ThePromise_Activation"

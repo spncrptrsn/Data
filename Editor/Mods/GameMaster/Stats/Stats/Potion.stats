@@ -1,0 +1,237 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<stats stat_object_definition_id="48e63fff-81e0-42bb-ac51-39f5904b97be">
+  <stat_objects>
+    <stat_object is_substat="false">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="Potion" />
+        <field name="Act" type="EnumerationStatObjectFieldDefinition" value="0" enumeration_type_name="Act" />
+        <field name="Weight" type="IntegerStatObjectFieldDefinition" value="250" />
+        <field name="Value" type="IntegerStatObjectFieldDefinition" value="3" />
+        <field name="UseAPCost" type="IntegerStatObjectFieldDefinition" value="1" />
+        <field name="InventoryTab" type="EnumerationStatObjectFieldDefinition" value="2" enumeration_type_name="InventoryTabs" />
+      </fields>
+    </stat_object>
+    <stat_object is_substat="false">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="POTION_Healing_Poisoned_Masked_Minor_A" />
+        <field name="Using" type="BaseClassStatObjectFieldDefinition" value="Potion" />
+        <field name="RootTemplate" type="RootTemplateStatObjectFieldDefinition" value="db064d03-85e9-42cd-a343-66b19babc6d8" />
+        <field name="Act part" type="EnumerationStatObjectFieldDefinition" value="1" enumeration_type_name="ActPart" />
+        <field name="Value" type="IntegerStatObjectFieldDefinition" value="1" />
+        <field name="Duration" type="IntegerStatObjectFieldDefinition" value="1" />
+        <field name="Damage" type="EnumerationStatObjectFieldDefinition" value="4" enumeration_type_name="Qualifier" />
+        <field name="Damage Multiplier" type="IntegerStatObjectFieldDefinition" value="100" />
+        <field name="DamageType" type="EnumerationStatObjectFieldDefinition" value="10" enumeration_type_name="Damage Type" />
+      </fields>
+    </stat_object>
+    <stat_object is_substat="false">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="POTION_Healing_Poisoned_Masked_Medium_A" />
+        <field name="Using" type="BaseClassStatObjectFieldDefinition" value="Potion" />
+        <field name="RootTemplate" type="RootTemplateStatObjectFieldDefinition" value="134286bb-6cf0-4c66-955c-9a4bf1a3b8d2" />
+        <field name="Act part" type="EnumerationStatObjectFieldDefinition" value="5" enumeration_type_name="ActPart" />
+        <field name="Value" type="IntegerStatObjectFieldDefinition" value="2" />
+        <field name="Duration" type="IntegerStatObjectFieldDefinition" value="1" />
+        <field name="Damage" type="EnumerationStatObjectFieldDefinition" value="5" enumeration_type_name="Qualifier" />
+        <field name="Damage Multiplier" type="IntegerStatObjectFieldDefinition" value="100" />
+        <field name="DamageType" type="EnumerationStatObjectFieldDefinition" value="10" enumeration_type_name="Damage Type" />
+      </fields>
+    </stat_object>
+    <stat_object is_substat="false">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="POTION_Healing_Poisoned_Masked_Large_A" />
+        <field name="Using" type="BaseClassStatObjectFieldDefinition" value="Potion" />
+        <field name="RootTemplate" type="RootTemplateStatObjectFieldDefinition" value="9c0b6b88-355b-463a-a9a7-d77ae4007e11" />
+        <field name="Act part" type="EnumerationStatObjectFieldDefinition" value="10" enumeration_type_name="ActPart" />
+        <field name="Value" type="IntegerStatObjectFieldDefinition" value="3" />
+        <field name="Duration" type="IntegerStatObjectFieldDefinition" value="1" />
+        <field name="Damage" type="EnumerationStatObjectFieldDefinition" value="6" enumeration_type_name="Qualifier" />
+        <field name="Damage Multiplier" type="IntegerStatObjectFieldDefinition" value="100" />
+        <field name="DamageType" type="EnumerationStatObjectFieldDefinition" value="10" enumeration_type_name="Damage Type" />
+      </fields>
+    </stat_object>
+    <stat_object is_substat="false">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="POTION_Healing_Poisoned_Masked_Huge_A" />
+        <field name="Using" type="BaseClassStatObjectFieldDefinition" value="Potion" />
+        <field name="RootTemplate" type="RootTemplateStatObjectFieldDefinition" value="8c1d747e-be2c-422b-ad63-78939c9244a2" />
+        <field name="Act part" type="EnumerationStatObjectFieldDefinition" value="15" enumeration_type_name="ActPart" />
+        <field name="Value" type="IntegerStatObjectFieldDefinition" value="4" />
+        <field name="Duration" type="IntegerStatObjectFieldDefinition" value="1" />
+        <field name="Damage" type="EnumerationStatObjectFieldDefinition" value="7" enumeration_type_name="Qualifier" />
+        <field name="Damage Multiplier" type="IntegerStatObjectFieldDefinition" value="100" />
+        <field name="DamageType" type="EnumerationStatObjectFieldDefinition" value="10" enumeration_type_name="Damage Type" />
+      </fields>
+    </stat_object>
+    <stat_object is_substat="false">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="_ComboFood" />
+        <field name="UseAPCost" type="IntegerStatObjectFieldDefinition" value="1" />
+        <field name="InventoryTab" type="EnumerationStatObjectFieldDefinition" value="2" enumeration_type_name="InventoryTabs" />
+        <field name="UnknownBeforeConsume" type="EnumerationStatObjectFieldDefinition" value="1" enumeration_type_name="YesNo" />
+      </fields>
+    </stat_object>
+    <stat_object is_substat="false">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="Quest_Food_SurvivalBread" />
+        <field name="Using" type="BaseClassStatObjectFieldDefinition" value="_ComboFood" />
+        <field name="Act" type="EnumerationStatObjectFieldDefinition" value="0" enumeration_type_name="Act" />
+        <field name="StackId" type="StringStatObjectFieldDefinition" value="Strength" />
+        <field name="Value" type="IntegerStatObjectFieldDefinition" value="2" />
+        <field name="Strength" type="EnumerationStatObjectFieldDefinition" value="121" enumeration_type_name="Penalty PreciseQualifier" />
+        <field name="Intelligence" type="EnumerationStatObjectFieldDefinition" value="91" enumeration_type_name="Penalty PreciseQualifier" />
+        <field name="Constitution" type="EnumerationStatObjectFieldDefinition" value="111" enumeration_type_name="Penalty PreciseQualifier" />
+        <field name="Persuasion" type="IntegerStatObjectFieldDefinition" value="-1" />
+        <field name="Duration" type="IntegerStatObjectFieldDefinition" value="3" />
+        <field name="MinAmount" type="IntegerStatObjectFieldDefinition" value="1" />
+        <field name="MaxAmount" type="IntegerStatObjectFieldDefinition" value="1" />
+      </fields>
+    </stat_object>
+    <stat_object is_substat="false">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="_Food" />
+        <field name="UseAPCost" type="IntegerStatObjectFieldDefinition" value="1" />
+        <field name="InventoryTab" type="EnumerationStatObjectFieldDefinition" value="2" enumeration_type_name="InventoryTabs" />
+        <field name="UnknownBeforeConsume" type="EnumerationStatObjectFieldDefinition" value="1" enumeration_type_name="YesNo" />
+        <field name="Duration" type="IntegerStatObjectFieldDefinition" value="3" />
+      </fields>
+    </stat_object>
+    <stat_object is_substat="false">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="QUEST_RC_DT_TaintedFunnyMeat" />
+        <field name="Using" type="BaseClassStatObjectFieldDefinition" value="_Food" />
+        <field name="RootTemplate" type="RootTemplateStatObjectFieldDefinition" value="328f7cbe-9ab3-444a-baaf-45724bdd0a80" />
+        <field name="Act part" type="EnumerationStatObjectFieldDefinition" value="2" enumeration_type_name="ActPart" />
+        <field name="StackId" type="StringStatObjectFieldDefinition" value="Strength" />
+        <field name="Weight" type="IntegerStatObjectFieldDefinition" value="600" />
+        <field name="Value" type="IntegerStatObjectFieldDefinition" value="0" />
+        <field name="Strength" type="EnumerationStatObjectFieldDefinition" value="111" enumeration_type_name="Penalty PreciseQualifier" />
+        <field name="Damage" type="EnumerationStatObjectFieldDefinition" value="2" enumeration_type_name="Qualifier" />
+        <field name="Damage Multiplier" type="IntegerStatObjectFieldDefinition" value="150" />
+        <field name="Damage Range" type="IntegerStatObjectFieldDefinition" value="10" />
+        <field name="DamageType" type="EnumerationStatObjectFieldDefinition" value="10" enumeration_type_name="Damage Type" />
+        <field name="ExtraProperties" type="StringStatObjectFieldDefinition" value="DISEASED,100,4" />
+        <field name="InventoryTab" type="EnumerationStatObjectFieldDefinition" value="2" enumeration_type_name="InventoryTabs" />
+      </fields>
+    </stat_object>
+    <stat_object is_substat="false">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="_Drink" />
+        <field name="Act" type="EnumerationStatObjectFieldDefinition" value="0" enumeration_type_name="Act" />
+        <field name="Act part" type="EnumerationStatObjectFieldDefinition" value="3" enumeration_type_name="ActPart" />
+        <field name="Vitality" type="IntegerStatObjectFieldDefinition" value="3" />
+        <field name="UseAPCost" type="IntegerStatObjectFieldDefinition" value="1" />
+        <field name="InventoryTab" type="EnumerationStatObjectFieldDefinition" value="2" enumeration_type_name="InventoryTabs" />
+        <field name="UnknownBeforeConsume" type="EnumerationStatObjectFieldDefinition" value="1" enumeration_type_name="YesNo" />
+      </fields>
+    </stat_object>
+    <stat_object is_substat="false">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="CON_Potion_Stardust_Boiled_A" />
+        <field name="Using" type="BaseClassStatObjectFieldDefinition" value="Potion" />
+        <field name="RootTemplate" type="RootTemplateStatObjectFieldDefinition" value="198614ec-35db-4f5f-ba15-cd0cf090b5a8" />
+      </fields>
+    </stat_object>
+    <stat_object is_substat="false">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="_Story" />
+      </fields>
+    </stat_object>
+    <stat_object is_substat="false">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="STORY_SourceOrb" />
+        <field name="Using" type="BaseClassStatObjectFieldDefinition" value="_Story" />
+        <field name="MagicPoints" type="IntegerStatObjectFieldDefinition" value="1" />
+        <field name="Duration" type="IntegerStatObjectFieldDefinition" value="0" />
+        <field name="StatusIcon" type="StringStatObjectFieldDefinition" value="Skill_Vampirism_Source" />
+      </fields>
+    </stat_object>
+    <stat_object is_substat="false">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="STORY_AntiSourceOrb" />
+        <field name="Using" type="BaseClassStatObjectFieldDefinition" value="_Story" />
+        <field name="MagicPoints" type="IntegerStatObjectFieldDefinition" value="-1" />
+      </fields>
+    </stat_object>
+    <stat_object is_substat="false">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="STORY_LightningStrike" />
+        <field name="Using" type="BaseClassStatObjectFieldDefinition" value="_Story" />
+        <field name="MagicPoints" type="IntegerStatObjectFieldDefinition" value="0" />
+        <field name="Duration" type="IntegerStatObjectFieldDefinition" value="0" />
+        <field name="UseAPCost" type="IntegerStatObjectFieldDefinition" value="0" />
+        <field name="Damage" type="EnumerationStatObjectFieldDefinition" value="3" enumeration_type_name="Qualifier" />
+        <field name="Damage Multiplier" type="IntegerStatObjectFieldDefinition" value="100" />
+        <field name="Damage Range" type="IntegerStatObjectFieldDefinition" value="6" />
+        <field name="DamageType" type="EnumerationStatObjectFieldDefinition" value="7" enumeration_type_name="Damage Type" />
+        <field name="StatusIcon" type="StringStatObjectFieldDefinition" value="statIcons_Cursed" />
+      </fields>
+    </stat_object>
+    <stat_object is_substat="false">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="QUEST_RC_MIL_TovahsHead" />
+        <field name="Using" type="BaseClassStatObjectFieldDefinition" value="CON_BodyPart_Dummy" />
+        <field name="RootTemplate" type="RootTemplateStatObjectFieldDefinition" value="f914e1f4-03bb-48f1-998a-01566642a081" />
+        <field name="Unique" type="IntegerStatObjectFieldDefinition" value="1" />
+        <field name="MinLevel" type="IntegerStatObjectFieldDefinition" value="1" />
+        <field name="MaxLevel" type="IntegerStatObjectFieldDefinition" value="30" />
+      </fields>
+    </stat_object>
+    <stat_object is_substat="false">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="QUEST_RC_MIL_RoostsHand" />
+        <field name="Using" type="BaseClassStatObjectFieldDefinition" value="CON_BodyPart_Dummy" />
+        <field name="RootTemplate" type="RootTemplateStatObjectFieldDefinition" value="475cbe07-1c54-4d9c-88d5-af6cd761e786" />
+        <field name="Unique" type="IntegerStatObjectFieldDefinition" value="1" />
+        <field name="MinLevel" type="IntegerStatObjectFieldDefinition" value="1" />
+        <field name="MaxLevel" type="IntegerStatObjectFieldDefinition" value="30" />
+      </fields>
+    </stat_object>
+    <stat_object is_substat="false">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="STORY_PartyRest" />
+        <field name="Using" type="BaseClassStatObjectFieldDefinition" value="_Story" />
+        <field name="VitalityPercentage" type="IntegerStatObjectFieldDefinition" value="75" />
+        <field name="Duration" type="IntegerStatObjectFieldDefinition" value="0" />
+        <field name="ExtraProperties" type="StringStatObjectFieldDefinition" value="RESTED,100,3;RESTING,100,6" />
+      </fields>
+    </stat_object>
+    <stat_object is_substat="false">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="RC_FTJ_ScavengerSeeds" />
+        <field name="Using" type="BaseClassStatObjectFieldDefinition" value="_Story" />
+        <field name="RootTemplate" type="RootTemplateStatObjectFieldDefinition" value="728757c5-4968-43fd-b10f-387d02dc8a7d" />
+        <field name="Act" type="EnumerationStatObjectFieldDefinition" value="0" enumeration_type_name="Act" />
+        <field name="Act part" type="EnumerationStatObjectFieldDefinition" value="2" enumeration_type_name="ActPart" />
+        <field name="Strength" type="EnumerationStatObjectFieldDefinition" value="111" enumeration_type_name="Penalty PreciseQualifier" />
+        <field name="Finesse" type="EnumerationStatObjectFieldDefinition" value="111" enumeration_type_name="Penalty PreciseQualifier" />
+        <field name="Intelligence" type="EnumerationStatObjectFieldDefinition" value="111" enumeration_type_name="Penalty PreciseQualifier" />
+        <field name="VitalityPercentage" type="IntegerStatObjectFieldDefinition" value="100" />
+        <field name="Duration" type="IntegerStatObjectFieldDefinition" value="3" />
+        <field name="InventoryTab" type="EnumerationStatObjectFieldDefinition" value="4" enumeration_type_name="InventoryTabs" />
+        <field name="UnknownBeforeConsume" type="EnumerationStatObjectFieldDefinition" value="1" enumeration_type_name="YesNo" />
+      </fields>
+    </stat_object>
+    <stat_object is_substat="false">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="STATUS_HOE" />
+        <field name="Using" type="BaseClassStatObjectFieldDefinition" value="_Story" />
+        <field name="Act" type="EnumerationStatObjectFieldDefinition" value="0" enumeration_type_name="Act" />
+        <field name="Act part" type="EnumerationStatObjectFieldDefinition" value="1" enumeration_type_name="ActPart" />
+        <field name="Flags" type="EnumerationListStatObjectFieldDefinition" value="33" enumeration_type_name="AttributeFlags" />
+      </fields>
+    </stat_object>
+    <stat_object is_substat="false">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="_SkillBoost" />
+      </fields>
+    </stat_object>
+    <stat_object is_substat="false">
+      <fields>
+        <field name="Name" type="NameStatObjectFieldDefinition" value="_Totem" />
+        <field name="Act" type="EnumerationStatObjectFieldDefinition" value="0" enumeration_type_name="Act" />
+        <field name="Act part" type="EnumerationStatObjectFieldDefinition" value="1" enumeration_type_name="ActPart" />
+      </fields>
+    </stat_object>
+  </stat_objects>
+</stats>

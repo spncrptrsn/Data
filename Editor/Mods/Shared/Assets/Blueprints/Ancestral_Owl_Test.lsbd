@@ -1,0 +1,738 @@
+{
+   "save" : {
+      "header" : {
+         "time" : 1501513717,
+         "version" : "3.1.2.19"
+      },
+      "regions" : {
+         "GenomeDebug" : {
+            "BuildID" : {"type" : 31, "value" : "1363fddc-c7ee-3f74-b413-f18aa6934bd6"},
+            "ID" : {"type" : 31, "value" : "00000000-0000-0000-0000-000000000000"},
+            "Name" : {"type" : 23, "value" : ""},
+            "Path" : {"type" : 21, "value" : ""},
+            "Sequences" : [
+               {
+                  "ID" : {"type" : 31, "value" : "b8b8e176-0bea-411f-8a5e-aebbbd2b9603"},
+                  "Index" : {"type" : 4, "value" : 0},
+                  "Links" : [
+                     {
+                        "FromNode" : {"type" : 31, "value" : "ea0d2f60-b0bf-4892-ae4b-6a4b0f3d3773"},
+                        "FromSocket" : {"type" : 31, "value" : "1f278b04-1a2c-427f-b0b9-5d1237c1d73c"},
+                        "ID" : {"type" : 31, "value" : "bc35c7bf-a2e3-4c09-9273-ad21c606e56d"},
+                        "ToNode" : {"type" : 31, "value" : "9097582c-a451-4988-aadc-a616337ac734"},
+                        "ToSocket" : {"type" : 31, "value" : "e034812b-b09c-4cc2-beec-48d45f89cd1e"},
+                        "Type" : {"type" : 22, "value" : "Link"}
+                     }
+                  ],
+                  "Nodes" : [
+                     {
+                        "ID" : {"type" : 31, "value" : "9097582c-a451-4988-aadc-a616337ac734"},
+                        "Index" : {"type" : 4, "value" : -1},
+                        "InputSocketIndexer" : [
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 0}
+                           }
+                        ],
+                        "InputSockets" : [
+                           {
+                              "ID" : {"type" : 31, "value" : "e034812b-b09c-4cc2-beec-48d45f89cd1e"},
+                              "Index" : {"type" : 4, "value" : 2048},
+                              "Type" : {"type" : 22, "value" : "DataSocket"}
+                           }
+                        ],
+                        "Name" : {"type" : 23, "value" : "Final Animation Pose"},
+                        "Type" : {"type" : 22, "value" : "GrannyNode_FinalPose"}
+                     },
+                     {
+                        "ID" : {"type" : 31, "value" : "ea0d2f60-b0bf-4892-ae4b-6a4b0f3d3773"},
+                        "Index" : {"type" : 4, "value" : 0},
+                        "InputSocketIndexer" : [
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 0}
+                           }
+                        ],
+                        "Name" : {"type" : 23, "value" : "New State Machine_0"},
+                        "OutputSockets" : [
+                           {
+                              "ID" : {"type" : 31, "value" : "1f278b04-1a2c-427f-b0b9-5d1237c1d73c"},
+                              "Index" : {"type" : 4, "value" : -1},
+                              "Type" : {"type" : 22, "value" : "DataSocket"}
+                           }
+                        ],
+                        "Type" : {"type" : 22, "value" : "GrannyNode_StateMachine"}
+                     }
+                  ],
+                  "Type" : {"type" : 22, "value" : "Function"}
+               },
+               {
+                  "ID" : {"type" : 31, "value" : "21e682f8-c35b-4fb5-95bf-a33d96af9475"},
+                  "Index" : {"type" : 4, "value" : 1},
+                  "Links" : [
+                     {
+                        "FromNode" : {"type" : 31, "value" : "6d7d29f8-34b8-408e-974c-e30f9e233344"},
+                        "FromSocket" : {"type" : 31, "value" : "4341c429-d8b6-4f3c-b760-472bc066e495"},
+                        "ID" : {"type" : 31, "value" : "5199ae4c-7aa7-4f23-9b5e-5698087b208b"},
+                        "ToNode" : {"type" : 31, "value" : "a237f9e5-8248-4590-bdb4-cccc0fa66f80"},
+                        "ToSocket" : {"type" : 31, "value" : "d53d8dbe-da72-4553-bcf2-18bf01eed6e8"},
+                        "Type" : {"type" : 22, "value" : "StateLink"}
+                     },
+                     {
+                        "FromNode" : {"type" : 31, "value" : "a237f9e5-8248-4590-bdb4-cccc0fa66f80"},
+                        "FromSocket" : {"type" : 31, "value" : "d53d8dbe-da72-4553-bcf2-18bf01eed6e8"},
+                        "ID" : {"type" : 31, "value" : "a415d12f-ce9d-4601-b87b-0a724f105fee"},
+                        "ToNode" : {"type" : 31, "value" : "ced24ee7-4d04-4578-910b-cc917e4d7bdd"},
+                        "ToSocket" : {"type" : 31, "value" : "63068a4b-0870-4315-a95c-b8750245e27e"},
+                        "Type" : {"type" : 22, "value" : "StateLink"}
+                     },
+                     {
+                        "FromNode" : {"type" : 31, "value" : "ced24ee7-4d04-4578-910b-cc917e4d7bdd"},
+                        "FromSocket" : {"type" : 31, "value" : "63068a4b-0870-4315-a95c-b8750245e27e"},
+                        "ID" : {"type" : 31, "value" : "d34d307d-a594-44f4-b0d2-56c1080c2f9e"},
+                        "ToNode" : {"type" : 31, "value" : "a237f9e5-8248-4590-bdb4-cccc0fa66f80"},
+                        "ToSocket" : {"type" : 31, "value" : "d53d8dbe-da72-4553-bcf2-18bf01eed6e8"},
+                        "Type" : {"type" : 22, "value" : "StateLink"}
+                     }
+                  ],
+                  "Nodes" : [
+                     {
+                        "ID" : {"type" : 31, "value" : "6d7d29f8-34b8-408e-974c-e30f9e233344"},
+                        "Index" : {"type" : 4, "value" : -1},
+                        "InputSocketIndexer" : [
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 0}
+                           }
+                        ],
+                        "Name" : {"type" : 23, "value" : "Entry"},
+                        "OutputSockets" : [
+                           {
+                              "ID" : {"type" : 31, "value" : "4341c429-d8b6-4f3c-b760-472bc066e495"},
+                              "Index" : {"type" : 4, "value" : -1},
+                              "Type" : {"type" : 22, "value" : "FlowSocket"}
+                           }
+                        ],
+                        "Type" : {"type" : 22, "value" : "GenomeNodeType_StateEntry"}
+                     },
+                     {
+                        "ID" : {"type" : 31, "value" : "a237f9e5-8248-4590-bdb4-cccc0fa66f80"},
+                        "Index" : {"type" : 4, "value" : 1},
+                        "InputSocketIndexer" : [
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 0}
+                           },
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 0}
+                           }
+                        ],
+                        "InputSockets" : [
+                           {
+                              "ID" : {"type" : 31, "value" : "d53d8dbe-da72-4553-bcf2-18bf01eed6e8"},
+                              "Index" : {"type" : 4, "value" : -1},
+                              "Type" : {"type" : 22, "value" : "Socket"}
+                           }
+                        ],
+                        "Name" : {"type" : 23, "value" : "State_0"},
+                        "OutputSockets" : [
+                           {
+                              "ID" : {"type" : 31, "value" : "d53d8dbe-da72-4553-bcf2-18bf01eed6e8"},
+                              "Index" : {"type" : 4, "value" : -1},
+                              "Type" : {"type" : 22, "value" : "Socket"}
+                           }
+                        ],
+                        "Type" : {"type" : 22, "value" : "GrannyNode_State"}
+                     },
+                     {
+                        "ID" : {"type" : 31, "value" : "ced24ee7-4d04-4578-910b-cc917e4d7bdd"},
+                        "Index" : {"type" : 4, "value" : 3},
+                        "InputSocketIndexer" : [
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 0}
+                           },
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 0}
+                           }
+                        ],
+                        "InputSockets" : [
+                           {
+                              "ID" : {"type" : 31, "value" : "63068a4b-0870-4315-a95c-b8750245e27e"},
+                              "Index" : {"type" : 4, "value" : -1},
+                              "Type" : {"type" : 22, "value" : "Socket"}
+                           }
+                        ],
+                        "Name" : {"type" : 23, "value" : "State_1"},
+                        "OutputSockets" : [
+                           {
+                              "ID" : {"type" : 31, "value" : "63068a4b-0870-4315-a95c-b8750245e27e"},
+                              "Index" : {"type" : 4, "value" : -1},
+                              "Type" : {"type" : 22, "value" : "Socket"}
+                           }
+                        ],
+                        "Type" : {"type" : 22, "value" : "GrannyNode_State"}
+                     },
+                     {
+                        "ID" : {"type" : 31, "value" : "c4023f01-d6fb-65ef-d779-ee7f46d6875a"},
+                        "Index" : {"type" : 4, "value" : 5},
+                        "Name" : {"type" : 23, "value" : ""},
+                        "Type" : {"type" : 22, "value" : "GrannyNode_DefaultMerge"}
+                     }
+                  ],
+                  "Type" : {"type" : 22, "value" : "StateMachine"}
+               },
+               {
+                  "ID" : {"type" : 31, "value" : "be73dbc7-f003-48b8-b490-71cf9dd162b5"},
+                  "Index" : {"type" : 4, "value" : 2},
+                  "Links" : [
+                     {
+                        "FromNode" : {"type" : 31, "value" : "23f59bc8-366c-4804-aa6b-7041f92fc21e"},
+                        "FromSocket" : {"type" : 31, "value" : "e5fddba2-3816-4e2e-a91a-30ed4a7b4ece"},
+                        "ID" : {"type" : 31, "value" : "591c8994-5c74-4253-afb3-4841508ccafd"},
+                        "ToNode" : {"type" : 31, "value" : "4c869431-eb07-46b9-9a0e-f58ae24814a3"},
+                        "ToSocket" : {"type" : 31, "value" : "ee08b604-72de-4fe3-9e4e-73ca8a6efa49"},
+                        "Type" : {"type" : 22, "value" : "Link"}
+                     }
+                  ],
+                  "Nodes" : [
+                     {
+                        "ID" : {"type" : 31, "value" : "4c869431-eb07-46b9-9a0e-f58ae24814a3"},
+                        "Index" : {"type" : 4, "value" : -1},
+                        "InputSocketIndexer" : [
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 0}
+                           }
+                        ],
+                        "InputSockets" : [
+                           {
+                              "ID" : {"type" : 31, "value" : "ee08b604-72de-4fe3-9e4e-73ca8a6efa49"},
+                              "Index" : {"type" : 4, "value" : 0},
+                              "Type" : {"type" : 22, "value" : "DataSocket"}
+                           }
+                        ],
+                        "Name" : {"type" : 23, "value" : "BooleanResultNode"},
+                        "Type" : {"type" : 22, "value" : "GenomeNodeType_FunctionEntryReturn"}
+                     },
+                     {
+                        "ID" : {"type" : 31, "value" : "23f59bc8-366c-4804-aa6b-7041f92fc21e"},
+                        "Index" : {"type" : 4, "value" : -1},
+                        "InputSocketIndexer" : [
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 0}
+                           }
+                        ],
+                        "Name" : {"type" : 23, "value" : "Start_ End"},
+                        "OutputSockets" : [
+                           {
+                              "ID" : {"type" : 31, "value" : "e5fddba2-3816-4e2e-a91a-30ed4a7b4ece"},
+                              "Index" : {"type" : 4, "value" : -1},
+                              "Type" : {"type" : 22, "value" : "DataSocket"}
+                           }
+                        ],
+                        "Type" : {"type" : 22, "value" : "GenomeNodeType_GetVariable"}
+                     }
+                  ],
+                  "Type" : {"type" : 22, "value" : "Function"}
+               },
+               {
+                  "ID" : {"type" : 31, "value" : "21ea6924-5762-4ff1-888d-b82f3e2a39af"},
+                  "Index" : {"type" : 4, "value" : 3},
+                  "Links" : [
+                     {
+                        "FromNode" : {"type" : 31, "value" : "9cee1bb3-bfaa-4002-b42f-d619648fe4e3"},
+                        "FromSocket" : {"type" : 31, "value" : "fec3cec5-b447-4769-a35b-a60037db5af4"},
+                        "ID" : {"type" : 31, "value" : "58f2060c-2b2f-45de-85d4-779b6502849b"},
+                        "ToNode" : {"type" : 31, "value" : "1012c616-89a2-4ce3-bf10-cde6c361dad5"},
+                        "ToSocket" : {"type" : 31, "value" : "55baec2a-9a39-4fd7-96e1-d64e52cbc68d"},
+                        "Type" : {"type" : 22, "value" : "Link"}
+                     }
+                  ],
+                  "Nodes" : [
+                     {
+                        "ID" : {"type" : 31, "value" : "1012c616-89a2-4ce3-bf10-cde6c361dad5"},
+                        "Index" : {"type" : 4, "value" : -1},
+                        "InputSocketIndexer" : [
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 0}
+                           }
+                        ],
+                        "InputSockets" : [
+                           {
+                              "ID" : {"type" : 31, "value" : "55baec2a-9a39-4fd7-96e1-d64e52cbc68d"},
+                              "Index" : {"type" : 4, "value" : 1},
+                              "Type" : {"type" : 22, "value" : "DataSocket"}
+                           }
+                        ],
+                        "Name" : {"type" : 23, "value" : "BooleanResultNode"},
+                        "Type" : {"type" : 22, "value" : "GenomeNodeType_FunctionEntryReturn"}
+                     },
+                     {
+                        "ID" : {"type" : 31, "value" : "9cee1bb3-bfaa-4002-b42f-d619648fe4e3"},
+                        "Index" : {"type" : 4, "value" : -1},
+                        "InputSocketIndexer" : [
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 0}
+                           }
+                        ],
+                        "Name" : {"type" : 23, "value" : "R Eset"},
+                        "OutputSockets" : [
+                           {
+                              "ID" : {"type" : 31, "value" : "fec3cec5-b447-4769-a35b-a60037db5af4"},
+                              "Index" : {"type" : 4, "value" : -1},
+                              "Type" : {"type" : 22, "value" : "DataSocket"}
+                           }
+                        ],
+                        "Type" : {"type" : 22, "value" : "GenomeNodeType_GetVariable"}
+                     }
+                  ],
+                  "Type" : {"type" : 22, "value" : "Function"}
+               },
+               {
+                  "ID" : {"type" : 31, "value" : "6388d0e6-a32d-4562-8f62-169e3208b165"},
+                  "Index" : {"type" : 4, "value" : 4},
+                  "Links" : [
+                     {
+                        "FromNode" : {"type" : 31, "value" : "9df8344b-cea9-4e4d-8356-1d2c0176efad"},
+                        "FromSocket" : {"type" : 31, "value" : "ea09bc38-0bea-4a99-bca3-bd8dcc4e5d0c"},
+                        "ID" : {"type" : 31, "value" : "e4a4e611-314e-4508-af7c-1b428e6c5352"},
+                        "ToNode" : {"type" : 31, "value" : "9d567f45-012f-44fa-be90-fa569c8c13ab"},
+                        "ToSocket" : {"type" : 31, "value" : "d95f8984-d5e6-4b9e-8140-272d2badf655"},
+                        "Type" : {"type" : 22, "value" : "Link"}
+                     }
+                  ],
+                  "Nodes" : [
+                     {
+                        "ID" : {"type" : 31, "value" : "9d567f45-012f-44fa-be90-fa569c8c13ab"},
+                        "Index" : {"type" : 4, "value" : -1},
+                        "InputSocketIndexer" : [
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 0}
+                           }
+                        ],
+                        "InputSockets" : [
+                           {
+                              "ID" : {"type" : 31, "value" : "d95f8984-d5e6-4b9e-8140-272d2badf655"},
+                              "Index" : {"type" : 4, "value" : 2043},
+                              "Type" : {"type" : 22, "value" : "DataSocket"}
+                           }
+                        ],
+                        "Name" : {"type" : 23, "value" : "Final Animation Pose"},
+                        "Type" : {"type" : 22, "value" : "GrannyNode_FinalPose"}
+                     },
+                     {
+                        "ID" : {"type" : 31, "value" : "9df8344b-cea9-4e4d-8356-1d2c0176efad"},
+                        "Index" : {"type" : 4, "value" : 2},
+                        "InputSocketIndexer" : [
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 0}
+                           },
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 1}
+                           },
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 2}
+                           },
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 3}
+                           },
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 0}
+                           }
+                        ],
+                        "InputSockets" : [
+                           {
+                              "ID" : {"type" : 31, "value" : "52fa882a-525f-43a1-91fa-4a95833e592f"},
+                              "Index" : {"type" : 4, "value" : 2039},
+                              "Type" : {"type" : 22, "value" : "DataSocket"}
+                           },
+                           {
+                              "ID" : {"type" : 31, "value" : "362498f6-2e82-4900-a214-f12b5e6559a6"},
+                              "Index" : {"type" : 4, "value" : 2040},
+                              "Type" : {"type" : 22, "value" : "DataSocket"}
+                           },
+                           {
+                              "ID" : {"type" : 31, "value" : "0c77d857-9cee-4ef7-acd3-e84ddc83a02b"},
+                              "Index" : {"type" : 4, "value" : 2041},
+                              "Type" : {"type" : 22, "value" : "DataSocket"}
+                           },
+                           {
+                              "ID" : {"type" : 31, "value" : "0b5bdcb4-3290-4f74-8fa8-3804402a5e69"},
+                              "Index" : {"type" : 4, "value" : 2042},
+                              "Type" : {"type" : 22, "value" : "DataSocket"}
+                           }
+                        ],
+                        "Name" : {"type" : 23, "value" : "Play skill_prepare_01_start"},
+                        "OutputSockets" : [
+                           {
+                              "ID" : {"type" : 31, "value" : "ea09bc38-0bea-4a99-bca3-bd8dcc4e5d0c"},
+                              "Index" : {"type" : 4, "value" : 2039},
+                              "Type" : {"type" : 22, "value" : "DataSocket"}
+                           }
+                        ],
+                        "Type" : {"type" : 22, "value" : "GrannyNode_PlayAnimation"}
+                     }
+                  ],
+                  "Type" : {"type" : 22, "value" : "Function"}
+               },
+               {
+                  "ID" : {"type" : 31, "value" : "670c62c2-06c6-402d-828f-966d534eb551"},
+                  "Index" : {"type" : 4, "value" : 5},
+                  "Links" : [
+                     {
+                        "FromNode" : {"type" : 31, "value" : "3675d540-9f9a-479b-a75f-63ad89aef547"},
+                        "FromSocket" : {"type" : 31, "value" : "66fc7c8b-6bb4-4a4e-a44d-075bfbf76892"},
+                        "ID" : {"type" : 31, "value" : "c41b8843-db1a-487c-87a9-c489a54605b8"},
+                        "ToNode" : {"type" : 31, "value" : "b33b51ff-09b3-4558-9768-8dc659c2fdb1"},
+                        "ToSocket" : {"type" : 31, "value" : "7b55b365-dc4c-4af7-ac36-c308d4f2a913"},
+                        "Type" : {"type" : 22, "value" : "Link"}
+                     }
+                  ],
+                  "Nodes" : [
+                     {
+                        "ID" : {"type" : 31, "value" : "b33b51ff-09b3-4558-9768-8dc659c2fdb1"},
+                        "Index" : {"type" : 4, "value" : -1},
+                        "InputSocketIndexer" : [
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 0}
+                           }
+                        ],
+                        "InputSockets" : [
+                           {
+                              "ID" : {"type" : 31, "value" : "7b55b365-dc4c-4af7-ac36-c308d4f2a913"},
+                              "Index" : {"type" : 4, "value" : 2046},
+                              "Type" : {"type" : 22, "value" : "DataSocket"}
+                           }
+                        ],
+                        "Name" : {"type" : 23, "value" : "Final Animation Pose"},
+                        "Type" : {"type" : 22, "value" : "GrannyNode_FinalPose"}
+                     },
+                     {
+                        "ID" : {"type" : 31, "value" : "3675d540-9f9a-479b-a75f-63ad89aef547"},
+                        "Index" : {"type" : 4, "value" : 4},
+                        "InputSocketIndexer" : [
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 0}
+                           },
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 1}
+                           },
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 2}
+                           },
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 3}
+                           },
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 0}
+                           }
+                        ],
+                        "InputSockets" : [
+                           {
+                              "ID" : {"type" : 31, "value" : "fb451331-87f2-4a32-8207-241dca27a727"},
+                              "Index" : {"type" : 4, "value" : 2044},
+                              "Type" : {"type" : 22, "value" : "DataSocket"}
+                           },
+                           {
+                              "ID" : {"type" : 31, "value" : "25a3500a-6bfa-477c-a105-2efdcfe75a87"},
+                              "Index" : {"type" : 4, "value" : 2045},
+                              "Type" : {"type" : 22, "value" : "DataSocket"}
+                           },
+                           {
+                              "ID" : {"type" : 31, "value" : "ebf31266-81ee-4548-9b1b-0aa16de60ddf"},
+                              "Index" : {"type" : 4, "value" : 2041},
+                              "Type" : {"type" : 22, "value" : "DataSocket"}
+                           },
+                           {
+                              "ID" : {"type" : 31, "value" : "fe64cae0-a99d-462c-b4d0-f62f76e4a150"},
+                              "Index" : {"type" : 4, "value" : 2042},
+                              "Type" : {"type" : 22, "value" : "DataSocket"}
+                           }
+                        ],
+                        "Name" : {"type" : 23, "value" : "Play skill_prepare_01_loop"},
+                        "OutputSockets" : [
+                           {
+                              "ID" : {"type" : 31, "value" : "66fc7c8b-6bb4-4a4e-a44d-075bfbf76892"},
+                              "Index" : {"type" : 4, "value" : 2044},
+                              "Type" : {"type" : 22, "value" : "DataSocket"}
+                           }
+                        ],
+                        "Type" : {"type" : 22, "value" : "GrannyNode_PlayAnimation"}
+                     }
+                  ],
+                  "Type" : {"type" : 22, "value" : "Function"}
+               },
+               {
+                  "ID" : {"type" : 31, "value" : "9f1868eb-71ae-4080-be2a-e0241e02e430"},
+                  "Index" : {"type" : 4, "value" : 6},
+                  "Links" : [
+                     {
+                        "FromNode" : {"type" : 31, "value" : "dc611792-797d-475f-9d2e-8f85a42cfc52"},
+                        "FromSocket" : {"type" : 31, "value" : "d56a409d-a0ee-4655-818e-a8c6d18340bf"},
+                        "ID" : {"type" : 31, "value" : "b5df4fec-7faf-4708-a11f-42b91bee0ff7"},
+                        "ToNode" : {"type" : 31, "value" : "818a6d96-4784-458a-89f8-2b9331943be9"},
+                        "ToSocket" : {"type" : 31, "value" : "d58a4672-7fdc-4a58-94af-99e9cdcfeb39"},
+                        "Type" : {"type" : 22, "value" : "Link"}
+                     },
+                     {
+                        "FromNode" : {"type" : 31, "value" : "4812c24b-b91a-4ecf-986a-99801716f6d5"},
+                        "FromSocket" : {"type" : 31, "value" : "aca0126e-eb16-4c37-a3ee-d29d63b6a760"},
+                        "ID" : {"type" : 31, "value" : "f001e0ca-5cf9-4647-bc21-383f3427fbde"},
+                        "ToNode" : {"type" : 31, "value" : "bff37ded-74f0-4b1d-87d3-4f438c115331"},
+                        "ToSocket" : {"type" : 31, "value" : "77f465b3-c66d-45f0-861e-86a054333b1a"},
+                        "Type" : {"type" : 22, "value" : "Link"}
+                     },
+                     {
+                        "FromNode" : {"type" : 31, "value" : "574c07f1-6c72-4dbe-b77f-6cacd3512265"},
+                        "FromSocket" : {"type" : 31, "value" : "d9a33a99-7bfb-4b15-b467-8695af4a3cbb"},
+                        "ID" : {"type" : 31, "value" : "543cf587-4a58-4d8a-83f5-4c659d978ea5"},
+                        "ToNode" : {"type" : 31, "value" : "bff37ded-74f0-4b1d-87d3-4f438c115331"},
+                        "ToSocket" : {"type" : 31, "value" : "56651b65-6e5f-46c4-89ec-2946b0ea0839"},
+                        "Type" : {"type" : 22, "value" : "Link"}
+                     },
+                     {
+                        "FromNode" : {"type" : 31, "value" : "bff37ded-74f0-4b1d-87d3-4f438c115331"},
+                        "FromSocket" : {"type" : 31, "value" : "4e6f7b10-f3f3-49d0-9707-e2b650044ff5"},
+                        "ID" : {"type" : 31, "value" : "9bc4561c-86ba-4c04-837b-f0376996c477"},
+                        "ToNode" : {"type" : 31, "value" : "d6621d9b-a917-442c-8ac2-b491744d6612"},
+                        "ToSocket" : {"type" : 31, "value" : "a04efcb8-1734-47c7-9b35-a8116d5a5961"},
+                        "Type" : {"type" : 22, "value" : "Link"}
+                     }
+                  ],
+                  "Nodes" : [
+                     {
+                        "ID" : {"type" : 31, "value" : "dc611792-797d-475f-9d2e-8f85a42cfc52"},
+                        "Index" : {"type" : 4, "value" : -1},
+                        "InputSocketIndexer" : [
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 0}
+                           }
+                        ],
+                        "Name" : {"type" : 23, "value" : "Text Event"},
+                        "OutputSockets" : [
+                           {
+                              "ID" : {"type" : 31, "value" : "d56a409d-a0ee-4655-818e-a8c6d18340bf"},
+                              "Index" : {"type" : 4, "value" : -1},
+                              "Type" : {"type" : 22, "value" : "FlowSocket"}
+                           }
+                        ],
+                        "Type" : {"type" : 22, "value" : "GenomeNodeType_TextEventNode"}
+                     },
+                     {
+                        "ID" : {"type" : 31, "value" : "818a6d96-4784-458a-89f8-2b9331943be9"},
+                        "Index" : {"type" : 4, "value" : 6},
+                        "InputSocketIndexer" : [
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 0}
+                           },
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 1}
+                           },
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 0}
+                           },
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 1}
+                           }
+                        ],
+                        "InputSockets" : [
+                           {
+                              "ID" : {"type" : 31, "value" : "d58a4672-7fdc-4a58-94af-99e9cdcfeb39"},
+                              "Index" : {"type" : 4, "value" : -1},
+                              "Type" : {"type" : 22, "value" : "FlowSocket"}
+                           },
+                           {
+                              "ID" : {"type" : 31, "value" : "a01367dd-366a-4673-a965-a4ca9d2c3766"},
+                              "Index" : {"type" : 4, "value" : 2045},
+                              "Type" : {"type" : 22, "value" : "DataSocket"}
+                           }
+                        ],
+                        "Name" : {"type" : 23, "value" : "SET"},
+                        "OutputSockets" : [
+                           {
+                              "ID" : {"type" : 31, "value" : "49bd0dfb-d69a-4012-afa4-e67b9fff08bf"},
+                              "Index" : {"type" : 4, "value" : -1},
+                              "Type" : {"type" : 22, "value" : "FlowSocket"}
+                           },
+                           {
+                              "ID" : {"type" : 31, "value" : "27fa4a18-a0c7-4a30-83a6-f999e04e4469"},
+                              "Index" : {"type" : 4, "value" : 2045},
+                              "Type" : {"type" : 22, "value" : "DataSocket"}
+                           }
+                        ],
+                        "Type" : {"type" : 22, "value" : "GenomeNodeType_SetVariable"}
+                     },
+                     {
+                        "ID" : {"type" : 31, "value" : "4812c24b-b91a-4ecf-986a-99801716f6d5"},
+                        "Index" : {"type" : 4, "value" : 7},
+                        "InputSocketIndexer" : [
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 0}
+                           },
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 1}
+                           }
+                        ],
+                        "Name" : {"type" : 23, "value" : "Update Event"},
+                        "OutputSockets" : [
+                           {
+                              "ID" : {"type" : 31, "value" : "fcc70cc3-49d8-4543-a7a4-14580ecce413"},
+                              "Index" : {"type" : 4, "value" : -1},
+                              "Type" : {"type" : 22, "value" : "DataSocket"}
+                           },
+                           {
+                              "ID" : {"type" : 31, "value" : "aca0126e-eb16-4c37-a3ee-d29d63b6a760"},
+                              "Index" : {"type" : 4, "value" : -1},
+                              "Type" : {"type" : 22, "value" : "FlowSocket"}
+                           }
+                        ],
+                        "Type" : {"type" : 22, "value" : "GenomeNodeType_UpdateEventNode"}
+                     },
+                     {
+                        "ID" : {"type" : 31, "value" : "bff37ded-74f0-4b1d-87d3-4f438c115331"},
+                        "Index" : {"type" : 4, "value" : -1},
+                        "InputSocketIndexer" : [
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 0}
+                           },
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 1}
+                           },
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 0}
+                           },
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 1}
+                           }
+                        ],
+                        "InputSockets" : [
+                           {
+                              "ID" : {"type" : 31, "value" : "77f465b3-c66d-45f0-861e-86a054333b1a"},
+                              "Index" : {"type" : 4, "value" : -1},
+                              "Type" : {"type" : 22, "value" : "FlowSocket"}
+                           },
+                           {
+                              "ID" : {"type" : 31, "value" : "56651b65-6e5f-46c4-89ec-2946b0ea0839"},
+                              "Index" : {"type" : 4, "value" : 1},
+                              "Type" : {"type" : 22, "value" : "DataSocket"}
+                           }
+                        ],
+                        "Name" : {"type" : 23, "value" : "Branch"},
+                        "OutputSockets" : [
+                           {
+                              "ID" : {"type" : 31, "value" : "4e6f7b10-f3f3-49d0-9707-e2b650044ff5"},
+                              "Index" : {"type" : 4, "value" : -1},
+                              "Type" : {"type" : 22, "value" : "FlowSocket"}
+                           },
+                           {
+                              "ID" : {"type" : 31, "value" : "37c50fc1-a3cd-450f-9d4c-5560d0224f5b"},
+                              "Index" : {"type" : 4, "value" : 1},
+                              "Type" : {"type" : 22, "value" : "FlowSocket"}
+                           }
+                        ],
+                        "Type" : {"type" : 22, "value" : "GenomeNodeType_If"}
+                     },
+                     {
+                        "ID" : {"type" : 31, "value" : "574c07f1-6c72-4dbe-b77f-6cacd3512265"},
+                        "Index" : {"type" : 4, "value" : -1},
+                        "InputSocketIndexer" : [
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 0}
+                           }
+                        ],
+                        "Name" : {"type" : 23, "value" : "R Eset"},
+                        "OutputSockets" : [
+                           {
+                              "ID" : {"type" : 31, "value" : "d9a33a99-7bfb-4b15-b467-8695af4a3cbb"},
+                              "Index" : {"type" : 4, "value" : -1},
+                              "Type" : {"type" : 22, "value" : "DataSocket"}
+                           }
+                        ],
+                        "Type" : {"type" : 22, "value" : "GenomeNodeType_GetVariable"}
+                     },
+                     {
+                        "ID" : {"type" : 31, "value" : "d6621d9b-a917-442c-8ac2-b491744d6612"},
+                        "Index" : {"type" : 4, "value" : 8},
+                        "InputSocketIndexer" : [
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 0}
+                           },
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 1}
+                           },
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 0}
+                           },
+                           {
+                              "Count" : {"type" : 5, "value" : 1},
+                              "Index" : {"type" : 5, "value" : 1}
+                           }
+                        ],
+                        "InputSockets" : [
+                           {
+                              "ID" : {"type" : 31, "value" : "a04efcb8-1734-47c7-9b35-a8116d5a5961"},
+                              "Index" : {"type" : 4, "value" : -1},
+                              "Type" : {"type" : 22, "value" : "FlowSocket"}
+                           },
+                           {
+                              "ID" : {"type" : 31, "value" : "83117076-1d51-488f-b550-cf042489bf0d"},
+                              "Index" : {"type" : 4, "value" : 2040},
+                              "Type" : {"type" : 22, "value" : "DataSocket"}
+                           }
+                        ],
+                        "Name" : {"type" : 23, "value" : "SET"},
+                        "OutputSockets" : [
+                           {
+                              "ID" : {"type" : 31, "value" : "0a0d3a51-8507-44b5-9758-0a8214578af8"},
+                              "Index" : {"type" : 4, "value" : -1},
+                              "Type" : {"type" : 22, "value" : "FlowSocket"}
+                           },
+                           {
+                              "ID" : {"type" : 31, "value" : "ef4dcf1a-794c-4e14-b374-c3db0af04773"},
+                              "Index" : {"type" : 4, "value" : 2040},
+                              "Type" : {"type" : 22, "value" : "DataSocket"}
+                           }
+                        ],
+                        "Type" : {"type" : 22, "value" : "GenomeNodeType_SetVariable"}
+                     }
+                  ],
+                  "Type" : {"type" : 22, "value" : "Function"}
+               }
+            ]
+         }
+      }
+   }
+}

@@ -1,0 +1,413 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+//REGION Public Procs
+
+// PROC_GLO_LVNPCsLeaving_NPCLeaveForMainland((STRING)_Level,(CHARACTERGUID)_NPC)
+//  - Make an NPC in level _Level leave for the mainland he they're still on the LV based on the DB definitions
+//    as explained in the DB region below
+//END_REGION
+
+//REGION Public DBs
+
+// Elements:
+//  - Level name
+//  - Box trigger containing the LV deck(s) on which the exit to land is, and on which the NPCs are located
+//  - Point trigger where the small boat to the mainland is located (or item)
+//  - Point trigger on the main land where the small boat lands
+//  - Base angle for DisappearOutOfSight after arriving on the beach
+DB_GLO_LVNPCsLeaving_LVTriggers("",(TRIGGERGUID)NULL_00000000-0000-0000-0000-000000000000,NULL_00000000-0000-0000-0000-000000000000,(TRIGGERGUID)NULL_00000000-0000-0000-0000-000000000000,0);
+
+// Elements:
+//  - Level name
+//  - UUID of an NPC that should leave the LV at some point
+DB_GLO_LVNPCsLeaving_NPC("",(CHARACTERGUID)NULL_00000000-0000-0000-0000-000000000000);
+
+// Elements:
+//  - Level name
+//  - NPC that should leave the LV at some point
+//  - Trigger around quest location which, when a player enters it, makes the NPC leave calmly (proximity) or immediately (emergency)
+//  - ID that you can use to differentiate multiple situations for the same NPC (e.g. Gareth leaving for Jonathan or farmlands)
+//  - Priority. Entering a higher priority trigger removes all lower priority triggers (assumes those situations are cancelled in that case)
+//
+// Declare in the order the player normally visits the locations (needed for PROC_GLO_LVNPCsLeaving_LeaveForMainland, so the NPC
+// leaves to the correct default location if all players leave the LV before entering one of these triggers.
+DB_GLO_LVNPCsLeaving_NPC_ProximityTrigger("",(CHARACTERGUID)NULL_00000000-0000-0000-0000-000000000000,(TRIGGERGUID)NULL_00000000-0000-0000-0000-000000000000,"",0);
+DB_GLO_LVNPCsLeaving_NPC_EmergencyTrigger("",(CHARACTERGUID)NULL_00000000-0000-0000-0000-000000000000,(TRIGGERGUID)NULL_00000000-0000-0000-0000-000000000000,"",0);
+//END_REGION
+
+
+//Lady Vengeance Dialogs
+DB_LadyVengeanceDialogs("LV_ShipHead");
+DB_LadyVengeanceDialogs("LV_HoE_ShipHeadInHoE");
+DB_LadyVengeanceDialogs("RC_LV_Shiphead");
+DB_LadyVengeanceDialogs("CoS_LV_ShipHead");
+DB_LadyVengeanceDialogs("CoS_LV_HoE_ShipHead");
+DB_LadyVengeanceDialogs("ARX_LV_HoE_ShipHead");
+DB_LadyVengeanceDialogs("EG_Epilogue_Shiphead");
+KBSECTION
+//REGION Clean up dummy declarations that only serve to specify the types
+IF
+DB_GLO_LVNPCsLeaving_LVTriggers("",_Trig1,_Trig2,_Trig3,_Angle)
+THEN
+NOT DB_GLO_LVNPCsLeaving_LVTriggers("",_Trig1,_Trig2,_Trig3,_Angle);
+
+IF
+DB_GLO_LVNPCsLeaving_NPC("",_Char)
+THEN
+NOT DB_GLO_LVNPCsLeaving_NPC("",_Char);
+
+IF
+DB_GLO_LVNPCsLeaving_NPC_ProximityTrigger("",_Char,_Trig,_ID,_Prio)
+THEN
+NOT DB_GLO_LVNPCsLeaving_NPC_ProximityTrigger("",_Char,_Trig,_ID,_Prio);
+
+IF
+DB_GLO_LVNPCsLeaving_NPC_EmergencyTrigger("",_Char,_Trig,_ID,_Prio)
+THEN
+NOT DB_GLO_LVNPCsLeaving_NPC_EmergencyTrigger("",_Char,_Trig,_ID,_Prio);
+//END_REGION
+
+//REGION Clean up entries for dead NPCs
+IF
+DB_Dead(_NPC)
+AND
+DB_GLO_LVNPCsLeaving_NPC(_Level,_NPC)
+THEN
+NOT DB_GLO_LVNPCsLeaving_NPC(_Level,_NPC);
+
+IF
+DB_Dead(_NPC)
+AND
+DB_CurrentLevel(_Level)
+THEN
+PROC_GLO_LVNPCsLeaving_CleanTriggersForPriority(_Level,_NPC, 666);//Any priority over this will not be cleared even in the event of death.
+//END_REGION
+
+//REGION NPCs leave the boat if all players left (teleport)
+QRY
+QRY_GLO_LVNPCsLeaving_AnyPlayerOnBoard((TRIGGERGUID)_LVTrigger)
+AND
+DB_IsPlayer(_Player)
+AND
+ObjectIsInTrigger(_Player,_LVTrigger,1)
+THEN
+DB_NOOP(1);
+
+IF
+CharacterLeftTrigger(_Player,_LVTrigger)
+AND
+QRY_AnyRegionActive()
+AND
+DB_GLO_LVNPCsLeaving_LVTriggers(_Level,_LVTrigger,_,_,_)
+AND
+DB_IsPlayer(_Player)
+AND
+NOT QRY_GLO_LVNPCsLeaving_AnyPlayerOnBoard(_LVTrigger)
+AND
+DB_GLO_LVNPCsLeaving_NPC(_Level,_NPC)
+AND
+NOT DB_GLO_LVNPCsLeaving_NPCLeftLV(_Level,_NPC)
+THEN
+PROC_GLO_LVNPCsLeaving_MoveNPCOffLadyVengeance(_Level,_NPC);
+DB_GLO_LVNPCsLeaving_NPCLeftLV(_Level,_NPC);
+
+//END_REGION
+
+//REGION Utility routine to force all remaining NPCs to (gently) leave the LV (force stop conversations and walk away)
+// Useful in case a player gets to a point where the LV may leave "soon",
+// like shortly before learning the location of CoS in RC_Main
+PROC
+PROC_GLO_LVNPCsLeaving_LeaveForMainland((STRING)_Level)
+AND
+DB_GLO_LVNPCsLeaving_NPC_ProximityTrigger(_Level,_NPC,_Trigger,_ID,_Priority)
+THEN
+PROC_GLO_LVNPCsLeaving_NPCLeaveForMainland(_Level,_NPC);
+
+PROC
+PROC_GLO_LVNPCsLeaving_NPCLeaveForMainland((STRING)_Level,(CHARACTERGUID)_NPC)
+AND
+DB_GLO_LVNPCsLeaving_NPC_NPCTriggerLevelEntered(_Level,_NPC,-1)
+AND
+DB_GLO_LVNPCsLeaving_NPC_ProximityTrigger(_Level,_NPC,_Trigger,_ID,_Priority)
+THEN
+RemoveOneShotTrigger(_Trigger);
+// This will set DB_GLO_LVNPCsLeaving_NPC_NPCTriggerLevelEntered(_Level,_NPC,_ZeroOrGreater), so we only call this once per NPC
+ProcOneShotTriggerEntered(NULL_00000000-0000-0000-0000-000000000000,_Trigger);
+//END_REGION
+
+//REGION NPC Leaving the boat the normal way
+PROC
+PROC_GLO_LVNPCsLeaving_ResetNPC((CHARACTERGUID)_NPC)
+THEN
+ProcClearStoryMove(_NPC);
+ProcForceStopDialog(_NPC);
+ProcRemoveAllDialogEntriesForSpeaker(_NPC);
+SetVarFixedString(_NPC,"currentState","");
+
+// Don't just move off-stage, there might still be a summon that can see things
+PROC
+PROC_GLO_LVNPCsLeaving_MoveNPCOffLadyVengeance((STRING)_Level,(CHARACTERGUID)_NPC)
+AND
+DB_GLO_LVNPCsLeaving_LVTriggers(_Level,_LVTrigger,_LVExitTrigger,_LVLandingTrigger,_WalkAwayAngle)
+AND
+ObjectIsInTrigger(_NPC,_LVTrigger,1)
+AND
+NOT DB_GLO_LVNPCsLeaving_MovingAwayGentlyBlocked(_Level,_NPC)
+AND
+NOT DB_GLO_LVNPCsLeaving_MovingOffLadyVengeance(_Level,_NPC)
+THEN
+DB_GLO_LVNPCsLeaving_MovingOffLadyVengeance(_Level,_NPC);
+PROC_GLO_LVNPCsLeaving_ResetNPC(_NPC);
+ProcCharacterMoveTo(_NPC,_LVExitTrigger,0,"GLO_LVNPCsLeaving_AtSmallBoat");
+
+// Not on the LV anymore -> don't teleport of the ship and assume
+// the other scripting code for this NPC handles them going from
+// one situation to another
+PROC
+PROC_GLO_LVNPCsLeaving_MoveNPCOffLadyVengeance((STRING)_Level,(CHARACTERGUID)_NPC)
+AND
+DB_GLO_LVNPCsLeaving_LVTriggers(_Level,_LVTrigger,_LVExitTrigger,_LVLandingTrigger,_WalkAwayAngle)
+AND
+ObjectIsInTrigger(_NPC,_LVTrigger,0)
+THEN
+SetStoryEvent(_NPC,"GLO_LVNPCsLeaving_OutOfSight");
+
+IF
+StoryEvent((CHARACTERGUID)_NPC,"GLO_LVNPCsLeaving_AtSmallBoat")
+AND
+DB_GLO_LVNPCsLeaving_MovingOffLadyVengeance(_Level,_NPC)
+AND
+NOT DB_GLO_LVNPCsLeaving_MovingAwayGentlyBlocked(_Level,_NPC)
+AND
+DB_GLO_LVNPCsLeaving_LVTriggers(_Level,_LVTrigger,_LVExitTrigger,_LVLandingTrigger,_WalkAwayAngle)
+THEN
+TeleportTo(_NPC,_LVLandingTrigger,"GLO_LVNPCsLeaving_OnCoast",0);
+
+IF
+StoryEvent((CHARACTERGUID)_NPC,"GLO_LVNPCsLeaving_OnCoast")
+AND
+DB_GLO_LVNPCsLeaving_MovingOffLadyVengeance(_Level,_NPC)
+AND
+NOT DB_GLO_LVNPCsLeaving_MovingAwayGentlyBlocked(_Level,_NPC)
+AND
+Random(40,_AngleDelta)
+AND
+DB_GLO_LVNPCsLeaving_LVTriggers(_Level,_LVTrigger,_LVExitTrigger,_LVLandingTrigger,_WalkAwayAngle)
+AND
+IntegerSum(_AngleDelta,_WalkAwayAngle,_Angle)
+THEN
+// The quest code will set them back on stage once they get near
+ProcCharacterDisappearOutOfSight(_NPC,_Angle,0,"GLO_LVNPCsLeaving_OutOfSight",0);
+
+IF
+StoryEvent((CHARACTERGUID)_NPC,"GLO_LVNPCsLeaving_OutOfSight")
+AND
+DB_GLO_LVNPCsLeaving_MovingOffLadyVengeance(_Level,_NPC)
+THEN
+NOT DB_GLO_LVNPCsLeaving_MovingOffLadyVengeance(_Level,_NPC);
+//END_REGION
+
+//REGION NPC Leaving the boat because a player got too close to their quest location
+
+// Register triggers around quest location
+IF
+DB_GLO_LVNPCsLeaving_NPC_ProximityTrigger(_Level,_NPC,_Trigger,_ID,_Priority)
+AND
+_Level != ""
+THEN
+DB_GLO_LVNPCsLeaving_NPC_NPCTriggerLevelEntered(_Level,_NPC,-1);
+DB_OneShotPlayerTrigger(_Trigger);
+
+// Helper to remove lower priority triggers
+PROC
+PROC_GLO_LVNPCsLeaving_CleanTriggersForPriority((STRING)_Level,(CHARACTERGUID)_NPC,(INTEGER)_Priority)
+AND
+DB_GLO_LVNPCsLeaving_NPC_ProximityTrigger(_Level,_NPC,_Trigger,_SomeID,_SomePriority)
+AND
+_SomePriority <= _Priority
+THEN
+RemoveOneShotTrigger(_Trigger);
+NOT DB_GLO_LVNPCsLeaving_NPC_ProximityTrigger(_Level,_NPC,_Trigger,_SomeID,_SomePriority);
+
+PROC
+PROC_GLO_LVNPCsLeaving_CleanTriggersForPriority(_Level,_NPC,_Priority)
+AND
+DB_GLO_LVNPCsLeaving_NPC_EmergencyTrigger(_Level,_NPC,_Trigger,_SomeID,_SomePriority)
+AND
+_SomePriority <= _Priority
+THEN
+RemoveOneShotTrigger(_Trigger);
+NOT DB_GLO_LVNPCsLeaving_NPC_EmergencyTrigger(_Level,_NPC,_Trigger,_SomeID,_SomePriority);
+
+PROC
+ProcOneShotTriggerEntered(_, _Trigger)
+AND
+DB_GLO_LVNPCsLeaving_NPC_ProximityTrigger(_Level,_NPC,_Trigger,_ID,_Priority)
+AND
+DB_GLO_LVNPCsLeaving_NPC_NPCTriggerLevelEntered(_Level,_NPC,_HighestLevelTriggered)
+AND
+_Priority > _HighestLevelTriggered
+THEN
+NOT DB_GLO_LVNPCsLeaving_NPC_NPCTriggerLevelEntered(_Level,_NPC,_HighestLevelTriggered);
+DB_GLO_LVNPCsLeaving_NPC_NPCTriggerLevelEntered(_Level,_NPC,_Priority);
+PROC_GLO_LVNPCsLeaving_ProximityAlert(_Level,_NPC,_ID,_Priority);
+
+PROC
+PROC_GLO_LVNPCsLeaving_ProximityAlert((STRING)_Level,(CHARACTERGUID)_NPC,(STRING)_ID,(INTEGER)_Priority)
+AND
+DB_GLO_LVNPCsLeaving_NPC_LeavingFor(_Level,_NPC,_OtherID,_OtherPriority)
+THEN
+NOT DB_GLO_LVNPCsLeaving_NPC_LeavingFor(_Level,_NPC,_OtherID,_OtherPriority);
+
+PROC
+PROC_GLO_LVNPCsLeaving_ProximityAlert(_Level,_NPC,_ID,_Priority)
+AND
+DB_GLO_LVNPCsLeaving_LVTriggers(_Level,_LVTrigger,_LVExitTrigger,_LVLandingTrigger,_WalkAwayAngle)
+AND
+ObjectIsInTrigger(_NPC,_LVTrigger,1)
+THEN
+PROC_GLO_LVNPCsLeaving_ResetNPC(_NPC);
+SetVarFixedString(_NPC,"currentState","");
+
+PROC
+PROC_GLO_LVNPCsLeaving_ProximityAlert(_Level,_NPC,_ID,_Priority)
+AND
+DB_GLO_LVNPCsLeaving_MovingOffLadyVengeance(_Level,_NPC)
+THEN
+PROC_GLO_LVNPCsLeaving_ResetNPC(_NPC);
+
+PROC
+PROC_GLO_LVNPCsLeaving_ProximityAlert(_Level,_NPC,_ID,_Priority)
+THEN
+DB_GLO_LVNPCsLeaving_NPC_LeavingFor(_Level,_NPC,_ID,_Priority);
+PROC_GLO_LVNPCsLeaving_MoveNPCOffLadyVengeance(_Level,_NPC);
+
+// One the NPC has left, remove all proximity and emergency triggers of the same and lower priority
+IF
+StoryEvent((CHARACTERGUID)_NPC,"GLO_LVNPCsLeaving_OutOfSight")
+AND
+DB_GLO_LVNPCsLeaving_NPC_LeavingFor(_Level,_NPC,_ID,_Priority)
+THEN
+PROC_GLO_LVNPCsLeaving_CleanTriggersForPriority(_Level,_NPC,_Priority);
+//END_REGION
+
+//REGION NPC Leaving the boat because a player is right next to their quest location
+IF
+DB_GLO_LVNPCsLeaving_NPC_EmergencyTrigger(_Level,_NPC,_Trigger,_ID,_Priority)
+AND
+_Level != ""
+THEN
+DB_GLO_LVNPCsLeaving_NPC_NPCTriggerLevelEntered(_Level,_NPC,-1);
+DB_OneShotPlayerTrigger(_Trigger);
+
+// Emergency triggers should only result in teleporting away if the NPC is walking away
+// (due to proximity trigger) or still on the boat (player teleports into emergency trigger).
+// Not if the NPC was teleported elsewhere already by story outside control of this system.
+QRY
+QRY_GLO_LVNPCsLeaving_NPC_LeavingOrStillOnBoat((STRING)_Level,(CHARACTERGUID)_NPC)
+AND
+DB_GLO_LVNPCsLeaving_MovingOffLadyVengeance(_Level,_NPC)
+THEN
+DB_NOOP(1);
+
+QRY
+QRY_GLO_LVNPCsLeaving_NPC_LeavingOrStillOnBoat((STRING)_Level,(CHARACTERGUID)_NPC)
+AND
+DB_GLO_LVNPCsLeaving_LVTriggers(_Level,_LVTrigger,_LVExitTrigger,_LVLandingTrigger,_WalkAwayAngle)
+AND
+ObjectIsInTrigger(_NPC,_LVTrigger,1)
+THEN
+DB_NOOP(1);
+
+PROC
+ProcOneShotTriggerEntered(_,_Trigger)
+AND
+DB_GLO_LVNPCsLeaving_NPC_EmergencyTrigger(_Level,_NPC,_Trigger,_ID,_Priority)
+AND
+DB_GLO_LVNPCsLeaving_NPC_NPCTriggerLevelEntered(_Level,_NPC,_HighestLevelTriggered)
+AND
+// Can override proximity exit of the same priority
+_Priority >= _HighestLevelTriggered
+AND
+QRY_GLO_LVNPCsLeaving_NPC_LeavingOrStillOnBoat(_Level,_NPC)
+THEN
+NOT DB_GLO_LVNPCsLeaving_NPC_NPCTriggerLevelEntered(_Level,_NPC,_HighestLevelTriggered);
+DB_GLO_LVNPCsLeaving_NPC_NPCTriggerLevelEntered(_Level,_NPC,_Priority);
+// Emergency exit -> block if we were moving away because of a proximity trigger
+DB_GLO_LVNPCsLeaving_MovingAwayGentlyBlocked(_Level,_NPC);
+PROC_GLO_LVNPCsLeaving_CleanTriggersForPriority(_Level,_NPC,_Priority);
+PROC_GLO_LVNPCsLeaving_EmergencyExit(_Level,_NPC,_ID);
+//END_REGION
+
+//REGION Lady Vengeance DialogAnimations
+
+///LV_HoE
+IF
+DialogStarted(_Dialog,_Id)
+AND
+DB_LadyVengeanceDialogs(_Dialog)
+AND
+DialogGetInvolvedNPC(_Id,1,(ITEMGUID)_LV)
+AND
+GetRegion(_LV,_Level)
+AND
+_Level == "LV_HoE_Main"
+AND
+GlobalGetFlag("LV_ShipHead_Awake",1)
+THEN
+PlayAnimation(_LV,"Dialog_Start","LV_LoopAfterDialogStart");
+
+IF
+StoryEvent(_LV,"LV_LoopAfterDialogStart")
+THEN
+PlayAnimation(_LV,"Dialog_Loop");
+
+IF
+DialogEnded(_Dialog,_Id)
+AND
+DB_LadyVengeanceDialogs(_Dialog)
+AND
+DialogGetInvolvedNPC(_Id,1,(ITEMGUID)_LV)
+AND
+GetRegion(_LV,_Level)
+AND
+_Level == "LV_HoE_Main"
+AND
+GlobalGetFlag("LV_ShipHead_Awake",1)
+THEN
+PlayAnimation(_LV,"Dialog_End");
+
+//Other Levels
+IF
+DialogStarted(_Dialog,_Id)
+AND
+DB_LadyVengeanceDialogs(_Dialog)
+AND
+DialogGetInvolvedNPC(_Id,1,(ITEMGUID)_LV)
+AND
+GetRegion(_LV,_Level)
+AND
+_Level != "LV_HoE_Main"
+THEN
+PlayAnimation(_LV,"Dialog_Start","LV_LoopAfterDialogStart");
+
+IF
+DialogEnded(_Dialog,_Id)
+AND
+DB_LadyVengeanceDialogs(_Dialog)
+AND
+DialogGetInvolvedNPC(_Id,1,(ITEMGUID)_LV)
+AND
+GetRegion(_LV,_Level)
+AND
+_Level != "LV_HoE_Main"
+THEN
+PlayAnimation(_LV,"Dialog_End");
+
+
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "DOS2ModWrapper"

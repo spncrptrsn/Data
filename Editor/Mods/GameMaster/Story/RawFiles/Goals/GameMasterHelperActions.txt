@@ -1,0 +1,61 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+// Achievement for starting GM Mode
+IF
+GMCampaignModeStarted("Play")
+THEN
+UnlockAchievement("DOS2_Quest98",NULL_00000000-0000-0000-0000-000000000000);
+
+IF
+TextEventSet("gm_camera")
+THEN
+SetCameraDistanceOverride(30.0);
+
+IF
+CanPickupItem(_Char,_,_RequestID)
+THEN
+RequestProcessed(_Char,_RequestID,1);
+
+IF
+CanLockpickItem(_Char,_,_RequestID)
+THEN
+RequestProcessed(_Char,_RequestID,1);
+
+IF
+CanUseItem(_Char,_,_RequestID)
+THEN
+RequestProcessed(_Char,_RequestID,1);
+
+IF
+CanMoveItem(_Char,_,_RequestID)
+THEN
+RequestProcessed(_Char,_RequestID,1);
+
+IF
+CanCombineItem(_Char,_,_,_,_,_,_RequestID)
+THEN
+RequestProcessed(_Char,_RequestID,1);
+
+IF
+RequestPickpocket(_Char,_Char2)
+THEN
+StartPickpocket(_Char,_Char2,1);
+
+IF
+CharacterDied(_NPC)
+AND
+CharacterIsPlayer(_NPC,0)
+THEN
+ProcClearTradeFacts(_NPC);
+
+PROC
+PROC_GLO_SystemicTags_CheckMurder((CHARACTERGUID)_Killer)
+THEN
+ DB_NOOP(1);
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "GMModWrapper"

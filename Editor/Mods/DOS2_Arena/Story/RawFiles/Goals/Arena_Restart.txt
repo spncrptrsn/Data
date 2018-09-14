@@ -1,0 +1,106 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+PROC
+Proc_RestartArena()
+AND
+DB_ArenaTeamChampions(_Champion,_)
+THEN
+PROC_StopLoopEffect(_Champion,"ArenaKing");
+
+PROC
+Proc_RestartArena()
+AND
+DB_ArenaTeamChampions(_Champion,_TeamID)
+THEN
+NOT DB_ArenaTeamChampions(_Champion,_TeamID);
+
+PROC
+Proc_RestartArena()
+AND
+DB_ArenaTeams(_Team)
+THEN
+NOT DB_ArenaTeams(_Team);
+
+PROC
+Proc_RestartArena()
+AND
+DB_ArenaVictoriousTeam(_TeamID)
+THEN
+NOT DB_ArenaVictoriousTeam(_TeamID);
+
+PROC
+Proc_RestartArena()
+AND
+DB_ArenaTeamLostMatch(_TeamID)
+THEN
+NOT DB_ArenaTeamLostMatch(_TeamID);
+
+/* Death Match */
+
+PROC
+Proc_RestartArena()
+AND
+DB_ArenaTeamNumberOfChampions(_TeamID,_Int)
+THEN
+NOT DB_ArenaTeamNumberOfChampions(_TeamID,_Int);
+
+PROC
+Proc_RestartArena()
+AND
+DB_Arena_DeathMatchCounter(_TeamID,_Int)
+THEN
+NOT DB_Arena_DeathMatchCounter(_TeamID,_Int);
+
+PROC
+Proc_RestartArena()
+AND
+DB_ArenaTeamLostMatch(_TeamID)
+THEN
+NOT DB_ArenaTeamLostMatch(_TeamID);
+
+PROC
+Proc_RestartArena()
+AND
+DB_ArenaVictoriousTeam(_TeamID)
+THEN
+NOT DB_ArenaVictoriousTeam(_TeamID);
+
+/* Kill the King */
+
+PROC
+Proc_RestartArena()
+AND
+DB_ArenaTeamSize(_TeamID,_Size)
+THEN
+NOT DB_ArenaTeamSize(_TeamID,_Size);
+
+PROC
+Proc_RestartArena()
+AND
+DB_ArenaTeamKing(_TeamID,_Champion)
+THEN
+NOT DB_ArenaTeamKing(_TeamID,_Champion);
+
+PROC
+Proc_RestartArena()
+AND
+DB_ArenaTeamChampionIndex(_Champion,_TeamID,_Ind)
+THEN
+NOT DB_ArenaTeamChampionIndex(_Champion,_TeamID,_Ind);
+
+/* Artifacts */
+PROC
+Proc_RestartArena()
+AND
+DB_ArenaArtifact(_Artifact)
+THEN
+PROC_StopLoopEffect(_Artifact,"TeamArtifactEffect");
+NOT DB_ArenaArtifact(_Artifact);
+ItemRemove(_Artifact);
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "ArenaModWrapper"

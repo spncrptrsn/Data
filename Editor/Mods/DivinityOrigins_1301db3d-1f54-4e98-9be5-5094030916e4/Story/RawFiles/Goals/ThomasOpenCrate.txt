@@ -1,0 +1,32 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+//ItemClose(ITEMGUID_TheCrate_fd34abe0-9843-488f-b0aa-ed8f9bab5ca8);
+KBSECTION
+IF
+TextEventSet("OpenCrate")
+
+THEN
+TimerCancel("OpenCrateTimer");
+TimerLaunch("OpenCrateTimer", 5000);
+
+IF
+TimerFinished("OpenCrateTimer")
+THEN
+PlayAnimation(ITEMGUID_TheCrate_fd34abe0-9843-488f-b0aa-ed8f9bab5ca8, "open");
+//ItemOpen(TheCrate_fd34abe0-9843-488f-b0aa-ed8f9bab5ca8);
+//TimerLaunch("TrollPlayAnim", 300);
+
+//IF
+//TimerFinished("TrollPlayAnim")
+//THEN
+//PlayAnimation(CHARACTERGUID_Creatures_Troll_A_000_20209538-24c3-4ff2-a0cc-f5ecc985e7eb,"attack1");
+
+//CharacterMoveTo(Char, Target, 0, "Event", 0);
+
+//IF
+//StoryEvent(Char, "Event")
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "DOS2ModWrapper"

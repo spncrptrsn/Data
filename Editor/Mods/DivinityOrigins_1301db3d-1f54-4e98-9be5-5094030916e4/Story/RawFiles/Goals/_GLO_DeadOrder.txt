@@ -1,0 +1,42 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+// Has to be executed before the GLO_GameOverLogic CharacterDied handler triggers
+// -> in _GLO_DeadOrder
+
+// Use Check for both ChareacterDying() and CharacterDied(), because CharacterIsDead (used by the game over check)
+// already returns true after CharacterDying() fired. Use DB_Dead() for this purpose, but separated from the rest
+// to avoid recursive re-evaluations of everything because a DB_GlobalCounter() is redefined.
+
+IF
+DB_Dead(_Player)
+THEN
+PROC_GLO_DeadOrder_Record(_Player);
+
+PROC
+PROC_GLO_DeadOrder_Record((CHARACTERGUID)_Player)
+AND
+DB_GLO_DeadOrder_ID(_Identifier)
+AND
+QRY_GLO_DeadOrder_Eligible(_Player,_Identifier)
+AND
+StringConcatenate("GLO_DeadOrder_EligibleDeadOrder_",_Identifier,_CounterName)
+AND
+DB_GlobalCounter(_CounterName,_DeadOrder)
+THEN
+PROC_GLO_DeadOrder_ClearPreviousOrders(_Player,_Identifier);
+DB_GLO_DeadOrder_EligibleDeadOrder(_Player,_DeadOrder,_Identifier);
+ProcIncreaseCounter(_CounterName);
+
+PROC
+PROC_GLO_DeadOrder_ClearPreviousOrders((CHARACTERGUID)_Player,(STRING)_Identifier)
+AND
+DB_GLO_DeadOrder_EligibleDeadOrder(_Player,_Order,_Identifier)
+THEN
+NOT DB_GLO_DeadOrder_EligibleDeadOrder(_Player,_Order,_Identifier);
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "GLO_ThePromise_Activation"

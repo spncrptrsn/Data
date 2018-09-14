@@ -1,0 +1,1047 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+DB_OriginMomentTag("FTJ_GhettoBlacksmith","FANE","FTJ_GhettoBlacksmith_COM_Fane");
+DB_OriginMomentTag("FTJ_GhettoBlacksmith","SHAPESHIFT_FANE","FTJ_GhettoBlacksmith_COM_Fane");
+DB_OriginMomentTag("FTJ_MagisterTorturer","FANE","FTJ_MagisterTorturer_COM_Fane");
+DB_OriginMomentTag("FTJ_MagisterTorturer","SHAPESHIFT_FANE","FTJ_MagisterTorturer_COM_Fane");
+DB_OriginMomentTag_3SP("FTJ_SW_Windego","FANE","FTJ_SW_Windego_COM_Fane");
+DB_OriginMomentTag_3SP("FTJ_SW_Windego","SHAPESHIFT_FANE","FTJ_SW_Windego_COM_Fane");
+DB_OriginMomentTag("RC_OIL_Tomb_Ataraxian","FANE","RC_OIL_Tomb_Ataraxian_COM_Fane");
+DB_OriginMomentTag("RC_OIL_Tomb_Ataraxian","SHAPESHIFT_FANE","RC_OIL_Tomb_Ataraxian_COM_Fane");
+DB_OriginMoment_MaxDistance("RC_OIL_Tomb_Ataraxian_COM_Fane",20.0);
+
+
+DB_OriginMomentTag("CoS_Academy_SentientVoidwoken","FANE","CoS_Academy_SentientVoidwoken_COM_Fane");
+DB_OriginMomentTag("CoS_Academy_SentientVoidwoken","SHAPESHIFT_FANE","CoS_Academy_SentientVoidwoken_COM_Fane");
+
+DB_OriginMomentTag("ARX_MainRoad_FaneOrigin_SmallVoidwoken","FANE","ARX_MainRoad_FaneOrigin_SmallVoidwoken_COM_Fane");
+DB_OriginMomentTag("ARX_MainRoad_FaneOrigin_SmallVoidwoken","SHAPESHIFT_FANE","ARX_MainRoad_FaneOrigin_SmallVoidwoken_COM_Fane");
+
+DB_DoNotFace(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb);
+
+DB_OriginsFane_MaskMarker("TUT_Tutorial_A","TUT_Fane_ShapeShiferMask");
+DB_OriginsFane_MaskMarker("FJ_FortJoy_Main","");
+DB_OriginsFane_MaskMarker("LV_HoE_Main","LV_Fane_ShapeShiferMask");
+DB_OriginsFane_MaskMarker("RC_Main","RC_Fane_ShapeShiferMask");
+DB_OriginsFane_MaskMarker("CoS_Main","CoS_Fane_ShapeShiferMask");
+DB_OriginsFane_MaskMarker("ARX_Main","ARX_Fane_ShapeShiferMask");
+
+DB_HasStoryEvent(ITEMGUID_S_GLO_Fane_Shapeshifter_Mask_9e1dd03c-6ceb-47e6-b073-40cf228cb98e,"GLO_Fane_PartyHasShapeShifterMask");
+
+DB_OriginsFane_MaskMarkerActive(0);
+
+DB_OriginsFane_FaceRipperQuestUpdate(0,"QuestUpdate_FTJ_COM_Fane_GotFaceRipper");
+DB_OriginsFane_FaceRipperQuestUpdate(1,"QuestUpdate_FTJ_OriginFane_GotFaceRipper");
+
+//DB_OriginsFane_ArxSmallVoidWokenQuestUpdate(0,"QuestUpdate_FTJ_COM_Fane_ArxSmallVoidWoken"); //flag moved in the COM dialog to fix DOSTWO-24054
+DB_OriginsFane_ArxSmallVoidWokenQuestUpdate(1,"QuestUpdate_FTJ_OriginFane_ArxSmallVoidWoken");
+
+// LV_HoE_Main
+DB_OriginsFane_FortJoyItems((ITEMGUID)QUEST_Undead_FaceRipper_Kniles_4edde2b6-f623-474d-a5c7-9a97bf90164e);
+DB_OriginsFane_FortJoyItems(ITEMGUID_S_GLO_Fane_Shapeshifter_Mask_9e1dd03c-6ceb-47e6-b073-40cf228cb98e);
+
+// Fane effects
+DB_OriginsFane_EyesFlashEffects("GLO_OriginsFane_EyesFlash_Short","RS3_FX_GP_CC_Intro_Fane_15_00_Eyes_L_01","RS3_FX_GP_CC_Intro_Fane_15_00_Eyes_01");
+DB_OriginsFane_EyesFlashEffects("GLO_OriginsFane_EyesFlash_Medium","RS3_FX_GP_CC_Intro_Fane_00_00_Eyes_L_01","RS3_FX_GP_CC_Intro_Fane_00_00_Eyes_01");
+DB_OriginsFane_EyesFlashEffects("GLO_OriginsFane_EyesFlash_Long","RS3_FX_GP_CC_Intro_Fane_52_00_Eyes_L_01","RS3_FX_GP_CC_Intro_Fane_52_00_Eyes_01");
+
+DB_OriginsFane_BookEffects("GLO_Fane_RS3_FX_GP_ScriptedEvent_ARX_Endgame_Fane_TrowingBook_01","RS3_FX_GP_ScriptedEvent_ARX_Endgame_Fane_TrowingBook_01");
+DB_OriginsFane_BookEffects("GLO_Fane_RS3_FX_GP_ScriptedEvent_ARX_Endgame_Fane_TearingBook_01","RS3_FX_GP_ScriptedEvent_ARX_Endgame_Fane_TearingBook_01");
+DB_OriginsFane_BookEffects("GLO_Fane_RS3_FX_GP_ScriptedEvent_End_Fane_Book_01","RS3_FX_GP_ScriptedEvent_End_Fane_Book_01");
+
+DB_OriginsFane_CraftMaskUpdate(1,"QuestUpdate_FTJ_OriginFane_CraftMask");
+DB_OriginsFane_CraftMaskUpdate(0,"QuestUpdate_FTJ_COM_Fane_CraftMask");
+
+DB_OriginsFane_GotMaskBackUpdate(1,"QuestUpdate_FTJ_OriginFane_GotMaskBack");
+DB_OriginsFane_GotMaskBackUpdate(0,"QuestUpdate_FTJ_COM_Fane_GotMaskBack");
+KBSECTION
+//REGION Shapeshifting mask recipes
+PROC
+PROC_GLO_Origins_Fane_UnlockShapeshiftingMaskRecipes((CHARACTERGUID)_Player)
+THEN
+CharacterUnlockRecipe(_Player,"CON_BodyPart_Face_Human_LOOT_Source_Orb",1);
+CharacterUnlockRecipe(_Player,"CON_BodyPart_Face_Dwarf_LOOT_Source_Orb",1);
+CharacterUnlockRecipe(_Player,"CON_BodyPart_Face_Elf_LOOT_Source_Orb",1);
+CharacterUnlockRecipe(_Player,"CON_BodyPart_Face_Lizard_LOOT_Source_Orb",1);
+CharacterUnlockRecipe(_Player,"ARM_UniversalShapeshiftingMask",1);
+
+PROC
+PROC_GLO_PartyMembers_RecruiteeAvatarBond(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,_Player)
+THEN
+PROC_GLO_Origins_Fane_UnlockShapeshiftingMaskRecipes(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb);
+//END_REGION
+
+//REGION Region-specific inits
+IF
+RegionStarted(_Region)
+AND
+_Region != "TUT_Tutorial_A"
+AND
+QueryOnlyOnce("FTJ_FaneLookAtInit")
+THEN
+NOT DB_DoNotFace(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb);
+
+IF
+RegionStarted("FJ_FortJoy_Main")
+AND
+QueryOnlyOnce("FTJ_FaneInit")
+THEN
+PROC_OriginsFane_FortJoyInit();
+
+// Quest start for avatar Fane
+PROC
+PROC_OriginsFane_FortJoyInit()
+AND
+DB_Avatars(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+THEN
+ObjectSetFlag(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"QuestUpdate_FTJ_OriginFane_FaneWashedAshore");
+// This flag is set both for avatar and companion Fane, but only should update
+// the avatar quest if Fane is an avatar
+DB_QuestDef_UpdateEvent("FTJ_OriginFane","LearnedAboutKniles","FTJ_FaneAskedBlackSmithAboutFaceRipper");
+
+// Equip cowl for non-avatar Fane
+PROC
+PROC_OriginsFane_FortJoyInit()
+AND
+NOT DB_Avatars(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+THEN
+PROC_OriginsFane_FortJoyInit_EquipCowlIfNoHelmet();
+
+PROC
+PROC_OriginsFane_FortJoyInit_EquipCowlIfNoHelmet()
+AND
+NOT CharacterGetEquippedItem(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"Helmet",_)
+AND
+NOT GetItemForItemTemplateInInventory(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"EQ_Robe_Purge_Helmet_A_cfa72ec3-f93e-4579-baaa-febfa5995c2c",_)
+THEN
+ItemTemplateAddTo("EQ_Robe_Purge_Helmet_A_cfa72ec3-f93e-4579-baaa-febfa5995c2c",CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,1);
+
+PROC
+PROC_OriginsFane_FortJoyInit_EquipCowlIfNoHelmet()
+AND
+NOT CharacterGetEquippedItem(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"Helmet",_)
+AND
+GetItemForItemTemplateInInventory(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"EQ_Robe_Purge_Helmet_A_cfa72ec3-f93e-4579-baaa-febfa5995c2c",_Item)
+THEN
+CharacterEquipItem(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,_Item);
+
+
+// When fane gets dismissed without a hood, give him one
+PROC
+PROC_GLO_PartyMembers_MakeNPCHook((CHARACTERGUID)_PartyMember)
+AND
+NOT DB_EG_EpilogueSetupFinished(1)
+THEN
+PROC_OriginsFane_FortJoyInit_EquipCowlIfNoHelmet();
+
+// Init on LV_HoE_Main start
+IF
+RegionStarted("LV_HoE_Main")
+AND
+QueryOnlyOnce("LV_HoE_Main_FaneInit")
+THEN
+PROC_OriginsFane_LV_HoE_Main_FaneInit();
+
+QRY
+QRY_OriginsFane_ItemInPlayerInventory((ITEMGUID)_Item)
+AND
+GetInventoryOwner(_Item,_Player)
+AND
+DB_IsPlayer((CHARACTERGUID)_Player)
+THEN
+DB_NOOP(1);
+
+// Fane gets his mask and/or the face ripper if
+//   1) he's not a player
+//   2) they are not in possession of a player at the start of this level
+PROC
+PROC_OriginsFane_LV_HoE_Main_FaneInit()
+AND
+NOT DB_IsPlayer(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+AND
+DB_OriginsFane_FortJoyItems(_Item)
+AND
+NOT QRY_OriginsFane_ItemInPlayerInventory(_Item)
+THEN
+ItemToInventory(_Item,CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb);
+//END_REGION
+
+//REGION Recruitement Flags & Journal starts
+PROC
+PROC_GLO_PartyMembers_RecruiteeAvatarBond(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,(CHARACTERGUID)_Avatar)
+AND
+NOT DB_GlobalFlag("FTJ_LV_SetUp")
+THEN
+ObjectSetFlag(_Avatar,"GLO_Fane_RecruitedInFortJoy");
+
+PROC
+PROC_GLO_PartyMembers_RecruiteeAvatarBond(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,(CHARACTERGUID)_Avatar)
+AND
+DB_GlobalFlag("FTJ_LV_SetUp")
+THEN
+ObjectSetFlag(_Avatar,"GLO_Fane_RecruitedInLV");
+
+PROC
+PROC_GLO_PartyMembers_RecruiteeAvatarBond(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,(CHARACTERGUID)_Player)
+AND
+ObjectGetFlag(_Player,"GLO_Fane_RecruitedInFortJoy",0)
+THEN
+ObjectSetFlag(_Player,"QuestAdd_FTJ_COM_Fane");
+ObjectSetFlag(_Player,"QuestUpdate_FTJ_COM_Fane_StartLV");
+
+PROC
+PROC_GLO_PartyMembers_RecruiteeAvatarBond(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,(CHARACTERGUID)_Player)
+AND
+NOT DB_GlobalFlag("FTJ_LV_SetUp")
+THEN
+ObjectSetFlag(_Player,"QuestAdd_FTJ_COM_Fane");
+ObjectSetFlag(_Player,"QuestUpdate_FTJ_COM_Fane_Start");
+//END_REGION
+
+//REGION Tutorial
+IF
+GameStarted("TUT_Tutorial_A",_)
+AND
+DB_IsPlayer(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+AND
+QueryOnlyOnce("TUT_Origins_Fane_Init")
+THEN
+// Fane has his shapeshifter mask
+ItemToInventory(ITEMGUID_S_GLO_Fane_Shapeshifter_Mask_9e1dd03c-6ceb-47e6-b073-40cf228cb98e,CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,-1,0);
+CharacterEquipItem(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,ITEMGUID_S_GLO_Fane_Shapeshifter_Mask_9e1dd03c-6ceb-47e6-b073-40cf228cb98e);
+// Fane knows the shapeshifting mask recipes
+PROC_GLO_Origins_Fane_UnlockShapeshiftingMaskRecipes(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb);
+// He's reading a volume of Cranley Hubert's encyclopedia
+ItemTemplateAddTo("QUEST_BOOK_ARX_LoreEncyclopedia_004_96f7be5a-2ad6-456d-a8f0-af0c81ec09a8",CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,1,0);
+// And he has his notes on it
+ItemToInventory(ITEMGUID_S_TUT_FaneNotebook_63bd4027-888c-4763-9f6b-bf81f033d10e,CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,-1,0);
+
+IF
+GameStarted("TUT_Tutorial_A",_)
+AND
+NOT DB_IsPlayer(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+AND
+QueryOnlyOnce("TUT_Origins_Fane_Init")
+THEN
+// Mask is supposed to be equipped by Fane, but you cannot see him having the mask equipped
+ItemToInventory(ITEMGUID_S_GLO_Fane_Shapeshifter_Mask_9e1dd03c-6ceb-47e6-b073-40cf228cb98e,CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb);
+SetOnStage(ITEMGUID_S_GLO_Fane_Shapeshifter_Mask_9e1dd03c-6ceb-47e6-b073-40cf228cb98e,0);
+// Fane has used his mask to look like a male Elf
+ProcReservePolymorphShapes(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb);
+ApplyStatus(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"FANE_ELF",-1.0,1);
+// He's reading a volume of Cranley Hubert's encyclopedia
+ItemTemplateAddTo("QUEST_BOOK_ARX_LoreEncyclopedia_004_96f7be5a-2ad6-456d-a8f0-af0c81ec09a8",CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,1);
+// And he has his notes on it
+ItemToInventory(ITEMGUID_S_TUT_FaneNotebook_63bd4027-888c-4763-9f6b-bf81f033d10e,CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb);
+
+IF
+FadeOutDone(_,"TUT_LowerDeck_BlackOutAfterWindego")
+AND
+NOT DB_IsPlayer(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+THEN
+SetOnStage(ITEMGUID_S_GLO_Fane_Shapeshifter_Mask_9e1dd03c-6ceb-47e6-b073-40cf228cb98e,1);
+
+IF
+FadeOutDone(_,"TUT_LowerDeck_BlackOutAfterWindego")
+THEN
+ItemToInventory(ITEMGUID_S_GLO_Fane_Shapeshifter_Mask_9e1dd03c-6ceb-47e6-b073-40cf228cb98e,CHARACTERGUID_S_GLO_Windego_d783285f-d3be-4cba-8333-db8976cef182);
+
+IF
+FadeOutDone(_,"TUT_LowerDeck_BlackOutAfterWindego")
+AND
+NOT DB_IsPlayer(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+THEN
+RemoveStatus(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"FANE_ELF");
+
+IF
+FadeOutDone(_,"TUT_LowerDeck_BlackOutAfterWindego")
+AND
+NOT DB_IsPlayer(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+AND
+NOT DB_Dead(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+THEN
+PROC_Origins_Fane_TUT_GoToMiddleDeck();
+
+PROC
+PROC_Origins_Fane_TUT_GoToMiddleDeck()
+AND
+HasActiveStatus(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"SITTING",1)
+THEN
+RemoveStatus(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"SITTING");
+
+PROC
+PROC_Origins_Fane_TUT_GoToMiddleDeck()
+THEN
+PROC_TUT_RemoveWindegoKnockDownEffects(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb);
+ProcCharacterEnableAllCrimes(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb);
+// Flush previous ongoing sitting animation (removing SITTING is not enough)
+ApplyStatus(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"KNOCKED_DOWN",0.1,1);
+CharacterFlushQueue(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb);
+// Remove KNOCKED_DOWN status again
+SetVarInteger(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb, "CanSpeak", 1);
+TeleportTo(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,TRIGGERGUID_S_TUT_Origin_FaneAfterWindego_Point_27c808f0-2b99-4426-a754-c02b332c4428);
+SetVarFixedString(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"currentState","State_Tutorial_AfterWindego");
+
+// In case someone polymorphs Fane into a chicken while he's in his Elf form, and
+// he should go back to Elf form when the chicken form runs out instead of to
+// plain skeleton.
+IF
+CharacterStoppedPolymorph(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+AND
+DB_CurrentLevel("TUT_Tutorial_A")
+AND
+NOT DB_IsPlayer(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+AND
+// Fane loses his Elf form after the Windego event
+NOT DB_GlobalFlag("TUT_LowerDeck_WindegoHasCastSpell")
+AND
+HasAppliedStatus(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"CHICKEN",0)
+THEN
+ApplyStatus(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"FANE_ELF",-1.0,1);
+
+IF
+DB_TUT_VB_LowerDeck_GetUpAfterWindego_Finished(1)
+AND
+DB_IsPlayer(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+AND
+SysCount("DB_IsPlayer",1,_PlayerCount)
+THEN
+PROC_TUT_Fane_HideFace(_PlayerCount);
+
+PROC
+PROC_TUT_Fane_HideFace(1)
+THEN
+ObjectSetFlag(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"QuestUpdate_FTJ_OriginFane_LostMask");
+
+// Track whether a player saw Fane on the lower deck (for the dialog on the middle deck
+IF
+DB_Sees(_Player,CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+AND
+NOT DB_IsPlayer(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+AND
+DB_IsPlayer(_Player)
+AND
+DB_CurrentLevel("TUT_Tutorial_A")
+AND
+NOT DB_GlobalFlag("TUT_LowerDeck_WindegoHasCastSpell")
+THEN
+ObjectSetFlag(_Player,"TUT_LowerDeck_SawFane");
+
+//REGION Tutorial message when going to middle deck while not veiled
+// Block unveiled tutorial message from showing when you lose the mask to Windego
+IF
+FadeOutDone(_,"TUT_LowerDeck_BlackOutAfterWindego")
+THEN
+DB_OriginsFane_BlockVeiledUndeadTut(1);
+
+IF
+VoiceBarkEnded("TUT_VB_LowerDeck_GetUpAfterWindego",_)
+THEN
+NOT DB_OriginsFane_BlockVeiledUndeadTut(1);
+
+// Instead, show it when using the stairs
+IF
+CharacterUsedItem(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,ITEMGUID_S_TUT_LowerDeck_StairsToMiddleDeck_Blocked_57d13139-818c-4853-b238-fbb9454175a8)
+AND
+DB_IsPlayer(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+AND
+IsTagged(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"VEILED_UNDEAD",0)
+THEN
+PROC_CheckPlayTut(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"TUT_VeiledUndead");
+
+//END_REGION
+
+//END_REGION
+
+//REGION Kniles and the face ripper
+IF
+ItemAddedToCharacter(ITEMGUID_QUEST_Undead_FaceRipper_Kniles_4edde2b6-f623-474d-a5c7-9a97bf90164e,CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+AND
+IsTagged(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"AVATAR",_FaneAvatar)
+AND
+DB_OriginsFane_FaceRipperQuestUpdate(_FaneAvatar,_QuestUpdate)
+AND
+QueryOnlyOnce("OriginsFane_GotFaceRipper")
+THEN
+ObjectSetFlag(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,_QuestUpdate);
+Proc_StartDialog(1,"FTJ_AD_FaneGotFaceRipper",CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb);
+
+
+IF
+ItemAddedToCharacter(ITEMGUID_QUEST_Undead_FaceRipper_Kniles_4edde2b6-f623-474d-a5c7-9a97bf90164e,_Player)
+AND
+DB_CompanionAvatarBond(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,_Player)
+AND
+QueryOnlyOnce("OriginsFane_GotFaceRipper")
+THEN
+UserSetFlag(_Player,"QuestUpdate_FTJ_COM_Fane_GotFaceRipper");
+PROC_OriginsFane_FaceRipperQuestUpdate_StartDialog((CHARACTERGUID)_Player);
+
+
+IF
+ItemAddedToCharacter(ITEMGUID_QUEST_Undead_FaceRipper_Kniles_4edde2b6-f623-474d-a5c7-9a97bf90164e,_Player)
+AND
+_Player != CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb
+AND
+IsTagged(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"AVATAR",1)
+AND
+CharacterGetReservedUserID(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,_FaneID)
+AND
+CharacterGetReservedUserID(_Player,_FaneID)
+AND
+QueryOnlyOnce("OriginsFane_GotFaceRipper")
+THEN
+ObjectSetFlag(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"QuestUpdate_FTJ_OriginFane_GotFaceRipper");
+PROC_OriginsFane_FaceRipperQuestUpdate_StartDialog((CHARACTERGUID)_Player);
+
+PROC
+PROC_OriginsFane_FaceRipperQuestUpdate_StartDialog((CHARACTERGUID)_Player)
+AND
+GetDistanceTo(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,_Player,_Dist)
+AND
+_Dist <= 15.0
+THEN
+Proc_StartDialog(1,"FTJ_AD_FaneGotFaceRipper",CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb);
+
+// Once we got the face ripper, remove the COM with Nebora where we ask her to make one
+IF
+ItemAddedToCharacter(ITEMGUID_QUEST_Undead_FaceRipper_Kniles_4edde2b6-f623-474d-a5c7-9a97bf90164e,_Player)
+AND
+DB_IsPlayer(_Player)
+THEN
+UserSetFlag(_Player,"FTJ_FaneOrigin_UserGotFaceRipper",0);
+
+// Ensure Fane gets the "we got the face ripper" flag when he joins the party, so his COM
+// with Nebora gets cancelled
+IF
+CharacterJoinedParty(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+AND
+UserGetFlag(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"FTJ_FaneOrigin_UserGotFaceRipper",1)
+THEN
+UserSetFlag(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"FTJ_FaneOrigin_UserGotFaceRipper",1);
+
+
+IF
+ObjectFlagSet("FTJ_FaneOrigin_UserGotFaceRipper",CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,_)
+AND
+DB_OriginMomentTag("FTJ_GhettoBlacksmith",_Tag,"FTJ_GhettoBlacksmith_COM_Fane")
+THEN
+NOT DB_OriginMomentTag("FTJ_GhettoBlacksmith",_Tag,"FTJ_GhettoBlacksmith_COM_Fane");
+
+// Same for COM with Kniles
+IF
+ObjectFlagSet("FTJ_FaneOrigin_UserGotFaceRipper",CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,_)
+AND
+DB_OriginMomentTag("FTJ_MagisterTorturer",_FaneTag,_COM)
+THEN
+NOT DB_OriginMomentTag("FTJ_MagisterTorturer",_FaneTag,_COM);
+
+// If COM denied, start Kniles' regular dialog
+IF
+DB_OriginMoment_COMREQ_Denied(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,CHARACTERGUID_S_FTJ_MagisterTorturer_1d1c0ba0-a91e-4927-af79-6d8d27e0646b)
+AND
+DB_MainFloorPrison_KnilesDialogPlayer(_Player)
+THEN
+Proc_StartDialog(0,"FTJ_MagisterTorturer",RC_FTJ_MagisterTorturer_1d1c0ba0-a91e-4927-af79-6d8d27e0646b,_Player);
+
+// If allowed but didn't pacify Kniles, start his regular dialog
+PROC
+Proc_COMFinished("FTJ_MagisterTorturer_COM_Fane",_Avatar)
+AND
+ObjectGetFlag(CHARACTERGUID_S_FTJ_MagisterTorturer_1d1c0ba0-a91e-4927-af79-6d8d27e0646b,"FTJ_FlorenceLegToKniles",0)
+AND
+DB_MainFloorPrison_KnilesDialogPlayer(_Player)
+THEN
+Proc_StartDialog(0,"FTJ_MagisterTorturer",RC_FTJ_MagisterTorturer_1d1c0ba0-a91e-4927-af79-6d8d27e0646b,_Player);
+
+//END_REGION
+
+//REGION Windego
+// Quest update as avatar
+IF
+DialogEnded("FTJ_SW_Windego",_ID)
+AND
+DB_DialogPlayers(_ID,CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,_)
+THEN
+ObjectSetFlag(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"QuestUpdate_FTJ_OriginFane_MetWindego");
+
+// If COM denied, start Windego's regular dialog
+IF
+DB_OriginMoment_COMREQ_Denied(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,CHARACTERGUID_S_GLO_Windego_d783285f-d3be-4cba-8333-db8976cef182)
+AND
+DB_GLO_PartyMembers_RecruiteeAvatarBond(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,_Avatar)
+THEN
+Proc_StartDialog(0,"FTJ_SW_Windego",CHARACTERGUID_S_GLO_Windego_d783285f-d3be-4cba-8333-db8976cef182,_Avatar);
+//END_REGION
+
+//REGION Amadia in the swamps
+IF
+DialogEnded("FTJ_SW_HoE_UndeadGod",_ID)
+AND
+DB_DialogPlayers(_ID,CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,_)
+THEN
+ObjectSetFlag(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"QuestUpdate_FTJ_OriginFane_TalkedToAmadia");
+//END_REGION
+
+//REGION Journal for crafting the mask
+
+IF
+ItemTemplateCombinedWithItemTemplate(_,_,_,_,_,_Player,_Item)
+AND
+GetTemplate(_Item,_Root)
+AND
+_Root == "EQ_Shapeshifter_Mask_A_01cdf746-dbb0-4db6-9232-7dbb68b81e52"
+AND
+CharacterGetReservedUserID(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,_FaneID)
+AND
+CharacterGetReservedUserID(_Player,_FaneID)
+AND
+IsTagged(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"AVATAR",_IsFaneAvatar)
+AND
+DB_OriginsFane_CraftMaskUpdate(_IsFaneAvatar,_QuestUpdate)
+THEN
+UserSetFlag(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,_QuestUpdate);
+
+//END_REGION
+
+//REGION Act 1.5
+IF
+DialogEnded("Fane_Recruitment",_ID)
+AND
+DB_DialogPlayers(_ID,_Player,_)
+AND
+ObjectGetFlag(_Player,"LV_FaneDoIt",1)
+THEN
+ObjectClearFlag(_Player,"LV_FaneDoIt");
+DB_OriginsFane_DoIt((CHARACTERGUID)_Player);
+SetHasDialog(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,0);
+CharacterFreeze((CHARACTERGUID)_Player);
+FadeToBlack(_Player,3.5,0,"GLO_OriginsFane_DoIt");
+
+IF
+FadeOutDone(_,"GLO_OriginsFane_DoIt")
+AND
+DB_OriginsFane_DoIt(_Player)
+THEN
+Poof(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb);
+Poof(_Player);
+TimerLaunch("GLO_Origins_Fane_DoIt",3000);
+
+IF
+TimerFinished("GLO_Origins_Fane_DoIt")
+AND
+DB_OriginsFane_DoIt(_Player)
+THEN
+Foop(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb);
+Foop(_Player);
+FadeToBlack(_Player,3.5,1,"GLO_OriginsFane_DoneIt");
+
+IF
+FadeInDone(_,"GLO_OriginsFane_DoneIt")
+AND
+DB_OriginsFane_DoIt(_Player)
+THEN
+NOT DB_OriginsFane_DoIt(_Player);
+CharacterUnfreeze(_Player);
+Proc_StartDialog(0,"LV_Fane_Date",CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,_Player);
+SetHasDialog(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,1);
+//END_REGION
+
+//REGION Act 2 Start
+IF
+DB_Chapter(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,5)
+AND
+DB_CompanionAvatarBond(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,_Avatar)
+THEN
+ProcObjectTimer(_Avatar,"RC_LV_StartAct2_CRD_Fane",1000);
+
+PROC
+ProcObjectTimerFinished((CHARACTERGUID)_Avatar,"RC_LV_StartAct2_CRD_Fane")
+THEN
+//ObjectSetFlag(_Avatar,"QuestUpdate_FTJ_COM_Fane_Act2Start"); // set in Fane.lsj
+Proc_RelationshipDialog(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"RC_LV_StartAct2_CRD_Fane",_Avatar);
+//END_REGION
+
+//REGION Eternal Aetera
+
+// Quest update as avatar
+IF
+DialogEnded("RC_OIL_Tomb_Ataraxian",_ID)
+AND
+DB_DialogPlayers(_ID,CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,_)
+THEN
+ObjectSetFlag(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"QuestUpdate_FTJ_OriginFane_TalkedToEternalAetera");
+GlobalSetFlag("GLO_VoidWokenFaneComments");
+PROC_StopLoopEffect(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"RC_OIL_FanePossessed");
+
+// If COM denied, try to start start Aetera's regular dialog
+IF
+DB_OriginMoment_COMREQ_Denied(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,CHARACTERGUID_S_RC_OIL_Tomb_Ataraxian_b844294c-62c2-4ff8-82f1-f874b9e4352d)
+THEN
+PROC_Origins_Fane_EternalAeteraDialogAfterCOM();
+
+// If COM succeeded, also start Aetera's regular dialog if there's someone else around
+PROC
+Proc_COMFinished("RC_OIL_Tomb_Ataraxian_COM_Fane",(CHARACTERGUID)_Avatar)
+THEN
+GlobalSetFlag("GLO_VoidWokenFaneComments");
+PROC_Origins_Fane_EternalAeteraDialogAfterCOM();
+
+PROC
+PROC_Origins_Fane_EternalAeteraDialogAfterCOM()
+AND
+QRY_GetClosestAvailableCharacterTo(CHARACTERGUID_S_RC_OIL_Tomb_Ataraxian_b844294c-62c2-4ff8-82f1-f874b9e4352d,1,0,NULL_00000000-0000-0000-0000-000000000000,CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+AND
+DB_ClosestAvailableCharacterTo(_Player,CHARACTERGUID_S_RC_OIL_Tomb_Ataraxian_b844294c-62c2-4ff8-82f1-f874b9e4352d,_)
+THEN
+Proc_StartDialog(0,"RC_OIL_Tomb_Ataraxian",CHARACTERGUID_S_RC_OIL_Tomb_Ataraxian_b844294c-62c2-4ff8-82f1-f874b9e4352d,_Player);
+
+PROC
+PROC_Origins_Fane_EternalAeteraDialogAfterCOM()
+AND
+NOT DB_ClosestAvailableCharacterTo(_,CHARACTERGUID_S_RC_OIL_Tomb_Ataraxian_b844294c-62c2-4ff8-82f1-f874b9e4352d,_)
+THEN
+Proc_RC_OIL_AtaraxianDialogEnded(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb);
+//END_REGION
+
+//REGION Learn of Nameless Isle without talking to Eternal Aetera
+IF
+ObjectFlagSet("RC_DW_KnowCoS", CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb, _)
+AND
+DB_Avatars(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+AND
+ObjectGetFlag(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb, "QuestUpdate_FTJ_OriginFane_TalkedToEternalAetera", 0)
+THEN
+ObjectSetFlag(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb, "QuestUpdate_FTJ_OriginFane_LearnNameless");
+//END_REGION
+
+//REGION Sentient voidwoken/Promise
+IF
+ObjectWasTagged(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"PROMISED")
+AND
+DB_Avatars(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+THEN
+ObjectSetFlag(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"QuestUpdate_FTJ_OriginFane_TookPromise");
+
+IF
+StoryEvent(_,"CoS_Academy_SentientVoidwoken_DialogStart")
+THEN
+DB_GLO_OriginsFane_SentientVoidWokenDialogPromisedChoice(1);
+
+IF
+DialogEnded("CoS_Academy_SentientVoidwoken",_ID)
+AND
+DB_DialogPlayers(_ID,CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,_)
+AND
+DB_Avatars(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+AND
+DB_GLO_OriginsFane_SentientVoidWokenDialogPromisedChoice(1)
+AND
+// Depends on whether the Promise goal's DialogEnded gets handled before or after this one, so check both
+IsTagged(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"PROMISED",0)
+AND
+ObjectGetFlag(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"GLO_Promise_AcceptedPromise",0)
+THEN
+ObjectSetFlag(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"QuestUpdate_FTJ_OriginFane_RefusedPromise");
+
+IF
+DialogEnded("CoS_Academy_SentientVoidwoken",_ID)
+THEN
+NOT DB_GLO_OriginsFane_SentientVoidWokenDialogPromisedChoice(1);
+
+IF
+ObjectLostTag(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"PROMISED")
+THEN
+ObjectSetFlag(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"QuestUpdate_FTJ_OriginFane_RelievedOfPromise");
+
+// If COM denied, start Voidwoken's regular dialog
+IF
+DB_OriginMoment_COMREQ_Denied(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,CHARACTERGUID_S_CoS_Academy_SentientVoidwoken_001_1f1f40cc-4d58-4b0d-a359-4bd3d5c00a1a)
+AND
+DB_GLO_PartyMembers_RecruiteeAvatarBond(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,_Avatar)
+THEN
+// Don't use the logic to prefer an undead, because that may select Fane again
+// (Fane may in fact be the only one close enough for the regular dialog selection logic -> exclude)
+PROC_Origins_Fane_SentientVoidwokenDialogAfterCOM();
+
+PROC
+PROC_Origins_Fane_SentientVoidwokenDialogAfterCOM()
+AND
+QRY_GetClosestAvailableCharacterTo(CHARACTERGUID_S_CoS_Academy_SentientVoidwoken_001_1f1f40cc-4d58-4b0d-a359-4bd3d5c00a1a,1,0,NULL_00000000-0000-0000-0000-000000000000,CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+AND
+DB_ClosestAvailableCharacterTo(_Player,CHARACTERGUID_S_CoS_Academy_SentientVoidwoken_001_1f1f40cc-4d58-4b0d-a359-4bd3d5c00a1a,_)
+THEN
+Proc_StartDialog(0,"CoS_Academy_SentientVoidwoken",CHARACTERGUID_S_CoS_Academy_SentientVoidwoken_001_1f1f40cc-4d58-4b0d-a359-4bd3d5c00a1a,_Player);
+
+// Failed to find anyone else -> voidwoken leaves
+PROC
+PROC_Origins_Fane_SentientVoidwokenDialogAfterCOM()
+AND
+NOT DB_ClosestAvailableCharacterTo(_,CHARACTERGUID_S_CoS_Academy_SentientVoidwoken_001_1f1f40cc-4d58-4b0d-a359-4bd3d5c00a1a,_)
+THEN
+SetStoryEvent(CHARACTERGUID_S_CoS_Academy_SentientVoidwoken_001_1f1f40cc-4d58-4b0d-a359-4bd3d5c00a1a,"CoS_Academy_SentientVoidwoken_Leave");
+
+//END_REGION
+
+//REGION Arena of the One
+IF
+GlobalFlagSet("CoS_ArenaOfTheOne_Start_FadeOut")
+AND
+DB_Avatars(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+THEN
+ObjectSetFlag(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb, "QuestUpdate_FTJ_OriginFane_StartedArenaOne");
+//END_REGION
+
+// ARX is in ARX_Origins_Fane
+
+//REGION Companion moment quest updates
+PROC
+Proc_COMFinished("FTJ_GhettoBlacksmith_COM_Fane",(CHARACTERGUID)_Avatar)
+THEN
+UserSetFlag(_Avatar,"QuestUpdate_FTJ_COM_Fane_GhettoBlacksmith");
+
+PROC
+Proc_COMFinished("FTJ_SW_Windego_COM_Fane",(CHARACTERGUID)_Avatar)
+THEN
+UserSetFlag(_Avatar,"QuestUpdate_FTJ_COM_Fane_MetWindego");
+SetRelationFactionToPlayers("FTJ_SW_Windego",0);
+
+PROC
+Proc_COMFinished("RC_OIL_Tomb_Ataraxian_COM_Fane",(CHARACTERGUID)_Avatar)
+THEN
+UserSetFlag(_Avatar,"QuestUpdate_FTJ_COM_Fane_TalkedToEternalAetera");
+
+PROC
+Proc_COMFinished("CoS_Academy_SentientVoidwoken_COM_Fane",(CHARACTERGUID)_Avatar)
+AND
+ObjectGetFlag(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"CoS_COM_FaneLeavesPermanently",0)
+THEN
+ObjectSetFlag(_Avatar,"QuestUpdate_FTJ_COM_Fane_RefusedPromise");
+
+PROC
+Proc_COMFinished("CoS_Academy_SentientVoidwoken_COM_Fane",(CHARACTERGUID)_Avatar)
+AND
+ObjectGetFlag(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"CoS_COM_FaneLeavesPermanently",1)
+THEN
+ObjectClearFlag(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"CoS_COM_FaneLeavesPermanently");
+ObjectSetFlag(_Avatar,"QuestUpdate_FTJ_COM_Fane_TookPromise");
+PROC_Origins_CompanionLeavePermanently(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb);
+DB_CompanionLeaving(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,_Avatar);
+DB_GLO_CompanionLeavingForTemple(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb);
+CharacterDisappearOutOfSight(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,0,1,"GLO_CompanionLeaves_LowRelation",1);
+ObjectSetFlag(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"CoS_CompanionOpposeAvatar");
+ObjectClearFlag(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"CoS_CompanionReJoinAvatar");
+DB_Dialogs(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"CoS_Origins_EnteringTheAcademy_Fane");
+
+
+//REGION Arena of the One Save Fixes
+
+//Kill At the Start of Arx (Mega-edgecase, loading in AotO and somehow they manage to reach the ending with out reloading)
+IF
+RegionStarted("ARX_Main")
+AND
+NOT DB_IsPlayer(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+AND
+CharacterIsDead(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,0)
+AND
+DB_Avatars(_Avatar)
+AND
+ObjectGetFlag(_Avatar,"QuestUpdate_FTJ_COM_Fane_TookPromise",1)
+THEN
+Proc_GLO_Origins_Fane_SaveGameFix_Kill();
+
+PROC
+Proc_GLO_Origins_Fane_SaveGameFix_Kill()
+THEN
+ProcSetInvulnerable(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,0);
+CharacterSetImmortal(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,0);
+ObjectClearFlag(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"CoS_CompanionReJoinAvatar");
+CharacterDie(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,0,"DoT");
+
+//END_REGION
+
+PROC
+Proc_COMFinished("CoS_Academy_SentientVoidwoken_COM_Fane",(CHARACTERGUID)_Avatar)
+THEN
+PROC_Origins_Fane_SentientVoidwokenDialogAfterCOM();
+
+//END_REGION
+
+
+//REGION Fane redemption combat comments by voidwoken
+IF
+GlobalFlagSet("GLO_VoidWokenFaneComments")
+THEN
+PROC_OriginsFane_StartRedemptionComments();
+
+// Limit to 18 (every comment three times) to prevent them getting boring
+PROC
+PROC_OriginsFane_StartRedemptionComments()
+THEN
+ProcDeclareCounter("OriginsFane_RedemptionComments");
+
+IF
+StoryEvent(_,"GLO_AD_VoidwokenFaneCombat_Event")
+THEN
+ProcIncreaseCounter("OriginsFane_RedemptionComments");
+
+IF
+DB_GlobalCounter("OriginsFane_RedemptionComments",18)
+THEN
+GlobalClearFlag("GLO_VoidWokenFaneComments");
+//END_REGION
+/*
+//REGION Tracking Fane Mask
+PROC
+PROC_OriginsFane_ShowMaskMarker((INTEGER)_Show)
+AND
+DB_Negate(_Show,_CurrentShowingState)
+AND
+DB_OriginsFane_MaskMarkerActive(_CurrentShowingState)
+AND
+DB_CurrentLevel(_Region)
+AND
+DB_OriginsFane_MaskMarker(_Region,_Marker)
+THEN
+NOT DB_OriginsFane_MaskMarkerActive(_CurrentShowingState);
+DB_OriginsFane_MaskMarkerActive(_Show);
+ShowMapMarker(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,_Marker,_Show);
+
+//REGION Hide/show marker when in/out of Fane inventory
+IF
+ItemRemovedFromCharacter(ITEMGUID_S_GLO_Fane_Shapeshifter_Mask_9e1dd03c-6ceb-47e6-b073-40cf228cb98e,CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+AND
+DB_IsPlayer(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+THEN
+PROC_OriginsFane_ShowMaskMarker(1);
+
+IF
+ItemAddedToCharacter(ITEMGUID_S_GLO_Fane_Shapeshifter_Mask_9e1dd03c-6ceb-47e6-b073-40cf228cb98e,CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+AND
+DB_IsPlayer(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+THEN
+PROC_OriginsFane_ShowMaskMarker(0);
+
+// Player takes over companion
+IF
+CharacterMadePlayer(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+AND
+NOT GetInventoryOwner(ITEMGUID_S_GLO_Fane_Shapeshifter_Mask_9e1dd03c-6ceb-47e6-b073-40cf228cb98e,CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+THEN
+PROC_OriginsFane_ShowMaskMarker(1);
+
+IF
+CharacterLeftParty(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+AND
+NOT DB_IsPlayer(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+THEN
+PROC_OriginsFane_ShowMaskMarker(0);
+//END_REGION
+
+//REGION Change marker when changing level
+// Transition to new level -> new marker (markers are level-specific)
+PROC
+ProcRegionEnded(_Region)
+AND
+DB_IsPlayer(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+AND
+DB_OriginsFane_MaskMarker(_Region,_Marker)
+AND
+DB_OriginsFane_MaskMarkerActive(1)
+THEN
+PROC_OriginsFane_ShowMaskMarker(0);
+
+IF
+GameStarted(_Region,_)
+AND
+DB_IsPlayer(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+AND
+GetRegion(ITEMGUID_S_GLO_Fane_Shapeshifter_Mask_9e1dd03c-6ceb-47e6-b073-40cf228cb98e,_Region)
+AND
+NOT GetInventoryOwner(ITEMGUID_S_GLO_Fane_Shapeshifter_Mask_9e1dd03c-6ceb-47e6-b073-40cf228cb98e,CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+THEN
+PROC_OriginsFane_ShowMaskMarker(1);
+//END_REGION
+*/
+//REGION Fane gets his mask for the first in Fort Joy
+IF
+ItemAddedToCharacter(ITEMGUID_S_GLO_Fane_Shapeshifter_Mask_9e1dd03c-6ceb-47e6-b073-40cf228cb98e,CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+AND
+DB_CurrentLevel("FJ_FortJoy_Main")
+AND
+QueryOnlyOnce("OriginsFane_GotMaskBack")
+AND
+IsTagged(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"AVATAR",_IsFaneAvatar)
+AND
+DB_OriginsFane_GotMaskBackUpdate(_IsFaneAvatar,_QuestUpdate)
+THEN
+Proc_StartDialog(1,"FTJ_AD_FaneGotMaskBack",CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb);
+ObjectSetFlag(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,_QuestUpdate);
+
+//END_REGION
+
+//END_REGION
+
+//REGION Debug helper
+// If you exit the tutorial without completing the Windego event, remove NPC Fane's shapeshift status
+PROC
+ProcRegionEnded("TUT_Tutorial_A")
+AND
+NOT DB_IsPlayer(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+AND
+HasActiveStatus(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"FANE_ELF",1)
+THEN
+RemoveStatus(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"FANE_ELF");
+
+// Remove shapeshift if recruited via debug book in tutorial
+IF
+CharacterMadePlayer(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+AND
+DB_CurrentLevel("TUT_Tutorial_A")
+AND
+HasActiveStatus(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"FANE_ELF",1)
+THEN
+RemoveStatus(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"FANE_ELF");
+
+//END_REGION
+
+//REGION Journal updates
+
+IF
+GlobalFlagSet("GLO_OriginFane_VoidwokenTaunts")
+AND
+DB_Avatars(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+THEN
+ObjectSetFlag(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"QuestUpdate_FTJ_OriginFane_VoidwokenTaunts");
+
+IF
+SavegameLoaded(_Major,_Minor,_Rev,_Build)
+AND
+QRY_VersionIsOlderThan(_Major,_Minor,_Rev,_Build, 3, 5, 1, 0)
+AND
+DB_GlobalFlag("GLO_OriginFane_VoidwokenTaunts")
+AND
+DB_Avatars(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+THEN
+ObjectSetFlag(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"QuestUpdate_FTJ_OriginFane_VoidwokenTaunts");
+
+//END_REGION
+
+//REGION C3PFane: Flashing eyes
+IF
+ObjectFlagSet(_EyesFlashFlag,CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,_)
+AND
+DB_OriginsFane_EyesFlashEffects(_EyesFlashFlag,_LeftEyeEffect,_RightEyeEffect)
+THEN
+ObjectClearFlag(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,_EyesFlashFlag);
+PlayEffect(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,_LeftEyeEffect,"l_eye_Bone");
+PlayEffect(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,_RightEyeEffect,"r_eye_Bone");
+
+IF
+ObjectFlagSet("GLO_OriginsFane_EyesFlash_AuraStart",CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,_)
+THEN
+ObjectClearFlag(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"GLO_OriginsFane_EyesFlash_AuraStart");
+PROC_LoopEffect("RS3_FX_GP_ScriptedEvent_GodsAura_01_Fading",CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"RC_OIL_FanePossessed","RC_Main","Dummy_StatusFX");
+
+IF
+ObjectFlagSet("GLO_OriginsFane_EyesFlash_AuraStop",CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,_)
+THEN
+ObjectClearFlag(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"GLO_OriginsFane_EyesFlash_AuraStop");
+PROC_StopLoopEffect(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"RC_OIL_FanePossessed");
+
+IF
+DialogEnded(_,_ID)
+AND
+DB_GLO_OriginsFane_InEternalDialog_ID(_ID)
+THEN
+NOT DB_GLO_OriginsFane_InEternalDialog_ID(_ID);
+PROC_StopLoopEffect(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"RC_OIL_FanePossessed");
+//END_REGION
+
+//REGION Epilogue
+// Fane divine -> glowing eyes
+IF
+DB_EG_EpilogueSetupFinished(1)
+AND
+ObjectGetFlag(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"EG_Ending1_NewDivine_ObjFlag",1)
+THEN
+PROC_LoopEffect("RS3_FX_GP_ScriptedEvent_End_Fane_Eye_L_01",CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"GLO_Fane_EndGameGlowingLeftEye","ARX_Endgame","l_eye_Bone");
+PROC_LoopEffect("RS3_FX_GP_ScriptedEvent_End_Fane_Eye_R_01",CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"GLO_Fane_EndGameGlowingRightEye","ARX_Endgame","r_eye_Bone");
+
+// Remove head gear from NPC Fane, so you can see his eyes glow
+IF
+DB_EG_EpilogueSetupFinished(1)
+AND
+NOT DB_IsPlayer(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+AND
+ObjectGetFlag(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"EG_TheChoice_MadeIt",1)
+AND
+NOT DB_GlobalFlag("EG_Ending4_GodKing")
+AND
+CharacterGetEquippedItem(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"Helmet",_Helmet)
+THEN
+CharacterUnequipItem(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,(ITEMGUID)_Helmet);
+
+// NPC fane is reading his book
+IF
+DB_EG_EpilogueSetupFinished(1)
+THEN
+SetVarFixedString(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"currentState","State_Epilogue");
+
+// In case of god king ending, fane is throwing pages into the sea
+IF
+DB_EG_EpilogueSetupFinished(1)
+AND
+NOT DB_Dead(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb)
+AND
+GlobalGetFlag("EG_Ending4_GodKing",1)
+THEN
+DB_DoNotFace(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb);
+CharacterLookFromTrigger(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,TRIGGERGUID_S_EG_LV_FanePoint_BookThrow_a3512b5f-316d-4c1d-859f-7a64ef0db1b5,0);
+
+// Effects
+IF
+ObjectFlagSet(_BookEffectFlag,CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,_)
+AND
+DB_OriginsFane_BookEffects(_BookEffectFlag,_Effect)
+THEN
+ObjectClearFlag(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,_BookEffectFlag);
+PlayEffect(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,_Effect);
+
+// Fane looks away from you
+IF
+ObjectFlagSet("EG_FaneLooksAwayFromYou",CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,_)
+THEN
+DB_DoNotFace(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb);
+CharacterLookFromTrigger(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,TRIGGERGUID_S_EG_LV_FanePoint_BookThrow_a3512b5f-316d-4c1d-859f-7a64ef0db1b5,1);
+
+// Fane no longer reads
+IF
+ObjectFlagSet("EG_Fane_NoMoreReading",CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,_)
+THEN
+SetVarFixedString(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"currentState","");
+
+// Fane throws away book.
+IF
+ObjectFlagSet("EG_Fane_LookingFromBookThrowingTrigger",CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,_)
+THEN
+CharacterLookFromTrigger(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,TRIGGERGUID_S_EG_LV_FanePoint_BookThrow_a3512b5f-316d-4c1d-859f-7a64ef0db1b5,1);
+TimerLaunch("EG_Fane_LookingFromBookThrowingTrigger",200);
+
+IF
+TimerFinished("EG_Fane_LookingFromBookThrowingTrigger")
+THEN
+ObjectSetFlag(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"PlayAnim_skill_cast_throw_arc_02_cast");
+ObjectSetFlag(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb,"GLO_Fane_RS3_FX_GP_ScriptedEvent_ARX_Endgame_Fane_TrowingBook_01");
+// Keep looking out over the ocean
+DB_DoNotFace(CHARACTERGUID_S_Player_Fane_02a77f1f-872b-49ca-91ab-32098c443beb);
+//END_REGION
+PROC
+Proc_DialogFlagSetup("FTJ_SW_Windego_COM_Fane", _, _, _, _)
+THEN
+TeleportTo(ITEMGUID_S_FTJ_SW_GodKingHelper_551f3337-71c5-42a4-9cab-70e9decafaed, CHARACTERGUID_S_GLO_Windego_d783285f-d3be-4cba-8333-db8976cef182);
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start"

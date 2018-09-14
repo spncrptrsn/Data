@@ -1,0 +1,97 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+// Don't show the movement tutorial for players that move before the tutorial is shown
+
+// Trigger the camera tutorial 10 seconds after all players have moved, or
+// 10 seconds after the first player closed the movement tutorial box
+KBSECTION
+// Triggers to detect that someone moved from their initial position
+IF
+DB_Tutorial_PlayerMovementDetectionTrigger((TRIGGERGUID)_Trigger)
+THEN
+TriggerRegisterForPlayers(_Trigger);
+
+// Player entered detection trigger -> won't get movement tutorial
+// + check whether everyone has moved (if so, complete this goal
+// and schedule the camera tutorial)
+IF
+CharacterEnteredTrigger(_Player,_Trigger)
+AND
+DB_Tutorial_PlayerMovementDetectionTrigger(_Trigger)
+THEN
+PROC_GLOBAL_TutorialMessages_PlayerMoved(_Player);
+
+// Player got the movement tutorial -> record so we know
+// we should only schedule the camera tutorial after a
+// a movement tutorial box has been closed
+PROC
+PROC_CheckPlayTut(_Char,"TUT_Movement")
+THEN
+DB_GlobalTutorialMessages_TUT_Movement_Shown(1);
+PROC_GLOBAL_TutorialMessages_PlayerMoved(_Char);
+
+//REGION Handle a player moving or getting the movement tutorial
+// This player has moved or got the tutorial
+PROC
+PROC_GLOBAL_TutorialMessages_PlayerMoved((CHARACTERGUID)_Player)
+THEN
+DB_GLOBAL_TutorialMessages_MovementTutFinishedFor(_Player);
+
+// Anyone left that didn't move or didn't get the tutorial?
+PROC
+PROC_GLOBAL_TutorialMessages_PlayerMoved((CHARACTERGUID)_Player)
+AND
+DB_IsPlayer(_AnyPlayer)
+AND
+NOT DB_GLOBAL_TutorialMessages_MovementTutFinishedFor(_AnyPlayer)
+THEN
+DB_GLOBAL_TutorialMessages_MovementTutUnfinished(1);
+
+// No one left -> unregister movement detection triggers
+PROC
+PROC_GLOBAL_TutorialMessages_PlayerMoved((CHARACTERGUID)_Player)
+AND
+NOT DB_GLOBAL_TutorialMessages_MovementTutUnfinished(1)
+AND
+DB_Tutorial_PlayerMovementDetectionTrigger(_Trigger)
+THEN
+ProcTriggerUnregisterForPlayers(_Trigger);
+NOT DB_Tutorial_PlayerMovementDetectionTrigger(_Trigger);
+
+// No one left -> schedule camera tutorial right away if everyone
+// skipped the movement tutorial and complete goal
+PROC
+PROC_GLOBAL_TutorialMessages_PlayerMoved((CHARACTERGUID)_Player)
+AND
+NOT DB_GLOBAL_TutorialMessages_MovementTutUnfinished(1)
+AND
+NOT DB_GlobalTutorialMessages_TUT_Movement_Shown(1)
+THEN
+TimerLaunch("TUT_Camera",10000);
+GoalCompleted;
+
+// Clean up
+PROC
+PROC_GLOBAL_TutorialMessages_PlayerMoved((CHARACTERGUID)_Player)
+THEN
+NOT DB_GLOBAL_TutorialMessages_MovementTutUnfinished(1);
+//END_REGION
+
+// At least one player got the movement tutorial and dismissed it
+// -> schedule the camera tutorial
+IF
+TutorialBoxClosed(_,_Message)
+AND
+StringContains(_Message,"TUT_Movement",1)
+AND
+NOT DB_Tutorial_PlayerCameraTutorialTimerLaunched(1)
+THEN
+// Only launch once, multiple players could have gotten this dialog
+DB_Tutorial_PlayerCameraTutorialTimerLaunched(1);
+TimerLaunch("TUT_Camera",10000);
+GoalCompleted; 
+EXITSECTION
+//NOT DB_GlobalTutorialMessages_TUT_Movement_Shown(1);
+//NOT DB_Tutorial_PlayerCameraTutorialTimerLaunched(1);
+ENDEXITSECTION

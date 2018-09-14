@@ -1,0 +1,244 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+//REGION SETTING UP Scre Persuasion dialog flags
+/* To set up, add the next Database:
+DB_ScorePersuasion_Dialog((STRING)_DialogsName,(INTEGER)_AmountOfResolutions);
+
+Currently, there are only 3 or 5 resolutions support,
+But, you can always connect different resolutions to a similar node.
+*/
+//END_REGION
+KBSECTION
+//REGION Set up
+IF
+DB_ScorePersuasion_Dialog((STRING)_Dialog,_)
+AND
+NOT DB_ScorePersuasion_DialogFlags(_Dialog,_,_)
+THEN
+DB_ScorePersuasion_DialogFlags(_Dialog,"Option_Plus_2",2);
+DB_ScorePersuasion_DialogFlags(_Dialog,"Option_Plus_1",1);
+DB_ScorePersuasion_DialogFlags(_Dialog,"Option_Plus_0",0);
+
+IF
+DB_ScorePersuasion_Dialog((STRING)_Dialog,3)
+AND
+NOT DB_ScorePersuasion_DialogResolution_3(_Dialog,_,_,_)
+THEN
+DB_ScorePersuasion_DialogResolution_3(_Dialog,"Resolution_High","Resolution_Mid","Resolution_Low");
+
+IF
+DB_ScorePersuasion_Dialog((STRING)_Dialog,5)
+AND
+NOT DB_ScorePersuasion_DialogResolution_5(_Dialog,_,_,_,_,_)
+THEN
+DB_ScorePersuasion_DialogResolution_5(_Dialog,"Resolution_High","Resolution_MidHigh","Resolution_Mid","Resolution_MidLow","Resolution_Low");
+//END_REGION
+
+//REGION Register Dialog Start
+IF
+DialogStarted(_Dialog, _ID)
+AND
+DB_ScorePersuasion_Dialog(_Dialog,_)
+THEN
+DB_ScorePersuasion_DialogId(_Dialog, _ID);
+//END_REGION
+
+//REGION Set Score
+IF
+ObjectFlagSet(_Flag,_Char,_Inst)
+AND
+DB_ScorePersuasion_DialogId(_Dialog, _Inst)
+AND
+DB_ScorePersuasion_DialogFlags(_Dialog,_Flag,_AddedScore)
+THEN
+Proc_ScorePersuasion_SetScore(_Dialog,_Inst,_Char,_AddedScore);
+ObjectClearFlag(_Char,_Flag,_Inst);
+
+PROC
+Proc_ScorePersuasion_SetScore((STRING)_Dialog,(INTEGER)_DialogInst,(GUIDSTRING)_Char,(INTEGER)_AddedScore)
+AND 
+DB_ScorePersuasion_CurrentScore(_DialogInst,_Char,_PrevScore)
+AND
+IntegerSum(_PrevScore,_AddedScore,_CurrentScore)
+THEN
+NOT DB_ScorePersuasion_CurrentScore(_DialogInst,_Char,_PrevScore);
+DB_ScorePersuasion_CurrentScore(_DialogInst,_Char,_CurrentScore);
+
+PROC
+Proc_ScorePersuasion_SetScore((STRING)_Dialog,(INTEGER)_DialogInst,(GUIDSTRING)_Char,(INTEGER)_AddedScore)
+AND 
+NOT DB_ScorePersuasion_CurrentScore(_DialogInst,_Char,_)
+THEN
+DB_ScorePersuasion_CurrentScore(_DialogInst,_Char,_AddedScore);
+
+PROC
+Proc_ScorePersuasion_SetScore((STRING)_Dialog,(INTEGER)_DialogInst,(GUIDSTRING)_Char,(INTEGER)_AddedScore)
+THEN
+Proc_ScorePersuasion_UpdateResolution(_Dialog,_DialogInst);
+//END_REGION
+
+
+//REGION Update Resolution
+PROC
+Proc_ScorePersuasion_UpdateResolution((STRING)_Dialog,(INTEGER)_DialogInst)
+AND
+DB_ScorePersuasion_CurrentResolution(_DialogInst,(GUIDSTRING)_Char,(STRING)_ResolutionFlag)
+THEN
+NOT DB_ScorePersuasion_CurrentResolution(_DialogInst,_Char,_ResolutionFlag);
+ObjectClearFlag(_Char,_ResolutionFlag,_DialogInst);
+
+PROC
+Proc_ScorePersuasion_UpdateResolution((STRING)_Dialog,(INTEGER)_DialogInst)
+AND
+DB_ScorePersuasion_DialogResolution_3(_Dialog,(STRING)_,(STRING)_,(STRING)_)
+THEN
+Proc_ScorePersuasion_UpdateResolution_3(_Dialog,_DialogInst);
+
+PROC
+Proc_ScorePersuasion_UpdateResolution((STRING)_Dialog,(INTEGER)_DialogInst)
+AND
+DB_ScorePersuasion_DialogResolution_5(_Dialog,(STRING)_,(STRING)_,(STRING)_,(STRING)_,(STRING)_)
+THEN
+Proc_ScorePersuasion_UpdateResolution_5(_Dialog,_DialogInst);
+
+IF
+DB_ScorePersuasion_CurrentResolution(_DialogInst,_Char,_Flag)
+THEN
+ObjectSetFlag(_Char,_Flag,_DialogInst);
+//END_REGION
+
+//REGION Update Resolution, 3 resolutions
+//Case of 3 resolution; 5-6 High, 2-4 Med, 0-1 Low
+PROC
+Proc_ScorePersuasion_UpdateResolution_3((STRING)_Dialog,(INTEGER)_DialogInst)
+AND
+DB_ScorePersuasion_CurrentScore(_DialogInst,_Char,_CurrentScore)
+AND
+_CurrentScore >= 5
+AND
+DB_ScorePersuasion_DialogResolution_3(_Dialog,_ResolutionFlag,_,_)
+THEN
+DB_ScorePersuasion_CurrentResolution(_DialogInst,_Char,_ResolutionFlag);
+
+PROC
+Proc_ScorePersuasion_UpdateResolution_3((STRING)_Dialog,(INTEGER)_DialogInst)
+AND
+NOT DB_ScorePersuasion_CurrentResolution(_DialogInst,_,_)
+AND
+DB_ScorePersuasion_CurrentScore(_DialogInst,_Char,_CurrentScore)
+AND
+_CurrentScore >= 2
+AND
+DB_ScorePersuasion_DialogResolution_3(_Dialog,_,_ResolutionFlag,_)
+THEN
+DB_ScorePersuasion_CurrentResolution(_DialogInst,_Char,_ResolutionFlag);
+
+PROC
+Proc_ScorePersuasion_UpdateResolution_3((STRING)_Dialog,(INTEGER)_DialogInst)
+AND
+NOT DB_ScorePersuasion_CurrentResolution(_DialogInst,_,_)
+AND
+DB_ScorePersuasion_CurrentScore(_DialogInst,_Char,_CurrentScore)
+AND
+_CurrentScore >= 0
+AND
+DB_ScorePersuasion_DialogResolution_3(_Dialog,_,_,_ResolutionFlag)
+THEN
+DB_ScorePersuasion_CurrentResolution(_DialogInst,_Char,_ResolutionFlag);
+//END_REGION
+
+//REGION Update Resolution, 3 resolutions
+//Case of 5 resolution; 6 High,4-5 MedHigh,3 Med,1-2 MedLow,0 Low
+PROC
+Proc_ScorePersuasion_UpdateResolution_5((STRING)_Dialog,(INTEGER)_DialogInst)
+AND
+DB_ScorePersuasion_CurrentScore(_DialogInst,_Char,_CurrentScore)
+AND
+_CurrentScore >= 6
+AND
+DB_ScorePersuasion_DialogResolution_5(_Dialog,_ResolutionFlag,_,_,_,_)
+THEN
+DB_ScorePersuasion_CurrentResolution(_DialogInst,_Char,_ResolutionFlag);
+
+PROC
+Proc_ScorePersuasion_UpdateResolution_5((STRING)_Dialog,(INTEGER)_DialogInst)
+AND
+NOT DB_ScorePersuasion_CurrentResolution(_DialogInst,_,_)
+AND
+DB_ScorePersuasion_CurrentScore(_DialogInst,_Char,_CurrentScore)
+AND
+_CurrentScore >= 4
+AND
+DB_ScorePersuasion_DialogResolution_5(_Dialog,_,_ResolutionFlag,_,_,_)
+THEN
+DB_ScorePersuasion_CurrentResolution(_DialogInst,_Char,_ResolutionFlag);
+
+PROC
+Proc_ScorePersuasion_UpdateResolution_5((STRING)_Dialog,(INTEGER)_DialogInst)
+AND
+NOT DB_ScorePersuasion_CurrentResolution(_DialogInst,_,_)
+AND
+DB_ScorePersuasion_CurrentScore(_DialogInst,_Char,_CurrentScore)
+AND
+_CurrentScore >= 3
+AND
+DB_ScorePersuasion_DialogResolution_5(_Dialog,_,_,_ResolutionFlag,_,_)
+THEN
+DB_ScorePersuasion_CurrentResolution(_DialogInst,_Char,_ResolutionFlag);
+
+PROC
+Proc_ScorePersuasion_UpdateResolution_5((STRING)_Dialog,(INTEGER)_DialogInst)
+AND
+NOT DB_ScorePersuasion_CurrentResolution(_DialogInst,_,_)
+AND
+DB_ScorePersuasion_CurrentScore(_DialogInst,_Char,_CurrentScore)
+AND
+_CurrentScore >= 1
+AND
+DB_ScorePersuasion_DialogResolution_5(_Dialog,_,_,_,_ResolutionFlag,_)
+THEN
+DB_ScorePersuasion_CurrentResolution(_DialogInst,_Char,_ResolutionFlag);
+
+PROC
+Proc_ScorePersuasion_UpdateResolution_5((STRING)_Dialog,(INTEGER)_DialogInst)
+AND
+NOT DB_ScorePersuasion_CurrentResolution(_DialogInst,_,_)
+AND
+DB_ScorePersuasion_CurrentScore(_DialogInst,_Char,_CurrentScore)
+AND
+_CurrentScore >= 0
+AND
+DB_ScorePersuasion_DialogResolution_5(_Dialog,_,_,_,_,_ResolutionFlag)
+THEN
+DB_ScorePersuasion_CurrentResolution(_DialogInst,_Char,_ResolutionFlag);
+
+//END_REGION
+
+//REGION Clear flags
+IF
+DialogEnded(_Dialog,_DialogInst)
+AND
+DB_ScorePersuasion_Dialog(_Dialog,_)
+THEN
+Proc_ScorePesuasion_Clear(_Dialog,_DialogInst);
+
+PROC
+Proc_ScorePesuasion_Clear((STRING)_Dialog,(INTEGER)_DialogInst)
+AND
+DB_ScorePersuasion_CurrentResolution(_DialogInst,_Char,_Flag)
+THEN
+NOT DB_ScorePersuasion_CurrentResolution(_DialogInst,_Char,_Flag);
+ObjectClearFlag(_Char,_Flag,_DialogInst);
+
+PROC
+Proc_ScorePesuasion_Clear((STRING)_Dialog,(INTEGER)_DialogInst)
+AND
+DB_ScorePersuasion_CurrentScore(_DialogInst,_Char,_Score)
+THEN
+NOT DB_ScorePersuasion_CurrentScore(_DialogInst,_Char,_Score);
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "DOS2ModWrapper"

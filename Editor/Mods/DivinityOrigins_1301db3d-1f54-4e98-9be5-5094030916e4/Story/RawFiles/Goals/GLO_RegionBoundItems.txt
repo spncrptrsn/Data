@@ -1,0 +1,32 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+//DB_RegionBoundItem(_Item,_Region)
+
+KBSECTION
+//If it is a container, empty it to the proper inventory before removing
+PROC
+ProcRegionEnded(_Region)
+AND
+DB_RegionBoundItem((ITEMGUID)_Item,_Region)
+AND
+ItemIsContainer(_Item,1)
+AND
+DB_IsPlayer((CHARACTERGUID)_Player)
+AND
+ItemIsInCharacterInventory(_Item,_Player,1)
+THEN
+MoveAllItemsTo(_Item,_Player);
+
+
+PROC
+ProcRegionEnded(_Region)
+AND
+DB_RegionBoundItem((ITEMGUID)_Item,_Region)
+THEN
+ItemRemove(_Item);
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "DOS2ModWrapper"

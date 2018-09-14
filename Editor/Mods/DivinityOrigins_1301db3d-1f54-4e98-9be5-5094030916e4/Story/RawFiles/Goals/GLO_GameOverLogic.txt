@@ -1,0 +1,135 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+IF
+DB_IsPlayer(_Player)
+THEN
+DB_CheckPartyForPlayer(_Player);
+
+//player removed
+IF
+DB_CheckPartyForPlayer(_Player)
+AND
+NOT DB_IsPlayer(_Player)
+THEN
+NOT DB_CheckPartyForPlayer(_Player);
+ProcCheckGameOver();
+
+IF
+CharacterDied(_Player)
+AND
+DB_IsPlayer(_Player)
+AND
+NOT DB_GLO_HoERespawnPoint(_,_)
+AND
+NOT DB_GLO_DeadOrder_EligibleDeadOrder(_,(INTEGER)_,(STRING)_)
+AND
+ItemTemplateIsInCharacterInventory(_Player,"Quest_Resurrection_Idol_6b70e6e1-855e-4295-b79b-d87ebd6bd4af",0)
+THEN
+ProcCheckGameOver();
+
+PROC
+ProcCheckGameOver()
+AND
+DB_IsPlayer(_Player)
+AND
+NOT DB_ARX_Frozen_PermanentlyFrozen(_Player) //ARX_Outskirts_FrozenSurvivors situation
+AND
+CharacterIsDead(_Player,0)
+THEN
+DB_PlayerAlive(1);
+
+PROC
+ProcCheckGameOver()
+AND
+DB_IsPlayer(_Player)
+AND
+QRY_CheckRessurectionIdol(_Player) // resurrection in progress or will be done soon
+THEN
+DB_PlayerAlive(1);
+
+QRY
+QRY_CheckRessurectionIdol((CHARACTERGUID)_Player)
+AND
+DB_ResurrectionIdol_Timer(_Player)
+THEN
+DB_NOOP(1);
+
+QRY
+QRY_CheckRessurectionIdol((CHARACTERGUID)_Player)
+AND
+NOT DB_ResurrectionIdol_Timer(_Player)
+AND
+QRY_CharIsAboutToResurrect(_Player)
+THEN
+DB_NOOP(1);
+
+//if we don't have any players, don't end the game
+PROC
+ProcCheckGameOver()
+AND
+SysCount("DB_IsPlayer",1,0)
+THEN
+DB_PlayerAlive(1);
+
+//don't consider guys in arena as dead
+
+PROC
+ProcCheckGameOver()
+AND
+DB_IsPlayer(_Player)
+AND
+DB_Arena_PlayerParticipants(_Arena,_,_Player,_)
+AND
+NOT DB_Arena_FightToTheDeath(_Arena)
+THEN
+DB_PlayerAlive(1);
+
+//Don't end the game while we're resurrected people for the epilogue
+PROC
+ProcCheckGameOver()
+AND
+DB_EG_ResurrectingEpiloguePlayer(_)
+THEN
+DB_PlayerAlive(1);
+
+//The Doctor may yet resurrect the player!
+PROC
+ProcCheckGameOver()
+AND
+DB_IsPlayer(_Player)
+AND
+DB_EG_DemonDealer(_Player)
+AND
+ObjectGetFlag(_Player, "EG_SidedAgainstDoctor", 0)
+AND
+NOT DB_Dead(CHARACTERGUID_S_ARX_DoctorsHouse_TheDoctor_83083470-c543-45b3-ac8a-108df0daca8d)
+THEN
+DB_PlayerAlive(1);
+
+PROC
+ProcCheckGameOver()
+AND
+NOT DB_PlayerAlive(1)
+THEN
+MusicPlayGeneral("Music_Game_Over");
+ShowGameOverMenu();
+
+PROC
+ProcCheckGameOver()
+THEN
+NOT DB_PlayerAlive(1);
+
+
+IF
+GlobalFlagSet("GLO_GameOver")
+THEN
+MusicPlayGeneral("Music_Game_Over");
+ShowGameOverMenu();
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "DOS2ModWrapper"

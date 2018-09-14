@@ -1,0 +1,196 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+IF
+DB_FTJ_SW_SourceTotems((CHARACTERGUID)_Totem, _, _)
+THEN
+ProcCharacterDisableAllCrimes(_Totem);
+DB_IgnoreAssault(_Totem);
+DB_DontCreateMurder(_Totem);
+
+IF
+DB_FTJ_SW_SourceTotems((CHARACTERGUID)_Totem, _, _)
+AND
+GetVarObject(_Totem, "Cross", (ITEMGUID)_Cross)
+THEN
+CharacterUseItem(_Totem, _Cross, "");
+CharacterFlushQueue(_Totem);
+ItemSetCanInteract(_Cross, 0);
+
+
+//REGION Casting the skill
+
+IF
+AttackedByObject((CHARACTERGUID)_Totem, (CHARACTERGUID)_Char,_Attacker,_,_) // This could be moved to the GLO_SentinelSourceVampirism script when this event become available in script
+AND
+_Totem != _Attacker
+AND											// ~ imperfect workaround to avoid launching the AD when the totem gets source-vampirised
+DB_FTJ_SW_SourceTotems(_Totem, _, _)
+AND
+CharacterIsDead(_Totem,0)
+AND
+CharacterGetEquippedWeapon(_Char, _Weapon) // ITEMGUID_S_FTJ_PurgingWand_941387b4-1cb0-4dfa-9f2e-d5a59e5e3a30
+AND
+_Weapon != NULL_00000000-0000-0000-0000-000000000000
+AND
+GetTemplate(_Weapon,_Templ)
+AND
+_Templ != "WPN_Wand_Purging_2b4412a5-467a-44ae-9d7b-bf39a06794b2"
+THEN
+Proc_StartDialog(1, "FTJ_SW_AD_AttackShrieker", _Char); 
+Proc_FTJ_SW_SourceTotemsRestart(_Totem, _Char);
+Proc_FTJ_SW_SourceTotemsStart(_Totem, _Char);
+
+/*
+IF
+CharacterSawSneakingCharacter(_Totem, _Char)
+AND
+DB_FTJ_SW_SourceTotems(_Totem, _, _)
+THEN
+Proc_FTJ_SW_SourceTotemsRestart(_Totem, _Char);
+Proc_FTJ_SW_SourceTotemsStart(_Totem, _Char);*/
+
+
+IF
+CharacterItemEvent(_Char, _, _SpottedEvent)
+AND
+DB_FTJ_SW_SourceTotems(_Totem, _, _SpottedEvent)
+THEN
+Proc_FTJ_SW_SourceTotemsRestart(_Totem, _Char);
+Proc_FTJ_SW_SourceTotemsStart(_Totem, _Char);
+
+
+IF
+CharacterResurrected(_Char)
+AND
+DB_FTJ_SW_SourceTotems(_Totem, _, _)
+AND
+CharacterIsDead(_Totem,0)
+AND
+GetVarFloat(_Totem, "MySight", _TotemSight)
+AND
+GetDistanceTo(_Char, _Totem, _Dist)
+AND
+_Dist <= _TotemSight
+THEN
+Proc_FTJ_SW_SourceTotemsRestart((CHARACTERGUID)_Totem, (CHARACTERGUID)_Char);
+Proc_FTJ_SW_SourceTotemsStart((CHARACTERGUID)_Totem, (CHARACTERGUID)_Char);
+
+
+PROC
+Proc_FTJ_SW_SourceTotemsRestart((CHARACTERGUID)_Totem, (CHARACTERGUID)_Char)
+AND
+ObjectExists(_Char,1)
+AND
+DB_FTJ_SW_SourceTotems(_Totem, _Timer, _SpottedEvent)
+AND
+CharacterIsDead(_Totem,0)
+AND
+NOT DB_FTJ_SW_SourceTotems(_Char, _, _)
+AND
+DB_FTJ_SW_CharactersSpotted((CHARACTERGUID)_Totem, (CHARACTERGUID)_Char)
+AND
+CharacterIsDeadOrFeign(_Char, 0)
+THEN
+ProcObjectTimerCancel(_Char, _Timer);
+ProcObjectTimer(_Char, _Timer, 2800);
+Proc_FTJ_SW_StartTotemLoopEffect((CHARACTERGUID)_Totem);
+PROC_LoopBeamEffect("RS3_FX_Char_Creatures_Shriker_Lightning_Beam_01",_Totem,_Char,"Dummy_StatusFX","Dummy_BodyFX","GLO_ShriekerBeamEffect","__ANY__");
+
+PROC
+Proc_FTJ_SW_SourceTotemsStart((CHARACTERGUID)_Totem, (CHARACTERGUID)_Char)
+AND
+ObjectExists(_Char,1)
+AND
+DB_FTJ_SW_SourceTotems(_Totem, _Timer, _SpottedEvent)
+AND
+CharacterIsDead(_Totem,0)
+AND
+NOT DB_FTJ_SW_SourceTotems(_Char, _, _)
+AND
+NOT DB_FTJ_SW_CharactersSpotted((CHARACTERGUID)_Totem, (CHARACTERGUID)_Char)
+AND
+CharacterIsDeadOrFeign(_Char, 0)
+THEN
+DB_FTJ_SW_CharactersSpotted((CHARACTERGUID)_Totem, (CHARACTERGUID)_Char);
+ProcObjectTimer(_Char, _Timer, 2800);
+Proc_FTJ_SW_StartTotemLoopEffect((CHARACTERGUID)_Totem);
+PROC_LoopBeamEffect("RS3_FX_Char_Creatures_Shriker_Lightning_Beam_01",_Totem,_Char,"Dummy_StatusFX","Dummy_BodyFX","GLO_ShriekerBeamEffect","__ANY__");
+
+PROC
+Proc_FTJ_SW_StartTotemLoopEffect((CHARACTERGUID)_Totem)
+AND
+NOT DB_FTJ_SW_TotemLoopHandle((CHARACTERGUID)_Totem, _)
+AND
+PlayLoopEffect(_Totem, "RS3_FX_Char_Creatures_Shriker_Lightning_Prepare_Root_01", "", _Handle)
+THEN
+DB_FTJ_SW_TotemLoopHandle((CHARACTERGUID)_Totem, (INTEGER64)_Handle);
+PROC_StopLoopBeamEffect(_Totem,"GLO_ShriekerBeamEffect");
+
+PROC
+ProcObjectTimerFinished(_Char, _Timer)
+AND
+DB_FTJ_SW_SourceTotems((CHARACTERGUID)_Totem, _Timer, _)
+AND
+DB_FTJ_SW_CharactersSpotted((CHARACTERGUID)_Totem, (CHARACTERGUID)_Char)
+THEN
+NOT DB_FTJ_SW_CharactersSpotted((CHARACTERGUID)_Totem, (CHARACTERGUID)_Char);
+Proc_FTJ_SW_TotemKillCharacter((CHARACTERGUID)_Totem, (CHARACTERGUID)_Char);
+Proc_FTJ_SW_StopTotemLoopEffect((CHARACTERGUID)_Totem);
+
+
+PROC
+Proc_FTJ_SW_TotemKillCharacter((CHARACTERGUID)_Totem, (CHARACTERGUID)_Char)
+AND
+ObjectExists(_Char,1)
+AND
+CharacterIsDead(_Totem,0)
+AND
+CharacterCanSee(_Totem, _Char, 1)
+AND
+CharacterIsDeadOrFeign(_Char, 0)
+THEN
+PlayEffect(_Char, "RS3_FX_Char_Creatures_Shriker_LightningBolt_Impact_01");
+ApplyDamage((CHARACTERGUID)_Char, 666666, "Air");
+Proc_FTJ_SW_SourceTotemsStart((CHARACTERGUID)_Totem, (CHARACTERGUID)_Char); // Restart in case the character didn't die
+Proc_FTJ_SW_GarethDiedJournalUpdate((CHARACTERGUID)_Char); // Update in Call to Arms
+PlaySound(_Totem, "Shrieker");
+SetStoryEvent(_Char,"GLO_HitByShrieker");
+PROC_StopLoopBeamEffect(_Totem,"GLO_ShriekerBeamEffect");
+
+PROC
+Proc_FTJ_SW_StopTotemLoopEffect((CHARACTERGUID)_Totem)
+AND
+NOT DB_FTJ_SW_CharactersSpotted((CHARACTERGUID)_Totem, _)
+AND
+DB_FTJ_SW_TotemLoopHandle((CHARACTERGUID)_Totem, (INTEGER64)_Handle)
+AND
+GetVarString(_Totem,"EventLose",_EventLose)
+THEN
+NOT DB_FTJ_SW_TotemLoopHandle((CHARACTERGUID)_Totem, (INTEGER64)_Handle);
+StopLoopEffect(_Handle);
+PROC_StopLoopBeamEffect(_Totem,"GLO_ShriekerBeamEffect");
+SetStoryEvent(_Totem,_EventLose);
+
+//END_REGION
+
+PROC
+Proc_GLO_Shriekers_RemoveIgnoreCharacterFlags()
+AND
+DB_GLO_IgnoredBySourceTotems(_Player)
+THEN
+ObjectClearFlag(_Player,"GLO_IgnoredBySourceTotems");
+NOT DB_GLO_IgnoredBySourceTotems(_Player);
+
+IF
+TextEventSet("RemoveSourceTotems")
+AND
+DB_FTJ_SW_SourceTotems(_Totem, _, _)
+THEN
+SetOnStage(_Totem, 0);
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start"

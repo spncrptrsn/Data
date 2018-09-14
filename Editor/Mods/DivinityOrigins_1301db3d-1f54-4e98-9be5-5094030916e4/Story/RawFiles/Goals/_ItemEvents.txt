@@ -1,0 +1,105 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+/*
+Databases used for this events
+DB_HasStoryEvent((ITEMGUID)_Item,_HasItemEvent);
+DB_GiveItemToEvent(_Item,_GiveItemToStoryEvent);
+*/
+
+//REGION Item Template Has DB (Best to keep DBs global as templates can be used in multiple occations with same flag)
+//DB_HasTemplateItem((STRING)_template,(STRING)_HasItemFlag)
+//when declared on the fly, it will only check players
+DB_HasTemplateItem("QUEST_FunnyMeat_7284fb63-6469-4ea7-9058-e144a82ef90b","RC_HasFunnyMeatStew");
+DB_HasTemplateItem("QUEST_RC_DT_TaintedFunnyMeat_328f7cbe-9ab3-444a-baaf-45724bdd0a80","RC_HasTaintedFunnyMeatStew");
+DB_HasTemplateItem("QUEST_RC_DT_TaintedStew_1e9cc2fd-f157-4da1-ad2c-8e1cc6769ccd","RC_HasTaintedFunnyMeatStew");
+DB_HasTemplateItem("CON_Herb_YarrowFlower_cc1bb8f1-3a4e-46d7-9268-c420bece54a3","FTJ_HasYarrowFlower");
+DB_HasTemplateItem("RC_FTJ_Amulet_BrokenSourceCollar_6a906795-b26f-47fd-90ab-ed1916f5b18f","GLO_HasBrokenSourceCollar");
+DB_HasTemplateItem("CON_Drink_Cup_A_Tea_080d0e93-12e0-481f-9a71-f0e84ac4d5a9","GLO_HasCupOfTeaA");
+DB_HasTemplateItem("TOOL_LockPick_A_06d0eecb-4271-42a7-bd8c-4cbf24927197","GLO_HasLockPick");
+DB_HasTemplateItem("FUR_Bucket_A_0f653d13-3152-46d6-86a1-4b64b37e0668","GLO_HasBucket");
+DB_HasTemplateItem("TOOL_Shears_A_7d507bb0-7f15-45bc-b2ff-9a9753c4c7c7","GLO_HasShears");
+//END_REGION
+
+//REGION Give an item from template from the player to the character (ONLY WORKS IN DIALOGUE WITH PLAYER 1, set flag on NPC)
+//(Event is Object flag on target you want to give TO) (Success is set on NPC when the item was successfully given)
+//DB_GiveTemplateFromPlayerDialogEvent((STRING)_template,_event,_success);
+//END_REGION
+
+//REGION Give an item from template from the NPC to the player (ONLY WORKS IN DIALOGUE WITH PLAYER 1, set flag on NPC)
+//(Event is Object flag on target you want to give FROM) (Success is set on NPC when the item was successfully given)
+//DB_GiveTemplateFromPlayerDialogEvent((STRING)_template,_event,_success);
+DB_GiveTemplateFromNpcToPlayerDialogEvent("CON_Drink_Cup_A_Tea_080d0e93-12e0-481f-9a71-f0e84ac4d5a9","ARX_CD_SouvenirTrader_GaveTea","ARX_CD_SouvenirTrader_ManagedToGiveTea");
+//END_REGION
+
+//REGION Create new item from template and give to character
+//(Event is Object flag on target you want to give to)
+//DB_GiveNewItemFromTemplateEvent((STRING)_template,_event);
+DB_GiveNewItemFromTemplateEvent("CON_Food_Bowl_A_Empty_aeb79511-a929-43b4-9734-7e62da001c2b","RC_AddEmptyBowl");
+//END_REGION
+
+//REGION Remove item from template from character
+//(Event is Object flag on target you want to remove from) (Success is set on char when the item was successfully removed)
+//DB_RemoveItemFromTemplateEvent(_template,_event,_success)
+DB_RemoveItemFromTemplateEvent("QUEST_FunnyMeat_7284fb63-6469-4ea7-9058-e144a82ef90b","RC_RemoveFunnyMeatStew","RC_ManagedToRemoveFunnyMeatStew");
+DB_RemoveItemFromTemplateEvent("QUEST_RC_DT_TaintedFunnyMeat_328f7cbe-9ab3-444a-baaf-45724bdd0a80","RC_RemoveTaintedFunnyMeatStew","RC_ManagedToRemoveTaintedFunnyMeatStew");
+DB_RemoveItemFromTemplateEvent("QUEST_RC_DT_TaintedStew_1e9cc2fd-f157-4da1-ad2c-8e1cc6769ccd","RC_RemoveTaintedFunnyMeatStew","RC_ManagedToRemoveTaintedFunnyMeatStew");
+//END_REGION
+KBSECTION
+IF
+CharacterUsedItem(_Char,S_FTJ_LoreBookLoneWolves_63751bfb-0565-493d-8b3f-1ed1fc56f033)
+THEN
+ObjectSetFlag(_Char,"GLO_ReadLoreBookLoneWolves");
+
+IF
+CharacterUsedItem(_Char, ITEMGUID_S_RC_MIL_LoreBookLoneWolves_013ab229-03b3-48e0-bcc4-2d8b5ea93b9a)
+THEN
+ObjectSetFlag(_Char,"GLO_ReadLoreBookLoneWolves");
+
+//REGION Items use with strengh check
+/*
+PROC
+ProcBlockUseOfItem(_Player,_Item)
+AND
+DB_ItemUseStrengthCheck((ITEMGUID)_Item,(INTEGER)_RequiredStrength)
+AND
+NOT DB_CustomUseItemResponse(_Player,_Item,1)
+AND
+CharacterGetAttribute(_Player,"Strength",_Strength)
+AND
+_Strength < _RequiredStrength
+THEN
+DB_CustomUseItemResponse(_Player,_Item,0);
+Proc_StartDialog(1, "GEN_AD_UseBlockedTooHeavy",_Player);
+*/
+
+
+PROC
+ProcBlockUseOfItem(_Player,_Item)
+AND
+NOT DB_CustomUseItemResponse(_Player,_Item,1)
+AND
+GetVarInteger(_Item,"MinRequiredStrength",_RequiredStrength)
+AND
+CharacterGetAttribute(_Player,"Strength",_Strength)
+AND
+_Strength < _RequiredStrength
+AND
+GetVarString(_Item,"FailureAD",_String)
+THEN
+DB_CustomUseItemResponse(_Player,_Item,0);
+ProcUseItemStrengthCheckFailedAD(_Player,_String);
+
+PROC
+ProcUseItemStrengthCheckFailedAD((CHARACTERGUID)_Player,(STRING)_AD)
+AND
+_AD != ""
+THEN
+Proc_StartDialog(1,_AD,_Player);
+
+
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "DOS2ModWrapper"

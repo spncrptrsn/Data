@@ -1,0 +1,89 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+//REGION AdvancedSneakTriggerSupport
+DB_SneakTriggerVars(1,"SpottedTrigger");
+DB_SneakTriggerVars(2,"SpottedTrigger1");
+DB_SneakTriggerVars(3,"SpottedTrigger2");
+DB_SneakTriggerVars(4,"SpottedTrigger3");
+//END_REGION
+KBSECTION
+//REGION AdvancedSneakTrigger
+IF
+DB_AdvancedSneakTriggerSpotter((TRIGGERGUID)_Trigger,(CHARACTERGUID)_Char)
+THEN
+ProcSetSneakyTriggerVar(_Char,_Trigger);
+PROC
+ProcSetSneakyTriggerVar((CHARACTERGUID)_Char,(TRIGGERGUID)_Trigger)
+AND
+NOT DB_SneakyTriggersCounter(_Char,_)
+THEN
+DB_SneakyTriggersCounter(_Char,0);
+PROC
+ProcSetSneakyTriggerVar((CHARACTERGUID)_Char,(TRIGGERGUID)_Trigger)
+AND
+DB_SneakyTriggersCounter(_Char,_Count)
+AND
+IntegerSum(_Count,1,_New)
+AND
+DB_SneakTriggerVars(_New,_Var)
+THEN
+DB_SneakyTriggersCounter(_Char,_New);
+NOT DB_SneakyTriggersCounter(_Char,_Count);
+SetVarObject(_Char,_Var,_Trigger);
+ProcTriggerRegisterForPlayers(_Trigger);
+
+IF
+StoryEvent((CHARACTERGUID)_Char, "GLO_AdvancedSpotterSneaker")
+AND
+GetVarObject(_Char, "SpottedDude", _Player)
+THEN
+ProcCharSpottedByChar((CHARACTERGUID)_Player,_Char);
+ProcReceiveActivatedTriggers(_Char,_Player);
+ProcLockSpotting(_Char);
+
+PROC
+ProcReceiveActivatedTriggers((CHARACTERGUID)_Char,(CHARACTERGUID)_Player)
+AND
+DB_AdvancedSneakTriggerSpotter((TRIGGERGUID)_Trigger, (CHARACTERGUID)_Char)
+AND
+DB_InRegion(_Player,_Trigger)
+THEN
+ProcCharInTriggerSpotted(_Player,_Trigger);
+ProcCharInTriggerSpottedByChar(_Player,_Trigger,_Char);
+
+PROC
+ProcCharSpottedByChar((CHARACTERGUID)_Player,(CHARACTERGUID)_Spotter)
+THEN
+DB_NOOP(1);
+
+PROC
+ProcLockSpotting((CHARACTERGUID)_Char)
+THEN
+SetVarInteger(_Char, "SpottedCounter", 1);
+
+PROC
+ProcCleanUpAdvancedSneakTriggers((CHARACTERGUID)_Char)
+AND
+DB_AdvancedSneakTriggerSpotter((TRIGGERGUID)_Trigger, (CHARACTERGUID)_Char)
+THEN
+NOT DB_AdvancedSneakTriggerSpotter(_Trigger, _Char);
+SetVarInteger(_Char, "SpottedCounter", 1);
+
+PROC
+ProcTriggerUnregisterForPlayers((TRIGGERGUID)_Trigger)
+AND
+DB_AdvancedSneakTriggerSpotter((TRIGGERGUID)_Trigger, (CHARACTERGUID)_Char)
+THEN
+NOT DB_AdvancedSneakTriggerSpotter((TRIGGERGUID)_Trigger, (CHARACTERGUID)_Char);
+IF
+DB_SpotterGroup((CHARACTERGUID)_Char,(STRING)_Name)
+AND
+_Player.DB_isPlayer()
+THEN
+SetVarInteger(_Player,_Name,0);
+SetVarFixedString(_Char,"SpotterGroup",_Name);
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION

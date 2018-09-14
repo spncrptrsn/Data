@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<blueprint id="a4841f43-df24-4fb5-8536-f449a094c5b1" entry="522f73f6-061a-4465-a021-36fc45deceb2" model_id="648c6324-9714-4854-a056-0ce7f569948d">
+  <variables>
+    <variable name="test" id="4133ffc8-76f7-4c27-adb8-e709c978269c" type="System.Boolean" full_type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" tooltip="" editable="True" external="False" default="False" />
+  </variables>
+  <cached_poses />
+  <animation_sequences>
+    <animation_sequence name="still_01" category="-1" name_id="f44a001b-1714-46f8-b61b-bfeb426eacb0" id="0e70475f-be39-439a-acda-e57e01a067ca" default="21f408ee-8f74-4292-8585-c00830686b2f" />
+  </animation_sequences>
+  <events />
+  <graphs>
+    <graph id="522f73f6-061a-4465-a021-36fc45deceb2" type="AnimationGraph">
+      <nodes>
+        <node id="7632605d-1c07-4396-b2ff-efd2d611db3b" name="Final Animation Pose" x="0" y="0" ZIndex="0" width="210" height="176" type="FinalAnimationPoseNode" full_type="Genome.DataModel.AnimGraph.Nodes.FinalAnimationPoseNode, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <inputs>
+            <socket role="Result" full_role="FinalAnimationPoseNodeResultSocket" id="5b5db376-b695-47ca-99d7-d458e401d264" type="AnimationPoseInputSocket" full_type="Genome.DataModel.AnimGraph.Sockets.AnimationPoseInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+          </inputs>
+          <outputs />
+        </node>
+        <node id="770a8cce-c157-423f-9dfa-12e084c8636d" name="Play still_01" x="-820" y="-20" ZIndex="1" width="212" height="132.28" type="PlayAnimationNode" full_type="Genome.DataModel.AnimGraph.Nodes.PlayAnimationNode, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <inputs>
+            <socket role="Sequence" full_role="PlayAnimationNodeSequenceSocket" id="cce26c53-0066-4d6d-988e-998f5ea8bcfa" type="AnimationSequenceInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.AnimationSequenceInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="0e70475f-be39-439a-acda-e57e01a067ca" />
+            <socket role="LoopAnimation" full_role="PlayAnimationNodeLoopAnimationSocket" id="c3abae82-e5e1-4d95-80c4-03bdff6b2a11" type="BooleanInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.BooleanInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="True" />
+            <socket role="PlayRate" full_role="PlayAnimationNodePlayRateSocket" id="915e988d-2bb5-4bbd-8377-955f389b933c" type="FloatInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.FloatInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="1" />
+            <socket role="StartOffset" full_role="PlayAnimationNodeStartOffsetSocket" id="fc5df82e-6681-4816-b5b8-b9340eb47b3f" type="FloatInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.FloatInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="0" />
+          </inputs>
+          <outputs>
+            <socket role="Pose" full_role="PlayAnimationNodePoseSocket" id="dc8b068c-b032-4b28-8edd-e0b66eadf295" type="AnimationPoseOutputSocket" full_type="Genome.DataModel.AnimGraph.Sockets.AnimationPoseOutputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+          </outputs>
+        </node>
+        <node id="773865c2-b5a6-412a-96ce-68d9bef6ca9b" name="Blend Poses by bool" x="-300" y="40" ZIndex="3" width="187.0267" height="166" type="BlendPosesByBoolNode" full_type="Genome.DataModel.AnimGraph.Nodes.Blends.BlendPosesByBoolNode, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" blend_type="Linear">
+          <inputs>
+            <socket role="ActiveValue" full_role="BlendPosesByBoolNodeActiveValueSocket" id="443f6ce8-b06c-4e0e-b26e-fc74a515791b" type="BooleanInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.BooleanInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="False" />
+            <socket role="TruePose" full_role="BlendPosesByBoolNodeTruePoseSocket" id="3e008112-2aee-422b-bc57-0c5eb1b03708" type="AnimationPoseInputSocket" full_type="Genome.DataModel.AnimGraph.Sockets.AnimationPoseInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+            <socket role="FalsePose" full_role="BlendPosesByBoolNodeFalsePoseSocket" id="5a187430-98fe-4d80-b81b-354b66c0e844" type="AnimationPoseInputSocket" full_type="Genome.DataModel.AnimGraph.Sockets.AnimationPoseInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+            <socket role="TrueBlendTime" full_role="BlendPosesByBoolNodeTrueBlendTimeSocket" id="4052f1e8-df61-4692-8d94-0c5bdead2f1b" type="FloatInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.FloatInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="0.1" />
+            <socket role="FalseBlendTime" full_role="BlendPosesByBoolNodeFalseBlendTimeSocket" id="d7b099be-fd4c-4878-b44c-e234b3eabfc2" type="FloatInputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.FloatInputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" default="0.1" />
+          </inputs>
+          <outputs>
+            <socket role="Pose" full_role="BlendPosesNodePoseSocket" id="e5a6d7a0-6ebf-4113-9938-b19d2e821a73" type="AnimationPoseOutputSocket" full_type="Genome.DataModel.AnimGraph.Sockets.AnimationPoseOutputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+          </outputs>
+        </node>
+        <node id="60d22511-6612-4555-95ef-903323a49bf5" name="test" x="-440" y="-100" ZIndex="2" width="130" height="33" type="GetBooleanVariableNode" full_type="Genome.DataModel.CommonGraph.Nodes.Variables.GetBooleanVariableNode, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" variable_id="4133ffc8-76f7-4c27-adb8-e709c978269c">
+          <inputs />
+          <outputs>
+            <socket role="Result" full_role="GetBooleanVariableNodeResultSocket" id="7126f9bf-501b-4cb4-8de3-b7abf4757019" type="BooleanOutputSocket" full_type="Genome.DataModel.CommonGraph.Sockets.BooleanOutputSocket, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+          </outputs>
+        </node>
+      </nodes>
+      <links>
+        <link id="b76b42ac-2694-4d14-939f-d141673d7757" type="AnimationPoseLink" full_type="Genome.DataModel.AnimGraph.Links.AnimationPoseLink, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" from_id="dc8b068c-b032-4b28-8edd-e0b66eadf295" to_id="3e008112-2aee-422b-bc57-0c5eb1b03708" />
+        <link id="7d8680b9-4238-4fa6-91d5-c012950b0e8c" type="BooleanLink" full_type="Genome.DataModel.CommonGraph.Links.BooleanLink, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" from_id="7126f9bf-501b-4cb4-8de3-b7abf4757019" to_id="443f6ce8-b06c-4e0e-b26e-fc74a515791b" />
+        <link id="2d4cde60-fab0-47ef-a2b4-48fd22fa63f1" type="AnimationPoseLink" full_type="Genome.DataModel.AnimGraph.Links.AnimationPoseLink, Genome.DataModel, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" from_id="e5a6d7a0-6ebf-4113-9938-b19d2e821a73" to_id="5b5db376-b695-47ca-99d7-d458e401d264" />
+      </links>
+    </graph>
+    <graph id="15a2e579-87a0-4181-ae90-2e4d7b3ffbbb" type="EventGraph">
+      <nodes />
+      <links />
+    </graph>
+  </graphs>
+</blueprint>

@@ -1,0 +1,383 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+DB_Dialogs(S_RC_DW_Docks_SickCat_d5f60615-8a97-4263-ac24-d156acb09773,"RC_DW_Docks_SickCat");
+DB_Ghosts(S_RC_DW_Docks_SickCat_d5f60615-8a97-4263-ac24-d156acb09773,CHARACTERGUID_S_RC_DW_Docks_SickCat_Ghost_a1311246-5fd6-4cb7-ab35-7f6aa6730a2d,"RC_DW_Docks_SickCat_Ghost");
+
+ProcTriggerRegisterForPlayers(S_RC_DW_SickCat_WatchFish_02fed30b-aec5-44d3-a6c3-370e546adc7a);
+TriggerRegisterForItems(TRIGGERGUID_S_RC_DW_SickCat_WatchFish_02fed30b-aec5-44d3-a6c3-370e546adc7a);
+
+DB_RC_DW_CatFishNumbers(1, 1, 0, "RC_DW_Has1TaintedFish", "RC_DW_Give1TaintedFish");
+DB_RC_DW_CatFishNumbers(2, 1, 0, "RC_DW_Has2TaintedFish", "RC_DW_Give2TaintedFish");
+DB_RC_DW_CatFishNumbers(3, 1, 0, "RC_DW_Has3TaintedFish", "RC_DW_Give3TaintedFish");
+DB_RC_DW_CatFishNumbers(1, 0, 0, "RC_DW_Has1CleanFish", "RC_DW_Give1CleanFish");
+DB_RC_DW_CatFishNumbers(2, 0, 0, "RC_DW_Has2CleanFish", "RC_DW_Give2CleanFish");
+DB_RC_DW_CatFishNumbers(3, 0, 0, "RC_DW_Has3CleanFish", "RC_DW_Give3CleanFish");
+DB_RC_DW_CatFishNumbers(1, 0, 1, "RC_DW_Has1PoisonedFish", "RC_DW_Give1PoisonedFish");
+DB_RC_DW_CatFishNumbers(2, 0, 1, "RC_DW_Has2PoisonedFish", "RC_DW_Give2PoisonedFish");
+DB_RC_DW_CatFishNumbers(3, 0, 1, "RC_DW_Has3PoisonedFish", "RC_DW_Give3PoisonedFish");
+
+DB_RC_DW_CatFishIterators(1, 0, "RC_DW_GiveCatVWFish", "RC_DW_GaveCatVWFish");
+DB_RC_DW_CatFishIterators(0, 0, "RC_DW_GiveCatHealthyFish", "RC_DW_GaveCatHealthyFish");
+DB_RC_DW_CatFishIterators(0, 1, "RC_DW_GiveCatPoisonedFish", "RC_DW_GaveCatPoisonedFish");
+
+DB_ShovelArea(S_RC_WH_SickCatTreasure_Pile_38899d39-c716-4158-95ee-fa590c5373cf, "RC_WH_SickCatTreasure",S_RC_WH_SickCatTreasure_Box_182cfaac-35bc-4f32-90c0-687e7498eb69);
+DB_ShovelRewardItemAppear("RC_WH_SickCatTreasure", S_RC_WH_SickCatTreasure_11a50aec-ea65-4925-81d3-964b447f5ef5, S_RC_WH_SickCatTreasure_Point_b80fcf8f-0645-4a67-9a19-01ff9b1732e2);
+KBSECTION
+IF
+CharacterDied(S_RC_DW_Docks_SickCat_d5f60615-8a97-4263-ac24-d156acb09773)
+THEN
+GlobalSetFlag("RC_DW_Docks_SickCat_IsDead");
+
+//REGION Keeping track of who dropped a given fish
+IF
+ItemEnteredTrigger(_Fish, TRIGGERGUID_S_RC_DW_SickCat_WatchFish_02fed30b-aec5-44d3-a6c3-370e546adc7a, _Player)
+AND
+DB_IsPlayer(_Player)
+AND
+DB_IsPlayer(_OtherPlayer)
+AND
+CharacterGetReservedUserID(_Player, _ID)
+AND
+CharacterGetReservedUserID(_OtherPlayer, _ID)
+AND
+CharacterIsControlled(_OtherPlayer, 1)
+THEN
+Proc_RC_DW_SickCat_FishUpdate(_Fish, _OtherPlayer);
+
+IF
+CharacterMovedItem(_Player, _Item)
+AND
+DB_CurrentLevel("RC_Main")
+AND
+IsTagged(_Item, "FISH", 1)
+AND
+GetDistanceTo(_Player, CHARACTERGUID_S_RC_DW_Docks_SickCat_d5f60615-8a97-4263-ac24-d156acb09773, _Dist)
+AND
+_Dist <= 30
+THEN
+Proc_RC_DW_SickCat_FishUpdate((ITEMGUID)_Item, (CHARACTERGUID)_Player);
+
+PROC
+Proc_RC_DW_SickCat_FishUpdate((ITEMGUID)_Fish, _)
+AND
+DB_RC_DW_SickCatFish(_Fish, _Anyone)
+THEN
+NOT DB_RC_DW_SickCatFish(_Fish, _Anyone);
+
+PROC
+Proc_RC_DW_SickCat_FishUpdate((ITEMGUID)_Fish, (CHARACTERGUID)_Player)
+THEN
+DB_RC_DW_SickCatFish(_Fish, _Player);
+
+IF
+CharacterLeftTrigger(_Player, S_RC_DW_SickCat_WatchFish_02fed30b-aec5-44d3-a6c3-370e546adc7a)
+AND
+DB_RC_DW_SickCatFish(_Fish, _Player)
+THEN
+NOT DB_RC_DW_SickCatFish(_Fish, _Player);
+//END_REGION
+
+//REGION Cat eats dropped fish
+IF
+CharacterItemEvent(CHARACTERGUID_S_RC_DW_Docks_SickCat_d5f60615-8a97-4263-ac24-d156acb09773, _Item, "RC_DW_SickCatEatFish")
+AND
+DB_RC_DW_SickCatFish(_Item, _Player)
+THEN
+ObjectSetFlag(_Player, "RC_DW_FedSickCat");
+
+IF
+CharacterItemEvent(CHARACTERGUID_S_RC_DW_Docks_SickCat_d5f60615-8a97-4263-ac24-d156acb09773, _Item, "RC_DW_SickCatEatFish")
+AND
+DB_RC_DW_SickCat_HasFish_Target(_Num)
+THEN
+NOT DB_RC_DW_SickCat_HasFish_Target(_Num);
+
+IF
+CharacterItemEvent(CHARACTERGUID_S_RC_DW_Docks_SickCat_d5f60615-8a97-4263-ac24-d156acb09773, _Item, "RC_DW_SickCatEatFish")
+AND
+DB_RC_DW_SickCat_HasFish_Counter(_Num)
+THEN
+NOT DB_RC_DW_SickCat_HasFish_Counter(_Num);
+
+IF
+CharacterItemEvent(CHARACTERGUID_S_RC_DW_Docks_SickCat_d5f60615-8a97-4263-ac24-d156acb09773, _Item, "RC_DW_SickCatEatFish")
+AND
+ItemGetAmount(_Item, _Amount)
+THEN
+DB_RC_DW_SickCat_HasFish_Target(_Amount);
+DB_RC_DW_SickCat_HasFish_Counter(1);
+PROC_RC_DW_SickCat_CountFish();
+
+PROC
+PROC_RC_DW_SickCat_CountFish()
+AND
+ObjectGetFlag(CHARACTERGUID_S_RC_DW_Docks_SickCat_d5f60615-8a97-4263-ac24-d156acb09773, "RC_DW_TwoFish", 1)
+THEN
+ObjectSetFlag(CHARACTERGUID_S_RC_DW_Docks_SickCat_d5f60615-8a97-4263-ac24-d156acb09773, "RC_DW_EnoughFish", 0);
+
+PROC
+PROC_RC_DW_SickCat_CountFish()
+AND
+ObjectGetFlag(CHARACTERGUID_S_RC_DW_Docks_SickCat_d5f60615-8a97-4263-ac24-d156acb09773, "RC_DW_OneFish", 1)
+THEN
+ObjectSetFlag(CHARACTERGUID_S_RC_DW_Docks_SickCat_d5f60615-8a97-4263-ac24-d156acb09773, "RC_DW_TwoFish", 0);
+
+PROC
+PROC_RC_DW_SickCat_CountFish()
+AND
+ObjectGetFlag(CHARACTERGUID_S_RC_DW_Docks_SickCat_d5f60615-8a97-4263-ac24-d156acb09773, "RC_DW_OneFish", 0)
+THEN
+ObjectSetFlag(CHARACTERGUID_S_RC_DW_Docks_SickCat_d5f60615-8a97-4263-ac24-d156acb09773, "RC_DW_OneFish", 0);
+
+PROC
+PROC_RC_DW_SickCat_CountFish()
+AND
+DB_RC_DW_SickCat_HasFish_Counter(_Counter)
+AND
+DB_RC_DW_SickCat_HasFish_Target(_Target)
+AND
+_Counter < _Target
+AND
+IntegerSum(_Counter, 1, _NewCounter)
+THEN
+NOT DB_RC_DW_SickCat_HasFish_Counter(_Counter);
+DB_RC_DW_SickCat_HasFish_Counter(_NewCounter);
+PROC_RC_DW_SickCat_CountFish();
+//END_REGION
+
+//REGION Counting Fish
+PROC
+Proc_DialogFlagSetup("RC_DW_Docks_SickCat", _, _Player)
+THEN
+PROC_RC_DW_Cat_PlayerCountFish((CHARACTERGUID)_Player);
+
+IF
+ObjectFlagSet("RC_DW_SickCat_RecountFish", _Player, _)
+THEN
+ObjectClearFlag(_Player, "RC_DW_SickCat_RecountFish", 0);
+PROC_RC_DW_Cat_PlayerCountFish((CHARACTERGUID)_Player);
+
+PROC
+PROC_RC_DW_Cat_PlayerCountFish((CHARACTERGUID)_Player)
+AND
+DB_RC_DW_CatFishNumbers(_, _, _, _Flag, _)
+THEN
+ObjectClearFlag(_Player, _Flag, 0);
+
+PROC
+PROC_RC_DW_Cat_PlayerCountFish((CHARACTERGUID)_Player)
+AND
+DB_RC_DW_CatFishNumbers(_, _StateVW, _StatePoisoned, _, _)
+AND
+DB_RC_DW_FishCounter(_StateVW, _StatePoisoned, _Num)
+THEN
+NOT DB_RC_DW_FishCounter(_StateVW, _StatePoisoned, _Num);
+
+PROC
+PROC_RC_DW_Cat_PlayerCountFish((CHARACTERGUID)_Player)
+THEN
+DB_RC_DW_FishCounter(1, 0, 0);
+DB_RC_DW_FishCounter(0, 1, 0);
+DB_RC_DW_FishCounter(0, 0, 0);
+
+PROC
+PROC_RC_DW_Cat_PlayerCountFish((CHARACTERGUID)_Player)
+AND
+DB_RC_DW_TalkingToSickCat(_Player)
+THEN
+NOT DB_RC_DW_TalkingToSickCat(_Player);
+
+PROC
+PROC_RC_DW_Cat_PlayerCountFish((CHARACTERGUID)_Player)
+THEN
+GlobalClearFlag("RC_DW_CountedFish");
+DB_RC_DW_TalkingToSickCat(_Player);
+ProcLaunchMagicPocketTagIterator(_Player,"FISH","","RC_DW_CountFish","RC_DW_CountedFish");
+
+IF
+StoryEvent(_Item, "RC_DW_CountFish")
+AND
+IsTagged(_Item, "VOIDTAINTED", _VoidWoken)
+AND
+IsTagged(_Item, "POISONED", _Poisoned)
+AND
+DB_RC_DW_FishCounter(_Voidwoken, _Poisoned,  _Num)
+AND
+ItemGetAmount((ITEMGUID)_Item, _Amount)
+AND
+IntegerSum(_Num, _Amount, _NewNum)
+/*AND
+NOT DB_RC_DW_SickCat_GivenFish(_Item, _)*/
+THEN
+NOT DB_RC_DW_FishCounter(_Voidwoken, _Poisoned, _Num);
+DB_RC_DW_FishCounter(_Voidwoken, _Poisoned, _NewNum);
+
+/*IF
+StoryEvent(_Item, "RC_DW_CountFish")
+AND
+IsTagged(_Item, "FISH", 1)
+AND
+IsTagged(_Item, "VOIDWOKEN", _VoidWoken)
+AND
+IsTagged(_Item, "POISONED", _Poisoned)
+AND
+DB_RC_DW_FishCounter(_Voidwoken, _Poisoned, _Num)
+AND
+ItemGetAmount((ITEMGUID)_Item, _Amount)
+AND
+DB_RC_DW_SickCat_GivenFish(_Item, _GivenAmount)
+AND
+_GivenAmount < _Amount
+AND
+IntegerSubtract(_Amount, _GivenAmount, _RemainingAmount)
+AND
+IntegerSum(_Num, _RemainingAmount, _NewNum)
+THEN
+NOT DB_RC_DW_FishCounter(_Voidwoken, _Poisoned, _Num);
+DB_RC_DW_FishCounter(_Voidwoken, _Poisoned, _NewNum);*/
+
+IF
+GlobalFlagSet("RC_DW_CountedFish")
+AND
+DB_RC_DW_TalkingToSickCat(_Player)
+AND
+DB_RC_DW_FishCounter(_Voidwoken, _Poisoned, _Num)
+AND
+DB_RC_DW_CatFishNumbers(_FlagMin, _Voidwoken, _Poisoned, _Flag, _)
+AND
+_Num >= _FlagMin
+THEN
+ObjectSetFlag(_Player, _Flag);
+//END_REGION
+
+//REGION Giving Fish to Cat
+IF
+ObjectFlagSet(_Flag, CHARACTERGUID_S_RC_DW_Docks_SickCat_d5f60615-8a97-4263-ac24-d156acb09773, _ID)
+AND
+DB_RC_DW_CatFishNumbers(_, _, _, _, _Flag)
+AND
+DB_RC_DW_SickCat_GiveFishCounter(_Counter)
+THEN
+NOT DB_RC_DW_SickCat_GiveFishCounter(_Counter);
+
+IF
+ObjectFlagSet(_Flag, CHARACTERGUID_S_RC_DW_Docks_SickCat_d5f60615-8a97-4263-ac24-d156acb09773, _ID)
+AND
+DB_RC_DW_CatFishNumbers(_Num, _, _, _, _Flag)
+THEN
+DB_RC_DW_SickCat_GiveFishCounter(_Num);
+ObjectClearFlag(CHARACTERGUID_S_RC_DW_Docks_SickCat_d5f60615-8a97-4263-ac24-d156acb09773, _Flag, 0);
+
+IF
+ObjectFlagSet(_GiveFlag, CHARACTERGUID_S_RC_DW_Docks_SickCat_d5f60615-8a97-4263-ac24-d156acb09773, _ID)
+AND
+DB_RC_DW_CatFishNumbers(_, _, _, _, _GiveFlag)
+AND
+DB_RC_DW_CatFishGiver(_Player)
+THEN
+NOT DB_RC_DW_CatFishGiver(_Player);
+
+IF
+ObjectFlagSet(_GiveFlag, CHARACTERGUID_S_RC_DW_Docks_SickCat_d5f60615-8a97-4263-ac24-d156acb09773, _ID)
+AND
+DB_RC_DW_CatFishNumbers(_, _StateVW, _StatePoisoned, _, _GiveFlag)
+AND
+DB_RC_DW_CatFishIterators(_StateVW, _StatePoisoned, _Event, _EndEvent)
+AND
+DialogGetInvolvedPlayer(_ID, 1,(CHARACTERGUID)_Player)
+THEN
+ProcLaunchMagicPocketTagIterator(_Player,"FISH","",_Event,_EndEvent);
+DB_RC_DW_CatFishGiver(_Player);
+
+IF
+StoryEvent((ITEMGUID)_Fish, _Event)
+AND
+DB_RC_DW_SickCat_GiveFishCounter(_Num)
+AND
+_Num != 0
+AND	
+DB_RC_DW_CatFishIterators(_StateVW, _StatePoisoned, _Event, _)
+AND
+IsTagged(_Fish, "VOIDTAINTED", _StateVW)
+AND
+IsTagged(_Fish, "POISONED", _StatePoisoned)
+AND
+ItemGetAmount(_Fish, _Amount)
+THEN
+PROC_RC_DW_TransferFish(_Fish, _Num, _Amount);
+
+PROC
+PROC_RC_DW_TransferFish((ITEMGUID)_Fish, (INTEGER)_Num, (INTEGER)_Amount)
+AND
+_Amount <= _Num
+AND
+IntegerSubtract(_Num, _Amount, _NewNum)
+THEN
+NOT DB_RC_DW_SickCat_GiveFishCounter(_Num);
+DB_RC_DW_SickCat_GiveFishCounter(_NewNum);
+ItemToInventory((ITEMGUID)_Fish, CHARACTERGUID_S_RC_DW_Docks_SickCat_d5f60615-8a97-4263-ac24-d156acb09773, _Amount);
+DB_RC_DW_SickCat_GivenFish(_Fish, _Amount);
+
+PROC
+PROC_RC_DW_TransferFish((ITEMGUID)_Fish, (INTEGER)_Num, (INTEGER)_Amount)
+AND
+_Amount > _Num
+THEN
+NOT DB_RC_DW_SickCat_GiveFishCounter(_Num);
+DB_RC_DW_SickCat_GiveFishCounter(0);
+ItemToInventory((ITEMGUID)_Fish, CHARACTERGUID_S_RC_DW_Docks_SickCat_d5f60615-8a97-4263-ac24-d156acb09773, _Num);
+/*DB_RC_DW_SickCat_GivenFish(_Fish, _Num); //Ensures that if Story doesn't catch the movement of the fish quickly enough, they're not counted again.
+
+IF
+ItemAddedToCharacter(_Fish, CHARACTERGUID_S_RC_DW_Docks_SickCat_d5f60615-8a97-4263-ac24-d156acb09773)
+AND
+DB_RC_DW_SickCat_GivenFish(_Fish, _Num)
+THEN
+NOT DB_RC_DW_SickCat_GivenFish(_Fish, _Num);*/
+
+IF
+GlobalFlagSet(_Event)
+AND
+DB_RC_DW_CatFishIterators(_, _, _,_Event)
+AND
+DB_RC_DW_CatFishGiver(_Player)
+THEN
+GlobalClearFlag(_Event);
+PROC_RC_DW_Cat_PlayerCountFish(_Player);
+//END_REGION
+
+IF
+ObjectFlagSet("RC_DW_SickCat_ShowTreasure", _Player, _)
+AND
+NOT DB_RC_DW_SickCatTreasureFound(1)
+THEN
+ProcShowMarker((CHARACTERGUID)_Player, "RC_DU_SickCatTreasure");
+ProcTriggerRegisterForPlayers(TRIGGERGUID_S_RC_WH_FoundSickCatTreasure_83319a6e-bfd1-4c4c-8951-2f0deac6ca28); 
+
+PROC
+ProcShovelRewards(_Player, "RC_WH_SickCatTreasure")
+THEN
+UserSetFlag(_Player, "RC_WH_HideSickCatTreasure");
+DB_RC_DW_SickCatTreasureFound(1);
+
+IF
+ObjectFlagSet("RC_WH_HideSickCatTreasure", _Player, _)
+THEN
+ProcHideMarker((CHARACTERGUID)_Player, "RC_DU_SickCatTreasure");
+
+IF
+CharacterEnteredTrigger(_Player, TRIGGERGUID_S_RC_WH_FoundSickCatTreasure_83319a6e-bfd1-4c4c-8951-2f0deac6ca28)
+AND
+UserGetFlag(_Player, "RC_DW_SickCat_ShowTreasure", 0)
+AND
+UserGetFlag(_Player, "RC_WH_HideSickCatTreasure", 0)
+AND
+DB_RC_DW_SickCatTreasureFound(1)
+THEN
+UserSetFlag(_Player, "RC_WH_HideSickCatTreasure");
+Proc_StartDialog(1, "RC_WH_AD_MissedSickCatTreasure", _Player);
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "ReapersCoast"

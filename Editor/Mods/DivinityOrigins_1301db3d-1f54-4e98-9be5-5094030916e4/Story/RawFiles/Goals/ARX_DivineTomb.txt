@@ -1,0 +1,30 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+//REGION Interlude - The Line of Anguish
+
+//END_REGION
+KBSECTION
+//REGION Init & Debug
+
+
+
+//END_REGION
+
+
+//REGION Interlude - The Line of Anguish
+
+PROC
+ProcBlockUseOfItem(_Player,ITEMGUID_S_ARX_DivineTomb_Interlude_TalkingDoor_1fd7ff08-0ee2-853c-4522-561110004a13)
+AND
+ObjectGetFlag(_Player,"ARX_DivineTomb_Interlude_InsistedToPass",0)
+THEN
+DB_CustomUseItemResponse(_Player,ITEMGUID_S_ARX_DivineTomb_Interlude_TalkingDoor_1fd7ff08-0ee2-853c-4522-561110004a13,0);
+Proc_StartDialog(0,"ARX_DivineTomb_Interlude_TalkingDoor",ITEMGUID_S_ARX_DivineTomb_Interlude_TalkingDoor_1fd7ff08-0ee2-853c-4522-561110004a13,_Player);
+
+
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "ARX"

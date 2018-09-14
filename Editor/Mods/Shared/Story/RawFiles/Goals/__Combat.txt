@@ -1,0 +1,85 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+PROC
+ProcClearPreviousCombat((GUIDSTRING)_Char)
+AND
+DB_WasInCombat(_Char,(INTEGER)_Combat)
+THEN
+NOT DB_WasInCombat(_Char,_Combat);
+
+PROC
+ProcRegionEnded(_)
+AND
+DB_WasInCombat(_Char,_Combat)
+THEN
+NOT DB_WasInCombat(_Char,_Combat);
+
+PROC
+ProcAddToCharacterCombatList((GUIDSTRING)_Char,(INTEGER)_Combat)
+AND
+DB_CombatCharacters((CHARACTERGUID)_Char,(INTEGER)_Old)
+THEN
+NOT DB_CombatCharacters((CHARACTERGUID)_Char,_Old);
+
+PROC
+ProcAddToCharacterCombatList((GUIDSTRING)_Char,(INTEGER)_Combat)
+AND
+ObjectIsCharacter(_Char,1)
+THEN
+DB_CombatCharacters((CHARACTERGUID)_Char,_Combat);
+
+IF
+ObjectEnteredCombat(_Character,_Combat)
+THEN
+ProcClearPreviousCombat((GUIDSTRING)_Character);
+DB_CombatObjects(_Character,_Combat);
+ProcAddToCharacterCombatList(_Character,_Combat);
+
+IF
+ObjectSwitchedCombat(_Character,_Old,_New)
+THEN
+NOT DB_CombatObjects(_Character,_Old);
+DB_CombatObjects(_Character,_New);
+ProcAddToCharacterCombatList(_Character,_New);
+
+PROC
+Proc_ObjectLeftCombat((GUIDSTRING)_Char,(INTEGER)_Combat)
+THEN
+DB_NOOP(1);
+
+IF
+ObjectLeftCombat(_Character,_Combat)
+THEN
+DB_WasInCombat(_Character,_Combat);
+NOT DB_CombatObjects(_Character,_Combat);
+NOT DB_CombatCharacters((CHARACTERGUID)_Character,_Combat);
+Proc_ObjectLeftCombat(_Character,_Combat);
+
+IF
+FleeCombat(_Player)
+AND
+DB_IsPlayer(_Player)
+AND
+NOT DB_BlockWaypointUsage(_Player)
+THEN
+PROC_OpenWaypointUIForFlee(_Player,"",NULL_00000000-0000-0000-0000-000000000000);
+
+QRY
+QRY_GLO_IsOrWasInCombat((GUIDSTRING)_Char, (INTEGER)_ID)
+AND
+DB_CombatObjects(_Char, _ID)
+THEN
+DB_NOOP(1);
+
+QRY
+QRY_GLO_IsOrWasInCombat((GUIDSTRING)_Char, (INTEGER)_ID)
+AND
+DB_WasInCombat(_Char, _ID)
+THEN
+DB_NOOP(1);
+EXITSECTION
+
+ENDEXITSECTION

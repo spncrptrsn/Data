@@ -1,0 +1,659 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+//Dead trader body digging, Item and Ghost
+DB_ShovelArea(TRIGGERGUID_S_RC_WC_DT_DeadTraderGraveTrigger_0a77c55c-0819-4954-9e69-a85ab2553d19,"RC_WC_DT_DiggingUpShallowGrave",ITEMGUID_S_RC_WC_DT_ShallowGrave_1f3980d0-0fb1-4577-8c92-e1425f9c64a5);
+ItemToInventory(ITEMGUID_S_RC_WC_DT_Limb_DeadTrader_394029ab-5daa-4733-a99c-29c6df2db538,CHARACTERGUID_S_RC_WC_DT_DeadTraderCorpse_5da43511-021d-4df8-a76f-5dd32c35732a);
+SetOnStage(CHARACTERGUID_S_RC_WC_DT_DeadTraderCorpse_5da43511-021d-4df8-a76f-5dd32c35732a,0);
+DB_Ghosts(CHARACTERGUID_S_RC_WC_DT_DeadTraderGhost_a071ce76-792b-40f5-ba4e-84f41b749b44,"RC_WC_DT_DeadTraderGhost");
+
+//Garven head give item event and Has Item event
+DB_GiveItemToEvent(ITEMGUID_S_RC_WC_DT_Limb_GarvanHead_38cbf3f3-91dc-46a4-ad31-9c1c1cdd9eab, "RC_WC_DT_GaveGarvansHead");
+DB_HasStoryEvent(ITEMGUID_S_RC_WC_DT_Limb_GarvanHead_38cbf3f3-91dc-46a4-ad31-9c1c1cdd9eab, "RC_WC_DT_HasGarvansHead");
+SetOnStage(ITEMGUID_S_RC_WC_DT_Limb_GarvanHead_38cbf3f3-91dc-46a4-ad31-9c1c1cdd9eab,0);
+ItemSetStoryItem(ITEMGUID_S_RC_WC_DT_Limb_GarvanHead_38cbf3f3-91dc-46a4-ad31-9c1c1cdd9eab,1);
+
+//Attack location trigger
+ProcTriggerRegisterForPlayers(S_RC_DW_DT_TraderAttackLocation_5e1fd953-b25d-4fb3-9f35-0299835a2d64);
+
+//Garvan Ghost
+DB_Ghosts(CHARACTERGUID_S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29,S_RC_DW_Tavern_Traveler_Ghost_b1f4f85b-cdb7-46b4-85ee-84d39943ba7c,"RC_DW_Tavern_Traveler_Ghost");
+
+//Garvan Supplies Key
+ItemToInventory(S_RC_DW_GarvanSuppliesKey_da5c55a2-78b3-4329-bee6-f9d72033be07,CHARACTERGUID_S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29);
+
+//Dead Trader Stash
+DB_ShovelArea(S_RC_WC_DT_DeadTraderStashTrigger_5a43cc06-cb6d-4c3f-9f49-636ab3dbc7de,"RC_WC_DT_DeadTraderStash",S_RC_WC_DT_DeadTraderStash_496beb3c-5aea-4cfa-a5ac-3fa4d834a887);
+DB_ShovelRewardItemAppear("RC_WC_DT_DeadTraderStash",S_RC_WC_DT_DeadTraderStashTreasure_79f46517-4c98-4be8-8197-23a1a429af55,S_RC_WC_DT_DeadTraderStashTrigger_5a43cc06-cb6d-4c3f-9f49-636ab3dbc7de);
+
+//Garvan Supplies
+DB_GiveItemToEvent(S_QUEST_RC_DW_DT_GarvanSupplies_4c99d54b-8bc8-419e-a921-da8ec67f1947, "RC_WC_DT_GaveTraderSupplies");
+DB_HasStoryEvent(S_QUEST_RC_DW_DT_GarvanSupplies_4c99d54b-8bc8-419e-a921-da8ec67f1947, "RC_WC_DT_HasTraderSupplies");
+
+//Spawned Voidwoken on pick up supplies
+DB_RC_DW_DT_VoidwokenSpawning(RC_WH_TraderSupplies_Beastmaster_e7529ff7-9b9d-4a8c-80ba-b7bd574581be);
+DB_RC_DW_DT_VoidwokenSpawning(RC_WH_TraderSupplies_Bear_1_da336b53-4645-463d-817d-3a2354e4090c);
+DB_RC_DW_DT_VoidwokenSpawning(RC_WH_TraderSupplies_Bear_2_119f219c-97ad-475f-b620-afef25dba4d6);
+
+
+//ProcSetInvulnerable(S_QUEST_RC_DW_DT_GarvanSupplies_4c99d54b-8bc8-419e-a921-da8ec67f1947,0);
+
+
+//Init proc
+Proc_RC_DW_DT_Init();
+
+//Pickupable item TEMP
+ItemSetCanPickUp(S_QUEST_RC_DW_DT_GarvanSupplies_4c99d54b-8bc8-419e-a921-da8ec67f1947,1);
+KBSECTION
+//REGION Init
+PROC
+Proc_RC_DW_DT_Init()
+AND
+DB_RC_DW_DT_VoidwokenSpawning(_voidwoken)
+THEN
+SetOnStage(_voidwoken,0);
+
+/*
+PROC
+Proc_RC_DW_DT_Init()
+AND
+DB_IsPlayer(_player)
+THEN
+ObjectSetFlag(_player,"GLO_HasSourceVampirism");*/
+//END_REGION
+
+//REGION Found BloodStain
+IF 
+StoryEvent(_player,"RC_WC_DT_FoundBloodSpatter")
+AND
+PartyGetFlag((CHARACTERGUID)_player,"QuestUpdate_RC_WC_TheDeadTrader_FoundBlood",0)
+AND
+GlobalGetFlag("RC_WC_DT_GhostOfTraderConsumed",0)
+THEN
+PartySetFlag((CHARACTERGUID)_player,"QuestUpdate_RC_WC_TheDeadTrader_FoundBlood");
+GlobalSetFlag("RC_WC_DT_FoundBloodSpatter");
+Proc_StartDialog(1,"RC_WC_DT_AD_DeadTraderBloodAndGrave",(CHARACTERGUID)_player);
+//END_REGION
+
+//REGION Found Grave
+IF 
+StoryEvent(_player,"RC_WC_DT_FoundGrave")
+AND
+PartyGetFlag((CHARACTERGUID)_player,"QuestUpdate_RC_WC_TheDeadTrader_FoundGrave",0)
+AND
+GlobalGetFlag("RC_WC_DT_GhostOfTraderConsumed",0)
+THEN
+PartySetFlag((CHARACTERGUID)_player,"QuestUpdate_RC_WC_TheDeadTrader_FoundBlood");
+PartySetFlag((CHARACTERGUID)_player,"QuestUpdate_RC_WC_TheDeadTrader_FoundGrave");
+Proc_StartDialog(1,"RC_WC_DT_AD_DeadTraderBloodAndGrave",(CHARACTERGUID)_player);
+//END_REGION
+
+
+//REGION Dead body appear when dug grave and AD is played
+PROC
+ProcShovelRewards(_player,"RC_WC_DT_DiggingUpShallowGrave")
+THEN
+GlobalSetFlag("RC_WC_DT_DugUpGrave");
+Proc_StartDialog(1,"RC_WC_DT_AD_DeadTraderBloodAndGrave",(CHARACTERGUID)_player);
+SetOnStage(CHARACTERGUID_S_RC_WC_DT_DeadTraderCorpse_5da43511-021d-4df8-a76f-5dd32c35732a,1);
+//END_REGION
+
+
+//REGION On eating trader limb as elf
+IF
+CharacterUsedItem(_player,ITEMGUID_S_RC_WC_DT_Limb_DeadTrader_394029ab-5daa-4733-a99c-29c6df2db538)
+AND
+IsTagged(_player,"ELF",1)
+AND
+GlobalGetFlag("RC_WC_DT_GhostOfTraderConsumed",0)
+THEN
+PartySetFlag((CHARACTERGUID)_player,"QuestUpdate_RC_WC_TheDeadTrader_AteTraderLimb");
+ObjectSetFlag((CHARACTERGUID)_player,"RC_WC_DT_AteTraderLimb");
+//END_REGION
+
+//REGION Arriving at attack location
+IF
+CharacterEnteredTrigger(_player,S_RC_DW_DT_TraderAttackLocation_5e1fd953-b25d-4fb3-9f35-0299835a2d64)
+AND
+PartyGetFlag((CHARACTERGUID)_player,"QuestUpdate_RC_DW_GarvanSupplies_AgreedToFindGarvanSupplies",1)
+THEN
+PartySetFlag((CHARACTERGUID)_player,"QuestUpdate_RC_DW_GarvanSupplies_ArrivedAtAttackLocation");
+StartVoiceBark("RC_DW_DT_VB_ArrivedAtAttackLocation",_player);
+ProcTriggerUnregisterForPlayers(S_RC_DW_DT_TraderAttackLocation_5e1fd953-b25d-4fb3-9f35-0299835a2d64);
+
+
+//END_REGION
+
+
+//REGION Picking up the Garvan Supplies
+IF
+CharacterMovedItem(_Player,S_QUEST_RC_DW_DT_GarvanSupplies_4c99d54b-8bc8-419e-a921-da8ec67f1947)
+THEN
+PROC_RC_DW_DT_FoundSupplies(_Player);
+
+IF
+ItemAddedToContainer(S_QUEST_RC_DW_DT_GarvanSupplies_4c99d54b-8bc8-419e-a921-da8ec67f1947,_Container)
+AND
+_Container != ITEMGUID_S_RC_DW_DT_BackPack_Supplies_ef4c2d89-19d2-4703-a789-d3fde163d9f5
+AND
+DB_IsPlayer(_Player)
+THEN
+PROC_RC_DW_DT_FoundSupplies(_Player);
+
+IF
+ItemRemovedFromContainer(S_QUEST_RC_DW_DT_GarvanSupplies_4c99d54b-8bc8-419e-a921-da8ec67f1947,_Container)
+AND
+DB_IsPlayer(_Player)
+THEN
+PROC_RC_DW_DT_FoundSupplies(_Player);
+
+IF 
+ItemAddedToCharacter(S_QUEST_RC_DW_DT_GarvanSupplies_4c99d54b-8bc8-419e-a921-da8ec67f1947,_player)
+THEN
+PROC_RC_DW_DT_FoundSupplies(_Player);
+
+IF
+CharacterUsedItem(_Player, ITEMGUID_S_QUEST_RC_DW_DT_GarvanSupplies_4c99d54b-8bc8-419e-a921-da8ec67f1947)
+THEN
+PROC_RC_DW_DT_FoundSupplies(_Player);
+
+IF
+ItemSendToHomesteadEvent(_Player, ITEMGUID_S_QUEST_RC_DW_DT_GarvanSupplies_4c99d54b-8bc8-419e-a921-da8ec67f1947)
+THEN
+PROC_RC_DW_DT_FoundSupplies(_Player);
+
+PROC
+PROC_RC_DW_DT_FoundSupplies((CHARACTERGUID)_Player)
+AND
+DB_IsPlayer(_player)
+AND
+CharacterIsDead(S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29,0)
+THEN
+Proc_RC_DW_DT_SetFoundSuppliesFlag(_player);
+
+PROC
+PROC_RC_DW_DT_FoundSupplies(_Player)
+AND
+DB_RC_DW_DT_VoidwokenSpawning(_voidwoken)
+THEN
+CharacterAppear((CHARACTERGUID)_voidwoken,1,"");
+NOT DB_RC_DW_DT_VoidwokenSpawning(_voidwoken);
+
+//END_REGION
+
+
+//REGION On agreeing to help Garvan and already have the supplies
+IF
+ObjectFlagSet("QuestUpdate_RC_WC_TheDeadTrader_AgreedToFindGarvanSupplies",_player,_)
+AND
+PartyGetFlag((CHARACTERGUID)_player,"RC_WC_DT_HasTraderSupplies",1)
+THEN
+Proc_RC_DW_DT_SetFoundSuppliesFlag(_player);
+//END_REGION
+
+
+//REGION Found supplies Journal update
+//Done in seperate proc as there could be multiple parties
+PROC
+Proc_RC_DW_DT_SetFoundSuppliesFlag((CHARACTERGUID)_player)
+AND
+PartyGetFlag(_player,"QuestUpdate_RC_DW_GarvanSupplies_AgreedToFindGarvanSupplies",1)
+AND
+PartyGetFlag(_player,"QuestUpdate_RC_DW_GarvanSupplies_CloseGaveGarvanSupplies",0) 
+AND
+CharacterIsDead(S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29,0)
+THEN
+PartySetFlag((CHARACTERGUID)_player,"QuestUpdate_RC_DW_GarvanSupplies_FoundGarvanSupplies");
+//END_REGION
+
+//REGION Gave Supplies back reward
+IF
+ObjectFlagSet("RC_DW_DT_SuppliesReward",_player,_)
+THEN
+CharacterAddGold((CHARACTERGUID)_player,150);
+CharacterAddAttitudeTowardsPlayer(S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29,_player,35);
+//END_REGION
+
+//REGION On Garvan died
+//Give head and set flag
+IF
+DB_Dead(CHARACTERGUID_S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29)
+AND
+DB_IsPlayer(_player)
+THEN
+Proc_RC_WC_DT_AdditionalLogicGarvanDied((CHARACTERGUID)_player);
+GlobalSetFlag ("RC_WC_DT_GarvanIsDead"); //Used if party has not killed Garvan themselves or they have stolen the amulet.
+
+
+//See who is close and if true set flag: Killed Garvan
+PROC
+Proc_RC_WC_DT_AdditionalLogicGarvanDied((CHARACTERGUID)_player)
+AND
+GetDistanceTo(_player,CHARACTERGUID_S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29,_dist)
+AND
+_dist <= 20
+THEN
+ObjectSetFlag(_player,"RC_WC_DT_KilledGarvan");
+
+
+//If agreed to take revenge is true then Update Journal
+PROC
+Proc_RC_WC_DT_AdditionalLogicGarvanDied((CHARACTERGUID)_player)
+AND
+PartyGetFlag((CHARACTERGUID)_player,"QuestUpdate_RC_WC_TheDeadTrader_AgreedToTakeRevenge",1)
+AND
+ObjectGetFlag(_player,"RC_WC_DT_KilledGarvan",1)
+THEN
+PartySetFlag((CHARACTERGUID)_player,"QuestUpdate_RC_WC_TheDeadTrader_KilledGarvan");
+
+//Give head to Dead Garvan
+PROC
+Proc_RC_WC_DT_AdditionalLogicGarvanDied((CHARACTERGUID)_player)
+AND
+QueryOnlyOnce("RC_DW_DT_GarvanDied")
+THEN
+SetOnStage(ITEMGUID_S_RC_WC_DT_Limb_GarvanHead_38cbf3f3-91dc-46a4-ad31-9c1c1cdd9eab,1);
+ItemToInventory(ITEMGUID_S_RC_WC_DT_Limb_GarvanHead_38cbf3f3-91dc-46a4-ad31-9c1c1cdd9eab,CHARACTERGUID_S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29);
+
+IF
+ItemRemovedFromCharacter(ITEMGUID_S_RC_WC_DT_Limb_GarvanHead_38cbf3f3-91dc-46a4-ad31-9c1c1cdd9eab,CHARACTERGUID_S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29)
+THEN
+ItemSetStoryItem(ITEMGUID_S_RC_WC_DT_Limb_GarvanHead_38cbf3f3-91dc-46a4-ad31-9c1c1cdd9eab,0);
+
+//End Garvan Quest
+PROC
+Proc_RC_WC_DT_AdditionalLogicGarvanDied((CHARACTERGUID)_player)
+AND
+PartyGetFlag(_player,"QuestUpdate_RC_DW_GarvanSupplies_CloseGarvanDead",0)
+AND
+PartyGetFlag(_player,"QuestUpdate_RC_DW_GarvanSupplies_AgreedToFindGarvanSupplies",1)
+AND
+PartyGetFlag(_player,"QuestUpdate_RC_DW_GarvanSupplies_CloseGaveGarvanSupplies",0)
+THEN
+PartySetFlag(_player,"QuestUpdate_RC_DW_GarvanSupplies_CloseGarvanDead");
+
+//END_REGION
+
+
+//REGION On eating Garvan head
+IF
+CharacterUsedItem(_player,ITEMGUID_S_RC_WC_DT_Limb_GarvanHead_38cbf3f3-91dc-46a4-ad31-9c1c1cdd9eab)
+THEN
+ObjectSetFlag((CHARACTERGUID)_player,"RC_WC_DT_AteGarvanHead");
+Poc_RC_WC_DT_PlayerAteGarvanHead((CHARACTERGUID)_player);
+
+//Is elf
+PROC
+Poc_RC_WC_DT_PlayerAteGarvanHead((CHARACTERGUID)_player)
+AND
+IsTagged(_player,"ELF",1)
+THEN
+PartySetFlag(_player,"QuestUpdate_RC_WC_TheDeadTrader_ElfAteGarvanHead");
+CharacterAddTalent(_player,"Quest_TradeSecrets");
+OpenMessageBox(_player,"RC_WC_TheDeadTrader_TalentReceived");
+//END_REGION
+
+
+//REGION On agreeing to take revange check if some steps are already done.
+IF
+ObjectFlagSet("QuestUpdate_RC_WC_TheDeadTrader_AgreedToTakeRevenge",_player,_)
+THEN
+Proc_OnAgreedToTakeRevenge((CHARACTERGUID)_player);
+
+
+//If Garvan is already killed
+PROC
+Proc_OnAgreedToTakeRevenge((CHARACTERGUID)_player)
+AND
+PartyGetFlag(_player,"RC_WC_DT_KilledGarvan",1)
+AND
+PartyGetFlag(_player,"QuestUpdate_RC_WC_TheDeadTrader_KilledGarvan",0)
+THEN
+PartySetFlag((CHARACTERGUID)_player,"QuestUpdate_RC_WC_TheDeadTrader_KilledGarvan");
+//END_REGION
+
+/*
+//REGION On Outhouse Destroyed (Cannot be destroyed at this moment)
+//Destroy Garvan Outhouse
+IF
+CharacterDestroyedItem(_player,S_RC_DW_DT_Outhouse_002_53e049e6-5d7d-49ac-a79e-fcdfb14d3b38)
+AND
+CharacterIsDead(S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29,0)
+AND
+GlobalGetFlag("RC_DW_DT_GarvanInOuthouse",1)
+THEN
+SetOnStage(S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29,1);
+GlobalClearFlag("RC_DW_DT_GarvanInOuthouse");
+PlayAnimation(S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29,"knockdown_getup","");
+//END_REGION
+*/
+
+//REGION On Outhouse Interact
+//Player used Occupied outhouse
+IF
+CharacterUsedItem(_char,S_RC_DW_DT_Outhouse_001_42c6f28b-9df2-464a-a90b-b48d036e8672)
+THEN
+Proc_StartDialog(0,"RC_DW_DT_OccupiedOuthouse",S_RC_DW_DT_Outhouse_001_42c6f28b-9df2-464a-a90b-b48d036e8672,_char);
+
+
+//Character used garvan Outhouse
+IF
+CharacterUsedItem(_char,S_RC_DW_DT_GarvanOuthouse_53e049e6-5d7d-49ac-a79e-fcdfb14d3b38)
+THEN
+Proc_GarvanOuthouseInteract((CHARACTERGUID)_char,S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29);
+
+
+//Player used Outhouse
+PROC
+Proc_GarvanOuthouseInteract((CHARACTERGUID)_char,(CHARACTERGUID)_garvan)
+AND
+_char != _garvan
+THEN
+Proc_StartDialog(1,"RC_DW_DT_AD_GarvanOuthouse",S_RC_DW_DT_GarvanOuthouse_53e049e6-5d7d-49ac-a79e-fcdfb14d3b38,_char);
+
+
+//Garvan used Outhouse
+PROC
+Proc_GarvanOuthouseInteract((CHARACTERGUID)_char,(CHARACTERGUID)_garvan)
+AND
+_char == _garvan
+THEN
+TimerLaunch("RC_DW_DT_GarvanIsUsingOuthouse",10000);
+
+IF
+TimerFinished("RC_DW_DT_GarvanIsUsingOuthouse")
+THEN
+SetOnStage(S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29,1);
+GlobalClearFlag("RC_DW_DT_GarvanInOuthouse");
+DialogRequestStop(S_RC_DW_DT_GarvanOuthouse_53e049e6-5d7d-49ac-a79e-fcdfb14d3b38);
+//END_REGION
+
+//REGION Traders Stash marker Enable/Disable
+//Show Marker (If stash not already dug up) and lowers perseption needed to find stash
+IF
+ObjectFlagSet("RC_WC_DT_KnowsDeadTraderStashLocation",_player,_)
+AND
+GlobalGetFlag("RC_WC_DT_HiddenTreasureAlreadyDugUp",0)
+THEN
+ProcShowMarker((CHARACTERGUID)_player,"RC_WC_DT_DeadTraderStashLocation");
+ProcSetPerceptionDifficulty(S_RC_WC_DT_DeadTraderStash_496beb3c-5aea-4cfa-a5ac-3fa4d834a887,"Easy");
+
+//On digging up stash
+PROC
+ProcShovelRewards(_player,"RC_WC_DT_DeadTraderStash")
+THEN
+Proc_RC_WC_DT_DugHiddenStash((CHARACTERGUID)_player);
+
+
+//Remove marker if marker has been set
+PROC
+Proc_RC_WC_DT_DugHiddenStash((CHARACTERGUID)_player)
+AND
+PartyGetFlag(_player,"RC_WC_DT_KnowsDeadTraderStashLocation",1)
+THEN
+ProcHideMarker((CHARACTERGUID)_player,"RC_WC_DT_DeadTraderStashLocation");
+
+
+//Set flag that stash is dug up (Used for dialogue and making sure marker is not set)
+PROC
+Proc_RC_WC_DT_DugHiddenStash((CHARACTERGUID)_player)
+THEN
+GlobalSetFlag("RC_WC_DT_HiddenTreasureAlreadyDugUp");
+
+//END_REGION
+
+//REGION On Turning hostile in dialogue or attacking Garvan while has diarrhea
+
+
+//Turn hostile in dialogue
+IF
+DialogEnded("RC_DW_Tavern_Traveler",_inst)
+AND
+ObjectGetFlag(S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29,"RC_DW_DT_GarvanTurnsHostile",1)
+AND
+DialogGetInvolvedPlayer(_inst,1,_player)
+THEN
+ObjectSetFlag(_player,"RC_DW_DT_AttackedGarvan");
+Proc_RC_DW_DT_OnGarvanAttack(S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29,(CHARACTERGUID)_player);
+
+
+//On attacking Garvan
+IF
+AttackedByObject(S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29,(CHARACTERGUID)_player,_,_,_)
+AND
+DB_IsPlayer(_player)
+THEN
+ObjectSetFlag(_player,"RC_DW_DT_AttackedGarvan");
+Proc_RC_DW_DT_OnGarvanAttack(S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29,(CHARACTERGUID)_player);
+
+
+//Attacking Garvan when he is already once attacked
+PROC
+Proc_RC_DW_DT_OnGarvanAttack((CHARACTERGUID)_garvan,(CHARACTERGUID)_player)
+AND
+ObjectGetFlag(_garvan,"RC_DW_DT_GarvanIsAttacking",0)
+AND
+ObjectGetFlag(_garvan,"RC_DW_DT_GarvanHasBeenAttacked",1)
+THEN
+Proc_RC_DW_DT_GarvanTurnHostile(_garvan,_player);
+
+
+//Attacking garvan when he has diarrhea
+PROC
+Proc_RC_DW_DT_OnGarvanAttack((CHARACTERGUID)_garvan,(CHARACTERGUID)_player)
+AND
+ObjectGetFlag(_garvan,"RC_DW_DT_GarvanIsAttacking",0)
+AND
+ObjectGetFlag(_garvan,"RC_DW_DT_GarvanHasBeenAttacked",0)
+AND
+ObjectGetFlag(_garvan,"RC_DW_DT_HasDiarrhea",1)
+THEN
+Proc_RC_DW_DT_GarvanTurnHostile(_garvan,_player);
+
+
+//Proc on turn Garvan hostile
+PROC
+Proc_RC_DW_DT_GarvanTurnHostile((CHARACTERGUID)_garvan,(CHARACTERGUID)_player)
+THEN
+DialogRequestStop(_garvan);
+ProcMakeNPCHostile(_player,_garvan);
+ObjectSetFlag(_garvan,"RC_DW_DT_GarvanIsAttacking");
+
+PROC
+Proc_RC_DW_DT_GarvanTurnHostile((CHARACTERGUID)_garvan,(CHARACTERGUID)_player)
+AND
+QueryOnlyOnce("RC_DW_DT_GarvanTurnedHostileOnce")
+THEN
+DB_NoLowAttitudeDialog(_garvan);
+//END_REGION
+
+//REGION On Garvan in combat
+IF
+ObjectEnteredCombat(S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29,_)
+THEN
+ObjectSetFlag(S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29,"RC_DW_DT_GarvanIsAttacking");
+Proc_StartDialog(1,"RC_DW_DT_AD_Tavern_Traveler",S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29);
+
+PROC
+Proc_ObjectLeftCombat(S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29,_)
+AND
+CharacterIsDead(S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29,0)
+AND
+ObjectGetFlag(S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29,"RC_DW_DT_HasDiarrhea",1)
+THEN
+ObjectClearFlag(S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29,"RC_DW_DT_GarvanIsAttacking",0);
+ObjectClearFlag(S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29,"RC_DW_DT_GarvanTurnsHostile",0);
+ObjectSetFlag(S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29,"RC_DW_DT_GarvanHasBeenAttacked");
+
+IF
+AttackedByObject(_player,S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29,_,_,_)
+AND
+DB_IsPlayer((CHARACTERGUID)_player)
+AND
+ObjectGetFlag(_player,"RC_DW_DT_AttackedGarvan",0)
+THEN
+ObjectSetFlag(_player,"RC_DW_DT_AttackedGarvan");
+//END_REGION
+
+
+//REGION Unlock TaintedFunnyMeat Recipe
+IF
+ObjectFlagSet("RC_DW_DT_UnlockRCPTaintedFunnyMeat",_player,_)
+THEN
+CharacterUnlockRecipe((CHARACTERGUID)_player,"QUEST_FunnyMeat_FOOD_FishA_Voidwoken",1);
+CharacterUnlockRecipe((CHARACTERGUID)_player,"QUEST_FunnyMeat_FOOD_FishB_Voidwoken",0);
+CharacterUnlockRecipe((CHARACTERGUID)_player,"QUEST_FunnyMeat_FOOD_FishC_Voidwoken",0);
+CharacterUnlockRecipe((CHARACTERGUID)_player,"QUEST_FunnyMeat_FOOD_FishD_Voidwoken",0);
+CharacterUnlockRecipe((CHARACTERGUID)_player,"QUEST_FunnyMeat_FOOD_FishE_Voidwoken",0);
+CharacterUnlockRecipe((CHARACTERGUID)_player,"QUEST_FunnyMeat_FOOD_FishF_Voidwoken",0);
+//END_REGION
+
+/*
+//REGION TEMP system for pickup container
+IF
+CharacterUsedItem(_player,S_QUEST_RC_DW_DT_GarvanSupplies_4c99d54b-8bc8-419e-a921-da8ec67f1947)
+AND
+ItemIsInCharacterInventory(S_QUEST_RC_DW_DT_GarvanSupplies_4c99d54b-8bc8-419e-a921-da8ec67f1947,_player,0)
+THEN
+ItemToInventory(S_QUEST_RC_DW_DT_GarvanSupplies_4c99d54b-8bc8-419e-a921-da8ec67f1947,_player);
+DebugText(_player,"Temp pickupable container");
+//END_REGION*/
+
+
+//REGION Supplies have been opened
+IF
+ItemUnlocked(S_QUEST_RC_DW_DT_GarvanSupplies_4c99d54b-8bc8-419e-a921-da8ec67f1947,_,_)
+AND
+QueryOnlyOnce("RC_DW_DT_GarvanSuppliesOpened")
+THEN
+GlobalSetFlag("RC_DW_DT_GarvanSuppliesOpened");
+//END_REGION
+
+//REGION Give Garvan Stews
+IF
+ObjectFlagSet("RC_ManagedToRemoveFunnyMeatStew",_player,_)
+THEN
+ObjectSetFlag(S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29,"RC_AddEmptyBowl");
+ObjectSetFlag(_player,"RC_DW_DT_GaveGarvanStew");
+Proc_RC_DW_DT_GaveStew();
+
+IF
+ObjectFlagSet("RC_ManagedToRemoveTaintedFunnyMeatStew",_player,_)
+THEN
+ObjectSetFlag(S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29,"RC_AddEmptyBowl");
+ObjectSetFlag(S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29,"RC_DW_DT_HasDiarrhea");
+ObjectSetFlag(_player,"RC_DW_DT_GaveGarvanTaintedStew");
+Proc_RC_DW_DT_GaveStew();
+
+PROC
+Proc_RC_DW_DT_GaveStew()
+AND
+ObjectGetFlag(S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29,"RC_DW_DT_GaveGarvenStewOnce",1)
+THEN
+ObjectSetFlag(S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29,"RC_DW_DT_GaveGarvenStewMany");
+
+PROC
+Proc_RC_DW_DT_GaveStew()
+AND
+ObjectGetFlag(S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29,"RC_DW_DT_GaveGarvenStewOnce",0)
+THEN
+ObjectSetFlag(S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29,"RC_DW_DT_GaveGarvenStewOnce");
+
+
+//Safty
+IF
+DialogEnded("RC_DW_Tavern_Traveler",_inst)
+AND
+DialogGetInvolvedPlayer(_inst,1,_player)
+THEN
+ObjectClearFlag(_player,"RC_ManagedToRemoveFunnyMeatStew",0);
+ObjectClearFlag(_player,"RC_ManagedToRemoveTaintedFunnyMeatStew",0);
+//END_REGION
+
+//REGION Diarrhea chair moved
+IF
+ItemMoved(S_RC_DW_DT_GarvanDiarrheaChair_3c7ec431-db03-4774-a5cb-3e2a9fbd272e)
+THEN
+SetStoryEvent(S_RC_DW_DT_GarvanDiarrheaChair_3c7ec431-db03-4774-a5cb-3e2a9fbd272e,"RC_DW_DT_DiarrheaSeatMoved");
+//END_REGION
+
+//REGION Consuming Trader Spirit
+IF
+GlobalFlagSet("RC_WC_DT_GhostOfTraderConsumed")
+AND
+DB_IsPlayer(_player)
+THEN
+Proc_RC_WC_DT_ConsumingTraderGhost((CHARACTERGUID)_player);
+
+IF
+CharacterGhostDestroyed(_,CHARACTERGUID_S_RC_WC_DT_DeadTraderGhost_a071ce76-792b-40f5-ba4e-84f41b749b44)
+AND
+DB_IsPlayer(_player)
+THEN
+Proc_RC_WC_DT_ConsumingTraderGhost((CHARACTERGUID)_player);
+
+
+PROC
+Proc_RC_WC_DT_ConsumingTraderGhost((CHARACTERGUID)_player)
+AND
+PartyGetFlag((CHARACTERGUID)_player,"QuestUpdate_RC_WC_TheDeadTrader_KnowsTraderWasKilled",1)
+AND
+PartyGetFlag((CHARACTERGUID)_player,"QuestUpdate_RC_WC_TheDeadTrader_CloseKilledGarvan",0)
+AND
+PartyGetFlag((CHARACTERGUID)_player,"QuestUpdate_RC_WC_TheDeadTrader_CloseInformedGhostOfHeadEaten",0)
+THEN
+PartySetFlag((CHARACTERGUID)_player,"QuestUpdate_RC_WC_TheDeadTrader_CloseGhostConsumed");
+
+PROC
+Proc_RC_WC_DT_ConsumingTraderGhost((CHARACTERGUID)_player)
+AND
+PartyGetFlag((CHARACTERGUID)_player,"QuestUpdate_RC_WC_TheDeadTrader_CloseGhostConsumed",0)
+AND
+PartyGetFlag((CHARACTERGUID)_player,"QuestUpdate_RC_WC_TheDeadTrader_FoundBlood",1)
+THEN
+PartySetFlag((CHARACTERGUID)_player,"QuestUpdate_RC_WC_TheDeadTrader_CloseGhostConsumed");
+
+
+//END_REGION
+
+//REGION On Destroying Supplies
+IF
+ItemDestroyed(S_QUEST_RC_DW_DT_GarvanSupplies_4c99d54b-8bc8-419e-a921-da8ec67f1947)
+THEN
+GlobalSetFlag("RC_DW_DT_GarvanSuppliesDestroyed");
+
+IF
+GlobalFlagSet("RC_DW_DT_GarvanSuppliesDestroyed")
+AND
+DB_IsPlayer(_player)
+AND
+PartyGetFlag((CHARACTERGUID)_player,"QuestUpdate_RC_DW_GarvanSupplies_DestroyedGarvanSupplies",0)
+AND
+PartyGetFlag((CHARACTERGUID)_player,"QuestUpdate_RC_DW_GarvanSupplies_AgreedToFindGarvanSupplies",1)
+THEN
+PartySetFlag((CHARACTERGUID)_player,"QuestUpdate_RC_DW_GarvanSupplies_DestroyedGarvanSupplies");
+
+IF
+ObjectFlagSet("QuestUpdate_RC_DW_GarvanSupplies_AgreedToFindGarvanSupplies",_player,_)
+AND
+GlobalGetFlag("RC_DW_DT_GarvanSuppliesDestroyed",1)
+AND
+PartyGetFlag((CHARACTERGUID)_player,"QuestUpdate_RC_DW_GarvanSupplies_DestroyedGarvanSupplies",0)
+THEN
+PartySetFlag((CHARACTERGUID)_player,"QuestUpdate_RC_DW_GarvanSupplies_DestroyedGarvanSupplies");
+//END_REGION
+
+IF
+SavegameLoaded(_Major,_Minor,_Rev,_Build)
+AND
+QRY_VersionIsOlderThan(_Major,_Minor,_Rev,_Build, 3, 6, 0, 1)
+AND
+NOT DB_Dead(CHARACTERGUID_S_RC_DW_DT_Tavern_Traveler_ae3b396f-b064-48ac-b9e2-c3fcf720bd29)
+AND
+ItemIsStoryItem(ITEMGUID_S_RC_WC_DT_Limb_GarvanHead_38cbf3f3-91dc-46a4-ad31-9c1c1cdd9eab,0)
+THEN
+ItemSetStoryItem(ITEMGUID_S_RC_WC_DT_Limb_GarvanHead_38cbf3f3-91dc-46a4-ad31-9c1c1cdd9eab,1);
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "ReapersCoast"

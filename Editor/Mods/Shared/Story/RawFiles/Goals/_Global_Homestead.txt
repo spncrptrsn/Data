@@ -1,0 +1,102 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//REGION Character creation mirror (respec)
+IF
+CharacterItemEvent(_Player,_Mirror,"GEN_Homestead_CharCreationMirror")
+AND
+CharacterAddToCharacterCreation(_Player,2,1)
+THEN
+DB_Illusionist(_Player,_Mirror);
+
+IF
+CharacterItemEvent(_Player,_Mirror,"GEN_Homestead_CharCreationMirror")
+AND
+HasActiveStatus(_Player,"PLAY_DEAD",1)
+THEN
+RemoveStatus(_Player,"PLAY_DEAD");
+
+//REGION Save while using the mirror -> re-add to character creation after loading (DOSTWO-9410)
+IF
+SavegameLoaded(_,_,_,_)
+AND
+DB_Illusionist(_Player,_Mirror)
+AND
+CharacterAddToCharacterCreation(_Player,2,0)
+THEN
+DebugBreak("Failed to re-add player to character creation after reload");
+//END_REGION
+
+//REGION Handle teleportation pyramids
+// Avoid other players teleporting into the character creation "level"
+IF
+DB_Illusionist(_Player,_)
+AND
+DB_TeleporterPyramid(_Pyramid)
+AND
+ItemIsInCharacterInventory(_Pyramid,_Player,1)
+THEN
+Proc_PyramidCustomBlockAdd(_Pyramid,"LV_Mirror");
+
+IF
+ItemAddedToCharacter(_Pyramid,_Player)
+AND
+DB_TeleporterPyramid(_Pyramid)
+AND
+DB_Illusionist(_Player,_Mirror)
+THEN
+Proc_PyramidCustomBlockAdd(_Pyramid,"LV_Mirror");
+
+IF
+ItemRemovedFromCharacter(_Pyramid,_Player)
+AND
+DB_TeleporterPyramid(_Pyramid)
+AND
+DB_Illusionist(_Player,_Mirror)
+THEN
+Proc_PyramidCustomBlockRemove(_Pyramid,"LV_Mirror");
+
+IF
+CharacterCreationFinished(_Player)
+AND
+DB_Illusionist(_Player,_Mirror)
+AND
+DB_TeleporterPyramid(_Pyramid)
+AND
+ItemIsInCharacterInventory(_Pyramid,_Player,1)
+THEN
+Proc_PyramidCustomBlockRemove(_Pyramid,"LV_Mirror");
+//END_REGION
+
+//REGION Finished respec
+PROC
+Proc_HomesteadTeleportAfterMirror((CHARACTERGUID)_Player,(ITEMGUID)_Mirror,(TRIGGERGUID)_Trigger)
+AND
+_Trigger!=NULL_00000000-0000-0000-0000-000000000000
+THEN
+TeleportTo(_Player,_Trigger,"",0);
+
+PROC
+Proc_HomesteadTeleportAfterMirror((CHARACTERGUID)_Player,(ITEMGUID)_Mirror,(TRIGGERGUID)_Trigger)
+AND
+_Trigger==NULL_00000000-0000-0000-0000-000000000000
+THEN
+TeleportTo(_Player,_Mirror,"",0);
+
+IF
+CharacterCreationFinished(_Player)
+AND
+DB_Illusionist(_Player,_Mirror)
+AND
+GetVarObject(_Mirror,"PlayerPositionAfterCreation",_Trigger)
+THEN
+NOT DB_Illusionist(_Player,_Mirror);
+Proc_HomesteadTeleportAfterMirror(_Player,_Mirror,(TRIGGERGUID)_Trigger);
+//END_REGION
+
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION

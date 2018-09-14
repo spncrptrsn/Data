@@ -1,0 +1,2544 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+DB_Singleton("InitData",0);
+
+DB_GLO_AttributeCheck_Var(1,"Name","Attribute_Check_1_Name_080aa25a-eb82-4060-a20f-93f3f0a3ec85");
+DB_GLO_AttributeCheck_Var(1,"Difficulty","Attribute_Check_1_Difficulty_6645b5b8-4c17-4678-98b2-d5d718c36829");
+DB_GLO_AttributeCheck_Var(1,"LevelOverride","Attribute_Check_1_LevelOverride_08b97107-2d16-4ff5-a2e5-a01ed50e7135");
+DB_GLO_AttributeCheck_Var(1,"Source","Attribute_Check_1_Source_dd323f37-f472-4a67-9a44-5ca9f15646bb");
+DB_GLO_AttributeCheck_Var(1,"Target","Attribute_Check_1_Target_c46387f7-f39b-46c5-b6ec-baeccc34291a");
+
+DB_GLO_AttributeCheck_Var(2,"Difficulty","Attribute_Check_2_Difficulty_eab60140-a9e3-4579-b5fa-3cb5515c2282");
+DB_GLO_AttributeCheck_Var(2,"LevelOverride","Attribute_Check_2_LevelOverride_1dc16030-ece6-4677-ae14-62e7e9d1ac0e");
+DB_GLO_AttributeCheck_Var(2,"Name","Attribute_Check_2_Name_151dfe0f-6575-4ce2-bedc-6f157abdb36e");
+DB_GLO_AttributeCheck_Var(2,"Source","Attribute_Check_2_Source_c40af148-2c37-444b-a462-4387a4c6cede");
+DB_GLO_AttributeCheck_Var(2,"Target","Attribute_Check_2_Target_b8df81e7-d122-452b-bfaa-f9bbe87fd387");
+
+DB_GLO_AttributeCheck_Var(3,"Difficulty","Attribute_Check_3_Difficulty_ff545cea-32e3-4a9a-b005-f3a6e0f0cabd");
+DB_GLO_AttributeCheck_Var(3,"LevelOverride","Attribute_Check_3_LevelOverride_6e3f0bc5-636f-48ad-ad0a-642c3146302b");
+DB_GLO_AttributeCheck_Var(3,"Name","Attribute_Check_3_Name_8281a807-0ae5-4ada-8dc5-3b859310c1f5");
+DB_GLO_AttributeCheck_Var(3,"Source","Attribute_Check_3_Source_32f31478-7329-4902-bb66-a9043819102c");
+DB_GLO_AttributeCheck_Var(3,"Target","Attribute_Check_3_Target_65312317-50da-4cce-a6e9-725a85e7fd46");
+
+KBSECTION
+//REGION Stacks
+
+//Stacks are a useful tool to mimic a FILO stack structure.
+//Add items using the Stack((STRING)_ID,_Value) command.
+//At any time you can query for DB_TopOfStackCharacter((STRING)_ID,_Value), DB_TopOfStackItem((STRING)_ID,_Value) or DB_TopOfStackTrigger((STRING)_ID,_Value)
+//If you wish to pop the top member of the stack, just call PopStack((STRING)_ID);
+PROC
+Stack_Internal((STRING)_ID,(STRING)_Value)
+AND
+NOT DB_StackInternalCounter(_,_ID)
+THEN
+DB_StackInternalCounter(0,_ID);
+DB_TopOfStack(_ID,_Value);
+
+PROC
+Stack_Internal((STRING)_ID,(STRING)_Value)
+AND
+DB_StackInternalCounter(_Amount,_ID)
+AND
+IntegerSum(_Amount,1,_NewAmount)
+AND
+DB_TopOfStack(_ID,_TopValue)
+THEN
+NOT DB_StackInternalCounter(_Amount,_ID);
+DB_StackInternalCounter(_NewAmount,_ID);
+DB_StackInternalMember(_NewAmount,_ID,_Value);
+NOT DB_TopOfStack(_ID,_TopValue);
+DB_TopOfStack(_ID,_Value);
+
+PROC
+PopStack((STRING)_ID)
+AND
+DB_StackInternalCounter(1,_ID)
+AND
+DB_TopOfStack(_ID,_Value)
+THEN
+NOT DB_TopOfStack(_ID,_Value);
+NOT DB_StackInternalCounter(1,_ID);
+NOT DB_StackInternalMember(1,_ID,_Value);
+ProcClearOldTopOfStack(_ID);
+
+PROC
+PopStack((STRING)_ID)
+AND
+DB_StackInternalCounter(_Amount,_ID)
+AND
+IntegerSubtract(_Amount,1,_NewAmount)
+AND
+DB_StackInternalMember(_Amount,_ID,_OldTopValue)
+AND
+DB_StackInternalMember(_NewAmount,_ID,_NewTopValue)
+THEN
+NOT DB_StackInternalCounter(_Amount,_ID);
+DB_StackInternalCounter(_NewAmount,_ID);
+NOT DB_StackInternalMember(_Amount,_ID,_OldTopValue);
+NOT DB_TopOfStack(_ID,_OldTopValue);
+DB_TopOfStack(_ID,_NewTopValue);
+
+PROC
+Stack((STRING)_ID,(GUIDSTRING)_Object)
+AND
+GetUUID(_Object,_UUID)
+THEN
+DB_Stack_UUID(_Object,_UUID);
+Stack_Internal(_ID,_UUID);
+
+IF
+DB_TopOfStack(_ID,_UUID)
+AND
+DB_Stack_UUID(_Value,_UUID)
+THEN
+ProcClearOldTopOfStack(_ID);
+DB_TopOfStackObject(_ID,_Value);
+
+PROC
+ProcClearOldTopOfStack((STRING)_ID)
+AND
+DB_TopOfStackObject(_ID,_Value)
+THEN
+NOT DB_TopOfStackObject(_ID,_Value);
+
+//END_REGION
+
+//REGION Default Parameters
+PROC
+CharacterLookAt((CHARACTERGUID)_Character1,(GUIDSTRING)_Target)
+THEN
+CharacterLookAt(_Character1,_Target,0);
+
+PROC
+PlayAnimation((GUIDSTRING)_Object,(STRING)_String)
+THEN
+PlayAnimation(_Object,_String,"");
+
+PROC
+TeleportTo((GUIDSTRING)_Object,(GUIDSTRING)_Target)
+THEN
+TeleportTo(_Object,_Target,"",1,0,0);
+
+PROC
+TeleportTo((GUIDSTRING)_Object,(GUIDSTRING)_Target,(STRING)_Event,(INTEGER)_TeleportLinkedCharacters)
+THEN
+TeleportTo(_Object,_Target,_Event,_TeleportLinkedCharacters,0,0);
+
+PROC
+TeleportTo((GUIDSTRING)_Object,(GUIDSTRING)_Target,(STRING)_Event,(INTEGER)_TeleportLinkedCharacters,(INTEGER)_ExcludePartyFollowers)
+THEN
+TeleportTo(_Object,_Target,_Event,_TeleportLinkedCharacters,_ExcludePartyFollowers,0);
+
+PROC
+TeleportToPosition((GUIDSTRING)_Object,(REAL)_X,(REAL)_Y,(REAL)_Z,(STRING)_Event,(INTEGER)_TeleportLinkedCharacters)
+THEN
+TeleportToPosition(_Object,_X,_Y,_Z,_Event,_TeleportLinkedCharacters,0);
+
+PROC
+ApplyStatus((GUIDSTRING)_Target,(STRING)_Status,(REAL)_Duration)
+THEN
+ApplyStatus(_Target,_Status,_Duration,0);
+
+PROC
+PartySetFlag((CHARACTERGUID)_Character,(STRING)_Event)
+THEN
+PartySetFlag(_Character,_Event,0);
+
+PROC
+ObjectSetFlag((GUIDSTRING)_Object,(STRING)_Event)
+THEN
+ObjectSetFlag(_Object,_Event,0);
+
+PROC
+ObjectClearFlag((GUIDSTRING)_Object,(STRING)_Event)
+THEN
+ObjectClearFlag(_Object,_Event,0);
+
+PROC
+UserSetFlag((CHARACTERGUID)_Character,(STRING)_Event)
+THEN
+UserSetFlag(_Character,_Event,0);
+
+PROC
+CharacterUseSkill((CHARACTERGUID)_Character,(STRING)_Skill,(GUIDSTRING)_Target)
+THEN
+CharacterUseSkill(_Character,_Skill,_Target,0,0,0);
+
+PROC
+CharacterUseSkill((CHARACTERGUID)_Character,(STRING)_Skill,(GUIDSTRING)_Target,(INTEGER)_ForceResetCooldown)
+THEN
+CharacterUseSkill(_Character,_Skill,_Target,_ForceResetCooldown,0,0);
+
+PROC
+CharacterUseSkill((CHARACTERGUID)_Character,(STRING)_Skill,(GUIDSTRING)_Target,(INTEGER)_ForceResetCooldown, (INTEGER)_IgnoreHasSkill)
+THEN
+CharacterUseSkill(_Character,_Skill,_Target,_ForceResetCooldown,_IgnoreHasSkill,0);
+
+PROC
+CharacterAddSkill((CHARACTERGUID)_Character, (STRING)_Skill)
+THEN
+CharacterAddSkill((CHARACTERGUID)_Character, (STRING)_Skill, 1);
+
+PROC
+CharacterMakePlayer((CHARACTERGUID)_Character)
+THEN
+CharacterMakePlayer((CHARACTERGUID)_Character,NULL_00000000-0000-0000-0000-000000000000);
+//END_REGION
+
+//REGION Trigger Spotter
+QRY
+Query_IsPlayerHiding((CHARACTERGUID)_Char)
+AND
+HasActiveStatus(_Char,"SNEAKING",1)
+THEN
+DB_NOOP(1);
+
+QRY
+Query_IsPlayerHiding((CHARACTERGUID)_Char)
+AND
+HasActiveStatus(_Char,"INVISIBLE",1)
+THEN
+DB_NOOP(1);
+
+IF
+DB_OneShot_DialogTrigger_NewSystem((TRIGGERGUID)_Trigger,(STRING)_,(CHARACTERGUID)_Spotter)
+THEN
+SetVarInteger(_Spotter,"IgnoreDialogChecks",0);
+DB_SneakTriggerSpotter(_Trigger,_Spotter);
+
+IF
+DB_OneShot_DialogTrigger_NewSystem((TRIGGERGUID)_Trigger,(STRING)_,(CHARACTERGUID)_Spotter1,(CHARACTERGUID)_Spotter2)
+THEN
+SetVarInteger(_Spotter1,"IgnoreDialogChecks",0);
+SetVarInteger(_Spotter2,"IgnoreDialogChecks",0);
+DB_SneakTriggerSpotter(_Trigger,_Spotter1);
+DB_SneakTriggerSpotter(_Trigger,_Spotter2);
+
+IF
+DB_OneShot_DialogTrigger_NewSystem((TRIGGERGUID)_Trigger,(STRING)_,(CHARACTERGUID)_Spotter1,(CHARACTERGUID)_Spotter2,(CHARACTERGUID)_Spotter3)
+THEN
+SetVarInteger(_Spotter1,"IgnoreDialogChecks",0);
+SetVarInteger(_Spotter2,"IgnoreDialogChecks",0);
+SetVarInteger(_Spotter3,"IgnoreDialogChecks",0);
+DB_SneakTriggerSpotter(_Trigger,_Spotter1);
+DB_SneakTriggerSpotter(_Trigger,_Spotter2);
+DB_SneakTriggerSpotter(_Trigger,_Spotter3);
+
+PROC
+ProcCharInTriggerSpotted((CHARACTERGUID)_Player,(TRIGGERGUID)_Trigger)
+AND
+DB_OneShot_DialogTrigger_NewSystem(_Trigger,_Dialog,_Spotter)
+THEN
+Proc_StartDialog(0,_Dialog,_Spotter,_Player);
+NOT DB_OneShot_DialogTrigger_NewSystem(_Trigger,_Dialog,_Spotter);
+
+PROC
+ProcCharInTriggerSpotted((CHARACTERGUID)_Player,(TRIGGERGUID)_Trigger)
+AND
+DB_OneShot_DialogTrigger_NewSystem(_Trigger,_Dialog,_Spotter1,_Spotter2)
+THEN
+Proc_StartDialog(0,_Dialog,_Spotter1,_Spotter2,_Player);
+NOT DB_OneShot_DialogTrigger_NewSystem(_Trigger,_Dialog,_Spotter1,_Spotter2);
+
+PROC
+ProcCharInTriggerSpotted((CHARACTERGUID)_Player,(TRIGGERGUID)_Trigger)
+AND
+DB_OneShot_DialogTrigger_NewSystem(_Trigger,_Dialog,_Spotter1,_Spotter2,_Spotter3)
+THEN
+Proc_StartDialog(0,_Dialog,_Spotter1,_Spotter2,_Spotter3,_Player);
+NOT DB_OneShot_DialogTrigger_NewSystem(_Trigger,_Dialog,_Spotter1,_Spotter2,_Spotter3);
+
+IF
+CharacterStatusRemoved(_Player,"SNEAKING",_)
+AND
+DB_IsPlayer(_Player)
+AND
+NOT Query_IsPlayerHiding(_Player)
+THEN
+SetStoryEvent(_Player,"BecameVisible");
+
+IF
+CharacterStatusRemoved(_Player,"INVISIBLE",_)
+AND
+DB_IsPlayer(_Player)
+AND
+NOT Query_IsPlayerHiding(_Player)
+THEN
+SetStoryEvent(_Player,"BecameVisible");
+
+IF
+CharacterStatusApplied(_Player,"SNEAKING",_)
+AND
+DB_IsPlayer(_Player)
+AND
+Query_IsPlayerHiding(_Player)
+THEN
+SetStoryEvent(_Player,"BecameInvisible");
+
+IF
+CharacterStatusApplied(_Player,"INVISIBLE",_)
+AND
+DB_IsPlayer(_Player)
+AND
+NOT Query_IsPlayerHiding(_Player)
+THEN
+SetStoryEvent(_Player,"BecameInvisible");
+
+IF
+DB_TriggerSendsSpotEvents(_Trigger)
+THEN
+ProcTriggerRegisterForPlayers(_Trigger);
+
+IF
+CharacterEnteredTrigger(_Player,_SpotTrigger)
+AND
+NOT Query_IsPlayerHiding(_Player)
+AND
+DB_TriggerSendsSpotEvents(_SpotTrigger)
+THEN
+DB_Event_CharacterAppearedInSpotTrigger(_Player,_SpotTrigger);
+NOT DB_Event_CharacterAppearedInSpotTrigger(_Player,_SpotTrigger);
+
+IF
+CharacterLeftTrigger(_Player,_SpotTrigger)
+AND
+NOT Query_IsPlayerHiding(_Player)
+AND
+DB_TriggerSendsSpotEvents(_SpotTrigger)
+THEN
+DB_Event_CharacterDisappearedInSpotTrigger(_Player,_SpotTrigger);
+NOT DB_Event_CharacterDisappearedInSpotTrigger(_Player,_SpotTrigger);
+
+IF
+StoryEvent((CHARACTERGUID)_Player,"BecameVisible")
+AND
+DB_InRegion(_Player,_SpotTrigger)
+AND
+DB_TriggerSendsSpotEvents(_SpotTrigger)
+THEN
+DB_Event_CharacterAppearedInSpotTrigger(_Player,_SpotTrigger);
+NOT DB_Event_CharacterAppearedInSpotTrigger(_Player,_SpotTrigger);
+
+IF
+StoryEvent((CHARACTERGUID)_Player,"BecameInvisible")
+AND
+DB_InRegion(_Player,_SpotTrigger)
+AND
+DB_TriggerSendsSpotEvents(_SpotTrigger)
+THEN
+DB_Event_CharacterDisappearedInSpotTrigger(_Player,_SpotTrigger);
+NOT DB_Event_CharacterDisappearedInSpotTrigger(_Player,_SpotTrigger);
+
+//END_REGION
+
+//REGION Global Event Memory
+IF
+GlobalFlagSet(_String)
+THEN
+DB_GlobalFlag(_String);
+
+IF
+GlobalFlagCleared(_String)
+THEN
+NOT DB_GlobalFlag(_String);
+//END_REGION
+
+//REGION Poof / Foop
+PROC
+Poof((GUIDSTRING)_Character)
+THEN
+Poof((GUIDSTRING)_Character,"RS3_FX_GP_ScriptedEvent_Teleport_GenericSmoke_01");
+
+PROC
+Poof((GUIDSTRING)_Character,(STRING)_Effect)
+AND
+GetRegion(_Character,_Region)
+AND
+DB_CurrentLevel(_Region)
+AND
+GetPosition(_Character,_X,_Y,_Z)
+THEN
+PlayEffectAtPosition(_Effect,_X,_Y,_Z);
+
+PROC
+Poof((GUIDSTRING)_Character,(STRING)_Effect)
+THEN
+SetOnStage(_Character,0);
+
+PROC
+Foop((GUIDSTRING)_Character)
+THEN
+Foop(_Character,"RS3_FX_GP_ScriptedEvent_Teleport_GenericSmoke_01");
+
+PROC
+Foop((GUIDSTRING)_Character,(STRING)_Effect)
+AND
+GetRegion(_Character,_Region)
+AND
+DB_CurrentLevel(_Region)
+AND
+GetPosition(_Character,_X,_Y,_Z)
+THEN
+PlayEffectAtPosition(_Effect,_X,_Y,_Z);
+
+PROC
+Foop((GUIDSTRING)_Character,(STRING)_Effect)
+THEN
+SetOnStage(_Character,1);
+
+IF
+StoryEvent(_Character,"GEN_GoOffStage")
+THEN
+SetOnStage(_Character,0);
+
+PROC
+Proc_PoofOnce((GUIDSTRING)_Character,(STRING)_OnlyOnce)
+AND
+NOT DB_OnlyOnce(_OnlyOnce)
+THEN
+Poof(_Character);
+DB_OnlyOnce(_OnlyOnce);
+//END_REGION
+
+//REGION Uniformly distributed Randoms (Fair random with memory)
+//Fair rand requires a UUID and a maxamount. The function will return [0,Maxamount-1]
+//When no previous data found, all possible numbers are added into an array.
+//Every FairRand query returns one random number from the array and removes it.
+//Only when the array is empty, is it reseeded.
+//Output: DB_FairRand_ReturnVal(INTEGER)
+
+//Clear return value
+QRY
+QRY_GetFairRand((STRING)_UUID,(INTEGER)_Amount)
+AND
+DB_FairRand_ReturnVal((INTEGER)_Number)
+THEN
+NOT DB_FairRand_ReturnVal(_Number);
+
+//If first time or all numbers used: reseed.
+QRY
+QRY_GetFairRand((STRING)_UUID,(INTEGER)_Amount)
+AND
+NOT DB_FairRand_Available(_UUID,_Amount,_)
+THEN
+Proc_SeedFairRand(_UUID,_Amount,_Amount);
+
+//Pick a random number from the available array (Put in new array with indeces, pick random index, return number)
+//Special case: Make sure that the first pick of a list is not the same as the last pick of the previous list
+QRY
+QRY_GetFairRand((STRING)_UUID,(INTEGER)_Amount)
+THEN
+DB_FairRandAmount(0);
+
+QRY
+QRY_GetFairRand((STRING)_UUID,(INTEGER)_Amount)
+AND
+_Amount > 1
+AND
+DB_FairRand_Last_Of_Previous_Seeding(_PreviousNumber)
+AND
+DB_FairRand_Available(_UUID,_Amount,_AvailableNumber)
+AND
+_PreviousNumber != _AvailableNumber
+AND
+DB_FairRandAmount(_Count)
+AND
+IntegerSum(_Count,1,_NewCount)
+THEN
+DB_FairRand_Array(_Count,_AvailableNumber);
+NOT DB_FairRandAmount(_Count);
+DB_FairRandAmount(_NewCount);
+DB_FairAmount_ListFilled(1);
+
+QRY
+QRY_GetFairRand((STRING)_UUID,(INTEGER)_Amount)
+AND
+DB_FairRand_Last_Of_Previous_Seeding(_Number)
+THEN
+NOT DB_FairRand_Last_Of_Previous_Seeding(_Number);
+
+QRY
+QRY_GetFairRand((STRING)_UUID,(INTEGER)_Amount)
+AND
+NOT DB_FairAmount_ListFilled(1)
+AND
+DB_FairRand_Available(_UUID,_Amount,_AvailableNumber)
+AND
+DB_FairRandAmount(_Count)
+AND
+IntegerSum(_Count,1,_NewCount)
+THEN
+DB_FairRand_Array(_Count,_AvailableNumber);
+NOT DB_FairRandAmount(_Count);
+DB_FairRandAmount(_NewCount);
+
+QRY
+QRY_GetFairRand((STRING)_UUID,(INTEGER)_Amount)
+AND
+DB_FairAmount_ListFilled(1)
+THEN
+NOT DB_FairAmount_ListFilled(1);
+
+QRY
+QRY_GetFairRand((STRING)_UUID,(INTEGER)_Amount)
+AND
+DB_FairRandAmount(_Count)
+AND
+_Count > 0
+AND
+Random(_Count,_Index)
+AND
+DB_FairRand_Array(_Index,_Number)
+THEN
+NOT DB_FairRand_Available(_UUID,_Amount,_Number);
+DB_FairRand_ReturnVal(_Number);
+
+//If this was the last value in the available list, remember it, so we don't pick it first in the next list.
+QRY
+QRY_GetFairRand((STRING)_UUID,(INTEGER)_Amount)
+AND
+NOT DB_FairRand_Available(_UUID,_Amount,_)
+AND
+DB_FairRand_ReturnVal(_Number)
+THEN
+DB_FairRand_Last_Of_Previous_Seeding(_Number);
+
+//Clean up temp vars
+QRY
+QRY_GetFairRand((STRING)_UUID,(INTEGER)_MaxAmount)
+AND
+DB_FairRandAmount(_Amount)
+THEN
+NOT DB_FairRandAmount(_Amount);
+
+QRY
+QRY_GetFairRand((STRING)_UUID,(INTEGER)_Amount)
+AND
+DB_FairRand_Array(_Index,_Number)
+THEN
+NOT DB_FairRand_Array(_Index,_Number);
+
+PROC
+Proc_SeedFairRand((STRING)_UUID,(INTEGER)_MaxAmount,(INTEGER)_Amount)
+AND
+_Amount > 0
+AND
+IntegerSubtract(_Amount,1,_NewAmount)
+THEN
+DB_FairRand_Available(_UUID,_MaxAmount,_NewAmount);
+Proc_SeedFairRand(_UUID,_MaxAmount,_NewAmount);
+//END_REGION
+
+//REGION Get Random position in coordinate-based area ignoring AI grid
+// Pass in two objects. Returns point within cube defined by their coordinates
+// Returns result in DB_Helper_GetAnyRandomPositionInArea_Result(_X,_Y,_Z)
+// NOTE: only tested currently with all coordinates of FirstPoint <= coordinates of _SecondPoint
+//   I don't know whether our random can handle a negative module.
+QRY
+QRY_Helper_GetAnyRandomPositionInArea((GUIDSTRING)_FirstPoint,(GUIDSTRING)_SecondPoint)
+AND
+DB_Helper_GetAnyRandomPositionInArea_Result(_X,_Y,_Z)
+THEN
+NOT DB_Helper_GetAnyRandomPositionInArea_Result(_X,_Y,_Z);
+
+QRY
+QRY_Helper_GetAnyRandomPositionInArea((GUIDSTRING)_BottomLeftBack,(GUIDSTRING)_TopRightFront)
+AND
+GetPosition(_BottomLeftBack,_X1,_Y1,_Z1)
+AND
+GetPosition(_TopRightFront,_X2,_Y2,_Z2)
+AND
+RealSubtract(_X2,_X1,_XDeltaReal)
+AND
+RealSubtract(_Y2,_Y1,_YDeltaReal)
+AND
+RealSubtract(_Z2,_Z1,_ZDeltaReal)
+AND
+RealProduct(_XDeltaReal,100.0,_XScaledDeltaReal)
+AND
+RealProduct(_YDeltaReal,100.0,_YScaledDeltaReal)
+AND
+RealProduct(_ZDeltaReal,100.0,_ZScaledDeltaReal)
+AND
+Integer(_XScaledDeltaReal,_XScaledDeltaInt)
+AND
+Integer(_YScaledDeltaReal,_YScaledDeltaInt)
+AND
+Integer(_ZScaledDeltaReal,_ZScaledDeltaInt)
+AND
+Random(_XScaledDeltaInt,_XRandScaledDeltaInt)
+AND
+Random(_YScaledDeltaInt,_YRandScaledDeltaInt)
+AND
+Random(_ZScaledDeltaInt,_ZRandScaledDeltaInt)
+AND
+Real(_XRandScaledDeltaInt,_XRandScaledDeltaReal)
+AND
+Real(_YRandScaledDeltaInt,_YRandScaledDeltaReal)
+AND
+Real(_ZRandScaledDeltaInt,_ZRandScaledDeltaReal)
+AND
+RealDivide(_XRandScaledDeltaReal,100.0,_XRandDeltaReal)
+AND
+RealDivide(_YRandScaledDeltaReal,100.0,_YRandDeltaReal)
+AND
+RealDivide(_ZRandScaledDeltaReal,100.0,_ZRandDeltaReal)
+AND
+RealSum(_X1,_XRandDeltaReal,_NewX)
+AND
+RealSum(_Y1,_YRandDeltaReal,_NewY)
+AND
+RealSum(_Z1,_ZRandDeltaReal,_NewZ)
+THEN
+DB_Helper_GetAnyRandomPositionInArea_Result(_NewX,_NewY,_NewZ);
+//END_REGION
+
+//REGION Singleton Variables //A variable which can only hold one value. All old value get overwritten.
+IF
+DB_Singleton(_VariableNam,_NewValue)
+AND
+DB_Singleton(_VariableNam,_OldValue)
+AND
+_NewValue != _OldValue
+THEN
+NOT DB_Singleton(_VariableNam,_OldValue);
+//END_REGION
+
+//REGION Only Once Rule Query
+QRY
+QueryOnlyOnce((STRING)_OnlyOnceUUID)
+AND
+NOT DB_OnlyOnce(_OnlyOnceUUID)
+THEN
+DB_OnlyOnce(_OnlyOnceUUID);
+//END_REGION
+
+//REGION Only once per user, but also mark users of nearby players
+// NOTE: this is intended as replacement for triggering ADs guarded by a
+//   QueryOnlyOnce(). It does not check for all corner cases, such as
+//   character reassignment to another user. It's just meant to increase
+//   the chances that every user will see an AD rather than only the first
+//   one.
+
+// Use for atmospheric ADs that don't influence progression, and which are
+// nice for a player to see/hear at least once. It avoids playing the same
+// AD for multiple users in case they already heard another user's player
+// say it, and at the same time allows different users to have the same AD
+// if they arrive at a spot/perform the same action at different times.
+QRY
+QRY_OncePerUserAndNearbyPlayers((CHARACTERGUID)_Player, (STRING)_Flag)
+AND
+QRY_OncePerUserAndNearbyPlayers(_Player, _Flag, 10.0)
+THEN
+DB_NOOP(1);
+
+QRY
+QRY_OncePerUserAndNearbyPlayers((CHARACTERGUID)_Player, (STRING)_Flag, (REAL)_Range)
+AND
+UserGetFlag(_Player, _Flag, 0)
+THEN
+PROC_OncePerUserAndNearbyPlayers_SetFlag(_Player, _Flag, _Range);
+
+PROC
+PROC_OncePerUserAndNearbyPlayers_SetFlag((CHARACTERGUID)_Player, (STRING)_Flag, (REAL)_Range)
+AND
+DB_IsPlayer(_OtherPlayer)
+AND
+GetDistanceTo(_Player, _OtherPlayer, _Dist)
+AND
+_Dist < _Range
+THEN
+// Will also catch _Player himself
+UserSetFlag(_OtherPlayer, _Flag);
+//END_REGION
+
+//REGION Small macros
+PROC
+PROC_RemoveDialogFromCharacter((CHARACTERGUID)_NPC)
+THEN
+DialogRequestStop(_NPC);
+ProcRemoveAllDialogEntriesForSpeaker(_NPC);
+SetHasDialog(_Npc,0);
+//END_REGION
+
+//REGION Counter Helper
+PROC
+Proc_CountHelper((STRING)_ID)
+AND
+NOT DB_CountHelper(_ID,_)
+THEN
+DB_CountHelper(_ID,0);
+
+PROC
+Proc_CountHelper((STRING)_ID)
+AND
+DB_CountHelper(_ID,_OldValue)
+AND
+IntegerSum(_OldValue,1,_Value)
+THEN
+NOT DB_CountHelper(_ID,_OldValue);
+DB_CountHelper(_ID,_Value);
+
+PROC
+Proc_CharCountHelper((CHARACTERGUID)_Char,(STRING)_ID)
+THEN
+Proc_CharCountHelper(_Char,_ID,1);
+
+PROC
+Proc_CharCountHelper((CHARACTERGUID)_Char,(STRING)_ID,_)
+AND
+NOT DB_CharCountHelper(_Char,_ID,_)
+THEN
+DB_CharCountHelper(_Char,_ID,0);
+
+PROC
+Proc_CharCountHelper((CHARACTERGUID)_Char,(STRING)_ID,(INTEGER)_Count)
+AND
+DB_CharCountHelper(_Char,_ID,_OldValue)
+AND
+IntegerSum(_OldValue,_Count,_Value)
+THEN
+NOT DB_CharCountHelper(_Char,_ID,_OldValue);
+DB_CharCountHelper(_Char,_ID,_Value);
+
+PROC
+Proc_CharCountHelperReset((CHARACTERGUID)_Char,(STRING)_ID)
+AND
+DB_CharCountHelper(_Char,_ID,_Counter)
+THEN
+NOT DB_CharCountHelper(_Char,_ID,_Counter);
+//END_REGION
+
+//REGION Unregister a Trigger For a User
+// Note: this routines errs on the side of keeping the trigger unregistered.
+// E.g., if a character is assigned to a user without other characters, triggers
+// will kept be kept unregistered for that character if they had been unregistered
+// before.
+PROC 
+ProcUnregisterForUser((TRIGGERGUID)_Trigger,(CHARACTERGUID)_Player)
+AND
+CharacterGetReservedUserID(_Player,_UserID)
+AND 
+DB_IsPlayer(_OtherPlayer)
+AND
+CharacterGetReservedUserID(_OtherPlayer,_UserID)
+THEN 
+DB_TriggerUnregisteredForUserChar(_Trigger,_OtherPlayer);
+TriggerUnregisterForCharacter(_Trigger,_OtherPlayer);
+
+IF
+CharacterReservedUserIDChanged(_Player,_,_UserID)
+AND
+DB_IsPlayer(_Player)
+AND
+DB_IsPlayer(_OtherPlayer)
+AND
+NOT DB_UnregisterForUserIDChanged(1)
+AND
+_OtherPlayer != _Player
+AND
+CharacterGetReservedUserID(_OtherPlayer,_UserID)
+THEN
+DB_UnregisterForUserIDChanged(1);
+// Only have to call this for one character, because this logic keeps it the
+// same for all of the characters assigned to a single user
+ProcUnregisterForUserIDChanged(_OtherPlayer,_Player);
+
+PROC
+ProcUnregisterForUserIDChanged((CHARACTERGUID)_ExistingPlayer,(CHARACTERGUID)_NewPlayer)
+AND
+DB_TriggerUnregisteredForUserChar(_Trigger,_ExistingPlayer)
+AND
+NOT DB_TriggerUnregisteredForUserChar(_Trigger,_NewPlayer)
+THEN
+DB_TriggerUnregisteredForUserChar(_Trigger,_NewPlayer);
+TriggerUnregisterForCharacter(_Trigger,_NewPlayer);
+
+PROC
+ProcUnregisterForUserIDChanged((CHARACTERGUID)_ExistingPlayer,(CHARACTERGUID)_NewPlayer)
+AND
+DB_TriggerUnregisteredForUserChar(_Trigger,_NewPlayer)
+AND
+NOT DB_TriggerUnregisteredForUserChar(_Trigger,_ExistingPlayer)
+THEN
+NOT DB_TriggerUnregisteredForUserChar(_Trigger,_NewPlayer);
+TriggerRegisterForCharacter(_Trigger,_NewPlayer);
+
+IF
+CharacterReservedUserIDChanged(_Player,_,_UserID)
+THEN
+NOT DB_UnregisterForUserIDChanged(1);
+
+//END_REGION
+
+//REGION Turn Skipping
+//While in DB_CharacterSkipTurn(_Char), skip turn
+//
+IF
+ObjectFlagSet("GEN_EndTurn",_Char,_)
+THEN
+EndTurn(_Char);
+ObjectClearFlag(_Char,"GEN_EndTurn",0);
+
+IF
+ObjectFlagSet("GEN_SkipToTurn",_Char,_)
+AND
+DB_CombatObjects(_Char,_)
+THEN
+DB_CharacterSkipTurn(_Char);
+ObjectClearFlag(_Char,"GEN_SkipToTurn",0);
+
+IF
+ObjectTurnStarted(_Char)
+AND
+DB_CharacterSkipTurn(_Char)
+THEN
+EndTurn(_Char);
+
+PROC
+Proc_PurgeSkipTurnDB()
+AND
+DB_CharacterSkipTurn(_Char)
+THEN
+NOT DB_CharacterSkipTurn(_Char);
+
+IF
+ObjectTurnStarted(_Char)
+AND
+DB_SkipToCharactersTurn(_CharsTurn)
+AND
+DB_CombatObjects(_Char,_ID)
+AND
+DB_CombatObjects(_CharsTurn,_ID)
+AND
+_Char != _CharsTurn
+THEN
+EndTurn(_Char);
+
+IF
+ObjectTurnStarted(_Char)
+AND
+DB_SkipToCharactersTurn(_Char)
+THEN
+NOT DB_SkipToCharactersTurn(_Char);
+
+IF
+ObjectFlagSet("GEN_DisappearOutOfSight",(CHARACTERGUID)_Char,_)
+THEN
+ProcCharacterDisappearOutOfSight(_Char,0,1,"",0);
+ObjectClearFlag(_Char,"GEN_DisappearOutOfSight",0);
+
+IF
+ObjectLeftCombat((CHARACTERGUID)_Char,_)
+AND
+ObjectGetFlag(_Char,"GEN_DisappearOutOfSightWhenAvailable",1)
+AND
+QRY_SpeakerIsAvailable(_Char)
+THEN
+ProcCharacterDisappearOutOfSight(_Char,0,1,"",0);
+ObjectClearFlag(_Char,"GEN_DisappearOutOfSightWhenAvailable",0);
+
+IF
+DialogEnded(_,_ID)
+AND
+DialogGetInvolvedNPC(_ID,1,(CHARACTERGUID)_Char)
+AND
+ObjectGetFlag(_Char,"GEN_DisappearOutOfSightWhenAvailable",1)
+AND
+QRY_SpeakerIsAvailable(_Char)
+THEN
+ProcCharacterDisappearOutOfSight(_Char,0,1,"",0);
+ObjectClearFlag(_Char,"GEN_DisappearOutOfSightWhenAvailable",0);
+
+IF
+CharacterStoppedPolymorph(_Char)
+AND
+ObjectGetFlag(_Char,"GEN_DisappearOutOfSightWhenAvailable",1)
+AND
+QRY_SpeakerIsAvailable(_Char)
+THEN
+ProcCharacterDisappearOutOfSight(_Char,0,1,"",0);
+ObjectClearFlag(_Char,"GEN_DisappearOutOfSightWhenAvailable",0);
+//END_REGION
+
+//REGION Move an item locally
+//Add to an items X, Y and Z values
+//
+PROC 
+ProcItemLocalMove((ITEMGUID)_Item,(REAL)_PlusX,(REAL)_PlusY,(REAL)_PlusZ,(REAL)_Speed,(REAL)_Acceleration)
+AND
+GetPosition(_Item,_X,_Y,_Z)
+AND
+RealSum(_X,_PlusX,_TargetX)
+AND
+RealSum(_Y,_PlusY,_TargetY)
+AND
+RealSum(_Z,_PlusZ,_TargetZ)
+THEN
+Proc_ItemMoveToPosition(_Item,_TargetX,_TargetY,_TargetZ,_Speed,_Acceleration);
+
+
+//END_REGION
+
+//REGION Force End a Dialog
+//for use in behaviour scripts 
+IF
+StoryEvent((GUIDSTRING)_Object,"ForceStopDialog")
+THEN
+ProcForceStopDialog(_Object);
+
+PROC 
+ProcForceStopDialog((GUIDSTRING)_Object)
+THEN
+DialogRequestStop(_Object);
+
+//END_REGION
+
+//REGION Generic hostile after dialog
+//NPC in the dialogue will go hostile to the Player that this event is set on at the end of the dialog
+IF
+ObjectFlagSet("FactionHostileToIndivPlayerAfterDialog",(CHARACTERGUID)_Player,_Id)
+THEN
+DB_HostileToIndivPlayerAfterDialog(_Player,_Id);
+
+IF
+DialogEnded(_,_Id)
+AND
+DB_HostileToIndivPlayerAfterDialog(_Player,_Id)
+AND
+DB_DialogNPCs(_Id,_Char,_)
+THEN
+ProcSetHostileToIndivPlayer((CHARACTERGUID)_Char,_Player);
+ObjectClearFlag(_Player,"FactionHostileToIndivPlayerAfterDialog",_Id);
+NOT DB_HostileToIndivPlayerAfterDialog(_Player,_Id);
+
+//NPC in the dialogue will go hostile to the Player that this event is set on at the end of the dialog, and stay hostile to other players who attack it.
+IF
+ObjectFlagSet("FactionHostileToPlayerGroupAfterDialog",(CHARACTERGUID)_Player,_Id)
+AND
+DB_HostileToPlayerGroupCancelFlag(_Flag, _Character)
+AND
+PartyGetFlag(_Player, _Flag,  0)
+THEN
+DB_HostileToPlayerGroupAfterDialog(_Player,_Id);
+
+//NPC in the dialogue will go hostile to the Player that this event is set on at the end of the dialog, and stay hostile to other players who attack it.
+IF
+ObjectFlagSet("FactionHostileToPlayerGroupAfterDialog",(CHARACTERGUID)_Player,_Id)
+AND
+NOT DB_HostileToPlayerGroupCancelFlag(_, _)
+THEN
+DB_HostileToPlayerGroupAfterDialog(_Player,_Id);
+
+IF
+ObjectFlagSet("FactionHostileToPlayerGroupAfterDialog",(CHARACTERGUID)_Player,_Id)
+AND
+DB_HostileToPlayerGroupCancelFlag(_Flag, _Character)
+AND
+PartyGetFlag(_Player, _Flag,  1)
+THEN
+DB_TemporaryHostilityAfterDialog(_Player,_Id);
+NOT DB_SetNeutralToPlayerGroupAfterDialog(_ID, (CHARACTERGUID)_Player, (CHARACTERGUID)_Character);
+
+IF
+DialogEnded(_,_Id)
+AND
+DB_HostileToPlayerGroupAfterDialog(_Player,_Id)
+AND
+DB_DialogNPCs(_Id,_Char,_)
+THEN
+ObjectClearFlag(_Player,"FactionHostileToPlayerGroupAfterDialog",_Id);
+DB_HostileToPlayerGroup(_Char, _Player);
+NOT DB_HostileToPlayerGroupAfterDialog(_Player,_Id);
+EnterCombat(_Char, _Player);
+
+IF
+DB_CombatCharacters(_, _ID)
+THEN
+PROC_GEN_UpdateHostilePlayerGroup(_ID);
+
+PROC
+PROC_GEN_UpdateHostilePlayerGroup((INTEGER)_ID)
+AND
+DB_CombatCharacters(_Char, _ID)
+AND
+DB_HostileToPlayerGroup(_Char, _)
+THEN
+PROC_GEN_UpdateHostilePlayerGroupForChar(_Char);
+
+PROC
+PROC_GEN_UpdateHostilePlayerGroupForChar((CHARACTERGUID)_Char)
+AND
+DB_CombatCharacters(_Char, _ID)
+AND
+DB_CombatCharacters(_Player, _ID)
+AND
+DB_HostileToPlayerGroup(_Char, _Player)
+AND
+DB_IsPlayer(_OtherPlayer)
+AND
+DB_CombatCharacters(_OtherPlayer, _ID)
+AND
+NOT DB_HostileToPlayerGroup(_Char, _OtherPlayer)
+AND
+CharacterIsInPartyWith(_Player, _OtherPlayer, 1)
+THEN
+DB_HostileToPlayerGroup(_Char, _OtherPlayer);
+
+IF
+DB_HostileToPlayerGroup(_Char, _Player)
+AND
+GetFaction(_Char, _Faction1)
+AND
+GetFaction(_Player, _Faction2)
+THEN
+CharacterSetRelationFactionToFaction(_Faction1, _Faction2, 0);
+CharacterSetRelationFactionToFaction(_Faction2, _Faction1, 0);
+
+IF
+ObjectFlagSet(_Flag, _Player, _)
+AND
+DB_HostileToPlayerGroupCancelFlag(_Flag, _Character)
+AND
+DB_HostileToPlayerGroupAfterDialog((CHARACTERGUID)_Player, _Id)
+AND
+DB_DialogNPCs(_Id, _Character, _)
+THEN
+NOT DB_HostileToPlayerGroupAfterDialog(_Player, _Id);
+DB_TemporaryHostilityAfterDialog(_Player,_Id);
+
+IF
+DB_HostileToPlayerGroup(_Character, _Player)
+AND
+DB_HostileToPlayerGroupCancelFlag(_Flag, _Character)
+AND
+PartyGetFlag((CHARACTERGUID)_Player, _Flag, 1)
+THEN
+NOT DB_HostileToPlayerGroup(_Character, _Player);
+
+IF
+ObjectFlagSet(_Flag, _Player, _)
+AND
+DB_HostileToPlayerGroupCancelFlag(_Flag, _Character)
+THEN
+NOT DB_HostileToPlayerGroup(_Character, (CHARACTERGUID)_Player);
+
+IF
+ObjectFlagSet(_Flag, _Player, _)
+AND
+DB_HostileToPlayerGroup(_Character, (CHARACTERGUID)_Player)
+AND
+DB_HostileToPlayerGroupCancelFlag(_Flag, _Character)
+THEN
+PROC_HostileToPlayerGroupCancelFlag_TryCancel((CHARACTERGUID)_Player, (CHARACTERGUID)_Character);
+
+PROC
+PROC_HostileToPlayerGroupCancelFlag_TryCancel((CHARACTERGUID)_Player, (CHARACTERGUID)_Character)
+AND
+NOT DB_DialogPlayers(_, _Player, _)
+AND
+NOT DB_DialogNPCs(_, _Character, _)
+AND
+GetFaction(_Player, _Faction)
+AND
+GetFaction(_Character, _OtherFaction)
+THEN
+CharacterSetRelationFactionToFaction(_OtherFaction, _Faction, 50);
+CharacterSetRelationFactionToFaction(_Faction, _OtherFaction, 50);
+
+PROC
+PROC_HostileToPlayerGroupCancelFlag_TryCancel((CHARACTERGUID)_Player, (CHARACTERGUID)_Character)
+AND
+DB_DialogPlayers(_ID, _Player, _)
+AND
+NOT QRY_SFI_PEN_HostileToPlayergroupAfterDialog_InHostileDialog((CHARACTERGUID)_Player, (CHARACTERGUID)_Character, _ID)
+THEN
+DB_SetNeutralToPlayerGroupAfterDialog(_ID, _Player, _Character);
+
+PROC
+PROC_HostileToPlayerGroupCancelFlag_TryCancel((CHARACTERGUID)_Player, (CHARACTERGUID)_Character)
+AND
+DB_DialogNPCs(_ID, _Character, _)
+AND
+NOT QRY_SFI_PEN_HostileToPlayergroupAfterDialog_InHostileDialog((CHARACTERGUID)_Player, (CHARACTERGUID)_Character, _ID)
+THEN
+DB_SetNeutralToPlayerGroupAfterDialog(_ID, _Player, _Character);
+
+QRY
+QRY_SFI_PEN_HostileToPlayergroupAfterDialog_InHostileDialog((CHARACTERGUID)_Player, (CHARACTERGUID)_Character, (INTEGER)_Id)
+AND
+DB_HostileToPlayerGroupAfterDialog((CHARACTERGUID)_Player, _Id)
+AND
+DB_DialogNPCs(_Id,_Character,_)
+THEN
+DB_NOOP(0);
+
+IF
+DialogEnded(_, _ID)
+AND
+DB_SetNeutralToPlayerGroupAfterDialog(_ID, _Player, _Character)
+THEN
+NOT DB_SetNeutralToPlayerGroupAfterDialog(_ID, _Player, _Character);
+PROC_HostileToPlayerGroupCancelFlag_TryCancel((CHARACTERGUID)_Player, (CHARACTERGUID)_Character);
+
+//Temp Hostility
+IF
+ObjectFlagSet("TemporaryHostilityAfterDialog",(CHARACTERGUID)_Player,_Id)
+THEN
+DB_TemporaryHostilityAfterDialog(_Player,_Id);
+
+IF
+DialogEnded(_,_Id)
+AND
+DB_TemporaryHostilityAfterDialog(_Player,_Id)
+AND
+DB_DialogNPCs(_Id,_Char,_)
+THEN
+ProcMakeNPCHostile((CHARACTERGUID)_Char,_Player);
+ObjectClearFlag(_Player,"TemporaryHostilityAfterDialog",_Id);
+NOT DB_TemporaryHostilityAfterDialog(_Player,_Id);
+
+//Set Attitude to -100 after dialog
+IF
+ObjectFlagSet("HostileAttitudeAfterDialog",(CHARACTERGUID)_Player,_Id)
+THEN
+DB_HostileAttitudeAfterDialog(_Player,_Id);
+
+IF
+DialogEnded(_,_Id)
+AND
+DB_HostileAttitudeAfterDialog(_Player,_Id)
+AND
+DB_DialogNPCs(_Id,_Char,_)
+THEN
+CharacterAddAttitudeTowardsPlayer((CHARACTERGUID)_Char,_Player,-100);
+ObjectClearFlag(_Player,"HostileAttitudeAfterDialog",_Id);
+NOT DB_HostileAttitudeAfterDialog(_Player,_Id);
+
+
+//Set Evil NPC after Dialog
+IF
+ObjectFlagSet("HostileAlignmentAfterDialog",(CHARACTERGUID)_Player,_Id)
+THEN
+DB_HostileAlignmentAfterDialog(_Player,_Id);
+
+IF
+DialogEnded(_,_Id)
+AND
+DB_HostileAlignmentAfterDialog(_Player,_Id)
+AND
+DialogGetInvolvedNPC(_Id,1,(CHARACTERGUID)_Char)
+THEN
+ProcSetRelationToPlayers(_Char,0);
+ObjectClearFlag(_Player,"HostileAlignmentAfterDialog",_Id);
+NOT DB_HostileAlignmentAfterDialog(_Player,_Id);
+
+
+//END_REGION
+
+//REGION Character Dies After Dialog Ends
+
+IF
+ObjectFlagSet("CharacterDieAfterDialog",(CHARACTERGUID)_Player,_Id)
+THEN
+DB_CharacterDieAfterDialog(_Player,_Id);
+
+IF
+DialogEnded(_,_Id)
+AND
+DB_CharacterDieAfterDialog(_Player,_Id)
+THEN
+CharacterDie(_Player,0,"DoT");
+ObjectClearFlag(_Player,"CharacterDieAfterDialog",_Id);
+NOT DB_CharacterDieAfterDialog(_Player,_Id);
+
+
+
+//END_REGION
+
+//REGION Res, Heal, and remove statuses from a player
+
+PROC
+Proc_CharacterFullRestore((CHARACTERGUID)_Char)
+THEN
+CharacterResurrect(_Char);
+RemoveHarmfulStatuses(_Char);
+CharacterSetHitpointsPercentage(_Char,100.0);
+CharacterSetArmorPercentage(_Char,100.0);
+CharacterSetMagicArmorPercentage(_Char,100.0);
+CharacterResetCooldowns(_Char);
+
+
+//END_REGION
+
+//REGION Camera Shake around Player
+
+PROC
+Proc_ShakeCameraForTime((CHARACTERGUID)_Char,(INTEGER)_Time)
+AND
+GetUUID(_Char,_UUID)
+AND
+StringConcatenate("CameraShake_",_UUID,_ID)
+THEN
+PROC_LoopEffect("RS3_FX_GP_ScriptedEvent_CameraShake_Loop_00-50",_Char,_ID,"__ANY__","");
+ProcObjectTimer(_Char,"Timer_LoopCameraShakeHelper",_Time);
+
+PROC
+ProcObjectTimerFinished(_Char,"Timer_LoopCameraShakeHelper")
+AND
+GetUUID(_Char,_UUID)
+AND
+StringConcatenate("CameraShake_",_UUID,_ID)
+THEN
+PROC_StopLoopEffect(_Char,_ID);
+
+PROC
+Proc_CameraShakeAroundCharacter((GUIDSTRING)_Object,(INTEGER)_Duration,(REAL)_Radius)
+AND
+DB_IsPlayer(_Player)
+AND
+GetDistanceTo(_Player,_Object,_Dist)
+AND
+_Dist <= _Radius
+THEN
+PlayEffect(_Player,"RS3_FX_GP_Combat_CameraShake_A");
+ProcObjectTimer(_Player,"ShakeCameraOn_",200);
+DB_CameraShakeAroundCharacter(_Object,_Duration,_Radius);
+
+
+PROC
+ProcObjectTimerFinished((CHARACTERGUID)_Player,"ShakeCameraOn_")
+AND
+DB_CameraShakeAroundCharacter(_Object,_Duration,_Radius)
+AND
+IntegerSubtract(_Duration,200,_Dif)
+AND
+_Dif >= 0
+THEN
+NOT DB_CameraShakeAroundCharacter(_Object,_Duration,_Radius);
+Proc_CameraShakeAroundCharacter(_Object,_Dif,_Radius);
+
+PROC
+ProcObjectTimerFinished((CHARACTERGUID)_Player,"ShakeCameraOn_")
+AND
+DB_CameraShakeAroundCharacter(_Object,_Duration,_Radius)
+AND
+IntegerSubtract(_Duration,200,_Dif)
+AND
+_Dif < 0.0
+THEN
+NOT DB_CameraShakeAroundCharacter(_Object,_Duration,_Radius);
+
+//END_REGION
+
+//REGION Add/Remove Source Points
+IF
+ObjectFlagSet("RemoveSourcePoints",(CHARACTERGUID)_Char,_)
+THEN
+ObjectClearFlag(_Char,"RemoveSourcePoints",0);
+Proc_RemoveSourcePoints(_Char);
+
+IF
+ObjectFlagSet("RemoveOneSourcePoint",(CHARACTERGUID)_Char,_)
+THEN
+ObjectClearFlag(_Char,"RemoveOneSourcePoint",0);
+CharacterAddSourcePoints(_Char, -1);
+
+
+IF
+ObjectFlagSet("AddSourcePoint",(CHARACTERGUID)_Char,_)
+THEN
+ObjectClearFlag(_Char,"AddSourcePoint",0);
+Proc_AddSourcePoint(_Char);
+
+IF
+ObjectFlagSet("AddTwoSourcePoints",(CHARACTERGUID)_Char,_)
+THEN
+ObjectClearFlag(_Char,"AddTwoSourcePoints",0);
+Proc_AddSourcePoint(_Char);
+Proc_AddSourcePoint(_Char);
+
+PROC
+Proc_AddSourcePoint((CHARACTERGUID)_Char)
+THEN
+CharacterAddSourcePoints(_Char,1);
+
+PROC
+Proc_RemoveSourcePoints((CHARACTERGUID)_Char)
+THEN
+CharacterAddSourcePoints(_Char,-100);
+
+//END_REGION
+
+QRY
+QRY_GLO_IsVisibleUndead((CHARACTERGUID)_Char)
+AND
+IsTagged(_Char, "UNDEAD", 1)
+AND
+IsTagged(_Char, "VEILED_UNDEAD", 0)
+AND
+IsTagged(_Char, "MASKED_UNDEAD", 0)
+THEN
+DB_NOOP(0);
+
+IF
+StoryEvent((CHARACTERGUID)_Char,"GEN_PurgeQueue")
+THEN
+ProcClearStoryMove(_Char);
+
+//REGION Do Knockdown fall / getup Animation
+IF
+StoryEvent((CHARACTERGUID)_Char,"GEN_FallAndGetUp")
+THEN
+PlayAnimation(_Char,"knockdown_fall","Play_Anim_knockdown_getup");
+
+IF
+StoryEvent((CHARACTERGUID)_Char,"Play_Anim_knockdown_getup")
+THEN
+PlayAnimation(_Char,"knockdown_getup");
+
+//END_REGION
+
+//REGION Do Knockdown fall / knockdown loop Animation
+IF
+StoryEvent((CHARACTERGUID)_Char,"GEN_FallAndLie")
+THEN
+PlayAnimation(_Char,"knockdown_fall","Play_Anim_knockdown_loop");
+
+IF
+StoryEvent((CHARACTERGUID)_Char,"Play_Anim_knockdown_loop")
+THEN
+CharacterSetAnimationOverride(_Char,"knockdown_loop");
+
+//END_REGION
+
+//REGION Is Available to
+
+QRY
+QRY_IsAvailableTo((CHARACTERGUID)_Char,(CHARACTERGUID)_Target)
+AND
+QRY_SpeakerIsAvailable(_Char)
+AND
+QRY_SpeakerIsAvailable(_Target)
+AND
+CharacterCanSee(_Char,_Target,1)
+THEN
+DB_NOOP(1);
+
+//END_REGION
+
+//REGION Lookat in Dialog
+
+IF
+ObjectFlagSet("LookAtPlayer",(CHARACTERGUID)_Char,_ID)
+AND
+DialogGetInvolvedPlayer(_ID,1,(CHARACTERGUID)_Player)
+THEN
+CharacterLookAt(_Char,_Player);
+ObjectClearFlag(_Char,"LookAtPlayer",0);
+
+//END_REGION
+
+//REGION MoveTo in Dialog
+
+IF
+ObjectFlagSet("Speaker1MoveTo",(CHARACTERGUID)_Char,_ID)
+AND
+DialogGetInvolvedNPC(_ID,1,(CHARACTERGUID)_Speaker1)
+THEN
+CharacterMoveTo(_Speaker1,_Char,0,"",0);
+ObjectClearFlag(_Char,"Speaker1MoveTo",0);
+
+IF
+ObjectFlagSet("Speaker2MoveTo",(CHARACTERGUID)_Char,_ID)
+AND
+DialogGetInvolvedNPC(_ID,2,(CHARACTERGUID)_Speaker2)
+THEN
+CharacterMoveTo(_Speaker2,_Char,0,"",0);
+ObjectClearFlag(_Char,"Speaker2MoveTo",0);
+
+IF
+ObjectFlagSet("Player1MoveTo",(CHARACTERGUID)_Char,_ID)
+AND
+DialogGetInvolvedPlayer(_ID,1,(CHARACTERGUID)_Player)
+THEN
+CharacterMoveTo(_Player,_Char,0,"",0);
+ObjectClearFlag(_Char,"Player1MoveTo",0);
+
+IF
+ObjectFlagSet("Player2MoveTo",(CHARACTERGUID)_Char,_ID)
+AND
+DialogGetInvolvedPlayer(_ID,2,(CHARACTERGUID)_Player)
+THEN
+CharacterMoveTo(_Player,_Char,0,"",0);
+ObjectClearFlag(_Char,"Player2MoveTo",0);
+
+IF
+ObjectFlagSet("Speaker1RunTo",(CHARACTERGUID)_Char,_ID)
+AND
+DialogGetInvolvedNPC(_ID,1,(CHARACTERGUID)_Speaker1)
+THEN
+CharacterMoveTo(_Speaker1,_Char,1,"",0);
+ObjectClearFlag(_Char,"Speaker1MoveTo",0);
+
+IF
+ObjectFlagSet("Speaker2RunTo",(CHARACTERGUID)_Char,_ID)
+AND
+DialogGetInvolvedNPC(_ID,2,(CHARACTERGUID)_Speaker2)
+THEN
+CharacterMoveTo(_Speaker2,_Char,1,"",0);
+ObjectClearFlag(_Char,"Speaker2MoveTo",0);
+
+IF
+ObjectFlagSet("Player1RunTo",(CHARACTERGUID)_Char,_ID)
+AND
+DialogGetInvolvedPlayer(_ID,1,(CHARACTERGUID)_Player)
+THEN
+CharacterMoveTo(_Player,_Char,1,"",0);
+ObjectClearFlag(_Char,"Player1MoveTo",0);
+
+IF
+ObjectFlagSet("Player2RunTo",(CHARACTERGUID)_Char,_ID)
+AND
+DialogGetInvolvedPlayer(_ID,2,(CHARACTERGUID)_Player)
+THEN
+CharacterMoveTo(_Player,_Char,1,"",0);
+ObjectClearFlag(_Char,"Player2MoveTo",0);
+
+//END_REGION
+
+//REGION Animation testing
+IF
+TextEventSet("AnimTest")
+AND
+CharacterGetHostCharacter((CHARACTERGUID)_Player)
+AND
+GetTextEventParamInteger(1,0)
+THEN
+CharacterPurgeQueue(_Player);
+
+IF
+TextEventSet("AnimTest")
+AND
+CharacterGetHostCharacter((CHARACTERGUID)_Player)
+AND
+GetTextEventParamInteger(1,0)
+AND
+DB_AnimTestLoopingAnimation(_Player,_AnimName)
+THEN
+NOT DB_AnimTestLoopingAnimation(_Player,_AnimName);
+
+// oe animtest animation_name 
+IF
+TextEventSet("AnimTest")
+AND
+CharacterGetHostCharacter((CHARACTERGUID)_Player)
+AND
+GetTextEventParamString(1,_AnimName)
+AND
+NOT GetTextEventParamInteger(2,_)
+THEN
+PlayAnimation(_Player,_AnimName);
+
+IF
+TextEventSet("AnimTest")
+AND
+CharacterGetHostCharacter((CHARACTERGUID)_Player)
+AND
+GetTextEventParamString(1,_AnimName)
+AND
+GetTextEventParamInteger(2,1)
+THEN
+PlayAnimation(_Player,_AnimName);
+
+
+IF
+TextEventSet("AnimTest")
+AND
+CharacterGetHostCharacter((CHARACTERGUID)_Player)
+AND
+GetTextEventParamString(1,_AnimName)
+AND
+GetTextEventParamInteger(2,-1)
+THEN
+PlayAnimation(_Player,_AnimName,"AnimTest_PlayLoopingAnim");
+DB_AnimTestLoopingAnimation(_Player,_AnimName);
+
+IF
+StoryEvent((CHARACTERGUID)_Player,"AnimTest_PlayLoopingAnim")
+AND
+DB_AnimTestLoopingAnimation(_Player,_AnimName)
+THEN
+PlayAnimation(_Player,_AnimName,"AnimTest_PlayLoopingAnim");
+
+
+IF
+TextEventSet("AnimTest")
+AND
+CharacterGetHostCharacter((CHARACTERGUID)_Player)
+AND
+GetTextEventParamString(1,_AnimName)
+AND
+GetTextEventParamInteger(2,0)
+THEN
+CharacterPurgeQueue(_Player);
+
+
+
+IF
+TextEventSet("AnimTest")
+AND
+CharacterGetHostCharacter((CHARACTERGUID)_Player)
+AND
+GetTextEventParamString(1,_AnimName)
+AND
+GetTextEventParamInteger(2,0)
+AND
+DB_AnimTestLoopingAnimation(_Player,_AnimName)
+THEN
+NOT DB_AnimTestLoopingAnimation(_Player,_AnimName);
+
+
+//END_REGION
+
+//REGION FX testing
+
+// oe animtest animation_name 
+//REGION OneShot
+
+IF
+TextEventSet("FxTest")
+AND
+CharacterGetHostCharacter((CHARACTERGUID)_Player)
+AND
+GetTextEventParamString(1,_FxName)
+AND
+GetTextEventParamInteger(2,1)
+THEN
+PlayEffect(_Player,_FxName);
+//END_REGION
+
+//REGION Looping FX
+IF
+TextEventSet("FxTest")
+AND
+CharacterGetHostCharacter((CHARACTERGUID)_Player)
+AND
+GetTextEventParamString(1,_FxName)
+AND
+GetTextEventParamInteger(2,-1)
+THEN
+PROC_LoopEffect(_FxName,_Player,"FxTest","__ANY__","Dummy_FX");
+
+IF
+TextEventSet("FxTest")
+AND
+CharacterGetHostCharacter((CHARACTERGUID)_Player)
+AND
+GetTextEventParamString(1,_FxName)
+AND
+GetTextEventParamString(2,_BoneName)
+AND
+GetTextEventParamInteger(3,-1)
+THEN
+PROC_LoopEffect(_FxName,_Player,"FxTest","__ANY__",_BoneName);
+
+/////// 0 or STOP to stop looping
+
+IF
+TextEventSet("FxTest")
+AND
+CharacterGetHostCharacter((CHARACTERGUID)_Player)
+AND
+GetTextEventParamString(1,"Stop")
+THEN
+PROC_StopLoopEffect(_Player,"FxTest");
+
+IF
+TextEventSet("FxTestStop")
+AND
+CharacterGetHostCharacter((CHARACTERGUID)_Player)
+THEN
+PROC_StopLoopEffect(_Player,"FxTest");
+
+//END_REGION
+
+//END_REGION
+
+//REGION AddTag OE
+
+IF
+TextEventSet("AddTag")
+AND
+CharacterGetHostCharacter((CHARACTERGUID)_Player)
+AND
+GetTextEventParamString(1,_TagName)
+THEN
+SetTag(_Player,_TagName);
+DebugText(_Player,_TagName);
+
+//END_REGION
+
+//REGION DrawWeaponforXTime
+PROC
+proc_DrawWeaponforXTime((CHARACTERGUID)_NPC,(INTEGER)_Time)
+THEN
+CharacterSetFightMode(_NPC,1,0);
+ProcObjectTimer(_NPC,"GLO_DrawWeaponsForXTime",_Time);
+
+PROC
+ProcObjectTimerFinished(_NPC,"GLO_DrawWeaponsForXTime")
+AND
+CharacterIsInCombat((CHARACTERGUID)_NPC,0)
+THEN
+CharacterSetFightMode(_NPC,0,0);
+//END_REGION
+
+//REGION Conditional Object Flag Setter
+PROC
+Proc_SetConditionalObjectFlag((GUIDSTRING)_Object,(STRING)_Flag,(INTEGER)_Condition)
+AND
+_Condition == 0
+THEN
+ObjectClearFlag(_Object,_Flag,0);
+
+PROC
+Proc_SetConditionalObjectFlag((GUIDSTRING)_Object,(STRING)_Flag,(INTEGER)_Condition)
+AND
+_Condition != 0
+THEN
+ObjectSetFlag(_Object,_Flag,0);
+
+QRY
+QRY_IsEmptyDB((STRING)_DB,(INTEGER)_Size)
+AND
+SysCount(_DB,_Size,0)
+THEN
+DB_NOOP(1);
+
+QRY
+QRY_IsInRange((GUIDSTRING)_Source,(GUIDSTRING)_Target,(REAL)_Range)
+AND
+GetDistanceTo(_Source,_Target,_Dist)
+AND
+_Dist <= _Range
+THEN
+DB_NOOP(1);
+
+QRY
+Query_CharacterIsAliveAndNotInCombat((CHARACTERGUID)_Char)
+AND
+CharacterIsDead(_Char,0)
+AND
+CharacterIsInCombat(_Char,0)
+THEN
+DB_NOOP(1);
+
+//END_REGION
+
+//REGION Attribute checks
+QRY
+QRY_CheckPlayerStat((CHARACTERGUID)_Player,(STRING)_Stat,(INTEGER)_Value)
+AND
+CharacterGetAttribute(_Player,_Stat,_PlayerStat)
+AND
+_PlayerStat >= _Value
+THEN
+DB_NOOP(1);
+
+IF
+DB_GLO_Attribute_Check_AgainstSpeaker((STRING)_Dialog,(INTEGER)_Index,(STRING)_Attribute,(STRING)_Difficulty,(INTEGER)_Source,(INTEGER)_Target)
+THEN
+PROC_Define_GLO_Attribute_Check_Internal(_Dialog,_Index,_Attribute,_Difficulty,_Source,_Target,0);
+
+IF
+DB_GLO_Attribute_Check_AgainstLevel((STRING)_Dialog,(INTEGER)_Index,(STRING)_Attribute,(STRING)_Difficulty,(INTEGER)_Source,(INTEGER)_Level)
+THEN
+PROC_Define_GLO_Attribute_Check_Internal(_Dialog,_Index,_Attribute,_Difficulty,_Source,1,_Level);
+
+PROC
+PROC_Define_GLO_Attribute_Check_Internal((STRING)_Dialog,(INTEGER)_Index,(STRING)_Attribute,(STRING)_Difficulty,(INTEGER)_Source,(INTEGER)_Target,(INTEGER)_Level)
+AND
+DB_GLO_Attribute_Check_Internal(_Dialog,_Index,_AnyAttribute,_AnyDifficulty,_AnySource,_AnyTarget,_AnyLevel)
+THEN
+NOT DB_GLO_Attribute_Check_Internal(_Dialog,_Index,_AnyAttribute,_AnyDifficulty,_AnySource,_AnyTarget,_AnyLevel);
+
+PROC
+PROC_Define_GLO_Attribute_Check_Internal((STRING)_Dialog,(INTEGER)_Index,(STRING)_Attribute,(STRING)_Difficulty,(INTEGER)_Source,(INTEGER)_Target,(INTEGER)_Level)
+THEN
+DB_GLO_Attribute_Check_Internal(_Dialog,_Index,_Attribute,_Difficulty,_Source,_Target,_Level);
+
+PROC
+Proc_DialogFlagSetup(_Dialog,_Speaker1)
+AND
+DB_GLO_Attribute_Check_Internal(_Dialog,_,_,_,_,_,_)
+THEN
+PROC_GLO_Attribute_Check_Setup(_Dialog);
+
+PROC
+Proc_DialogFlagSetup(_Dialog,_Speaker1,_Speaker2)
+AND
+DB_GLO_Attribute_Check_Internal(_Dialog,_,_,_,_,_,_)
+THEN
+PROC_GLO_Attribute_Check_Setup(_Dialog);
+
+PROC
+Proc_DialogFlagSetup(_Dialog,_Speaker1,_Speaker2,_Speaker3)
+AND
+DB_GLO_Attribute_Check_Internal(_Dialog,_,_,_,_,_,_)
+THEN
+PROC_GLO_Attribute_Check_Setup(_Dialog);
+
+PROC
+Proc_DialogFlagSetup(_Dialog,_Speaker1,_Speaker2,_Speaker3,_Speaker4)
+AND
+DB_GLO_Attribute_Check_Internal(_Dialog,_,_,_,_,_,_)
+THEN
+PROC_GLO_Attribute_Check_Setup(_Dialog);
+
+PROC
+Proc_DialogFlagSetup(_Dialog,_Speaker1,_Speaker2,_Speaker3,_Speaker4,_Speaker5)
+AND
+DB_GLO_Attribute_Check_Internal(_Dialog,_,_,_,_,_,_)
+THEN
+PROC_GLO_Attribute_Check_Setup(_Dialog);
+
+PROC
+Proc_DialogFlagSetup(_Dialog,_Speaker1,_Speaker2,_Speaker3,_Speaker4,_Speaker5,_Speaker6)
+AND
+DB_GLO_Attribute_Check_Internal(_Dialog,_,_,_,_,_,_)
+THEN
+PROC_GLO_Attribute_Check_Setup(_Dialog);
+
+PROC
+PROC_GLO_Attribute_Check_Setup((STRING)_Dialog)
+AND
+DB_GLO_Attribute_Check_Internal(_Dialog,_Index,_Attribute,_Difficulty,_Source,_Target,_Level)
+AND
+DB_GLO_AttributeCheck_Var(_Index,"Difficulty",_DifficultyVar)
+AND
+DB_GLO_AttributeCheck_Var(_Index,"LevelOverride",_LevelOverrideVar)
+AND
+DB_GLO_AttributeCheck_Var(_Index,"Name",_NameVar)
+AND
+DB_GLO_AttributeCheck_Var(_Index,"Source",_SourceVar)
+AND
+DB_GLO_AttributeCheck_Var(_Index,"Target",_TargetVar)
+THEN
+DialogSetVariableString(_Dialog,_DifficultyVar,_Difficulty);
+DialogSetVariableInt(_Dialog,_LevelOverrideVar,_Level);
+DialogSetVariableString(_Dialog,_NameVar,_Attribute);
+DialogSetVariableInt(_Dialog,_SourceVar,_Source);
+DialogSetVariableInt(_Dialog,_TargetVar,_Target);
+
+//END_REGION
+
+//REGION User Based Voice Bark
+
+IF
+DB_OneShotUser_VoicebarkTrigger((TRIGGERGUID)_Trigger,_)
+THEN
+ProcTriggerRegisterForPlayers(_Trigger);
+
+IF
+CharacterEnteredTrigger(_Player,_Trigger)
+AND
+DB_OneShotUser_VoicebarkTrigger((TRIGGERGUID)_Trigger,(STRING)_Bark)
+AND
+StringConcatenate("Commented_",_Bark,_Flag)
+AND
+UserGetFlag(_Player,_Flag,0)
+THEN
+UserSetFlag(_Player,_Flag);
+StartVoiceBark(_Bark,_Player);
+
+//END_REGION
+
+//REGION 
+IF
+CharacterUsedItem(_Player, _Item)
+AND
+DB_VBItem(_Item, _)
+AND
+DB_IsPlayer(_Player)
+AND
+DB_CombatCharacters(_Player, _)
+AND
+NOT DB_IgnoreCombatItems(_Item)
+THEN
+Proc_StartDialog(1,"GLO_AD_CannotUseNow", _Player);
+
+IF
+CharacterUsedItem(_Player, _Item)
+AND
+DB_VBItem((ITEMGUID)_Item, (STRING)_VB)
+AND
+DB_IsPlayer(_Player)
+AND
+NOT DB_CombatCharacters(_Player, _)
+THEN
+StartVoiceBark(_VB, _Player);
+
+IF
+CharacterUsedItem(_Player, _Item)
+AND
+DB_VBItem(_Item, _VB)
+AND
+DB_IsPlayer(_Player)
+AND
+DB_CombatCharacters(_Player, _)
+AND
+DB_IgnoreCombatItems(_Item)
+THEN
+StartVoiceBark(_VB, _Player);
+//END_REGION
+
+PROC
+Proc_TeleportSmoke((GUIDSTRING)_Object)
+AND
+GetPosition(_Object,_X,_Y,_Z)
+THEN
+PlayEffectAtPosition("RS3_FX_GP_ScriptedEvent_Teleport_GenericSmoke_01",_X,_Y,_Z);
+
+
+//REGION
+IF
+DB_HideEquippedWeapon((CHARACTERGUID)_Char)
+AND
+CharacterGetEquippedItem(_Char,"Weapon",(ITEMGUID)_Weapon)
+THEN
+CharacterUnequipItem(_Char,_Weapon);
+DB_HiddenEquippedWeapon(_Char,_Weapon);
+
+IF
+DB_HideEquippedShield((CHARACTERGUID)_Char)
+AND
+CharacterGetEquippedItem(_Char,"Shield",(ITEMGUID)_Shield)
+THEN
+CharacterUnequipItem(_Char,_Shield);
+DB_HideEquippedShield(_Char,_Shield);
+
+PROC
+Proc_EquipHiddenWeapon((CHARACTERGUID)_Char)
+AND
+DB_HiddenEquippedWeapon(_Char,_Weapon)
+THEN
+CharacterEquipItem(_Char,_Weapon);
+NOT DB_HiddenEquippedWeapon(_Char,_Weapon);
+
+PROC
+Proc_EquipHiddenShield((CHARACTERGUID)_Char)
+AND
+DB_HideEquippedShield(_Char,_Shield)
+THEN
+CharacterEquipItem(_Char,_Shield);
+NOT DB_HideEquippedShield(_Char,_Shield);
+
+//END_REGION
+
+//REGION Combat Cutscene - control whos turn it is
+
+IF
+DB_CombatCutscene_PrioritizedObject(_PrioritiedObject)
+THEN
+JumpToTurn(_PrioritiedObject);
+
+PROC
+Proc_CombatCutscene_PrioritizedObject_Purge()
+AND
+DB_CombatCutscene_PrioritizedObject(_PrioritiedObject)
+THEN
+NOT DB_CombatCutscene_PrioritizedObject(_PrioritiedObject);
+
+IF
+DB_CombatCutscene_PrioritizedObject(_PrioritiedObject)
+AND
+DB_CombatCutscene_PrioritizedObject(_OtherObject)
+AND
+_OtherObject != _PrioritiedObject
+THEN
+NOT DB_CombatCutscene_PrioritizedObject(_OtherObject);
+
+IF
+ObjectTurnStarted((CHARACTERGUID)_Combatant)
+AND
+DB_CombatCutscene_PrioritizedObject(_PrioritiedObject)
+AND
+ObjectIsCharacter(_PrioritiedObject,1)
+AND
+DB_CombatCharacters(_Combatant,_Id)
+AND
+_Combatant != _PrioritiedObject
+AND
+DB_CombatCharacters(_PrioritiedObject,_PId)
+AND
+_Id == _PId
+THEN
+JumpToTurn(_PrioritiedObject);
+
+IF
+CharacterWentOnStage(_PrioritiedObject,0) 
+AND
+ObjectIsCharacter(_PrioritiedObject,1)
+AND
+DB_CombatCutscene_PrioritizedObject(_PrioritiedObject)
+THEN
+NOT DB_CombatCutscene_PrioritizedObject(_PrioritiedObject);
+
+//END_REGION
+
+//REGION Remove Weapons
+
+PROC
+Proc_RemoveWeapons((CHARACTERGUID)_Char)
+AND
+CharacterGetEquippedItem(_Char,"Weapon",(ITEMGUID)_Weapon)
+THEN
+ItemRemove(_Weapon);
+
+PROC
+Proc_RemoveWeapons((CHARACTERGUID)_Char)
+AND
+CharacterGetEquippedItem(_Char,"Shield",(ITEMGUID)_Shield)
+THEN
+ItemRemove(_Shield);
+
+
+
+//END_REGION
+
+
+//REGION //Killed Event - User Level
+IF
+CharacterKilledBy(_Defender,_AttackerOwner,_Attacker)
+AND
+DB_IsPlayer(_AttackerOwner)
+AND
+DB_KilledEvent(_Defender, (STRING)_Event) 
+THEN
+UserSetFlag(_AttackerOwner,_Event,0);
+
+IF
+CharacterDying(_Killed)
+AND
+DB_KilledEvent(_Killed, _Event)
+AND
+DB_CombatCharacters(_Killed, _ID)
+AND
+DB_IsPlayer(_Killer)
+AND
+DB_CombatCharacters(_Killer, _ID)
+AND
+QRY_GLO_KilledEvent_WasEnemy((CHARACTERGUID)_Killed,(CHARACTERGUID)_Killer, _ID)
+THEN
+UserSetFlag(_Killer, _Event, 0);
+
+QRY
+QRY_GLO_KilledEvent_WasEnemy((CHARACTERGUID)_Killed, (CHARACTERGUID)_Killer, (INTEGER)_ID)
+AND
+DB_KilledEvent_HostileToTarget(_Killer, _Killed, _ID)
+THEN
+DB_NOOP(0);
+
+QRY
+QRY_GLO_KilledEvent_WasEnemy((CHARACTERGUID)_Killed, (CHARACTERGUID)_Killer, (INTEGER)_ID)
+AND
+CharacterIsEnemy(_Killed, _Killer, 1)
+THEN
+DB_NOOP(0);
+
+IF
+ObjectEnteredCombat((CHARACTERGUID)_NPC, _ID)
+AND
+DB_KilledEvent(_NPC, _)
+AND
+DB_IsPlayer(_Player)
+AND
+DB_CombatCharacters(_Player, _ID)
+AND
+CharacterIsEnemy(_Player, _NPC, 1)
+THEN
+DB_KilledEvent_HostileToTarget((CHARACTERGUID)_Player, (CHARACTERGUID)_NPC, _ID);
+
+IF
+ObjectEnteredCombat((CHARACTERGUID)_Player, _ID)
+AND
+DB_IsPlayer(_Player)
+AND
+DB_KilledEvent(_NPC, _)
+AND
+DB_CombatCharacters(_Player, _ID)
+AND
+CharacterIsEnemy(_Player,(CHARACTERGUID)_NPC,1)
+THEN
+DB_KilledEvent_HostileToTarget((CHARACTERGUID)_Player, (CHARACTERGUID)_NPC, _ID);
+
+IF
+CombatEnded(_ID)
+AND
+DB_KilledEvent_HostileToTarget(_Player, _NPC, _ID)
+THEN
+NOT DB_KilledEvent_HostileToTarget(_Player, _NPC, _ID);
+//END_REGION
+
+//REGION //Killed Event - Party Level
+IF
+CharacterKilledBy(_Defender,_AttackerOwner,_Attacker)
+AND
+DB_IsPlayer(_AttackerOwner)
+AND
+DB_KilledPartyEvent(_Defender, (STRING)_Event) 
+THEN
+PartySetFlag(_AttackerOwner,_Event,0);
+
+IF
+CharacterDying(_Killed)
+AND
+DB_KilledPartyEvent(_Killed, _Event)
+AND
+DB_CombatCharacters(_Killed, _ID)
+AND
+DB_IsPlayer(_Killer)
+AND
+DB_CombatCharacters(_Killer, _ID)
+AND
+QRY_GLO_KilledEvent_WasEnemy((CHARACTERGUID)_Killed,(CHARACTERGUID)_Killer, _ID)
+THEN
+PartySetFlag(_Killer, _Event, 0);
+//END_REGION
+
+//REGION 
+//This will add characters within a trigger to the dialog
+//first int, if 1, will also add character when the enter the trigger after the dialog started
+
+IF
+DialogStarted(_Dialog,_Id)
+AND
+DB_AddCharactersInTriggerToDialog((STRING)_Dialog,(TRIGGERGUID)_Trigger,(INTEGER)_)
+THEN
+DB_AddCharactersInTriggerToDialog_ID(_Dialog,_Id);
+
+IF
+DialogStarted(_Dialog,_Id)
+AND
+DB_AddCharactersInTriggerToDialog(_Dialog,_Trigger,_)
+AND
+DB_InRegion(_Char,_Trigger)
+AND
+DB_IsPlayer(_Char)
+AND
+QRY_SpeakerIsAvailable(_Char)
+AND
+DB_AddCharactersInTriggerToDialog_ID(_Dialog,_Id)
+THEN
+DialogAddActor(_Id,_Char);
+
+IF
+CharacterEnteredTrigger(_Char,_Trigger)
+AND
+DB_AddCharactersInTriggerToDialog(_Dialog,_Trigger,1)
+AND
+DB_IsPlayer(_Char)
+AND
+DB_AddCharactersInTriggerToDialog_ID(_Dialog,_Id)
+THEN
+DialogAddActor(_Id,_Char);
+
+IF
+DialogEnded(_Dialog,_Id)
+AND
+DB_AddCharactersInTriggerToDialog_ID(_Dialog,_Id)
+THEN
+NOT DB_AddCharactersInTriggerToDialog_ID(_Dialog,_Id);
+//END_REGION
+
+//REGION Replace one-time use dialog flag into a proc call (for flags used to trigger actions)
+PROC
+Proc_OneTimeEventFlag((STRING)_Flag)
+THEN
+DB_NOOP(1);
+
+PROC
+Proc_OneTimeEventFlag((GUIDSTRING)_Object,(STRING)_Flag)
+THEN
+DB_NOOP(1);
+
+PROC
+Proc_OneTimeEventFlag((GUIDSTRING)_Object,(STRING)_Flag,(INTEGER)_DialogInst)
+THEN
+DB_NOOP(1);
+
+IF
+ObjectFlagSet(_Flag,_Object,_DlgInst)
+AND
+DB_OneTimeEventFlag(_Flag)
+THEN
+ObjectClearFlag(_Object,_Flag);
+Proc_OneTimeEventFlag(_Object,_Flag);
+Proc_OneTimeEventFlag(_Object,_Flag,_DlgInst);
+
+IF
+GlobalFlagSet(_Flag)
+AND
+DB_OneTimeEventFlag(_Flag)
+THEN
+GlobalClearFlag(_Flag);
+Proc_OneTimeEventFlag(_Flag);
+//END_REGION
+
+//REGION Generic Leave Through Portal (_Poof Variation)
+
+PROC
+Proc_CreatePortalAndLeave((CHARACTERGUID)_Char,(STRING)_Event)
+AND
+GetPosition(_Char,_X,_Y,_Z)
+AND
+RealSum(_Y,1.25,_Y2)
+AND
+RealSum(_X,2.0,_X2)
+AND
+CreateItemTemplateAtPosition("Helper_Invisible_A_835c266c-2619-41a6-9591-50fc937bf97d",_X2,_Y2,_Z,(ITEMGUID)_Portal)
+THEN
+DB_GEN_CreatePortalAndLeave(_Char,_Portal,_Event);
+CharacterLookAt(_Char,_Portal);
+PlayAnimation(_Char,"cast_target_cast","GEN_CreatePortalAndLeave_CreatePortal");
+PROC_LoopEffect("RS3_FX_Skills_Voodoo_Cast_Hand_01",_Char,"GEN_CreatePortalAndLeave_Fx","__ANY__","Dummy_R_HandFX");
+PROC_LoopEffect("RS3_FX_GP_ScriptedEvent_DarkOrb_Summoning_01",_Char,"GEN_CreatePortalAndLeave_Fx","__ANY__","");
+ProcObjectTimer(_Char,"GEN_CreatePortalAndLeave_CreatePortal_Timer",1800);
+
+PROC
+ProcObjectTimerFinished((CHARACTERGUID)_Char,"GEN_CreatePortalAndLeave_CreatePortal_Timer")
+AND
+GetRotation(_Char,_,_Yr,_)
+AND
+DB_GEN_CreatePortalAndLeave(_Char,(ITEMGUID)_Portal,_Event)
+THEN
+ItemRotateToAngleY(_Portal,_Yr,1000.0);
+PROC_LoopEffect("RS3_FX_GP_ScriptedEvent_Portal_01",_Portal,"GEN_CreatePortalAndLeave","__ANY__","");
+
+
+IF
+StoryEvent((CHARACTERGUID)_Char,"GEN_CreatePortalAndLeave_CreatePortal")
+AND
+DB_GEN_CreatePortalAndLeave(_Char,_Portal,_Event)
+THEN
+PROC_StopLoopEffect(_Char,"GEN_CreatePortalAndLeave_Fx");
+ProcObjectTimer(_Char,"GEN_CreatePortalAndLeave_MoveToDelay",800);
+
+PROC
+ProcObjectTimerFinished((CHARACTERGUID)_Char,"GEN_CreatePortalAndLeave_MoveToDelay")
+AND
+DB_GEN_CreatePortalAndLeave(_Char,(ITEMGUID)_Portal,_Event)
+THEN
+CharacterMoveTo(_Char,_Portal,0,"GEN_CreatePortalAndLeave_Offstage",0);
+
+IF
+StoryEvent((CHARACTERGUID)_Char,"GEN_CreatePortalAndLeave_Offstage")
+AND
+DB_GEN_CreatePortalAndLeave(_Char,(ITEMGUID)_Portal,_Event)
+THEN
+ProcObjectTimer(_Portal,"GEN_CreatePortalAndLeave_Offstage_PortalRemove",3500);
+PROC_StopLoopEffect(_Portal,"GEN_CreatePortalAndLeave");
+SetStoryEvent(_Char,_Event);
+NOT DB_GEN_CreatePortalAndLeave(_Char,_Portal,_Event);
+
+PROC
+ProcObjectTimerFinished((ITEMGUID)_Portal,"GEN_CreatePortalAndLeave_Offstage_PortalRemove")
+THEN
+ItemRemove(_Portal);
+
+
+IF
+TextEventSet("GEN_CreatePortalAndLeave_Offstage")
+AND
+CharacterGetHostCharacter((CHARACTERGUID)_Player)
+THEN
+Proc_CreatePortalAndLeave(_Player,"");
+
+//END_REGION
+ 
+//REGION StartDialog With Visible Tagged Player 
+
+PROC
+PROC_StartDialog_WithVisibleTag((CHARACTERGUID)_NPC,(CHARACTERGUID)_Player,(STRING)_Dialog,(STRING)_MainTag,(STRING)_FallBackTag,(INTEGER)_AddOtherPlayersToDialog)
+AND
+NOT DB_PROC_StartDialogWithVisibleTag(1)
+AND
+IsTagged(_Player,_MainTag,1)
+AND
+QRY_SpeakerIsAvailableAndInDialogRange(_NPC,_Player)
+THEN
+Proc_StartDialog(0,_Dialog,_NPC,_Player);
+DB_PROC_StartDialogWithVisibleTag(1);
+
+PROC
+PROC_StartDialog_WithVisibleTag((CHARACTERGUID)_NPC,(CHARACTERGUID)_Player,(STRING)_Dialog,(STRING)_MainTag,(STRING)_FallBackTag,(INTEGER)_AddOtherPlayersToDialog)
+AND
+NOT DB_PROC_StartDialogWithVisibleTag(1)
+AND
+IsTagged(_Player,_MainTag,0)
+AND
+DB_IsPlayer(_OtherPlayers)
+AND
+IsTagged(_OtherPlayers,_MainTag,1)
+AND
+QRY_SpeakerIsAvailableAndInDialogRange(_NPC,_OtherPlayers)
+THEN
+Proc_StartDialog(0,_Dialog,_NPC,_OtherPlayers);
+DB_PROC_StartDialogWithVisibleTag(1);
+
+PROC
+PROC_StartDialog_WithVisibleTag((CHARACTERGUID)_NPC,(CHARACTERGUID)_Player,(STRING)_Dialog,(STRING)_MainTag,(STRING)_FallBackTag,(INTEGER)_AddOtherPlayersToDialog)
+AND
+NOT DB_PROC_StartDialogWithVisibleTag(1)
+AND
+IsTagged(_Player,_FallBackTag,1)
+AND
+QRY_SpeakerIsAvailableAndInDialogRange(_NPC,_Player)
+THEN
+Proc_StartDialog(0,_Dialog,_NPC,_Player);
+DB_PROC_StartDialogWithVisibleTag(1);
+
+PROC
+PROC_StartDialog_WithVisibleTag((CHARACTERGUID)_NPC,(CHARACTERGUID)_Player,(STRING)_Dialog,(STRING)_MainTag,(STRING)_FallBackTag,(INTEGER)_AddOtherPlayersToDialog)
+AND
+NOT DB_PROC_StartDialogWithVisibleTag(1)
+AND
+IsTagged(_Player,_FallBackTag,0)
+AND
+DB_IsPlayer(_OtherPlayers)
+AND
+IsTagged(_OtherPlayers,_FallBackTag,1)
+AND
+QRY_SpeakerIsAvailableAndInDialogRange(_NPC,_OtherPlayers)
+THEN
+Proc_StartDialog(0,_Dialog,_NPC,_OtherPlayers);
+DB_PROC_StartDialogWithVisibleTag(1);
+
+PROC
+PROC_StartDialog_WithVisibleTag((CHARACTERGUID)_NPC,(CHARACTERGUID)_Player,(STRING)_Dialog,(STRING)_MainTag,(STRING)_FallBackTag,(INTEGER)_AddOtherPlayersToDialog)
+AND
+NOT DB_PROC_StartDialogWithVisibleTag(1)
+AND
+QRY_SpeakerIsAvailableAndInDialogRange(_NPC,_Player)
+THEN
+Proc_StartDialog(0,_Dialog,_NPC,_Player);
+DB_PROC_StartDialogWithVisibleTag(1);
+
+PROC
+PROC_StartDialog_WithVisibleTag((CHARACTERGUID)_NPC,(CHARACTERGUID)_Player,(STRING)_Dialog,(STRING)_MainTag,(STRING)_FallBackTag,1)
+AND
+DB_PROC_StartDialogWithVisibleTag(1)
+THEN
+DB_PROC_StartDialog_WithVisibleTag_AddPlayers(_NPC,_Player,_Dialog);
+
+PROC
+PROC_StartDialog_WithVisibleTag((CHARACTERGUID)_NPC,(CHARACTERGUID)_Player,(STRING)_Dialog,(STRING)_MainTag,(STRING)_FallBackTag,(INTEGER)_AddOtherPlayersToDialog)
+AND
+DB_PROC_StartDialogWithVisibleTag(1)
+THEN
+NOT DB_PROC_StartDialogWithVisibleTag(1);
+
+IF
+DialogStarted(_Dialog,_ID)
+AND
+DB_PROC_StartDialog_WithVisibleTag_AddPlayers(_NPC,_Player,_Dialog)
+AND
+DB_IsPlayer(_Players)
+AND
+NOT DB_DialogPlayers(_ID,_Players,_)
+AND
+CharacterCanSee(_NPC,_Players,1)
+AND
+QRY_SpeakerIsAvailable(_Players)
+THEN
+DialogAddActor(_ID,_Players);
+
+
+IF
+DialogStarted(_Dialog,_ID)
+AND
+DB_PROC_StartDialog_WithVisibleTag_AddPlayers(_NPC,_Player,_Dialog)
+THEN
+NOT DB_PROC_StartDialog_WithVisibleTag_AddPlayers(_NPC,_Player,_Dialog);
+
+//END_REGION
+
+//REGION Repair / Loremaster traders
+
+IF
+DB_LoremasterTrader((CHARACTERGUID)_Trader,(INTEGER)_Level)
+THEN
+CharacterAddAbility(_Trader,"Loremaster",_Level);
+
+IF
+DB_RepairTrader((CHARACTERGUID)_Trader,(INTEGER)_Level)
+THEN
+CharacterAddAbility(_Trader,"Repair",_Level);
+
+//END_REGION
+
+//REGION Safe teleport for characters: teleport and flush/stop existing commands
+PROC
+PROC_Helper_SafeTeleportTo((CHARACTERGUID)_Char,(GUIDSTRING)_Dest)
+THEN
+PROC_Helper_SafeTeleportTo(_Char,_Dest,"",1);
+
+PROC
+PROC_Helper_SafeTeleportTo((CHARACTERGUID)_Char,(GUIDSTRING)_Dest,(STRING)_Event,(INTEGER)_TeleportLinkedCharacters)
+THEN
+TeleportTo(_Char,_Dest,_Event,_TeleportLinkedCharacters);
+CharacterFlushQueue(_Char);
+LeaveCombat(_Char);
+SetStoryEvent(_Char,"ClearPeaceReturn");
+// Clear ongoing animations
+PlayAnimation(_Char,"");
+
+//END_REGION
+
+//REGION Teleport In/Out script helpers
+
+IF
+StoryEvent((CHARACTERGUID)_Char,"GEN_Teleport_In")
+THEN
+SetOnStage(_Char,1);
+PlayAnimation(_Char,"Teleport_In_01");
+
+
+IF
+StoryEvent((CHARACTERGUID)_Char,"GEN_Teleport_Out")
+THEN
+PlayAnimation(_Char,"Teleport_Out_01","GEN_GoOffStage");
+
+
+//END_REGION
+
+
+
+//REGION Sign function
+QRY
+QRY_IntegerSign((INTEGER)_Value)
+AND
+DB_IntegerSign(_Result)
+THEN
+NOT DB_IntegerSign(_Result);
+
+QRY
+QRY_IntegerSign((INTEGER)_Value)
+AND
+_Value < 0
+THEN
+DB_IntegerSign(-1);
+
+QRY
+QRY_IntegerSign((INTEGER)_Value)
+AND
+_Value == 0
+THEN
+DB_IntegerSign(0);
+
+QRY
+QRY_IntegerSign((INTEGER)_Value)
+AND
+_Value > 0
+THEN
+DB_IntegerSign(0);
+//END_REGION
+
+//REGION Angle normalisation
+QRY
+QRY_NormaliseAngle((INTEGER)_Angle)
+AND
+DB_NormaliseAngle_Result(_Result)
+THEN
+NOT DB_NormaliseAngle_Result(_Result);
+
+QRY
+QRY_NormaliseAngle((INTEGER)_Angle)
+AND
+_Angle < 0
+AND
+IntegerSum(_Angle, 360, _NormalisedAngle)
+THEN
+DB_NormaliseAngle_Result(_NormalisedAngle);
+
+QRY
+QRY_NormaliseAngle((INTEGER)_Angle)
+AND
+_Angle >= 0
+AND
+IntegerModulo(_Angle, 360, _NormalisedAngle)
+THEN
+DB_NormaliseAngle_Result(_NormalisedAngle);
+//END_REGION
+
+//REGION Clear a party flag on all players and potential companions
+//NOTE: This call will not work for characters that are not currently loaded,
+//e.g. local characters currently in another level that you could re-recruit.
+IF
+CharacterJoinedParty(_Character)
+THEN
+DB_JoinedParty(_Character);
+
+IF
+CharacterDied(_Character)
+AND
+DB_JoinedParty(_Character)
+AND
+CharacterIsSummon(_Character, 1)
+THEN
+NOT DB_JoinedParty(_Character);
+
+PROC
+Proc_PurgeLevelPartyFlag((STRING)_Flagname)
+AND
+DB_JoinedParty(_Character)
+AND
+ObjectExists(_Character, 1)
+AND
+DB_IsPlayer(_Character)
+THEN
+PartyClearFlag(_Character,_Flagname,0);
+
+PROC
+Proc_PurgeLevelPartyFlag((STRING)_Flagname)
+AND
+DB_JoinedParty(_Character)
+AND
+ObjectExists(_Character, 1)
+AND
+NOT DB_IsPlayer(_Character)
+THEN
+ObjectClearFlag(_Character,_Flagname,0);
+//END_REGION
+
+
+//REGION Generic Remove From Dialog
+
+IF
+ObjectFlagSet("GEN_RemoveFromDialog",_Char,_Id)
+AND
+DialogRemoveActorFromDialog(_Id,_Char,1)
+THEN
+DB_NOOP(1);
+
+//END_REGION
+
+//REGION Resurrection Idol
+IF
+CharacterDied(_Player)
+AND
+DB_IsPlayer(_Player)
+AND
+IsTagged(_Player,"BLOCK_RESURRECTION",0)
+AND
+ItemTemplateIsInCharacterInventory(_Player,"Quest_Resurrection_Idol_6b70e6e1-855e-4295-b79b-d87ebd6bd4af",_Amount)
+AND
+_Amount > 0
+THEN
+ProcObjectTimer(_Player,"ResurrectionIdol",1000);
+DB_ResurrectionIdol_Timer(_Player);
+
+PROC
+ProcObjectTimerFinished(_Player,"ResurrectionIdol")
+AND
+DB_ResurrectionIdol_Timer((CHARACTERGUID)_Player)
+THEN
+NOT DB_ResurrectionIdol_Timer(_Player);
+
+PROC
+ProcObjectTimerFinished(_Player,"ResurrectionIdol")
+AND
+IsTagged(_Player,"BLOCK_RESURRECTION",0)
+AND
+CharacterIsDead((CHARACTERGUID)_Player,1)
+AND
+ItemTemplateIsInCharacterInventory(_Player,"Quest_Resurrection_Idol_6b70e6e1-855e-4295-b79b-d87ebd6bd4af",_Amount)
+AND
+_Amount > 0
+AND
+GetPosition(_Player,_x,_y,_z)
+THEN
+CharacterResurrect(_Player);
+PlayEffectAtPosition("RS3_FX_GP_Combat_Resurrect_Idol_01",_x,_y,_z);
+ItemTemplateRemoveFrom("Quest_Resurrection_Idol_6b70e6e1-855e-4295-b79b-d87ebd6bd4af",_Player,1);
+ItemTemplateAddTo("Quest_Resurrection_Idol_Inert_79a029d2-57fd-4330-b41f-5deebdfe6e05",_Player,1);
+
+QRY
+QRY_CharIsAboutToResurrect((CHARACTERGUID)_Player)
+AND
+IsTagged(_Player,"BLOCK_RESURRECTION",0)
+AND
+ItemTemplateIsInCharacterInventory(_Player,"Quest_Resurrection_Idol_6b70e6e1-855e-4295-b79b-d87ebd6bd4af",_Amount)
+AND
+_Amount > 0
+THEN
+DB_NoOp(1);
+//END_REGION
+
+//REGION Clear Tag After Combat 
+
+PROC
+Proc_SetTagForCombat((CHARACTERGUID)_Char,(STRING)_Tag)
+THEN
+SetTag(_Char,_Tag);
+DB_ClearTagAfterCombat(_Char,_Tag);
+
+IF
+CombatEnded(_CombatID)
+AND
+DB_ClearTagAfterCombat(_Char,_Tag)
+AND
+IsTagged((CHARACTERGUID)_Char,_Tag,1)
+AND
+NOT DB_CombatCharacters(_Char,_)
+THEN
+NOT DB_ClearTagAfterCombat(_Char,_Tag);
+ClearTag(_Char,_Tag);
+
+IF
+ObjectLostTag((CHARACTERGUID)_Char,_Tag)
+AND
+DB_ClearTagAfterCombat(_Char,_Tag)
+THEN
+NOT DB_ClearTagAfterCombat(_Char,_Tag);
+
+//END_REGION
+
+//REGION Hidden Rveal On Iteraction
+IF
+ItemMoved(_IteractiveItem)
+AND
+DB_HiddenRevealOnInteraction(_HiddenItem,_IteractiveItem)
+THEN
+SetStoryEvent(_HiddenItem,"RevealFromStory");
+NOT DB_HiddenRevealOnInteraction(_HiddenItem,_IteractiveItem);
+
+IF
+ItemAddedToCharacter(_IteractiveItem,_Player)
+AND
+DB_HiddenRevealOnInteraction(_HiddenItem,_IteractiveItem)
+THEN
+SetStoryEvent(_HiddenItem,"RevealFromStory");
+NOT DB_HiddenRevealOnInteraction(_HiddenItem,_IteractiveItem);
+
+IF
+ItemDestroying(_IteractiveItem)
+AND
+DB_HiddenRevealOnInteraction(_HiddenItem,_IteractiveItem)
+THEN
+SetStoryEvent(_HiddenItem,"RevealFromStory");
+NOT DB_HiddenRevealOnInteraction(_HiddenItem,_IteractiveItem);
+
+IF
+StoryEvent(_HiddenItem,"StoryReveal")
+AND
+DB_HiddenRevealOnInteraction(_HiddenItem,_IteractiveItem)
+THEN
+NOT DB_HiddenRevealOnInteraction(_HiddenItem,_IteractiveItem);
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION

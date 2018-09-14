@@ -1,0 +1,377 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+// DB_GLO_LVHub_PlayerChests_Chest(_Chest): one of the user chests (in use or not)
+// DB_GLO_LVHub_PlayerChests_Host(_Chest): Host's primary chest
+// DB_GLO_LVHub_PlayerChests_HostSecondary(_ProfileName,_Chest): chest that is currently not assigned to anyone -> fallback to host (but keep track whom it belonged to, so we can give it back)
+// DB_GLO_LVHub_PlayerChests_Cient(_ProfileName,_Chest): chest that was last assigned to the client _profilename
+KBSECTION
+//REGION Move an item to your chest
+//Client version
+IF
+ItemSendToHomesteadEvent(_Player,_Item)
+AND
+CharacterGetReservedUserID(_Player,_UserID)
+AND
+GetUserProfileID(_UserID,_ProfileName)
+AND
+DB_GLO_LVHub_PlayerChests_Client(_ProfileName,_Chest)
+THEN
+ItemToInventory(_Item,_Chest,-1,1,0);
+
+//Host version
+IF
+ItemSendToHomesteadEvent(_Player,_Item)
+AND
+CharacterGetReservedUserID(_Player,_UserID)
+AND
+CharacterGetHostCharacter(_Host)
+AND
+CharacterGetReservedUserID(_Host,_UserID)
+AND
+DB_GLO_LVHub_PlayerChests_Host(_Chest)
+THEN
+ItemToInventory(_Item,_Chest,-1,1,0);
+//END_REGION
+
+
+//REGION Init
+
+//REGION Init once
+// Set host chest
+PROC
+PROC_GLO_LVHub_PlayerChests_InitOnce()
+AND
+DB_GLO_LVHub_PlayerChests_Chest(_Chest)
+AND
+NOT DB_GLO_LVHub_PlayerChests_Host(_)
+THEN
+DB_GLO_LVHub_PlayerChests_Host(_Chest);
+
+// All other chests are off-stage
+PROC
+PROC_GLO_LVHub_PlayerChests_InitOnce()
+AND
+DB_GLO_LVHub_PlayerChests_Chest(_Chest)
+AND
+NOT DB_GLO_LVHub_PlayerChests_Host(_Chest)
+THEN
+SetOnStage(_Chest,0);
+
+PROC
+PROC_GLO_LVHub_PlayerChests_InitOnce()
+THEN
+PROC_GLO_LVHub_PlayerChests_Init();
+//END_REGION
+
+//REGION Common init
+// Catch users joining during the initial assignment process,
+// so we don't trip over ourselves
+PROC
+PROC_GLO_LVHub_PlayerChests_Init()
+THEN
+DB_GLO_LVHub_PlayerChests_InitialAssignment(1);
+
+IF
+SavegameLoaded(_,_,_,_)
+THEN
+PROC_GLO_LVHub_PlayerChests_Init();
+
+//REGION Paranoia: clean up DBs that should not exist at this point
+PROC
+PROC_GLO_LVHub_PlayerChests_Init()
+AND
+DB_GlobalCounter("GLO_LVHub_Playerchests_Init_UserCount",_Count)
+THEN
+NOT DB_GlobalCounter("GLO_LVHub_Playerchests_Init_UserCount",_Count);
+//END_REGION
+
+// All previous client chests become secondary host chests -> can be automatically reassigned
+PROC
+PROC_GLO_LVHub_PlayerChests_Init()
+AND
+DB_GLO_LVHub_PlayerChests_Client(_ProfileName,_Chest)
+THEN
+PROC_GLO_LVHub_PlayerChests_HostUserAssignChest(_Chest);
+
+// Assign a chest to every client
+PROC
+PROC_GLO_LVHub_PlayerChests_Init()
+AND
+GetUserCount(_Count)
+THEN
+DB_GlobalCounter("GLO_LVHub_Playerchests_Init_Pass1UserCount",_Count);
+IterateUsers("GLO_LVHub_PlayerChests_Init_Pass1");
+
+IF
+UserEvent(_User,"GLO_LVHub_PlayerChests_Init_Pass1")
+AND
+CharacterGetHostCharacter(_HostChar)
+AND
+NOT CharacterGetReservedUserID(_HostChar,_User)
+THEN
+PROC_GLO_LVHub_PlayerChests_UserFindAndAssignChest(_User);
+ProcDecreaseCounter("GLO_LVHub_Playerchests_Init_Pass1UserCount");
+
+// We skipped the host -> 1 user will not have been processed
+IF
+DB_GlobalCounter("GLO_LVHub_Playerchests_Init_Pass1UserCount",1)
+THEN
+NOT DB_GlobalCounter("GLO_LVHub_Playerchests_Init_Pass1UserCount",1);
+PROC_LVHub_UserChests_InitialAssignmentDone();
+//END_REGION
+
+//REGION Handle users that joined while the initial assignment was ongoing
+// Both connecting and disconnecting results in CharacterReservedUserIDChanged events
+IF
+CharacterReservedUserIDChanged(_Player,_,_UserID)
+AND
+DB_GLO_LVHub_PlayerChests_InitialAssignment(1)
+THEN
+DB_GLO_LVHub_PlayerChests_UserChangeDuringInit(1);
+
+PROC
+PROC_LVHub_UserChests_InitialAssignmentDone()
+THEN
+NOT DB_GLO_LVHub_PlayerChests_InitialAssignment(1);
+
+PROC
+PROC_LVHub_UserChests_InitialAssignmentDone()
+AND
+DB_GLO_LVHub_PlayerChests_UserChangeDuringInit(1)
+THEN
+NOT DB_GLO_LVHub_PlayerChests_UserChangeDuringInit(1);
+// Rerun assignment
+PROC_GLO_LVHub_PlayerChests_Init();
+//END_REGION
+
+//END_REGION
+
+
+//REGION Users connecting and disconnecting during the game
+// Existing user got a different user ID -> recalculate everything, because
+// if the host got a different user ID, then we don't want to give them
+// access to chests based on their user id
+// (also catches connects/disconnects, since then a player gets a new ID)
+IF
+CharacterReservedUserIDChanged(_Player,_,_UserID)
+THEN
+PROC_GLO_LVHub_PlayerChests_Init();
+//END_REGION
+
+//REGION Assigning a chest to a user
+
+//REGION Find a chest for a client
+QRY
+QRY_GLO_LVHub_GetUserChest((STRING)_ProfileName)
+AND
+DB_GLO_LVHub_GetUserChestResult(_Chest)
+THEN
+NOT DB_GLO_LVHub_GetUserChestResult(_Chest);
+
+// 1) Own chest
+QRY
+QRY_GLO_LVHub_GetUserChest((STRING)_ProfileName)
+AND
+DB_GLO_LVHub_PlayerChests_Client(_ProfileName,_Chest)
+THEN
+DB_GLO_LVHub_GetUserChestResult(_Chest);
+
+// 2) Previous own chest now assigned as secondary to host
+QRY
+QRY_GLO_LVHub_GetUserChest((STRING)_ProfileName)
+AND
+DB_GLO_LVHub_PlayerChests_HostSecondary(_ProfileName,(ITEMGUID)_Chest)
+THEN
+DB_GLO_LVHub_GetUserChestResult(_Chest);
+
+// 3) Unassigned chest
+QRY
+QRY_GLO_LVHub_GetUserChest((STRING)_ProfileName)
+AND
+DB_GLO_LVHub_PlayerChests_Chest(_Chest)
+AND
+// short-circuit in case one of the previous queries got a result,
+// but still after the DB_GLO_LVHub_PlayerChests_Chest() so it stops
+// iterating once we find a chest here
+NOT DB_GLO_LVHub_GetUserChestResult(_)
+AND
+NOT DB_GLO_LVHub_PlayerChests_Client(_,_Chest)
+AND
+NOT DB_GLO_LVHub_PlayerChests_Host(_Chest)
+AND
+NOT DB_GLO_LVHub_PlayerChests_HostSecondary(_,_Chest)
+AND
+// duplicate check to abort iterating over all chests once we found one
+NOT DB_GLO_LVHub_GetUserChestResult(_)
+THEN
+DB_GLO_LVHub_GetUserChestResult(_Chest);
+
+// 4) secondary host chest that belonged to someone else
+QRY
+QRY_GLO_LVHub_GetUserChest((STRING)_ProfileName)
+AND
+DB_GLO_LVHub_PlayerChests_HostSecondary(_OtherProfile,_Chest)
+AND
+NOT DB_GLO_LVHub_GetUserChestResult(_)
+THEN
+DB_GLO_LVHub_GetUserChestResult(_Chest);
+//END_REGION
+
+//REGION Host chest assignment
+PROC
+PROC_GLO_LVHub_PlayerChests_UserAssignChest((INTEGER)_User,(ITEMGUID)_Chest)
+AND
+CharacterGetHostCharacter(_HostChar)
+AND
+CharacterGetReservedUserID(_HostChar,_User)
+THEN
+PROC_GLO_LVHub_PlayerChests_HostUserAssignChest((ITEMGUID)_Chest);
+
+PROC
+PROC_GLO_LVHub_PlayerChests_HostUserAssignChest((ITEMGUID)_Chest)
+AND
+NOT DB_GLO_LVHub_PlayerChests_Client(_,_Chest)
+THEN
+DebugBreak("Assigning a chest not owned by anyone to the host?");
+
+// Client chest taken over by host
+PROC
+PROC_GLO_LVHub_PlayerChests_HostUserAssignChest((ITEMGUID)_Chest)
+AND
+DB_GLO_LVHub_PlayerChests_Client(_ProfileName,_Chest)
+THEN
+NOT DB_GLO_LVHub_PlayerChests_Client(_ProfileName,_Chest);
+DB_GLO_LVHub_PlayerChests_HostSecondary(_ProfileName,_Chest);
+
+//END_REGION
+
+//REGION Client chest assignment
+PROC
+PROC_GLO_LVHub_PlayerChests_UserAssignChest((INTEGER)_User,(ITEMGUID)_Chest)
+AND
+CharacterGetHostCharacter(_HostChar)
+AND
+NOT CharacterGetReservedUserID(_HostChar,_User)
+THEN
+PROC_GLO_LVHub_PlayerChests_ClientUserAssignChest((INTEGER)_User,(ITEMGUID)_Chest);
+
+PROC
+PROC_GLO_LVHub_PlayerChests_ClientUserAssignChest((INTEGER)_User,(ITEMGUID)_Chest)
+AND
+DB_GLO_LVHub_PlayerChests_Client(_ProfileName,_Chest)
+THEN
+NOT DB_GLO_LVHub_PlayerChests_Client(_ProfileName,_Chest);
+
+PROC
+PROC_GLO_LVHub_PlayerChests_ClientUserAssignChest((INTEGER)_User,(ITEMGUID)_Chest)
+AND
+DB_GLO_LVHub_PlayerChests_HostSecondary(_ProfileName,_Chest)
+THEN
+NOT DB_GLO_LVHub_PlayerChests_HostSecondary(_ProfileName,_Chest);
+
+PROC
+PROC_GLO_LVHub_PlayerChests_ClientUserAssignChest((INTEGER)_User,(ITEMGUID)_Chest)
+AND
+ObjectIsOnStage(_Chest,0)
+THEN
+Foop(_Chest);
+
+PROC
+PROC_GLO_LVHub_PlayerChests_ClientUserAssignChest((INTEGER)_User,(ITEMGUID)_Chest)
+AND
+GetUserProfileID(_User,_ProfileName)
+THEN
+DB_GLO_LVHub_PlayerChests_Client(_ProfileName,_Chest);
+//END_REGION
+
+PROC
+PROC_GLO_LVHub_PlayerChests_UserFindAndAssignChest((INTEGER)_User)
+AND
+GetUserProfileID(_User,_ProfileName)
+AND
+QRY_GLO_LVHub_GetUserChest(_ProfileName)
+AND
+DB_GLO_LVHub_GetUserChestResult(_Chest)
+THEN
+NOT DB_GLO_LVHub_GetUserChestResult(_Chest);
+PROC_GLO_LVHub_PlayerChests_UserAssignChest(_User,_Chest);
+
+//END_REGION
+
+//REGION Access control to chests
+// Client can access own chest
+QRY
+QRY_GLO_LVHub_PlayerChests_PlayerCanAccessChest((CHARACTERGUID)_Player,(ITEMGUID)_Chest)
+AND
+CharacterGetReservedUserID(_Player,_UserID)
+AND
+GetUserProfileID(_UserID,_ProfileName)
+AND
+DB_GLO_LVHub_PlayerChests_Client(_ProfileName,_Chest)
+THEN
+DB_NOOP(1);
+
+// Host-accessible chests
+QRY
+QRY_GLO_LVHub_PlayerChests_HostCanAccessChest((ITEMGUID)_Chest)
+AND
+DB_GLO_LVHub_PlayerChests_Host(_Chest)
+THEN
+DB_NOOP(1);
+
+QRY
+QRY_GLO_LVHub_PlayerChests_HostCanAccessChest((ITEMGUID)_Chest)
+AND
+DB_GLO_LVHub_PlayerChests_HostSecondary(_,_Chest)
+THEN
+DB_NOOP(1);
+
+QRY
+QRY_GLO_LVHub_PlayerChests_PlayerCanAccessChest((CHARACTERGUID)_Player,(ITEMGUID)_Chest)
+AND
+CharacterGetReservedUserID(_Player,_UserID)
+AND
+CharacterGetHostCharacter(_HostPlayer)
+AND
+CharacterGetReservedUserID(_HostPlayer,_UserID)
+AND
+QRY_GLO_LVHub_PlayerChests_HostCanAccessChest(_Chest)
+THEN
+DB_NOOP(1);
+
+PROC
+ProcBlockUseOfItem(_Player,_Chest)
+AND
+DB_GLO_LVHub_PlayerChests_Chest(_Chest)
+AND
+NOT QRY_GLO_LVHub_PlayerChests_PlayerCanAccessChest(_Player,_Chest)
+THEN
+DB_CustomUseItemResponse(_Player,_Chest,0);
+Proc_StartDialog(1,"GLO_AD_CannotUseNow",_Player);
+//END_REGION
+
+//REGION 
+QRY
+QRY_GLO_LVHub_PlayerChests_PlayerHasChest((CHARACTERGUID)_Player)
+AND
+DB_GLO_LVHub_PlayerChests_Chest(_Chest)
+AND
+QRY_GLO_LVHub_PlayerChests_PlayerCanAccessChest(_Player,_Chest)
+THEN
+DB_NOOP(0);
+
+PROC
+ProcSetHomesteadKeyState((CHARACTERGUID)_Player)
+AND
+NOT DB_BlockWaypointUsage(_Player)
+AND
+QRY_GLO_LVHub_PlayerChests_PlayerHasChest(_Player)
+THEN
+PROC_CheckPlayTut(_Player,"TUT_StorageChest");
+
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "__Shared_Campaign"

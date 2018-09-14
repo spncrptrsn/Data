@@ -1,0 +1,15 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+//https://sites.google.com/a/larian.com/projecttest/home/wiki-articles/quest-design-documentation/statue-of-the-sea-god
+//https://www.lucidchart.com/documents/edit/3b46c212-2d77-4699-905a-3eca4f011714#
+// See also RC_WH_SeaGodStatue goal for main logic
+KBSECTION
+IF
+CharacterUsedItem(_Character,ITEMGUID_S_RC_WH_SeaGodStatue_Sign_425bc0cd-6e9b-4329-a3a0-4ad03e5c071f)
+THEN
+StartVoiceBark("RC_WH_VB_SeaGodStatue_Comment",_Character);
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "ReapersCoast"

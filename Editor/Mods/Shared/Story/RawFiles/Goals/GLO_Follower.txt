@@ -1,0 +1,403 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+/*How to use
+- Make sure Owner and Follower are Global
+- Give follower the GEN_Follower script (Either use the build in follow Behaviour or create own customized follow script)
+- Add Follower to DB_Followers and add the Char flag that is set on a char to make owner.
+- Add follower to DB_FollowerIgnoreRegions if you want it not to appear in certain regions
+- Add follower to DB_FollowerDisapearInTrigger if you don't want the specific follower to show up in certain triggers
+- Add trigger to DB_HideAllFollowersInTrigger if you want no followers to show up in this trigger (Such as HoE)
+
+
+- Setting the owner flag will make that char an owner
+- Clearing the flag will remove it as an owner
+- Setting the owner flag on another char automaticly clears the owner flag on prev owner
+
+- You can get followers owners with DB_FollowerOwners(owner,_follower) (Don't add chars in this DB)
+*/
+
+//REGION Follower DB (Set follower in this DB)
+//DB_GLO_Followers(GlobalCharFollower,ownerFlag); (Follower and owner should be global)
+//END_REGION
+
+
+//REGION Follower dont go to Region (Makes sure Follower is not taken here)
+//DB_FollowerIgnoreRegion(_region,_follower); (_region is string)
+
+//END_REGION
+
+//REGION ALL followers dont go to region
+//DB_AllFollowersIgnoreRegion(_region);
+DB_AllFollowersIgnoreRegion("LV_HoE_Main");
+
+//END_REGION
+
+//REGION Dont have specific follower in Trigger (Set this to make sure specific followers dont appear in this trigger)
+//Disapear on entering trigger, Appear again after leaving trigger.
+//DB_FollowerHideInTrigger((TRIGGERGUID)_trigger,(CHARACTERGUID)_follower); (Trigger should be global)
+
+//END_REGION
+
+
+//REGION Dont have any followers appear in trigger (Such as in HoE)
+//Disapear on entering trigger, Appear again after leaving trigger.
+//DB_HideAllFollowersInTrigger((TRIGGERGUID)_trigger);(Trigger should be global)
+
+//END_REGION
+
+//REGION Have specific Followers always Appear in trigger (For Regions that dont allow followers)
+//Specific Follower is enabled in trigger but disabled when leaving the trigger
+//DB_FollowerShowInTrigger((TRIGGERGUID)_trigger,(CHARACTERGUID)_follower) (Trigger should be global)
+//END_REGION
+
+//REGION Have Followers always Appear in trigger (For Regions that dont allow followers)
+//Follower is enabled in trigger but disabled when leaving the trigger
+//DB_ShowAllFollowersInTrigger((TRIGGERGUID)_trigger) (Trigger should be global)
+//END_REGION
+KBSECTION
+//REGION OnInit set script vars
+//Set script vars
+IF
+DB_Followers((GUIDSTRING)_follower,(STRING)_ownerFlag)
+THEN
+SetVarFixedString(_follower,"ownerFlag",_ownerFlag); 
+//END_REGION
+
+
+//REGION Setting/Removing Owner
+//Add owner to DB
+IF
+ObjectFlagSet(_ownerFlag,_owner,_)
+AND
+DB_Followers(_follower,_ownerFlag)
+THEN
+DB_FollowerOwners(_owner,_follower);
+
+//Remove owner form DB
+IF
+ObjectFlagCleared(_ownerFlag,_owner,_)
+AND
+DB_Followers(_follower,_ownerFlag)
+THEN
+NOT DB_FollowerOwners(_owner,_follower);
+//END_REGION
+
+//REGION Teleport Follower
+IF
+StoryEvent(_follower,"GLO_TeleportFollower") 
+AND
+DB_Followers(_follower,_)
+AND
+GetVarObject(_follower,"owner",_owner)
+THEN
+DialogRequestStop(_follower);
+CharacterPurgeQueue((CHARACTERGUID)_follower);
+TeleportTo(_follower,_owner);
+//END_REGION
+
+//REGION Make follower appear (With Appear animation)
+IF
+StoryEvent(_follower,"GLO_MakeFollowerAppear") 
+AND
+DB_Followers(_follower,_)
+AND
+GetVarObject(_follower,"owner",_owner)
+AND
+GetVarInteger(_follower,"playAppearAnimation",_playSpawnAnimation)
+THEN
+CharacterPurgeQueue((CHARACTERGUID)_follower);
+CharacterAppearAt((CHARACTERGUID)_follower,_owner,_playSpawnAnimation,"GLO_FollowerHasAppeared"); 
+//END_REGION
+
+//REGION On owner went off/On stage
+//Owner went off stage
+IF
+CharacterWentOnStage(_owner,0)
+AND
+DB_FollowerOwners(_owner,_follower)
+THEN
+DialogRequestStop(_follower);
+SetOnStage(_follower,0);
+
+
+//Owner went on stage
+IF
+CharacterWentOnStage(_owner,1)
+AND
+DB_FollowerOwners(_owner,_follower)
+AND
+GetVarInteger(_follower,"playAppearAnimation",_playSpawnAnimation)
+THEN
+CharacterPurgeQueue((CHARACTERGUID)_follower);
+CharacterAppearAt((CHARACTERGUID)_follower,_owner,_playSpawnAnimation,"GLO_FollowerHasAppeared");
+//END_REGION
+
+
+//REGION On Region swap (Player only)
+IF
+RegionStarted(_region)
+AND
+DB_FollowerOwners(_owner,_follower)
+AND
+DB_IsPlayer((CHARACTERGUID)_owner)
+AND
+NOT DB_FollowerIgnoreRegion(_region,_follower)
+AND
+NOT DB_AllFollowersIgnoreRegion(_region)
+THEN
+TeleportTo(_follower,_owner);
+//END_REGION
+
+
+//REGION Hide/show specific follower in/out trigger
+//Register for disappear trigger
+IF
+DB_FollowerOwners(_owner,_follower)
+AND
+DB_FollowerHideInTrigger(_trigger,(CHARACTERGUID)_follower)
+THEN
+TriggerRegisterForCharacter((TRIGGERGUID)_trigger,(CHARACTERGUID)_owner);
+
+
+//Unregister for disappear trigger
+IF
+ObjectFlagCleared(_ownerFlag,_owner,_)
+AND
+DB_Followers(_follower,_ownerFlag)
+AND
+DB_FollowerHideInTrigger(_trigger,(CHARACTERGUID)_follower)
+THEN
+TriggerUnregisterForCharacter((TRIGGERGUID)_trigger,(CHARACTERGUID)_owner);
+
+
+//Trigger to make followers disapear (Used for places like HoE)
+IF
+CharacterEnteredTrigger(_owner,_trigger)
+AND
+DB_FollowerOwners(_owner,_)
+AND
+DB_FollowerHideInTrigger(_trigger,(CHARACTERGUID)_follower)
+THEN
+DialogRequestStop(_follower);
+SetOnStage(_follower,0);
+
+//Appear again on leaving trigger
+IF
+CharacterLeftTrigger(_owner,_trigger)
+AND
+DB_FollowerOwners(_owner,_)
+AND
+DB_FollowerHideInTrigger(_trigger,(CHARACTERGUID)_follower)
+AND
+GetVarInteger(_follower,"playAppearAnimation",_playSpawnAnimation)
+THEN
+PROC_HideFollowers_Reappear(_follower, _owner, _playSpawnAnimation);
+//END_REGION
+
+//REGION Show/hide specific follower in/out trigger
+//Register for appear trigger
+IF
+DB_FollowerOwners(_owner,_follower)
+AND
+DB_FollowerShowInTrigger(_trigger,_follower)
+THEN
+TriggerRegisterForCharacter((TRIGGERGUID)_trigger,(CHARACTERGUID)_owner);
+
+
+//Unregister for appear trigger
+IF
+ObjectFlagCleared(_ownerFlag,_owner,_)
+AND
+DB_Followers(_follower,_ownerFlag)
+AND
+DB_FollowerShowInTrigger(_trigger,_follower)
+THEN
+TriggerUnregisterForCharacter((TRIGGERGUID)_trigger,(CHARACTERGUID)_owner);
+
+
+//Trigger to make followers apear (Used for regions that don't allow followers)
+IF
+CharacterEnteredTrigger(_owner,_trigger)
+AND
+DB_FollowerOwners(_owner,_follower)
+AND
+DB_FollowerShowInTrigger(_trigger,_follower)
+AND
+GetVarInteger(_follower,"playAppearAnimation",_playSpawnAnimation)
+THEN
+CharacterPurgeQueue((CHARACTERGUID)_follower);
+CharacterAppearAt((CHARACTERGUID)_follower,_owner,_playSpawnAnimation,"GLO_FollowerHasAppeared");
+
+
+//Disapear again on leaving trigger
+IF
+CharacterLeftTrigger(_owner,_trigger)
+AND
+DB_FollowerOwners(_owner,_)
+AND
+DB_FollowerShowInTrigger(_trigger,_follower)
+THEN
+DialogRequestStop(_follower);
+SetOnStage(_follower,0);
+//END_REGION
+
+
+//REGION Hide/show all followers in/out trigger
+//Register for disappear trigger
+IF
+DB_FollowerOwners(_owner,_)
+AND
+DB_HideAllFollowersInTrigger(_trigger)
+THEN
+TriggerRegisterForCharacter((TRIGGERGUID)_trigger,(CHARACTERGUID)_owner);
+
+
+//Unregister for disappear trigger
+IF
+ObjectFlagCleared(_ownerFlag,_owner,_)
+AND
+DB_Followers(_follower,_ownerFlag)
+AND
+DB_HideAllFollowersInTrigger(_trigger)
+THEN
+TriggerUnregisterForCharacter((TRIGGERGUID)_trigger,(CHARACTERGUID)_owner);
+
+
+//Trigger to make followers disapear (Used for places like HoE)
+IF
+CharacterEnteredTrigger(_owner,_trigger)
+AND
+DB_FollowerOwners(_owner,_follower)
+AND
+DB_HideAllFollowersInTrigger(_trigger)
+THEN
+DialogRequestStop(_follower);
+SetOnStage(_follower,0);
+
+//Appear again on leaving trigger
+IF
+CharacterLeftTrigger(_owner,_trigger)
+AND
+DB_FollowerOwners(_owner,_follower)
+AND
+DB_HideAllFollowersInTrigger(_trigger)
+AND
+GetVarInteger(_follower,"playAppearAnimation",_playSpawnAnimation)
+THEN
+PROC_HideFollowers_Reappear(_follower, _owner, _playSpawnAnimation);
+
+PROC
+PROC_HideFollowers_Reappear((GUIDSTRING)_follower, (GUIDSTRING)_owner, (INTEGER)_playSpawnAnimation)
+AND
+QRY_AnyRegionActive()
+THEN
+CharacterPurgeQueue((CHARACTERGUID)_follower);
+CharacterAppearAt((CHARACTERGUID)_follower,_owner,_playSpawnAnimation,"GLO_FollowerHasAppeared");
+
+PROC
+PROC_HideFollowers_Reappear((GUIDSTRING)_follower, (GUIDSTRING)_owner, (INTEGER)_playSpawnAnimation)
+AND
+NOT QRY_AnyRegionActive()
+THEN
+CharacterPurgeQueue((CHARACTERGUID)_follower);
+SetOnStage((CHARACTERGUID)_follower, 1);
+//END_REGION
+
+//REGION Show/Hide all followers in/out trigger
+//Register for disappear trigger
+IF
+DB_FollowerOwners(_owner,_)
+AND
+DB_ShowAllFollowersInTrigger(_trigger)
+THEN
+TriggerRegisterForCharacter((TRIGGERGUID)_trigger,(CHARACTERGUID)_owner);
+
+
+//Unregister for disappear trigger
+IF
+ObjectFlagCleared(_ownerFlag,_owner,_)
+AND
+DB_Followers(_follower,_ownerFlag)
+AND
+DB_ShowAllFollowersInTrigger(_trigger)
+THEN
+TriggerUnregisterForCharacter((TRIGGERGUID)_trigger,(CHARACTERGUID)_owner);
+
+
+//Trigger to make followers appear (Used for Regions that don't allow followers)
+IF
+CharacterEnteredTrigger(_owner,_trigger)
+AND
+DB_FollowerOwners(_owner,_follower)
+AND
+DB_ShowAllFollowersInTrigger(_trigger)
+AND
+GetVarInteger(_follower,"playAppearAnimation",_playSpawnAnimation)
+THEN
+CharacterPurgeQueue((CHARACTERGUID)_follower);
+CharacterAppearAt((CHARACTERGUID)_follower,_owner,_playSpawnAnimation,"GLO_FollowerHasAppeared");
+
+
+//Disappear again on leaving trigger
+IF
+CharacterLeftTrigger(_owner,_trigger)
+AND
+DB_FollowerOwners(_owner,_follower)
+AND
+DB_ShowAllFollowersInTrigger(_trigger)
+THEN
+DialogRequestStop(_follower);
+SetOnStage(_follower,0);
+
+//END_REGION
+
+/* Doesn't work
+//REGION Set follower level
+IF
+DB_FollowerOwners(_owner,_follower)
+AND
+GetVarInteger(_follower,"setLevelSameAsOwner",1)
+AND
+CharacterGetLevel((CHARACTERGUID)_owner,_level)
+AND
+IntegertoString(_level,_string)
+THEN
+CharacterLevelUpTo((CHARACTERGUID)_follower,_level);
+DebugBreak(_string);
+
+//END_REGION
+*/
+
+//REGION Follower Level up with owner
+IF
+CharacterLeveledUp(_owner)
+AND
+DB_FollowerOwners(_owner,_follower)
+AND
+GetVarInteger(_follower,"levelUpWithOwner",1)
+THEN
+CharacterLevelUp((CHARACTERGUID)_follower);
+//END_REGION
+
+
+//REGION Party followers queries/procs
+QRY
+QRY_IsSummonOrPartyFollower((CHARACTERGUID)_Character)
+AND
+CharacterIsSummon(_Character,1)
+THEN
+DB_NOOP(1);
+
+QRY
+QRY_IsSummonOrPartyFollower((CHARACTERGUID)_Character)
+AND
+CharacterIsPartyFollower(_Character,1)
+THEN
+DB_NOOP(1);
+
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "__Shared_Campaign"

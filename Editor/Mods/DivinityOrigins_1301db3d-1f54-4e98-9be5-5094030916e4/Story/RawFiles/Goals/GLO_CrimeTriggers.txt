@@ -1,0 +1,26 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+//REGION testing
+IF
+RegionStarted("TestLevel_GenericBehaviours")
+THEN
+DB_TrespassTrigger((TRIGGERGUID)S_ForbiddenArea_09a5b8ed-58c3-4795-bc5e-c1284befa718,(TRIGGERGUID)S_ForbiddenExit_b88f4404-a4a1-42f0-ae3c-26cc96a72a69);
+DB_TrespassTrigger((TRIGGERGUID)HouseTest_ForbetenArea_fb085e7e-6820-4776-9a35-6369a6fe8ec5,(TRIGGERGUID)Traspassing_Trigger_Exist_bdc5b3da-041a-4d98-bb68-149869203e83);
+//END_REGION
+
+/* Was Causing an Error so it is commented out
+IF
+CharacterUsedSkill(_Player, "Shout_SpiritVision", _, _)
+AND
+DB_IsPlayer(_Player)
+THEN
+CharacterRegisterCrime(_Player,"SpiritTalk",NULL_00000000-0000-0000-0000-000000000000,NULL_00000000-0000-0000-0000-000000000000);
+*/
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start"

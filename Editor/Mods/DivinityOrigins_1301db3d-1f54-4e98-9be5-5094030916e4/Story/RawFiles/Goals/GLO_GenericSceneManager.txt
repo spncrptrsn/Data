@@ -1,0 +1,204 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+DB_GLO_GenericSceneManager_LeavingReason("LeftTrigger");
+DB_GLO_GenericSceneManager_LeavingReason("PlayerTeleportInDialog");
+KBSECTION
+//REGION RegisterDB
+
+IF
+DB_SceneManager((CHARACTERGUID)_NPC,_SceneName)
+THEN
+CharacterDisableAllCrimes(_NPC);
+proc_DB_SceneTriggerManager_CheckIgnoreAssault(_NPC,_SceneName);
+
+IF
+DB_SceneManager((CHARACTERGUID)_NPC,_SceneName)
+AND
+DB_SceneTriggerManager(_SceneName,_Trigger,_)
+THEN
+TriggerRegisterForCharacter(_Trigger,_NPC);
+
+IF
+DB_SceneTriggerManager(_SceneName,_Trigger)
+THEN
+DB_SceneTriggerManager(_SceneName,_Trigger,1);
+
+//Check Ignore Assault DB
+
+PROC
+proc_DB_SceneTriggerManager_CheckIgnoreAssault((CHARACTERGUID)_NPC,(STRING)_SceneName)
+AND
+DB_IgnoreAssault(_NPC)
+AND
+NOT DB_SceneTriggerManager_EnableAssaultAfterScene(_NPC,_SceneName)
+THEN
+DB_SceneTriggerManager_AssaultDisabledBeofreScene(_NPC,_SceneName);
+
+PROC
+proc_DB_SceneTriggerManager_CheckIgnoreAssault((CHARACTERGUID)_NPC,(STRING)_SceneName)
+AND
+NOT DB_IgnoreAssault(_NPC)
+AND
+NOT DB_SceneTriggerManager_AssaultDisabledBeofreScene(_NPC,_SceneName)
+THEN
+DB_IgnoreAssault(_NPC);
+DB_SceneTriggerManager_EnableAssaultAfterScene(_NPC,_SceneName);
+
+
+//END_REGION
+
+//REGION Trigger Interrupt	
+IF
+CharacterLeftTrigger(_NPC,_Trigger)
+AND
+DB_SceneTriggerManager(_SceneName,_Trigger,_)
+AND
+DB_SceneManager(_NPC,_SceneName)
+THEN
+Proc_SceneInterrupted(_NPC,(CHARACTERGUID)NULL_00000000-0000-0000-0000-000000000000,_SceneName,"LeftTrigger");
+
+IF
+ObjectEnteredCombat((CHARACTERGUID)_NPC,_CombatID)
+AND
+DB_SceneManager(_NPC,_SceneName)
+AND
+DB_IsPlayer(_Player)
+AND
+DB_CombatCharacters(_Player,_CombatID)
+THEN
+Proc_SceneInterrupted(_NPC,_Player,_SceneName,"EnteredCombat");
+
+IF
+AttackedByObject((CHARACTERGUID)_NPC,(CHARACTERGUID)_Player,(CHARACTERGUID)_Summon,_,_)
+AND
+_NPC != _Summon
+AND
+DB_SceneManager(_NPC,_SceneName)
+AND
+_Summon != NULL_00000000-0000-0000-0000-000000000000
+THEN
+Proc_SceneInterrupted(_NPC,_Summon,_SceneName,"Attacked");
+
+IF
+AttackedByObject((CHARACTERGUID)_NPC,(CHARACTERGUID)_Player,(CHARACTERGUID)_Summon,_,_)
+AND
+_NPC != _Summon
+AND
+DB_SceneManager(_NPC,_SceneName)
+AND
+_Summon == NULL_00000000-0000-0000-0000-000000000000
+THEN
+Proc_SceneInterrupted(_NPC,_Player,_SceneName,"Attacked");
+
+IF
+CharacterTeleported(_Player, _, _OldX, _OldY, _OldZ, _NewX, _NewY, _NewZ, _)
+AND
+QRY_CRIME_PlayerInDialogTeleportedTooFar(_Player, _OldX, _OldY, _OldZ)
+AND
+DB_CRIME_PlayerInDialogTeleportedTooFar(_ID, _Player, _NPC)
+AND
+DB_SceneManager(_NPC,_SceneName)
+THEN
+NOT DB_CRIME_PlayerInDialogTeleportedTooFar(_ID, _Player, _NPC);
+Proc_SceneInterrupted(_NPC,_Player,_SceneName,"PlayerTeleportInDialog");
+
+//handle teleportation as an attack since it coudl generate the trigger leave event before the attacked event comes in
+IF
+CharacterUsedSkillOnTarget(_Source,(CHARACTERGUID)_Target,_,"Teleportation",_)
+AND
+CharacterIsPlayer(_Source,1)
+AND
+DB_SceneManager(_Target,_SceneName)
+THEN
+Proc_SceneInterrupted(_Target,_Source,_SceneName,"Attacked");
+
+PROC
+PROC_GLOBAL_DialogStartRequested((CHARACTERGUID)_NPC,(CHARACTERGUID)_Player)
+AND
+DB_IsPlayer(_Player)
+AND
+DB_SceneManager(_NPC,_SceneName)
+THEN
+Proc_SceneInterrupted(_NPC,_Player,_SceneName,"StartedDialog");
+
+IF
+CharacterDestroyedItem(_Player,_Item)
+AND
+DB_IsPlayer(_Player)
+AND
+DB_SceneTriggerManager(_SceneName,_Trigger,0)
+AND
+ObjectIsInTrigger(_Item,_Trigger,1)
+THEN
+Proc_SceneInterrupted(_Item,_Player,_SceneName,"DestroyedItem");
+//END_REGION
+
+//REGION Launch_Proc	
+PROC 
+Proc_SceneInterrupted((GUIDSTRING)_NPC,(STRING)_SceneName,(STRING)_InterruptType)
+THEN
+Proc_SceneInterrupted(_NPC,NULL_00000000-0000-0000-0000-000000000000,_SceneName,_InterruptType);
+
+PROC 
+Proc_SceneInterrupted((GUIDSTRING)_NPC,(CHARACTERGUID)_Player,(STRING)_SceneName,(STRING)_InterruptType)
+THEN
+DB_NOOP(1);
+//END_REGION
+
+//REGION SceneOver	
+PROC
+Proc_SceneOver((STRING)_SceneName)
+AND
+DB_SceneTriggerManager(_SceneName,_Trigger,_IgnoreItems)
+AND
+DB_SceneManager(_NPC,_SceneName)
+THEN
+TriggerUnregisterForCharacter(_Trigger,_NPC);
+NOT DB_SceneTriggerManager(_SceneName,_Trigger,_IgnoreItems);
+
+PROC
+Proc_SceneOver((STRING)_SceneName)
+AND
+DB_SceneManager(_NPC,_SceneName)
+AND
+DB_SceneTriggerManager_EnableAssaultAfterScene(_NPC,_SceneName)
+THEN
+NOT DB_IgnoreAssault(_NPC);
+NOT DB_SceneTriggerManager_EnableAssaultAfterScene(_NPC,_SceneName);
+
+PROC
+Proc_SceneOver((STRING)_SceneName)
+AND
+DB_SceneManager(_NPC,_SceneName)
+THEN
+ProcRestoreGenericBehaviourAfterScene(_NPC);
+NOT DB_SceneManager(_NPC,_SceneName);
+
+
+PROC
+ProcRestoreGenericBehaviourAfterScene((CHARACTERGUID)_Char)
+AND
+NOT DB_CharacterAllCrimesDisabled(_Char)
+THEN
+CharacterEnableAllCrimes(_Char);
+
+PROC
+ProcRestoreGenericBehaviourAfterScene((CHARACTERGUID)_Char)
+AND
+DB_CharacterCrimeDisabled(_Char,_Crime)
+THEN
+CharacterDisableCrime(_Char,_Crime);
+
+PROC
+ProcRestoreGenericBehaviourAfterScene((CHARACTERGUID)_Char)
+AND
+DB_CharacterCrimeEnabled(_Char,_Crime)
+THEN
+CharacterEnableCrime(_Char,_Crime);
+
+//END_REGION
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "DOS2ModWrapper"

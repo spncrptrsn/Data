@@ -1,0 +1,14 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+PROC
+Proc_GameModeStarted("GameMaster",(INTEGER)_)
+THEN
+ShutdownCrimeSystem();
+GoalCompleted;
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "GMModWrapper"

@@ -1,0 +1,13 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+
+KBSECTION
+IF
+GameModeStarted("Arena",_IsEditorMode)
+THEN
+GoalCompleted;
+Proc_GameModeStarted("Arena",_IsEditorMode);
+EXITSECTION
+
+ENDEXITSECTION

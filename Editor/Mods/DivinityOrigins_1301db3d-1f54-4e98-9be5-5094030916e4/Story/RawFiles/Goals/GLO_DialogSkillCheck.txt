@@ -1,0 +1,65 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+//DB_CanUseSkillCheck(_Dialog,_Skill,_SourcePointCost)
+//Flag is created by StringConcatenate("PlayerCanUse_",_Skill,_Flag)
+//For Example : Bless would be PlayerCanUse_TargetBless
+KBSECTION
+
+//Can Use Skill Checks (For Dialog)
+
+IF
+DialogStarted(_Dialog,_Id)
+AND
+DB_CanUseSkillCheck(_Dialog,_Skill,_SourceCost)
+AND
+DialogGetInvolvedPlayer(_Id,1,(CHARACTERGUID)_Player)
+AND
+CharacterHasSkill(_Player,_Skill,1)
+AND
+_SourceCost > 0
+AND
+HasActiveStatus(_Player,"SOURCE_MUTED",0)
+AND
+CharacterGetSourcePoints(_Player,_Int)
+AND
+_Int >= _SourceCost
+THEN
+Proc_CanUseSkillCheck_FlagSetUp(_Player,_Skill,_Dialog);
+
+IF
+DialogStarted(_Dialog,_Id)
+AND
+DB_CanUseSkillCheck(_Dialog,_Skill,_SourceCost)
+AND
+DialogGetInvolvedPlayer(_Id,1,(CHARACTERGUID)_Player)
+AND
+CharacterHasSkill(_Player,_Skill,1)
+AND
+_SourceCost == 0
+THEN
+Proc_CanUseSkillCheck_FlagSetUp(_Player,_Skill,_Dialog);
+
+//Set Up and Store the Flag
+PROC
+Proc_CanUseSkillCheck_FlagSetUp((CHARACTERGUID)_Player,(STRING)_Skill,(STRING)_Dialog)
+AND
+StringConcatenate("PlayerCanUse_",_Skill,_Flag)
+THEN
+ObjectSetFlag(_Player,_Flag);
+DB_CanUseSkillCheck_FlagRemover(_Player,_Dialog,_Flag);
+
+IF
+DialogEnded(_Dialog,_Id)
+AND
+DialogGetInvolvedPlayer(_Id,1,(CHARACTERGUID)_Player)
+AND
+DB_CanUseSkillCheck_FlagRemover(_Player,_Dialog,_Flag)
+THEN
+ObjectClearFlag(_Player,_Flag);
+
+
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "Start"

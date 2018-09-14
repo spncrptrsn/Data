@@ -1,0 +1,148 @@
+Version 1
+SubGoalCombiner SGC_AND
+INITSECTION
+ProcTriggerRegisterForPlayers(S_FTJ_SW_NecromancerTower_SourceCell_31e13856-ac59-4c6d-bff4-173ba036e816);
+ProcTriggerRegisterForPlayers(S_FTJ_SW_NecromancerTower_SideRoomTrigger_48c037af-3c30-42fb-8135-78c0375ddbcb);
+
+DB_Dialogs(S_FTJ_SW_NecromancerTower_Zombie_d59bf834-71f3-45b5-93a0-0b393fd98097,"FTJ_SW_NecromancerTower_Zombie"); 
+DB_NoLowAttitudeDialog(CHARACTERGUID_S_FTJ_SW_NecromancerTower_Zombie_d59bf834-71f3-45b5-93a0-0b393fd98097);
+ProcCharacterDisableAllCrimes(CHARACTERGUID_S_FTJ_SW_NecromancerTower_Zombie_d59bf834-71f3-45b5-93a0-0b393fd98097);
+KBSECTION
+//REGION Sideroom
+IF
+CharacterEnteredTrigger(_Player,FTJ_SW_NecromancerTower_SourceCell_31e13856-ac59-4c6d-bff4-173ba036e816)
+AND
+DB_IsPlayer(_Player)
+AND
+QueryOnlyOnce("FTJ_SW_NecromancerTower_Sourcecell")
+THEN
+CharacterItemSetEvent(_Player,S_FTJ_SW_NecromancerTower_Turrent_001_64f9c8ce-fdf8-4ea5-9588-aab956ad3308,"FTJ_SW_NecromancerTower_TurrentOn");
+CharacterItemSetEvent(_Player,S_FTJ_SW_NecromancerTower_Turrent_002_86e5990c-59f5-4a53-8a46-42f596ac3d30,"FTJ_SW_NecromancerTower_TurrentOn");
+DB_FTJ_SW_NecromancerTower_SideRoomPuzzleOn(S_FTJ_SW_NecromancerTower_Turrent_001_64f9c8ce-fdf8-4ea5-9588-aab956ad3308);
+
+IF
+CharacterLeftTrigger(_Player,S_SW_FTJ_NecromancerTower_SideRoomTrigger_48c037af-3c30-42fb-8135-78c0375ddbcb)
+AND
+QRY_AnyRegionActive()
+AND
+DB_IsPlayer(_Player)
+AND
+QueryOnlyOnce("FTJ_SW_NecromancerTower_Exit_SideRoom")
+AND
+DB_FTJ_SW_NecromancerTower_SideRoomPuzzleOn(_Turret)
+THEN
+CharacterItemSetEvent(_Player,(ITEMGUID)_Turret,"FTJ_SW_NecromancerTower_TurrentOff");
+
+IF
+AttackedByObject(FTJ_SW_NecromancerTower_Plank_c361705c-0242-405d-8d48-5c742489a2e8,_,_Attacker,_,_)
+AND
+FTJ_SW_NecromancerTower_Plank_c361705c-0242-405d-8d48-5c742489a2e8 != _Attacker
+AND
+CharacterIsDead(S_FTJ_SW_NecromancerTower_Zombie_d59bf834-71f3-45b5-93a0-0b393fd98097,0)
+THEN
+ItemOpen(S_FTJ_SW_NecromancerTower_Plank_c361705c-0242-405d-8d48-5c742489a2e8);
+
+IF
+ItemOpened(S_FTJ_SW_NecromancerTower_Plank_c361705c-0242-405d-8d48-5c742489a2e8)
+AND
+CharacterIsDead(S_FTJ_SW_NecromancerTower_Zombie_d59bf834-71f3-45b5-93a0-0b393fd98097,0)
+AND
+DB_IsPlayer(_Player)
+THEN
+//ProcMakeNPCHostile(_Player,S_FTJ_SW_NecromancerTower_Zombie_d59bf834-71f3-45b5-93a0-0b393fd98097);
+ProcSetRelationToPlayers(S_FTJ_SW_NecromancerTower_Zombie_d59bf834-71f3-45b5-93a0-0b393fd98097,0);
+DebugText(S_FTJ_SW_NecromancerTower_Zombie_d59bf834-71f3-45b5-93a0-0b393fd98097,"I Go Hostile");
+
+IF
+AttackedByObject(CHARACTERGUID_S_FTJ_SW_NecromancerTower_Zombie_d59bf834-71f3-45b5-93a0-0b393fd98097, _,_Attacker,_,_)
+AND
+CHARACTERGUID_S_FTJ_SW_NecromancerTower_Zombie_d59bf834-71f3-45b5-93a0-0b393fd98097 != _Attacker
+AND
+CharacterIsDead(S_FTJ_SW_NecromancerTower_Zombie_d59bf834-71f3-45b5-93a0-0b393fd98097, 0)
+AND
+ItemIsOpened(ITEMGUID_S_FTJ_SW_NecromancerTower_Plank_c361705c-0242-405d-8d48-5c742489a2e8, 0)
+THEN
+ItemOpen(S_FTJ_SW_NecromancerTower_Plank_c361705c-0242-405d-8d48-5c742489a2e8);
+//END_REGION
+
+//REGION Puzzle
+
+IF
+CharacterUsedItem(_Player,PUZ_Lever_Citizen_Ground_A_001_789c0a19-5806-497e-a632-ad09ab42d5a7)
+AND
+GetVarFloat(PUZ_Trap_Gaspit_A_Fire_000_8379695d-db97-43c7-98e4-8e1e3ae513d4,"GasRadius",_Radius)
+THEN
+SetVarInteger(PUZ_Trap_Gaspit_A_Fire_000_8379695d-db97-43c7-98e4-8e1e3ae513d4,"Active",0);
+CreateSurface(PUZ_Trap_Gaspit_A_Fire_000_8379695d-db97-43c7-98e4-8e1e3ae513d4,"SurfaceNone",(REAL)_Radius,-1.0);
+SetVarInteger(S_FTJ_SW_NecromancerTower_Turrent003_538a0c09-6a6b-49c8-b4d5-f591f3e8f008,"TurretIsOn",0);
+SetVarInteger(S_FTJ_SW_NecromancerTower_Turrent003_000_471da559-9af6-4063-a32f-ea5217de3516,"TurretIsOn",0);
+ItemOpen(BLD_Humans_Prison_Grating_Door_A_003_f74c9c67-2d13-456f-ac5b-af3d5638e1eb);
+ItemUnLock(BLD_Humans_Prison_Grating_Door_A_003_f74c9c67-2d13-456f-ac5b-af3d5638e1eb);
+
+IF
+CharacterUsedItem(_Player,PUZ_Lever_Citizen_Ground_A_001_789c0a19-5806-497e-a632-ad09ab42d5a7)
+AND
+QueryOnlyOnce("FTJ_SW_NecromancerTower_PuzzleLever")
+THEN
+Proc_StartDialog(1,"FTJ_SW_AD_NecromancerTowerPuzzleLever",_Player);
+
+IF
+ItemAddedToCharacter(S_FTJ_NecromancerTower_ToSouceDoorKey_04932207-6d62-4e48-a4bc-b3fd37b17f0a,_Player)
+THEN
+DB_FTJ_SW_Necromancer_DontRemove(1);
+
+IF
+CharacterUsedItem(_,PUZ_Lever_Citizen_Ground_A_001_789c0a19-5806-497e-a632-ad09ab42d5a7)
+AND
+NOT DB_FTJ_SW_Necromancer_DontRemove(1)
+THEN
+SetOnStage(S_FTJ_NecromancerTower_ToSouceDoorKey_04932207-6d62-4e48-a4bc-b3fd37b17f0a,0);
+DebugText(S_FTJ_NecromancerTower_ToSouceDoorKey_04932207-6d62-4e48-a4bc-b3fd37b17f0a,"RemoveMe");
+
+//END_REGION
+
+//REGION Braccus piece
+
+IF
+CharacterUsedItem((CHARACTERGUID)_Player, ITEMGUID_S_FTJ_SW_BraccusArmor_Arms_Tomb_8e728999-36be-49b9-a52d-719c5ca4af28)
+AND
+GlobalGetFlag("FTJ_FoundBraccusArmor_Arms", 0)
+AND
+CharacterGetAttribute(_Player, "Strength", _Strength)
+AND
+_Strength >= 18
+AND
+GetPosition(TRIGGERGUID_S_FTJ_SW_BraccusArmor_Arms_PointTrigger_c71dc72f-d14f-4cb7-b2d8-0db986ea3167, _X, _Y, _Z)
+AND
+RealSubtract(_X, 1.0, _Left)
+AND
+RealSubtract(_X, 2.0, _FarLeft)
+AND
+RealSum(_X, 1.0, _Right)
+AND
+RealSum(_Z, 1.5, _Up)
+AND
+RealSubtract(_Z, 1.5, _Bottom)
+AND
+RealSubtract(_Z, 3.5, _FarBottom)
+THEN
+GlobalSetFlag("FTJ_FoundBraccusArmor_Arms");
+CreateSurfaceAtPosition(_Left, _Y, _Bottom, "SurfacePoison", 2.0, -1.0);
+CreateSurfaceAtPosition(_Left, _Y, _Up, "SurfacePoison", 2.0, -1.0);
+CreateSurfaceAtPosition(_Right, _Y, _Bottom, "SurfacePoison", 1.0, -1.0);
+CreateSurfaceAtPosition(_Right, _Y, _Up, "SurfacePoison", 1.0, -1.0);
+CreateSurfaceAtPosition(_FarLeft, _Y, _FarBottom, "SurfacePoison", 1.0, -1.0);
+Proc_ShakeCameraForTime(_Player, 2000);
+
+
+//END_REGION
+
+
+IF
+TextEventSet("GiveTeleport")
+THEN
+ItemTemplateAddTo("Scroll_Skill_Air_Teleportation_01_ab9a012e-4a8e-44ca-b000-c6fab31b519a",S_Player_Sebille_c8d55eaf-e4eb-466a-8f0d-6a9447b5b24c,10);
+EXITSECTION
+
+ENDEXITSECTION
+ParentTargetEdge "FortJoy"
