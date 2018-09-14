@@ -34,7 +34,7 @@ Transform(_Item, _Template, 0, 1, 0);
 CharacterUnequipItem(_Char, (ITEMGUID)_Item);
 TimerLaunch(_ItemTimer, 250);
 ```
-Adding a selected talent also involves transforming these equipped items. [(Full scripts here.)](https://github.com/spncrptrsn/spncrptrsn.github.io/tree/master/talentpack_scripts/story)
+Adding a selected talent also involves transforming these equipped items. [(Full scripts here.)](https://github.com/spncrptrsn/Data/tree/master/Mods/MoreTalents_54afc9c4-fb0d-3546-1465-4c6b3a0d4d1c/Story/RawFiles/Goals)
 
 ```
 IF

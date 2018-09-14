@@ -65,7 +65,7 @@ ACTIONS
 	RETURN(_RemoveList,_Result,1)
   ```
   
-Each time this event fires, it now calls a custom function that 'rolls' a d100 (plus caster bonuses) against a target's armor percentage (plus target bonuses), forcing the original debuff through the target's remaining armor if they fail their save. ([Full scripts here](https://github.com/spncrptrsn/spncrptrsn.github.io/tree/master/abst_scripts).)
+Each time this event fires, it now calls a custom function that 'rolls' a d100 (plus caster bonuses) against a target's armor percentage (plus target bonuses), forcing the original debuff through the target's remaining armor if they fail their save. ([Full scripts here](https://github.com/spncrptrsn/Data/tree/master/Mods/ResistStatus_31956ef2-f3cb-4426-84e7-77460309ae7d/Story/RawFiles/Goals).)
 
 ![Image](https://i.imgur.com/LREhPza.jpg)
 
@@ -78,6 +78,6 @@ When Larian enabled the modding of D:OS 2's localization files, this opened the 
 ![Image](https://i.imgur.com/0UVQHHi.jpg)
 ![Image](https://i.imgur.com/xn2iCVZ.jpg)
 
-A player who fails a flat 50% roll to polymorph an enemy into a chicken may come away resenting what RNG stole from them. A player who can emerge from Smoke (gaining advantage from Guerrilla), Backlash into position (gaining +5 from Sword Dancer), use Flurry (another +5 from Sword Dancer), and finish with a juiced-up chicken polymorph attempt (with advantage and a +10 bonus) is a player who was empowered to rig the numbers in their favor, who just might relish that succesful chickening all the more for it.
+A player who fails a flat 50% roll to polymorph an enemy into a chicken may come away resenting what RNG stole from them. A player who can emerge from Smoke (gaining advantage from Guerrilla), Backlash into position (gaining +5 from Parry Master), use Flurry (another +5 from Parry Master), and finish with a juiced-up chicken polymorph attempt (with advantage and a +10 bonus) is a player who was empowered to rig the numbers in their favor, who just might relish that succesful chickening all the more for it.
 
 ![Image](https://i.imgur.com/5u0llvb.jpg)
