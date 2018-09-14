@@ -24084,38 +24084,27 @@ Goal(54)
 		IF 
 		CharacterStatusApplied((CHARACTERGUID)_Char,"CHARMED",(CHARACTERGUID)_Source)
 		AND
-		GetFaction(_Source,(STRING)_Faction)
+		DB_IsPlayer(_Source)
 		THEN
-		DB_CH_CharmedSource(_Char,_Source,_Faction);
+		DB_CH_CharmedSource(_Char,_Source);
 		
 		IF
 		CharacterStatusRemoved((CHARACTERGUID)_Char,"CHARMED",_)
 		AND
-		DB_CH_CharmedSource(_Char,_Charmer,_Faction)
+		DB_CH_CharmedSource(_Char,_Charmer)
 		THEN
-		NOT DB_CH_CharmedSource(_Char,_Charmer,_Faction);
+		NOT DB_CH_CharmedSource(_Char,_Charmer);
 		
 		IF 
 		CharacterReceivedDamage((CHARACTERGUID)_Char,_,(CHARACTERGUID)_Source)
 		AND
-		HasActiveStatus(_Char,"CHARMED",1)
+		DB_CH_CharmedSource(_Char,_Charmer)
 		AND
-		DB_CH_CharmedSource(_Char,_Charmer,_Faction)
+		DB_CombatCharacters(_Char,_ID)
+		AND
+		NOT CombatGetActiveEntity(_ID,_Char)
 		AND
 		CharacterIsInPartyWith(_Charmer,_Source,1)
-		THEN
-		RemoveStatus(_Char,"CHARMED");
-		
-		IF 
-		CharacterReceivedDamage((CHARACTERGUID)_Char,_,(CHARACTERGUID)_Source)
-		AND
-		HasActiveStatus(_Char,"CHARMED",1)
-		AND
-		DB_CH_CharmedSource(_Char,_Charmer,_Faction)
-		AND
-		GetFaction(_Source,(STRING)_OtherFaction)
-		AND
-		_Faction == _OtherFaction
 		THEN
 		RemoveStatus(_Char,"CHARMED");
 		
