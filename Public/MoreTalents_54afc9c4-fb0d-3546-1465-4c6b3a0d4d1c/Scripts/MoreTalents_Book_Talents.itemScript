@@ -1,0 +1,14 @@
+INIT
+
+ITEM:__Me
+
+EVENTS
+
+EVENT ReadTablet
+VARS
+CHARACTER:_Char
+INT:_Score
+ON
+	OnUseItem(_Char,__Me)
+ACTIONS
+	DialogStart(_,"MT_TalentBook",_Char,__Me)
