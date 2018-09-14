@@ -1,0 +1,1425 @@
+INIT
+	ITEM:__Me
+	
+EVENTS	
+EVENT OnUse_ApplyBraindump
+VARS
+	CHARACTER:_Char
+ON
+	OnUseItem(_Char,__Me)
+ACTIONS
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_Adrenaline) 
+IsSkillActive(_Char,Shout_Adrenaline)
+THEN 
+CharacterRemoveSkill(_Char,Shout_Adrenaline) 
+CharacterAddToInventory(_Char,SKILLBOOK_Rogue_Adrenaline) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_BullHorns) 
+IsSkillActive(_Char,Shout_BullHorns)
+THEN 
+CharacterRemoveSkill(_Char,Shout_BullHorns) 
+CharacterAddToInventory(_Char,SKILLBOOK_Polymorph_BullHorns) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_InnerDemon) 
+IsSkillActive(_Char,Shout_InnerDemon)
+THEN 
+CharacterRemoveSkill(_Char,Shout_InnerDemon) 
+CharacterAddToInventory(_Char,SKILLBOOK_Summoning_InnerDemon) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Rain_Water) 
+IsSkillActive(_Char,Rain_Water)
+THEN 
+CharacterRemoveSkill(_Char,Rain_Water) 
+CharacterAddToInventory(_Char,SKILLBOOK_Water_Rain) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Teleportation_SwapGround) 
+IsSkillActive(_Char,Teleportation_SwapGround)
+THEN 
+CharacterRemoveSkill(_Char,Teleportation_SwapGround) 
+CharacterAddToInventory(_Char,SKILLBOOK_Polymorph_SwapGround) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Jump_PhoenixDive) 
+IsSkillActive(_Char,Jump_PhoenixDive)
+THEN 
+CharacterRemoveSkill(_Char,Jump_PhoenixDive) 
+CharacterAddToInventory(_Char,SKILLBOOK_Warrior_PhoenixDive) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Jump_TacticalRetreat) 
+IsSkillActive(_Char,Jump_TacticalRetreat)
+THEN 
+CharacterRemoveSkill(_Char,Jump_TacticalRetreat) 
+CharacterAddToInventory(_Char,SKILLBOOK_Ranger_TacticalRetreat) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Jump_CloakAndDagger) 
+IsSkillActive(_Char,Jump_CloakAndDagger)
+THEN 
+CharacterRemoveSkill(_Char,Jump_CloakAndDagger) 
+CharacterAddToInventory(_Char,SKILLBOOK_Rogue_CloakAndDagger) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Teleportation_Netherswap) 
+IsSkillActive(_Char,Teleportation_Netherswap)
+THEN 
+CharacterRemoveSkill(_Char,Teleportation_Netherswap) 
+CharacterAddToInventory(_Char,SKILLBOOK_Air_Netherswap) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_FlamingSkin) 
+IsSkillActive(_Char,Shout_FlamingSkin)
+THEN 
+CharacterRemoveSkill(_Char,Shout_FlamingSkin) 
+CharacterAddToInventory(_Char,SKILLBOOK_Fire_FlamingSkin) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_SparkingSwings) 
+IsSkillActive(_Char,Shout_SparkingSwings)
+THEN 
+CharacterRemoveSkill(_Char,Shout_SparkingSwings) 
+CharacterAddToInventory(_Char,SKILLBOOK_Fire_SparkingSwings) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_FlamingTongues) 
+IsSkillActive(_Char,Shout_FlamingTongues)
+THEN 
+CharacterRemoveSkill(_Char,Shout_FlamingTongues) 
+CharacterAddToInventory(_Char,SKILLBOOK_Fire_FlamingTongues) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_FireBrand) 
+IsSkillActive(_Char,Shout_FireBrand)
+THEN 
+CharacterRemoveSkill(_Char,Shout_FireBrand) 
+CharacterAddToInventory(_Char,SKILLBOOK_Fire_FireBrand) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_IceSkin) 
+IsSkillActive(_Char,Shout_IceSkin)
+THEN 
+CharacterRemoveSkill(_Char,Shout_IceSkin) 
+CharacterAddToInventory(_Char,SKILLBOOK_Water_IceSkin) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_HealingTears) 
+IsSkillActive(_Char,Shout_HealingTears)
+THEN 
+CharacterRemoveSkill(_Char,Shout_HealingTears) 
+CharacterAddToInventory(_Char,SKILLBOOK_Water_HealingTears) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_FrostAura) 
+IsSkillActive(_Char,Shout_FrostAura)
+THEN 
+CharacterRemoveSkill(_Char,Shout_FrostAura) 
+CharacterAddToInventory(_Char,SKILLBOOK_Water_FrostAura) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_VampiricHungerAura) 
+IsSkillActive(_Char,Shout_VampiricHungerAura)
+THEN 
+CharacterRemoveSkill(_Char,Shout_VampiricHungerAura) 
+CharacterAddToInventory(_Char,SKILLBOOK_Water_VampiricHungerAura) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_MassCleanseWounds) 
+IsSkillActive(_Char,Shout_MassCleanseWounds)
+THEN 
+CharacterRemoveSkill(_Char,Shout_MassCleanseWounds) 
+CharacterAddToInventory(_Char,SKILLBOOK_Water_MassCleanseWounds) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_Cryotherapy) 
+IsSkillActive(_Char,Shout_Cryotherapy)
+THEN 
+CharacterRemoveSkill(_Char,Shout_Cryotherapy) 
+CharacterAddToInventory(_Char,SKILLBOOK_Water_Cryotherapy) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_JellyfishSkin) 
+IsSkillActive(_Char,Shout_JellyfishSkin)
+THEN 
+CharacterRemoveSkill(_Char,Shout_JellyfishSkin) 
+CharacterAddToInventory(_Char,SKILLBOOK_Air_JellyfishSkin) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_FavourableWind) 
+IsSkillActive(_Char,Shout_FavourableWind)
+THEN 
+CharacterRemoveSkill(_Char,Shout_FavourableWind) 
+CharacterAddToInventory(_Char,SKILLBOOK_Air_FavourableWind) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_BreathingBubble) 
+IsSkillActive(_Char,Shout_BreathingBubble)
+THEN 
+CharacterRemoveSkill(_Char,Shout_BreathingBubble) 
+CharacterAddToInventory(_Char,SKILLBOOK_Air_BreathingBubble) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_MassBreathingBubbles) 
+IsSkillActive(_Char,Shout_MassBreathingBubbles)
+THEN 
+CharacterRemoveSkill(_Char,Shout_MassBreathingBubbles) 
+CharacterAddToInventory(_Char,SKILLBOOK_Air_MassBreathingBubbles) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_PoisonousSkin) 
+IsSkillActive(_Char,Shout_PoisonousSkin)
+THEN 
+CharacterRemoveSkill(_Char,Shout_PoisonousSkin) 
+CharacterAddToInventory(_Char,SKILLBOOK_Earth_PoisonousSkin) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_MendMetal) 
+IsSkillActive(_Char,Shout_MendMetal)
+THEN 
+CharacterRemoveSkill(_Char,Shout_MendMetal) 
+CharacterAddToInventory(_Char,SKILLBOOK_Earth_MendMetal) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_VenomCoating) 
+IsSkillActive(_Char,Shout_VenomCoating)
+THEN 
+CharacterRemoveSkill(_Char,Shout_VenomCoating) 
+CharacterAddToInventory(_Char,SKILLBOOK_Earth_VenomCoating) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_SiphonPoison) 
+IsSkillActive(_Char,Shout_SiphonPoison)
+THEN 
+CharacterRemoveSkill(_Char,Shout_SiphonPoison) 
+CharacterAddToInventory(_Char,SKILLBOOK_Earth_SiphonPoison) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_OilyCarapace) 
+IsSkillActive(_Char,Shout_OilyCarapace)
+THEN 
+CharacterRemoveSkill(_Char,Shout_OilyCarapace) 
+CharacterAddToInventory(_Char,SKILLBOOK_Earth_OilyCarapace) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_ReactiveArmor) 
+IsSkillActive(_Char,Shout_ReactiveArmor)
+THEN 
+CharacterRemoveSkill(_Char,Shout_ReactiveArmor) 
+CharacterAddToInventory(_Char,SKILLBOOK_Earth_ReactiveArmor) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_BoneCage) 
+IsSkillActive(_Char,Shout_BoneCage)
+THEN 
+CharacterRemoveSkill(_Char,Shout_BoneCage) 
+CharacterAddToInventory(_Char,SKILLBOOK_Necromancy_BoneCage) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_ChameleonSkin) 
+IsSkillActive(_Char,Shout_ChameleonSkin)
+THEN 
+CharacterRemoveSkill(_Char,Shout_ChameleonSkin) 
+CharacterAddToInventory(_Char,SKILLBOOK_Polymorph_ChameleonSkin) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_Wings) 
+IsSkillActive(_Char,Shout_Wings)
+THEN 
+CharacterRemoveSkill(_Char,Shout_Wings) 
+CharacterAddToInventory(_Char,SKILLBOOK_Polymorph_Wings) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_SpiderLegs) 
+IsSkillActive(_Char,Shout_SpiderLegs)
+THEN 
+CharacterRemoveSkill(_Char,Shout_SpiderLegs) 
+CharacterAddToInventory(_Char,SKILLBOOK_Polymorph_SpiderLegs) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Summon_FireSlug) 
+IsSkillActive(_Char,Summon_FireSlug)
+THEN 
+CharacterRemoveSkill(_Char,Summon_FireSlug) 
+CharacterAddToInventory(_Char,SKILLBOOK_Fire_FireSlug) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_FirstAid) 
+IsSkillActive(_Char,Target_FirstAid)
+THEN 
+CharacterRemoveSkill(_Char,Target_FirstAid) 
+CharacterAddToInventory(_Char,SKILLBOOK_Ranger_FirstAid) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_ElementalArrowheads) 
+IsSkillActive(_Char,Target_ElementalArrowheads)
+THEN 
+CharacterRemoveSkill(_Char,Target_ElementalArrowheads) 
+CharacterAddToInventory(_Char,SKILLBOOK_Ranger_ElementalArrowheads) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_Farsight) 
+IsSkillActive(_Char,Target_Farsight)
+THEN 
+CharacterRemoveSkill(_Char,Target_Farsight) 
+CharacterAddToInventory(_Char,SKILLBOOK_Ranger_Farsight) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_Haste) 
+IsSkillActive(_Char,Target_Haste)
+THEN 
+CharacterRemoveSkill(_Char,Target_Haste) 
+CharacterAddToInventory(_Char,SKILLBOOK_Fire_Haste) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_BurnMyEyes) 
+IsSkillActive(_Char,Target_BurnMyEyes)
+THEN 
+CharacterRemoveSkill(_Char,Target_BurnMyEyes) 
+CharacterAddToInventory(_Char,SKILLBOOK_Fire_BurnMyEyes) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_FireInfusion) 
+IsSkillActive(_Char,Target_FireInfusion)
+THEN 
+CharacterRemoveSkill(_Char,Target_FireInfusion) 
+CharacterAddToInventory(_Char,SKILLBOOK_Fire_FireInfusion) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_NecrofireInfusion) 
+IsSkillActive(_Char,Target_NecrofireInfusion)
+THEN 
+CharacterRemoveSkill(_Char,Target_NecrofireInfusion) 
+CharacterAddToInventory(_Char,SKILLBOOK_Fire_NecrofireInfusion) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_MasterOfSparks) 
+IsSkillActive(_Char,Target_MasterOfSparks)
+THEN 
+CharacterRemoveSkill(_Char,Target_MasterOfSparks) 
+CharacterAddToInventory(_Char,SKILLBOOK_Fire_MasterOfSparks) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_FrostyShell) 
+IsSkillActive(_Char,Target_FrostyShell)
+THEN 
+CharacterRemoveSkill(_Char,Target_FrostyShell) 
+CharacterAddToInventory(_Char,SKILLBOOK_Water_FrostyShell) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_Restoration) 
+IsSkillActive(_Char,Target_Restoration)
+THEN 
+CharacterRemoveSkill(_Char,Target_Restoration) 
+CharacterAddToInventory(_Char,SKILLBOOK_Water_Restoration) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_VampiricHunger) 
+IsSkillActive(_Char,Target_VampiricHunger)
+THEN 
+CharacterRemoveSkill(_Char,Target_VampiricHunger) 
+CharacterAddToInventory(_Char,SKILLBOOK_Water_VampiricHunger) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_WaterInfusion) 
+IsSkillActive(_Char,Target_WaterInfusion)
+THEN 
+CharacterRemoveSkill(_Char,Target_WaterInfusion) 
+CharacterAddToInventory(_Char,SKILLBOOK_Water_WaterInfusion) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_IceInfusion) 
+IsSkillActive(_Char,Target_IceInfusion)
+THEN 
+CharacterRemoveSkill(_Char,Target_IceInfusion) 
+CharacterAddToInventory(_Char,SKILLBOOK_Water_IceInfusion) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_Vaporize) 
+IsSkillActive(_Char,Target_Vaporize)
+THEN 
+CharacterRemoveSkill(_Char,Target_Vaporize) 
+CharacterAddToInventory(_Char,SKILLBOOK_Air_Vaporize) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_Windwalker) 
+IsSkillActive(_Char,Target_Windwalker)
+THEN 
+CharacterRemoveSkill(_Char,Target_Windwalker) 
+CharacterAddToInventory(_Char,SKILLBOOK_Air_Windwalker) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_ElectricInfusion) 
+IsSkillActive(_Char,Target_ElectricInfusion)
+THEN 
+CharacterRemoveSkill(_Char,Target_ElectricInfusion) 
+CharacterAddToInventory(_Char,SKILLBOOK_Air_ElectricInfusion) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_EvasiveManeuver) 
+IsSkillActive(_Char,Target_EvasiveManeuver)
+THEN 
+CharacterRemoveSkill(_Char,Target_EvasiveManeuver) 
+CharacterAddToInventory(_Char,SKILLBOOK_Air_EvasiveManeuver) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_Apportation) 
+IsSkillActive(_Char,Target_Apportation)
+THEN 
+CharacterRemoveSkill(_Char,Target_Apportation) 
+CharacterAddToInventory(_Char,SKILLBOOK_Air_Apportation) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_BlessedSmokeCloud) 
+IsSkillActive(_Char,Target_BlessedSmokeCloud)
+THEN 
+CharacterRemoveSkill(_Char,Target_BlessedSmokeCloud) 
+CharacterAddToInventory(_Char,SKILLBOOK_Air_BlessedSmokeCloud) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_CursedElectricInfusion) 
+IsSkillActive(_Char,Target_CursedElectricInfusion)
+THEN 
+CharacterRemoveSkill(_Char,Target_CursedElectricInfusion) 
+CharacterAddToInventory(_Char,SKILLBOOK_Air_CursedElectricInfusion) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_Fortify) 
+IsSkillActive(_Char,Target_Fortify)
+THEN 
+CharacterRemoveSkill(_Char,Target_Fortify) 
+CharacterAddToInventory(_Char,SKILLBOOK_Earth_Fortify) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_Condense) 
+IsSkillActive(_Char,Target_Condense)
+THEN 
+CharacterRemoveSkill(_Char,Target_Condense) 
+CharacterAddToInventory(_Char,SKILLBOOK_Earth_Condense) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_PoisonInfusion) 
+IsSkillActive(_Char,Target_PoisonInfusion)
+THEN 
+CharacterRemoveSkill(_Char,Target_PoisonInfusion) 
+CharacterAddToInventory(_Char,SKILLBOOK_Earth_PoisonInfusion) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_AcidInfusion) 
+IsSkillActive(_Char,Target_AcidInfusion)
+THEN 
+CharacterRemoveSkill(_Char,Target_AcidInfusion) 
+CharacterAddToInventory(_Char,SKILLBOOK_Earth_AcidInfusion) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_ShacklesOfPain) 
+IsSkillActive(_Char,Target_ShacklesOfPain) 
+THEN 
+CharacterRemoveSkill(_Char,Target_ShacklesOfPain) 
+CharacterAddToInventory(_Char,SKILLBOOK_Necromancy_ShacklesOfPain) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_RangedInfusion) 
+IsSkillActive(_Char,Target_RangedInfusion)
+THEN 
+CharacterRemoveSkill(_Char,Target_RangedInfusion) 
+CharacterAddToInventory(_Char,SKILLBOOK_Summoning_RangedInfusion) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_PowerInfusion) 
+IsSkillActive(_Char,Target_PowerInfusion)
+THEN 
+CharacterRemoveSkill(_Char,Target_PowerInfusion) 
+CharacterAddToInventory(_Char,SKILLBOOK_Summoning_PowerInfusion) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_Supercharge) 
+IsSkillActive(_Char,Target_Supercharge)
+THEN 
+CharacterRemoveSkill(_Char,Target_Supercharge) 
+CharacterAddToInventory(_Char,SKILLBOOK_Summoning_Supercharge) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_ShadowInfusion) 
+IsSkillActive(_Char,Target_ShadowInfusion)
+THEN 
+CharacterRemoveSkill(_Char,Target_ShadowInfusion) 
+CharacterAddToInventory(_Char,SKILLBOOK_Summoning_ShadowInfusion) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_SoulMate) 
+IsSkillActive(_Char,Target_SoulMate)
+THEN 
+CharacterRemoveSkill(_Char,Target_SoulMate) 
+CharacterAddToInventory(_Char,SKILLBOOK_Summoning_SoulMate) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_Cannibalize) 
+IsSkillActive(_Char,Target_Cannibalize)
+THEN 
+CharacterRemoveSkill(_Char,Target_Cannibalize) 
+CharacterAddToInventory(_Char,SKILLBOOK_Summoning_Cannibalize) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_WarpInfusion) 
+IsSkillActive(_Char,Target_WarpInfusion)
+THEN 
+CharacterRemoveSkill(_Char,Target_WarpInfusion) 
+CharacterAddToInventory(_Char,SKILLBOOK_Summoning_WarpInfusion) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_DemonicBargain) 
+IsSkillActive(_Char,Target_DemonicBargain)
+THEN 
+CharacterRemoveSkill(_Char,Target_DemonicBargain) 
+CharacterAddToInventory(_Char,SKILLBOOK_Polymorph_DemonicBargain) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Teleportation_FreeFall) 
+IsSkillActive(_Char,Teleportation_FreeFall)
+THEN 
+CharacterRemoveSkill(_Char,Teleportation_FreeFall) 
+CharacterAddToInventory(_Char,SKILLBOOK_Air_Teleportation_FreeFall) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_ThickOfTheFight) 
+IsSkillActive(_Char,Shout_ThickOfTheFight)
+THEN 
+CharacterRemoveSkill(_Char,Shout_ThickOfTheFight) 
+CharacterAddToInventory(_Char,SKILLBOOK_Warrior_ThickOfTheFight) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_GuardianAngel) 
+IsSkillActive(_Char,Shout_GuardianAngel)
+THEN 
+CharacterRemoveSkill(_Char,Shout_GuardianAngel) 
+CharacterAddToInventory(_Char,SKILLBOOK_Warrior_GuardianAngel) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_DeflectiveBarrier) 
+IsSkillActive(_Char,Shout_DeflectiveBarrier)
+THEN 
+CharacterRemoveSkill(_Char,Shout_DeflectiveBarrier) 
+CharacterAddToInventory(_Char,SKILLBOOK_Warrior_DeflectiveBarrier) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_MassCryotherapy) 
+IsSkillActive(_Char,Shout_MassCryotherapy)
+THEN 
+CharacterRemoveSkill(_Char,Shout_MassCryotherapy) 
+CharacterAddToInventory(_Char,SKILLBOOK_Water_MassCryotherapy) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_SmokeCover) 
+IsSkillActive(_Char,Shout_SmokeCover)
+THEN 
+CharacterRemoveSkill(_Char,Shout_SmokeCover) 
+CharacterAddToInventory(_Char,SKILLBOOK_Air_SmokeCover) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_EvasiveAura) 
+IsSkillActive(_Char,Shout_EvasiveAura)
+THEN 
+CharacterRemoveSkill(_Char,Shout_EvasiveAura) 
+CharacterAddToInventory(_Char,SKILLBOOK_Air_EvasiveAura) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_MassOilyCarapace) 
+IsSkillActive(_Char,Shout_MassOilyCarapace)
+THEN 
+CharacterRemoveSkill(_Char,Shout_MassOilyCarapace) 
+CharacterAddToInventory(_Char,SKILLBOOK_Earth_MassOilyCarapace) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_VenomousAura) 
+IsSkillActive(_Char,Shout_VenomousAura)
+THEN 
+CharacterRemoveSkill(_Char,Shout_VenomousAura) 
+CharacterAddToInventory(_Char,SKILLBOOK_Earth_VenomousAura) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_NecromancerTotems) 
+IsSkillActive(_Char,Shout_NecromancerTotems)
+THEN 
+CharacterRemoveSkill(_Char,Shout_NecromancerTotems) 
+CharacterAddToInventory(_Char,SKILLBOOK_Necromancy_NecromancerTotems) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_SteelSkin) 
+IsSkillActive(_Char,Shout_SteelSkin)
+THEN 
+CharacterRemoveSkill(_Char,Shout_SteelSkin) 
+CharacterAddToInventory(_Char,SKILLBOOK_Polymorph_SteelSkin) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_ShedSkin) 
+IsSkillActive(_Char,Shout_ShedSkin)
+THEN 
+CharacterRemoveSkill(_Char,Shout_ShedSkin) 
+CharacterAddToInventory(_Char,SKILLBOOK_Polymorph_ShedSkin) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_MedusaHead) 
+IsSkillActive(_Char,Shout_MedusaHead)
+THEN 
+CharacterRemoveSkill(_Char,Shout_MedusaHead) 
+CharacterAddToInventory(_Char,SKILLBOOK_Polymorph_MedusaHead) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_Apotheosis) 
+IsSkillActive(_Char,Shout_Apotheosis)
+THEN 
+CharacterRemoveSkill(_Char,Shout_Apotheosis) 
+CharacterAddToInventory(_Char,SKILLBOOK_Polymorph_Apotheosis) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Projectile_ChainHeal) 
+IsSkillActive(_Char,Projectile_ChainHeal)
+THEN 
+CharacterRemoveSkill(_Char,Projectile_ChainHeal) 
+CharacterAddToInventory(_Char,SKILLBOOK_Water_ChainHeal) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Tornado_Air) 
+IsSkillActive(_Char,Tornado_Air)
+THEN 
+CharacterRemoveSkill(_Char,Tornado_Air) 
+CharacterAddToInventory(_Char,SKILLBOOK_Air_Tornado) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Wall_LivingWall) 
+IsSkillActive(_Char,Wall_LivingWall)
+THEN 
+CharacterRemoveSkill(_Char,Wall_LivingWall) 
+CharacterAddToInventory(_Char,SKILLBOOK_Earth_LivingWall) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Cone_SteamLance) 
+IsSkillActive(_Char,Cone_SteamLance)
+THEN 
+CharacterRemoveSkill(_Char,Cone_SteamLance) 
+CharacterAddToInventory(_Char,SKILLBOOK_Water_SteamLance) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Projectile_LaunchOilBlob) 
+IsSkillActive(_Char,Projectile_LaunchOilBlob)
+THEN 
+CharacterRemoveSkill(_Char,Projectile_LaunchOilBlob) 
+CharacterAddToInventory(_Char,SKILLBOOK_Polymorph_LaunchOilBlob) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Summon_TotemFromSurface) 
+IsSkillActive(_Char,Summon_TotemFromSurface)
+THEN 
+CharacterRemoveSkill(_Char,Summon_TotemFromSurface) 
+CharacterAddToInventory(_Char,SKILLBOOK_Summoning_TotemFromSurface) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Summon_Incarnate) 
+IsSkillActive(_Char,Summon_Incarnate)
+THEN 
+CharacterRemoveSkill(_Char,Summon_Incarnate) 
+CharacterAddToInventory(_Char,SKILLBOOK_Summoning_Incarnate) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Summon_PlanarGateway) 
+IsSkillActive(_Char,Summon_PlanarGateway)
+THEN 
+CharacterRemoveSkill(_Char,Summon_PlanarGateway) 
+CharacterAddToInventory(_Char,SKILLBOOK_Summoning_PlanarGateway) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_Enrage) 
+IsSkillActive(_Char,Target_Enrage)
+THEN 
+CharacterRemoveSkill(_Char,Target_Enrage) 
+CharacterAddToInventory(_Char,SKILLBOOK_Warrior_Enrage) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_CleanseWounds) 
+IsSkillActive(_Char,Target_CleanseWounds)
+THEN 
+CharacterRemoveSkill(_Char,Target_CleanseWounds) 
+CharacterAddToInventory(_Char,SKILLBOOK_Water_CleanseWounds) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_CryogenicStasis) 
+IsSkillActive(_Char,Target_CryogenicStasis)
+THEN 
+CharacterRemoveSkill(_Char,Target_CryogenicStasis) 
+CharacterAddToInventory(_Char,SKILLBOOK_Water_CryogenicStasis) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_DeathWish) 
+IsSkillActive(_Char,Target_DeathWish)
+THEN 
+CharacterRemoveSkill(_Char,Target_DeathWish) 
+CharacterAddToInventory(_Char,SKILLBOOK_Necromancy_DeathWish) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_Harmony) 
+IsSkillActive(_Char,Target_Harmony)
+THEN 
+CharacterRemoveSkill(_Char,Target_Harmony) 
+CharacterAddToInventory(_Char,SKILLBOOK_Summoning_Harmony) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Summon_BonePile) 
+IsSkillActive(_Char,Summon_BonePile)
+THEN 
+CharacterRemoveSkill(_Char,Summon_BonePile) 
+CharacterAddToInventory(_Char,SKILLBOOK_Necromancy_BonePile) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Summon_ArtilleryPlant) 
+IsSkillActive(_Char,Summon_ArtilleryPlant)
+THEN 
+CharacterRemoveSkill(_Char,Summon_ArtilleryPlant) 
+CharacterAddToInventory(_Char,SKILLBOOK_Earth_ArtilleryPlant) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Teleportation_LastRites) 
+IsSkillActive(_Char,Teleportation_LastRites)
+THEN 
+CharacterRemoveSkill(_Char,Teleportation_LastRites) 
+CharacterAddToInventory(_Char,SKILLBOOK_Necromancy_LastRites) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_CloseTheDoor) 
+IsSkillActive(_Char,Shout_CloseTheDoor)
+THEN 
+CharacterRemoveSkill(_Char,Shout_CloseTheDoor) 
+CharacterAddToInventory(_Char,SKILLBOOK_Summoning_CloseTheDoor) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_ArcaneStitch) 
+IsSkillActive(_Char,Target_ArcaneStitch)
+THEN 
+CharacterRemoveSkill(_Char,Target_ArcaneStitch) 
+CharacterAddToInventory(_Char,SKILLBOOK_Water_ArcaneStitch) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_DeathsDoor) 
+IsSkillActive(_Char,Target_DeathsDoor)
+THEN 
+CharacterRemoveSkill(_Char,Target_DeathsDoor) 
+CharacterAddToInventory(_Char,SKILLBOOK_Necromancy_DeathsDoor) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,MultiStrike_Vault) 
+IsSkillActive(_Char,MultiStrike_Vault)
+THEN 
+CharacterRemoveSkill(_Char,MultiStrike_Vault) 
+CharacterAddToInventory(_Char,SKILLBOOK_Rogue_Vault) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_Taunt) 
+IsSkillActive(_Char,Shout_Taunt)
+THEN 
+CharacterRemoveSkill(_Char,Shout_Taunt) 
+CharacterAddToInventory(_Char,SKILLBOOK_Warrior_Taunt) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_CorpseExplosion) 
+IsSkillActive(_Char,Target_CorpseExplosion)
+THEN 
+CharacterRemoveSkill(_Char,Target_CorpseExplosion) 
+CharacterAddToInventory(_Char,SKILLBOOK_Fire_CorpseExplosion) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_Ignition) 
+IsSkillActive(_Char,Shout_Ignition)
+THEN 
+CharacterRemoveSkill(_Char,Shout_Ignition) 
+CharacterAddToInventory(_Char,SKILLBOOK_Fire_Ignition) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_GlobalCooling) 
+IsSkillActive(_Char,Shout_GlobalCooling)
+THEN 
+CharacterRemoveSkill(_Char,Shout_GlobalCooling) 
+CharacterAddToInventory(_Char,SKILLBOOK_Water_GlobalCooling) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_IceBreaker) 
+IsSkillActive(_Char,Shout_IceBreaker)
+THEN 
+CharacterRemoveSkill(_Char,Shout_IceBreaker) 
+CharacterAddToInventory(_Char,SKILLBOOK_Water_IceBreaker) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_Contamination) 
+IsSkillActive(_Char,Shout_Contamination)
+THEN 
+CharacterRemoveSkill(_Char,Shout_Contamination) 
+CharacterAddToInventory(_Char,SKILLBOOK_Earth_Contamination) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_ReactionShot) 
+IsSkillActive(_Char,Target_ReactionShot)
+THEN 
+CharacterRemoveSkill(_Char,Target_ReactionShot) 
+CharacterAddToInventory(_Char,SKILLBOOK_Ranger_ReactionShot) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_Fireblood) 
+IsSkillActive(_Char,Target_Fireblood)
+THEN 
+CharacterRemoveSkill(_Char,Target_Fireblood) 
+CharacterAddToInventory(_Char,SKILLBOOK_Fire_Fireblood) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_Sabotage) 
+IsSkillActive(_Char,Target_Sabotage)
+THEN 
+CharacterRemoveSkill(_Char,Target_Sabotage) 
+CharacterAddToInventory(_Char,SKILLBOOK_Fire_Sabotage) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_MassCorpseExplosion) 
+IsSkillActive(_Char,Shout_MassCorpseExplosion)
+THEN 
+CharacterRemoveSkill(_Char,Shout_MassCorpseExplosion) 
+CharacterAddToInventory(_Char,SKILLBOOK_Fire_MassCorpseExplosion) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_VacuumTouch) 
+IsSkillActive(_Char,Target_VacuumTouch)
+THEN 
+CharacterRemoveSkill(_Char,Target_VacuumTouch) 
+CharacterAddToInventory(_Char,SKILLBOOK_Air_VacuumTouch) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_PressureSpike) 
+IsSkillActive(_Char,Target_PressureSpike)
+THEN 
+CharacterRemoveSkill(_Char,Target_PressureSpike) 
+CharacterAddToInventory(_Char,SKILLBOOK_Air_PressureSpike) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_CorrosiveTouch) 
+IsSkillActive(_Char,Target_CorrosiveTouch)
+THEN 
+CharacterRemoveSkill(_Char,Target_CorrosiveTouch) 
+CharacterAddToInventory(_Char,SKILLBOOK_Earth_CorrosiveTouch) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_BloodBubble) 
+IsSkillActive(_Char,Target_BloodBubble)
+THEN 
+CharacterRemoveSkill(_Char,Target_BloodBubble) 
+CharacterAddToInventory(_Char,SKILLBOOK_Necromancy_BloodBubble) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_BloatedCorpse) 
+IsSkillActive(_Char,Target_BloatedCorpse)
+THEN 
+CharacterRemoveSkill(_Char,Target_BloatedCorpse) 
+CharacterAddToInventory(_Char,SKILLBOOK_Necromancy_BloatedCorpse) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_BlackShroud) 
+IsSkillActive(_Char,Target_BlackShroud)
+THEN 
+CharacterRemoveSkill(_Char,Target_BlackShroud) 
+CharacterAddToInventory(_Char,SKILLBOOK_Necromancy_BlackShroud) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Projectile_Mark) 
+IsSkillActive(_Char,Projectile_Mark)
+THEN 
+CharacterRemoveSkill(_Char,Projectile_Mark) 
+CharacterAddToInventory(_Char,SKILLBOOK_Ranger_Mark) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Projectile_Chloroform) 
+IsSkillActive(_Char,Projectile_Chloroform)
+THEN 
+CharacterRemoveSkill(_Char,Projectile_Chloroform) 
+CharacterAddToInventory(_Char,SKILLBOOK_Rogue_Choloroform) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Projectile_LaunchExplosiveTrap) 
+IsSkillActive(_Char,Projectile_LaunchExplosiveTrap)
+THEN 
+CharacterRemoveSkill(_Char,Projectile_LaunchExplosiveTrap) 
+CharacterAddToInventory(_Char,SKILLBOOK_Fire_LaunchExplosiveTrap) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Rush_BatteringRam) 
+IsSkillActive(_Char,Rush_BatteringRam)
+THEN 
+CharacterRemoveSkill(_Char,Rush_BatteringRam) 
+CharacterAddToInventory(_Char,SKILLBOOK_Warrior_BatteringRam) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,MultiStrike_BlinkStrike) 
+IsSkillActive(_Char,MultiStrike_BlinkStrike)
+THEN 
+CharacterRemoveSkill(_Char,MultiStrike_BlinkStrike) 
+CharacterAddToInventory(_Char,SKILLBOOK_Warrior_BlinkStrike) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_Whirlwind) 
+IsSkillActive(_Char,Shout_Whirlwind)
+THEN 
+CharacterRemoveSkill(_Char,Shout_Whirlwind) 
+CharacterAddToInventory(_Char,SKILLBOOK_Warrior_Whirlwind) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_BlindingRadiance) 
+IsSkillActive(_Char,Shout_BlindingRadiance)
+THEN 
+CharacterRemoveSkill(_Char,Shout_BlindingRadiance) 
+CharacterAddToInventory(_Char,SKILLBOOK_Air_BlindingRadiance) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_ElectricFence) 
+IsSkillActive(_Char,Shout_ElectricFence)
+THEN 
+CharacterRemoveSkill(_Char,Shout_ElectricFence) 
+CharacterAddToInventory(_Char,SKILLBOOK_Air_ElectricFence) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_VacuumAura) 
+IsSkillActive(_Char,Shout_VacuumAura)
+THEN 
+CharacterRemoveSkill(_Char,Shout_VacuumAura) 
+CharacterAddToInventory(_Char,SKILLBOOK_Air_VacuumAura) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_PoisonWave) 
+IsSkillActive(_Char,Shout_PoisonWave)
+THEN 
+CharacterRemoveSkill(_Char,Shout_PoisonWave) 
+CharacterAddToInventory(_Char,SKILLBOOK_Earth_PoisonWave) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Cone_GroundSmash) 
+IsSkillActive(_Char,Cone_GroundSmash)
+THEN 
+CharacterRemoveSkill(_Char,Cone_GroundSmash) 
+CharacterAddToInventory(_Char,SKILLBOOK_Warrior_GroundSmash) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Cone_CorrosiveSpray) 
+IsSkillActive(_Char,Cone_CorrosiveSpray)
+THEN 
+CharacterRemoveSkill(_Char,Cone_CorrosiveSpray) 
+CharacterAddToInventory(_Char,SKILLBOOK_Earth_CorrosiveSpray) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Cone_SilencingStare) 
+IsSkillActive(_Char,Cone_SilencingStare)
+THEN 
+CharacterRemoveSkill(_Char,Cone_SilencingStare) 
+CharacterAddToInventory(_Char,SKILLBOOK_Necromancy_SilencingStare) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_CripplingBlow) 
+IsSkillActive(_Char,Target_CripplingBlow)
+THEN 
+CharacterRemoveSkill(_Char,Target_CripplingBlow) 
+CharacterAddToInventory(_Char,SKILLBOOK_Warrior_CripplingBlow) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_Overpower) 
+IsSkillActive(_Char,Target_Overpower)
+THEN 
+CharacterRemoveSkill(_Char,Target_Overpower) 
+CharacterAddToInventory(_Char,SKILLBOOK_Warrior_Overpower) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_SerratedEdge) 
+IsSkillActive(_Char,Target_SerratedEdge)
+THEN 
+CharacterRemoveSkill(_Char,Target_SerratedEdge) 
+CharacterAddToInventory(_Char,SKILLBOOK_Rogue_SerratedEdge) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_KneeBreaker) 
+IsSkillActive(_Char,Target_KneeBreaker)
+THEN 
+CharacterRemoveSkill(_Char,Target_KneeBreaker) 
+CharacterAddToInventory(_Char,SKILLBOOK_Rogue_KneeBreaker) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_SleepingArms) 
+IsSkillActive(_Char,Target_SleepingArms)
+THEN 
+CharacterRemoveSkill(_Char,Target_SleepingArms) 
+CharacterAddToInventory(_Char,SKILLBOOK_Rogue_SleepingArms) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_Fatality) 
+IsSkillActive(_Char,Target_Fatality)
+THEN 
+CharacterRemoveSkill(_Char,Target_Fatality) 
+CharacterAddToInventory(_Char,SKILLBOOK_Rogue_Fatality) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_ShockingTouch) 
+IsSkillActive(_Char,Target_ShockingTouch)
+THEN 
+CharacterRemoveSkill(_Char,Target_ShockingTouch) 
+CharacterAddToInventory(_Char,SKILLBOOK_Air_ShockingTouch) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_DecayingTouch) 
+IsSkillActive(_Char,Target_DecayingTouch)
+THEN 
+CharacterRemoveSkill(_Char,Target_DecayingTouch) 
+CharacterAddToInventory(_Char,SKILLBOOK_Necromancy_DecayingTouch) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_ChickenTouch) 
+IsSkillActive(_Char,Target_ChickenTouch)
+THEN 
+CharacterRemoveSkill(_Char,Target_ChickenTouch) 
+CharacterAddToInventory(_Char,SKILLBOOK_Polymorph_ChickenTouch) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_Challenge) 
+IsSkillActive(_Char,Target_Challenge)
+THEN 
+CharacterRemoveSkill(_Char,Target_Challenge) 
+CharacterAddToInventory(_Char,SKILLBOOK_Warrior_Challenge) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_SpontaneousCombustion) 
+IsSkillActive(_Char,Target_SpontaneousCombustion)
+THEN 
+CharacterRemoveSkill(_Char,Target_SpontaneousCombustion) 
+CharacterAddToInventory(_Char,SKILLBOOK_Fire_SpontaneousCombustion) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_MassSabotage) 
+IsSkillActive(_Char,Target_MassSabotage)
+THEN 
+CharacterRemoveSkill(_Char,Target_MassSabotage) 
+CharacterAddToInventory(_Char,SKILLBOOK_Fire_MassSabotage) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_FlamingCrescendo) 
+IsSkillActive(_Char,Target_FlamingCrescendo)
+THEN 
+CharacterRemoveSkill(_Char,Target_FlamingCrescendo) 
+CharacterAddToInventory(_Char,SKILLBOOK_Fire_FlamingCrescendo) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_WinterBlast) 
+IsSkillActive(_Char,Target_WinterBlast)
+THEN 
+CharacterRemoveSkill(_Char,Target_WinterBlast) 
+CharacterAddToInventory(_Char,SKILLBOOK_Water_WinterBlast) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_RockSpikes) 
+IsSkillActive(_Char,Target_RockSpikes)
+THEN 
+CharacterRemoveSkill(_Char,Target_RockSpikes) 
+CharacterAddToInventory(_Char,SKILLBOOK_Earth_RockSpikes) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_MosquitoSwarm) 
+IsSkillActive(_Char,Target_MosquitoSwarm)
+THEN 
+CharacterRemoveSkill(_Char,Target_MosquitoSwarm) 
+CharacterAddToInventory(_Char,SKILLBOOK_Necromancy_MosquitoSwarm) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_GraspOfTheStarved) 
+IsSkillActive(_Char,Target_GraspOfTheStarved)
+THEN 
+CharacterRemoveSkill(_Char,Target_GraspOfTheStarved) 
+CharacterAddToInventory(_Char,SKILLBOOK_Necromancy_GraspOfTheStarved) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_TentacleLash) 
+IsSkillActive(_Char,Target_TentacleLash)
+THEN 
+CharacterRemoveSkill(_Char,Target_TentacleLash) 
+CharacterAddToInventory(_Char,SKILLBOOK_Polymorph_TentacleLash) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Projectile_ThrowDust) 
+IsSkillActive(_Char,Projectile_ThrowDust)
+THEN 
+CharacterRemoveSkill(_Char,Projectile_ThrowDust) 
+CharacterAddToInventory(_Char,SKILLBOOK_Earth_ThrowDust) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Projectile_BouncingShield) 
+IsSkillActive(_Char,Projectile_BouncingShield)
+THEN 
+CharacterRemoveSkill(_Char,Projectile_BouncingShield) 
+CharacterAddToInventory(_Char,SKILLBOOK_Warrior_BouncingShield) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Projectile_Ricochet) 
+IsSkillActive(_Char,Projectile_Ricochet)
+THEN 
+CharacterRemoveSkill(_Char,Projectile_Ricochet) 
+CharacterAddToInventory(_Char,SKILLBOOK_Ranger_Ricochet) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Projectile_SkyShot) 
+IsSkillActive(_Char,Projectile_SkyShot)
+THEN 
+CharacterRemoveSkill(_Char,Projectile_SkyShot) 
+CharacterAddToInventory(_Char,SKILLBOOK_Ranger_SkyShot) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Projectile_PiercingShot) 
+IsSkillActive(_Char,Projectile_PiercingShot)
+THEN 
+CharacterRemoveSkill(_Char,Projectile_PiercingShot) 
+CharacterAddToInventory(_Char,SKILLBOOK_Ranger_PiercingShot) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Projectile_BallisticShot) 
+IsSkillActive(_Char,Projectile_BallisticShot)
+THEN 
+CharacterRemoveSkill(_Char,Projectile_BallisticShot) 
+CharacterAddToInventory(_Char,SKILLBOOK_Ranger_BallisticShot) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Projectile_ThrowingKnife) 
+IsSkillActive(_Char,Projectile_ThrowingKnife)
+THEN 
+CharacterRemoveSkill(_Char,Projectile_ThrowingKnife) 
+CharacterAddToInventory(_Char,SKILLBOOK_Rogue_ThrowingKnife) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Projectile_LaunchBomber) 
+IsSkillActive(_Char,Projectile_LaunchBomber)
+THEN 
+CharacterRemoveSkill(_Char,Projectile_LaunchBomber) 
+CharacterAddToInventory(_Char,SKILLBOOK_Rogue_LaunchBomber) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Projectile_FlamingDaggers) 
+IsSkillActive(_Char,Projectile_FlamingDaggers)
+THEN 
+CharacterRemoveSkill(_Char,Projectile_FlamingDaggers) 
+CharacterAddToInventory(_Char,SKILLBOOK_Fire_FlamingDaggers) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Projectile_Fireball) 
+IsSkillActive(_Char,Projectile_Fireball)
+THEN 
+CharacterRemoveSkill(_Char,Projectile_Fireball) 
+CharacterAddToInventory(_Char,SKILLBOOK_Fire_Fireball) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Projectile_LightningBolt) 
+IsSkillActive(_Char,Projectile_LightningBolt)
+THEN 
+CharacterRemoveSkill(_Char,Projectile_LightningBolt) 
+CharacterAddToInventory(_Char,SKILLBOOK_Air_LightningBolt) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Projectile_PyroclasticRock) 
+IsSkillActive(_Char,Projectile_PyroclasticRock)
+THEN 
+CharacterRemoveSkill(_Char,Projectile_PyroclasticRock) 
+CharacterAddToInventory(_Char,SKILLBOOK_Earth_PyroclasticRock) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Projectile_PoisonDartStart) 
+IsSkillActive(_Char,Projectile_PoisonDartStart)
+THEN 
+CharacterRemoveSkill(_Char,Projectile_PoisonDartStart) 
+CharacterAddToInventory(_Char,SKILLBOOK_Earth_PoisonDart) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Projectile_DimensionalBolt) 
+IsSkillActive(_Char,Projectile_DimensionalBolt)
+THEN 
+CharacterRemoveSkill(_Char,Projectile_DimensionalBolt) 
+CharacterAddToInventory(_Char,SKILLBOOK_Summoning_DimensionalBolt) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Rain_Blood) 
+IsSkillActive(_Char,Rain_Blood)
+THEN 
+CharacterRemoveSkill(_Char,Rain_Blood) 
+CharacterAddToInventory(_Char,SKILLBOOK_Necromancy_RainOfBlood) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Shout_Supernova) 
+IsSkillActive(_Char,Shout_Supernova)
+THEN 
+CharacterRemoveSkill(_Char,Shout_Supernova) 
+CharacterAddToInventory(_Char,SKILLBOOK_Fire_Supernova) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Projectile_Superconductor) 
+IsSkillActive(_Char,Projectile_Superconductor)
+THEN 
+CharacterRemoveSkill(_Char,Projectile_Superconductor) 
+CharacterAddToInventory(_Char,SKILLBOOK_Air_Superconductor) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Quake_Earthquake) 
+IsSkillActive(_Char,Quake_Earthquake)
+THEN 
+CharacterRemoveSkill(_Char,Quake_Earthquake) 
+CharacterAddToInventory(_Char,SKILLBOOK_Earth_Earthquake) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_Flurry) 
+IsSkillActive(_Char,Target_Flurry)
+THEN 
+CharacterRemoveSkill(_Char,Target_Flurry) 
+CharacterAddToInventory(_Char,SKILLBOOK_Warrior_Flurry) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_CorruptedBlade) 
+IsSkillActive(_Char,Target_CorruptedBlade)
+THEN 
+CharacterRemoveSkill(_Char,Target_CorruptedBlade) 
+CharacterAddToInventory(_Char,SKILLBOOK_Rogue_CorruptedBlade) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_GagOrder) 
+IsSkillActive(_Char,Target_GagOrder)
+THEN 
+CharacterRemoveSkill(_Char,Target_GagOrder) 
+CharacterAddToInventory(_Char,SKILLBOOK_Rogue_GagOrder) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_DaggersDrawn) 
+IsSkillActive(_Char,Target_DaggersDrawn)
+THEN 
+CharacterRemoveSkill(_Char,Target_DaggersDrawn) 
+CharacterAddToInventory(_Char,SKILLBOOK_Rogue_DaggersDrawn) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_TerrifyingCruelty) 
+IsSkillActive(_Char,Target_TerrifyingCruelty)
+THEN 
+CharacterRemoveSkill(_Char,Target_TerrifyingCruelty) 
+CharacterAddToInventory(_Char,SKILLBOOK_Rogue_TerrifyingCruelty) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_FireWhip) 
+IsSkillActive(_Char,Target_FireWhip)
+THEN 
+CharacterRemoveSkill(_Char,Target_FireWhip) 
+CharacterAddToInventory(_Char,SKILLBOOK_Fire_FireWhip) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_WormTremor) 
+IsSkillActive(_Char,Target_WormTremor)
+THEN 
+CharacterRemoveSkill(_Char,Target_WormTremor) 
+CharacterAddToInventory(_Char,SKILLBOOK_Earth_WormTremor) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_Infect) 
+IsSkillActive(_Char,Target_Infect)
+THEN 
+CharacterRemoveSkill(_Char,Target_Infect) 
+CharacterAddToInventory(_Char,SKILLBOOK_Necromancy_Infect) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_Charm) 
+IsSkillActive(_Char,Target_Charm)
+THEN 
+CharacterRemoveSkill(_Char,Target_Charm) 
+CharacterAddToInventory(_Char,SKILLBOOK_Summoning_Charm) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_StripResistance) 
+IsSkillActive(_Char,Target_StripResistance)
+THEN 
+CharacterRemoveSkill(_Char,Target_StripResistance) 
+CharacterAddToInventory(_Char,SKILLBOOK_Polymorph_StripResistance) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_Equalize) 
+IsSkillActive(_Char,Target_Equalize)
+THEN 
+CharacterRemoveSkill(_Char,Target_Equalize) 
+CharacterAddToInventory(_Char,SKILLBOOK_Polymorph_Equalize) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Projectile_ArrowSpray) 
+IsSkillActive(_Char,Projectile_ArrowSpray)
+THEN 
+CharacterRemoveSkill(_Char,Projectile_ArrowSpray) 
+CharacterAddToInventory(_Char,SKILLBOOK_Ranger_ArrowSpray) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Projectile_FanOfKnives) 
+IsSkillActive(_Char,Projectile_FanOfKnives)
+THEN 
+CharacterRemoveSkill(_Char,Projectile_FanOfKnives) 
+CharacterAddToInventory(_Char,SKILLBOOK_Rogue_FanOfKnives) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Projectile_DustBlast) 
+IsSkillActive(_Char,Projectile_DustBlast)
+THEN 
+CharacterRemoveSkill(_Char,Projectile_DustBlast) 
+CharacterAddToInventory(_Char,SKILLBOOK_Earth_DustBlast) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Projectile_Snipe) 
+IsSkillActive(_Char,Projectile_Snipe)
+THEN 
+CharacterRemoveSkill(_Char,Projectile_Snipe) 
+CharacterAddToInventory(_Char,SKILLBOOK_Ranger_Snipe) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Projectile_Multishot) 
+IsSkillActive(_Char,Projectile_Multishot)
+THEN 
+CharacterRemoveSkill(_Char,Projectile_Multishot) 
+CharacterAddToInventory(_Char,SKILLBOOK_Ranger_Multishot) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Projectile_PinDown) 
+IsSkillActive(_Char,Projectile_PinDown)
+THEN 
+CharacterRemoveSkill(_Char,Projectile_PinDown) 
+CharacterAddToInventory(_Char,SKILLBOOK_Ranger_PinDown) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,ProjectileStrike_RainOfArrows) 
+IsSkillActive(_Char,ProjectileStrike_RainOfArrows)
+THEN 
+CharacterRemoveSkill(_Char,ProjectileStrike_RainOfArrows) 
+CharacterAddToInventory(_Char,SKILLBOOK_Ranger_RainOfArrows) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Projectile_DeployMassTraps) 
+IsSkillActive(_Char,Projectile_DeployMassTraps)
+THEN 
+CharacterRemoveSkill(_Char,Projectile_DeployMassTraps) 
+CharacterAddToInventory(_Char,SKILLBOOK_Fire_DeployMassTraps) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Projectile_InfectiousFlame) 
+IsSkillActive(_Char,Projectile_InfectiousFlame)
+THEN 
+CharacterRemoveSkill(_Char,Projectile_InfectiousFlame) 
+CharacterAddToInventory(_Char,SKILLBOOK_Fire_InfectiousFlame) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Zone_LaserRay) 
+IsSkillActive(_Char,Zone_LaserRay)
+THEN 
+CharacterRemoveSkill(_Char,Zone_LaserRay) 
+CharacterAddToInventory(_Char,SKILLBOOK_Fire_LaserRay) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,ProjectileStrike_HailStrike) 
+IsSkillActive(_Char,ProjectileStrike_HailStrike)
+THEN 
+CharacterRemoveSkill(_Char,ProjectileStrike_HailStrike) 
+CharacterAddToInventory(_Char,SKILLBOOK_Water_HailStrike) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Projectile_IceFan) 
+IsSkillActive(_Char,Projectile_IceFan)
+THEN 
+CharacterRemoveSkill(_Char,Projectile_IceFan) 
+CharacterAddToInventory(_Char,SKILLBOOK_Water_IceFan) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,ProjectileStrike_DazingBolt) 
+IsSkillActive(_Char,ProjectileStrike_DazingBolt)
+THEN 
+CharacterRemoveSkill(_Char,ProjectileStrike_DazingBolt) 
+CharacterAddToInventory(_Char,SKILLBOOK_Air_DazingBolt) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Projectile_ChainLightning) 
+IsSkillActive(_Char,Projectile_ChainLightning)
+THEN 
+CharacterRemoveSkill(_Char,Projectile_ChainLightning) 
+CharacterAddToInventory(_Char,SKILLBOOK_Air_ChainLightning) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Projectile_AcidSpores) 
+IsSkillActive(_Char,Projectile_AcidSpores)
+THEN 
+CharacterRemoveSkill(_Char,Projectile_AcidSpores) 
+CharacterAddToInventory(_Char,SKILLBOOK_Earth_AcidSpores) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Projectile_PyroclasticEruption) 
+IsSkillActive(_Char,Projectile_PyroclasticEruption)
+THEN 
+CharacterRemoveSkill(_Char,Projectile_PyroclasticEruption) 
+CharacterAddToInventory(_Char,SKILLBOOK_Earth_PyroclasticEruption) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_Equalize) 
+IsSkillActive(_Char,Target_Equalize)
+THEN 
+CharacterRemoveSkill(_Char,Target_Equalize) 
+CharacterAddToInventory(_Char,SKILLBOOK_Polymorph_Equalize) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Target_VoidwokenCharm) 
+IsSkillActive(_Char,Target_VoidwokenCharm)
+THEN 
+CharacterRemoveSkill(_Char,Target_VoidwokenCharm) 
+CharacterAddToInventory(_Char,SKILLBOOK_Source_VoidwokenCharm) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Cone_Shatter) 
+IsSkillActive(_Char,Cone_Shatter)
+THEN 
+CharacterRemoveSkill(_Char,Cone_Shatter) 
+CharacterAddToInventory(_Char,SKILLBOOK_Water_Shatter) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,ProjectileStrike_MeteorShower) 
+IsSkillActive(_Char,ProjectileStrike_MeteorShower)
+THEN 
+CharacterRemoveSkill(_Char,ProjectileStrike_MeteorShower) 
+CharacterAddToInventory(_Char,SKILLBOOK_Fire_MeteorShower) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,ProjectileStrike_HailAttack) 
+IsSkillActive(_Char,ProjectileStrike_HailAttack)
+THEN 
+CharacterRemoveSkill(_Char,ProjectileStrike_HailAttack) 
+CharacterAddToInventory(_Char,SKILLBOOK_Water_HailAttack) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Storm_Lightning) 
+IsSkillActive(_Char,Storm_Lightning)
+THEN 
+CharacterRemoveSkill(_Char,Storm_Lightning) 
+CharacterAddToInventory(_Char,SKILLBOOK_Air_Lightning) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Storm_Blood) 
+IsSkillActive(_Char,Storm_Blood)
+THEN 
+CharacterRemoveSkill(_Char,Storm_Blood) 
+CharacterAddToInventory(_Char,SKILLBOOK_Water_BloodStorm) 
+ENDIF
+IF "c1&!c2" 
+CharacterHasSkill(_Char,Storm_Ethereal) 
+IsSkillActive(_Char,Storm_Ethereal)
+THEN 
+CharacterRemoveSkill(_Char,Storm_Ethereal) 
+CharacterAddToInventory(_Char,SKILLBOOK_Summoning_Ethereal) 
+ENDIF
+IF "c1&c2&c3"
+CharacterHasStatus(_Char,DRUNK)
+CharacterHasStatus(_Char,BLESSED)
+CharacterHasSkill(_Char,Target_Bless)
+THEN
+CharacterRemoveSkill(_Char,Target_Bless)
+CharacterAddSkill(_Char,Target_Curse)
+ENDIF
